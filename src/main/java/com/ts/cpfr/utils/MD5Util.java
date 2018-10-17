@@ -1,5 +1,7 @@
 package com.ts.cpfr.utils;
 
+import org.apache.http.util.TextUtils;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -11,16 +13,17 @@ public class MD5Util {
     /**
      * 获取MD5加密
      *
-     * @param pwd 需要加密的字符串
+     * @param str 需要加密的字符串
      * @return String字符串 加密后的字符串
      */
-    public static String getMD5Code(String pwd) {
+    public static String md5(String str) {
+        if (TextUtils.isEmpty(str)) return "";
         try {
             // 创建加密对象
             MessageDigest digest = MessageDigest.getInstance("md5");
 
             // 调用加密对象的方法，加密的动作已经完成
-            byte[] bs = digest.digest(pwd.getBytes());
+            byte[] bs = digest.digest(str.getBytes());
             // 接下来，我们要对加密后的结果，进行优化，按照mysql的优化思路走
             // mysql的优化思路：
             // 第一步，将数据全部转换成正数：

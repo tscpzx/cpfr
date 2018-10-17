@@ -10,5 +10,5 @@ import com.ts.cpfr.utils.ParamData;
  * @Created by cjw
  */
 public interface UserService {
-    LoginUser getUser(ParamData pd);
+    LoginUser loginUser(ParamData pd);
 }

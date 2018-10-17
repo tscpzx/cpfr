@@ -1,28 +1,23 @@
 package com.ts.cpfr.utils;
 
-import com.alibaba.fastjson.JSONObject;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.util.EntityUtils;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
-import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
 
 public class CommUtil {
 	/**
-	 * 随机生成六位数验证码 
+	 * 随机生成六位数验证码
 	 * @return
 	 */
 	public static int getRandomNum(){
@@ -30,7 +25,7 @@ public class CommUtil {
 		 return r.nextInt(900000)+100000;
 		 //(Math.random()*(999999-100000)+100000)
 	}
-	
+
 	/**
 	 * 检测字符串是否不为空(null,"","null")
 	 * @param s
@@ -39,7 +34,7 @@ public class CommUtil {
 	public static boolean notEmpty(String s){
 		return s!=null && !"".equals(s) && !"null".equals(s);
 	}
-	
+
 	/**
 	 * 检测字符串是否为空(null,"","null")
 	 * @param s
@@ -48,7 +43,7 @@ public class CommUtil {
 	public static boolean isEmpty(String s){
 		return s==null || "".equals(s) || "null".equals(s);
 	}
-	
+
 	/**
 	 * 字符串转换为字符串数组
 	 * @param str 字符串
@@ -61,7 +56,7 @@ public class CommUtil {
 		}
 		return str.split(splitRegex);
 	}
-	
+
 	/**
 	 * 用默认的分隔符(,)将字符串转换为字符串数组
 	 * @param str	字符串
@@ -70,7 +65,7 @@ public class CommUtil {
 	public static String[] str2StrArray(String str){
 		return str2StrArray(str,",\\s*");
 	}
-	
+
 	/**
 	 * 按照yyyy-MM-dd HH:mm:ss的格式，日期转字符串
 	 * @param date
@@ -79,7 +74,7 @@ public class CommUtil {
 	public static String date2Str(Date date){
 		return date2Str(date,"yyyy-MM-dd HH:mm:ss");
 	}
-	
+
 	/**
 	 * 按照yyyy-MM-dd HH:mm:ss的格式，字符串转日期
 	 * @param date
@@ -98,7 +93,7 @@ public class CommUtil {
 			return null;
 		}
 	}
-	
+
 	/**
 	 * 按照参数format的格式，日期转字符串
 	 * @param date
@@ -145,20 +140,20 @@ public class CommUtil {
         }
         return ip;
     }
-    
+
     public static String paramByString(Object object){
     	if(object != null && !"".equals(object)){
     		StringBuffer result = new StringBuffer("(");
     		String[] objs = object.toString().split(",");
     		for(String str : objs){
-    			result.append("'"+str+"',");   			
+    			result.append("'"+str+"',");
     		}
     		result.setCharAt(result.length()-1, ')');
     		return result.toString();
     	}
     	return null;
     }
-    
+
     public static String paramByLong(Object object){
     	if(object != null && !"".equals(object)){
     		StringBuffer result = new StringBuffer("(");
@@ -171,11 +166,11 @@ public class CommUtil {
     	}
     	return null;
     }
-    
+
     public static int paramConvert(String param, int initValue){
     	return param==null ? initValue : Integer.parseInt(param);
     }
-    
+
     public static String getFieldNameByLevel(String level){
 		String fieldName=null;
 		if(level.equals("Ⅰ级")){
@@ -189,9 +184,9 @@ public class CommUtil {
 		}
 		return fieldName;
 	}
-    /* 
+    /*
      * 将时间转换为时间戳
-     */    
+     */
     public static String dateToStamp(String s) {
     	Date date;
         String res;
@@ -206,7 +201,7 @@ public class CommUtil {
 		}
 		return null;
     }
-    /* 
+    /*
      * 将时间戳转换为时间
      */
     public static String stampToDate(String s){
@@ -217,28 +212,7 @@ public class CommUtil {
         res = simpleDateFormat.format(date);
         return res;
     }
-    
-    public static JSONObject doPost(String url, Map<String,String> map, String charset) throws Exception {
 
-        HttpClient httpClient = new DefaultHttpClient();
-        HttpPost httpPost = new HttpPost( url );
-        List<NameValuePair> params = new ArrayList<NameValuePair>();
-        for( String key : map.keySet() ){
-            params.add(new BasicNameValuePair( key , map.get(key)));
-        }
-        UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params, charset);
-        httpPost.setEntity(entity);
-        HttpResponse httpResponse = httpClient.execute(httpPost);
-
-        JSONObject jsonObject = null;
-        if(httpResponse.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
-            HttpEntity httpEntity = httpResponse.getEntity();
-            String result = EntityUtils.toString(httpEntity,"UTF-8");
-            jsonObject = JSONObject.parseObject(result);
-        }
-        return jsonObject;
-    }
-    
     public static ParamData xml2map(String xml) {
         try {
             org.dom4j.Document doc = DocumentHelper.parseText(xml);

@@ -27,8 +27,13 @@ public class CommConst {
     public static final String UPLOAD_AUDIO = "E:/Proj/graduation/upload/uploadAudio/";
     //上传临时存放地址，文件过大时
     public static final String UPLOAD_TEMP = "F:/upload/Temp/";
-    //状态评价短信接口
-    public static final String URL_SMS = "http://10.124.140.244/biz/kit/public_.do?action=sendSMS";
 
     public static final String TOKEN = "token";
+
+    //实义德第三方调用校验秘钥
+    public static final String SYD_CHECKSUM_KEY = "4200efc681e2d01dca19dea30f2bca6b";
+    //实义德服务器基本地址
+    public static final String SYD_BASE_URL = "http://132.232.4.69:9090";
+    //用户登录
+    public static final String SYD_USER_LOGIN = "/user/login";
 }
