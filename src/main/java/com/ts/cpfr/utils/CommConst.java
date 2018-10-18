@@ -11,7 +11,6 @@ public class CommConst {
     public static final String PAGE = "resource/config/page.txt";
     // 不对匹配该值的访问路径拦截（正则）
     public static final String NO_INTERCEPTOR_PATH = ".*/((login)|(logout)|(code)|(static)|(websocket)).*";
-    public static final String LOGIN_PATH = "/user/login";
     // 该值会在web容器启动时由WebAppContextListener初始化
     public static ApplicationContext WEB_APP_CONTEXT = null;
 

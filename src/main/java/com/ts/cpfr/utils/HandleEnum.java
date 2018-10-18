@@ -3,8 +3,7 @@ package com.ts.cpfr.utils;
 
 public enum HandleEnum {
     FAIL(-1,"操作异常"),
-    SUCCESS(1,"操作成功"),
-    UNLOGIN(2,"未登录");
+    SUCCESS(0,"操作成功");
 
     private int code;
     private String message;

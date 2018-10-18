@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ts.cpfr.dao.UserDao">
-    <select id="selectUser"  parameterType="pd" resultType="com.ts.cpfr.entity.LoginUser">
-        select * from tbl_user
+	<select id="selectUser" parameterType="pd" resultType="com.ts.cpfr.entity.LoginUser">
+        select * from tbl_user where name=#{name} and password=#{password}
+    </select>
+	<select id="selectSydUser" parameterType="pd" resultType="com.ts.cpfr.entity.LoginUser">
+		SELECT s.name,s.password FROM tbl_syd_user s WHERE s.wid=(SELECT t.wid FROM tbl_user t WHERE t.name=#{name} and t.password=#{password})
     </select>
 </mapper>

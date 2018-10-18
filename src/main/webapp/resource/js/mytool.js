@@ -1,3 +1,7 @@
+function l(str) {
+    console.log(str);
+}
+
 /* layer弹出层 */
 function layTip(msg) {
     layer.msg(msg);

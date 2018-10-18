@@ -11,4 +11,6 @@ import com.ts.cpfr.utils.ParamData;
  */
 public interface UserDao {
     LoginUser selectUser(ParamData pd);
+
+    LoginUser selectSydUser(ParamData pd);
 }

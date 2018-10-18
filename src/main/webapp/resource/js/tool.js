@@ -1,7 +1,3 @@
-function l(str) {
-    console.log(str);
-}
-
 function ajaxDataByPost(jsonObj) {
     var url = jsonObj.url;
     var data = jsonObj.data;

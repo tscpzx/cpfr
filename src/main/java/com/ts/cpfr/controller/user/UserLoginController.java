@@ -33,32 +33,37 @@ public class UserLoginController extends BaseController {
 
     @ResponseBody
     @RequestMapping("/login")
-    public ResultData<ParamData> login(HttpServletRequest request) {
+    public ResultData<JSONObject> login(HttpServletRequest request) {
         try {
             ParamData pd = paramDataInit();
+            LoginUser cpUser = mUserService.queryUser(pd);
+            if (cpUser != null) {
+                LoginUser sydUser = mUserService.querySydUser(pd);
+                String name = sydUser.getName();
+                String password = sydUser.getPassword();
+                String md5Password = MD5Util.md5(password);
+                String sub = md5Password.substring(0, 18);
+                password = MD5Util.md5(sub + "SYD_ACS");
 
-            String name = pd.getString("name");
-            String password = pd.getString("password");
-            String md5Password = MD5Util.md5(password);
-            String sub = md5Password.substring(0, 18);
-            password = MD5Util.md5(sub + "SYD_ACS");
+                pd.put("name", name);
+                pd.put("password", password);
 
-            pd.put("name", name);
-            pd.put("password", password);
+                String path = CommConst.SYD_USER_LOGIN;
+                String body = "name=" + name + "&password=" + password;
+                String checksum = MD5Util.md5(path + body + CommConst.SYD_CHECKSUM_KEY);
+                JSONObject jsonObject = HttpUtil.doPost(CommConst.SYD_BASE_URL + CommConst.SYD_USER_LOGIN + "?checksum=" + checksum, pd);
+                ResultData<JSONObject> resultData = JSONObject.toJavaObject(jsonObject, ResultData.class);
+                if (0 == resultData.getCode()) {//登录实义德成功
+                    ////todo
+                    return resultData;
+                } else {
+                    return new ResultData<JSONObject>(HandleEnum.FAIL, "syd操作异常");
+                }
+            } else return new ResultData<JSONObject>(HandleEnum.FAIL, "登录失败，账号或者密码有误");
 
-            String path = CommConst.SYD_USER_LOGIN;
-            String body = "name=" + name + "&password=" + password;
-            String checksum = MD5Util.md5(path + body + CommConst.SYD_CHECKSUM_KEY);
-            JSONObject jsonObject = HttpUtil.doPost(CommConst.SYD_BASE_URL + CommConst.SYD_USER_LOGIN + "?checksum=" + checksum, pd);
-
-            LoginUser user = mUserService.loginUser(pd);
-            if (user != null) {
-                return new ResultData<ParamData>(HandleEnum.SUCCESS);
-            }
-            return new ResultData<ParamData>(HandleEnum.FAIL, jsonObject.get("msg").toString());
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResultData<ParamData>(HandleEnum.FAIL);
+            return new ResultData<JSONObject>(HandleEnum.FAIL, e.getMessage());
         }
     }
 }

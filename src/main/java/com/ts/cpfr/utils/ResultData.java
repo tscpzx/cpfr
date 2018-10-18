@@ -2,47 +2,55 @@ package com.ts.cpfr.utils;
 
 
 public class ResultData<T> {
-	private int code;
-    private String message;
-    private T result;
-	
-	public int getCode() {
-		return code;
-	}
+    private int code;
+    private String msg;
+    private T data;
 
-	public void setCode(int code) {
-		this.code = code;
-	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	public T getResult() {
-		return result;
-	}
-
-	public void setResult(T result) {
-		this.result = result;
-	}
-
-	public ResultData(HandleEnum operateEnum) {
-        this.code = operateEnum.getCode();
-        this.message = operateEnum.getMessage();
+    public int getCode() {
+        return code;
     }
-	
-	public ResultData(HandleEnum operateEnum,T result) {
-        this.code = operateEnum.getCode();
-        this.message = operateEnum.getMessage();
-        this.result = result;
+
+    public void setCode(int code) {
+        this.code = code;
     }
-	
-	public ResultData(HandleEnum operateEnum,String message) {
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    public ResultData(){}
+
+    public ResultData(HandleEnum operateEnum) {
         this.code = operateEnum.getCode();
-        this.message = message;
+        this.msg = operateEnum.getMessage();
+    }
+
+    public ResultData(HandleEnum operateEnum, T data) {
+        this.code = operateEnum.getCode();
+        this.msg = operateEnum.getMessage();
+        this.data = data;
+    }
+
+    public ResultData(HandleEnum operateEnum, String msg) {
+        this.code = operateEnum.getCode();
+        this.msg = msg;
+    }
+
+    public ResultData(HandleEnum operateEnum, String msg, T data) {
+        this.code = operateEnum.getCode();
+        this.msg = msg;
+        this.data = data;
     }
 }

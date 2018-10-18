@@ -64,7 +64,7 @@
             },
             success: function (data) {
                 layer.close(loading);
-                layAlert(data.message);
+                l(data);
             }
         });
     }
