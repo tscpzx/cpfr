@@ -65,6 +65,11 @@
             success: function (data) {
                 layer.close(loading);
                 l(data);
+
+                layTip(data.msg);
+                if (0 === data.code) {
+                    window.location.href="main";
+                }
             }
         });
     }

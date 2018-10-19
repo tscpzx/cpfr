@@ -10,6 +10,7 @@ public class LoginUser implements Serializable {
     private String name;
     private String password;
     private String token;
+    private String sydToken;
 
     public int getId() {
         return id;
@@ -41,5 +42,13 @@ public class LoginUser implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getSydToken() {
+        return sydToken;
+    }
+
+    public void setSydToken(String sydToken) {
+        this.sydToken = sydToken;
     }
 }

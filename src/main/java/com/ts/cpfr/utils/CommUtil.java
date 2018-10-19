@@ -184,6 +184,12 @@ public class CommUtil {
 		}
 		return fieldName;
 	}
+
+	//生成当前时间戳
+	public static String createStamp() {
+		return Long.toString(System.currentTimeMillis() / 1000);
+	}
+
     /*
      * 将时间转换为时间戳
      */

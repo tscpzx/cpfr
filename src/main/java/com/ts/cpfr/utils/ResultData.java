@@ -30,7 +30,20 @@ public class ResultData<T> {
         this.data = data;
     }
 
-    public ResultData(){}
+    public ResultData() {
+
+    }
+
+    public ResultData(int code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+
+    public ResultData(int code, String msg, T data) {
+        this.code = code;
+        this.msg = msg;
+        this.data = data;
+    }
 
     public ResultData(HandleEnum operateEnum) {
         this.code = operateEnum.getCode();

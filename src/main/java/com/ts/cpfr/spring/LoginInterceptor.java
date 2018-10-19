@@ -11,6 +11,7 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -36,6 +37,8 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                 request.setAttribute("message", "Token不能为空");
             } else if (!memory.checkLoginUser(token)) {
                 request.setAttribute("message", "Session已过期，请重新登录");
+            } else {
+                return true;
             }
 
             request.getRequestDispatcher("/user/nologin").forward(request, response);
@@ -63,12 +66,28 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
      * 从请求信息中获取token值
      */
     private String getTokenFromRequest(HttpServletRequest request) {
-        // 默认从header里获取token值
-        String token = request.getHeader(CommConst.TOKEN);
-        if (StringUtils.isEmpty(token)) {
-            // 从请求信息中获取token值
-            token = request.getParameter(CommConst.TOKEN);
+        // 默认从Cookie里获取token值
+        Cookie[] cookies = request.getCookies();
+        String token = null;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                String cookieName = cookie.getName();
+                if (CommConst.TOKEN.equals(cookieName)) {
+                    token = cookie.getValue();
+                    System.out.println("从cookie中获取token:" + token);
+                }
+            }
         }
+        if (StringUtils.isEmpty(token)) {
+            token = request.getHeader(CommConst.TOKEN);
+            System.out.println("从header中获取token:" + token);
+            if (StringUtils.isEmpty(token)) {
+                // 从请求信息中获取token值
+                token = request.getParameter(CommConst.TOKEN);
+                System.out.println("从url中获取token:" + token);
+            }
+        }
+
         return token;
     }
 }

@@ -27,6 +27,10 @@ public class CommConst {
     //上传临时存放地址，文件过大时
     public static final String UPLOAD_TEMP = "F:/upload/Temp/";
 
+    public static final String COAD = "code";
+    public static final String MSG = "msg";
+    public static final String DATA = "data";
     public static final String TOKEN = "token";
+    public static final String ACS_ADMIN_COOKIE = "acs_admin_cookie";
 
 }

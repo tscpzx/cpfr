@@ -11,14 +11,10 @@ import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.http.params.CoreConnectionPNames;
 import org.apache.http.util.EntityUtils;
 
-import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,9 +25,19 @@ import java.util.List;
  * @Created by cjw
  */
 public class HttpUtil {
+    public static final int CONNECT_TIME_OUT_5000 = 5000;
+    public static final int REQUEST_TIME_OUT_1000 = 1000;
+    public static final int SOCKET_TIME_OUT_5000 = 5000;
+
     public static JSONObject doPost(String url, ParamData pd) throws Exception {
         HttpClient httpClient = HttpClientBuilder.create().build();
         HttpPost httpPost = new HttpPost(url);
+        RequestConfig requestConfig = RequestConfig.custom()
+          .setConnectTimeout(CONNECT_TIME_OUT_5000)
+          .setConnectionRequestTimeout(REQUEST_TIME_OUT_1000)
+          .setSocketTimeout(SOCKET_TIME_OUT_5000)
+          .build();
+        httpPost.setConfig(requestConfig);
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         for (Object key : pd.keySet()) {
             params.add(new BasicNameValuePair((String) key, (String) pd.get(key)));
@@ -46,6 +52,7 @@ public class HttpUtil {
             String result = EntityUtils.toString(httpEntity, "UTF-8");
             jsonObject = JSONObject.parseObject(result);
         }
+        httpPost.releaseConnection();
         return jsonObject;
     }
 
@@ -68,53 +75,6 @@ public class HttpUtil {
         }
         httpGet.releaseConnection();
         return null;
-    }
-
-    public static JSONObject doPost(String url, String outStr) throws ParseException, IOException {
-        HttpClient httpClient = HttpClientBuilder.create().build();
-        //设置连接超时和读取超时
-        httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 15000);
-        httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 20000);
-
-        HttpPost httpPost = new HttpPost(url);
-        httpPost.setEntity(new StringEntity(outStr, "UTF-8"));
-        HttpResponse response = httpClient.execute(httpPost);
-
-        JSONObject jsonObject = null;
-        //获取连接状态码
-        int statusCode = response.getStatusLine().getStatusCode();
-        if (statusCode == HttpStatus.SC_OK) {
-            HttpEntity httpEntity = response.getEntity();
-            String result = EntityUtils.toString(httpEntity, "UTF-8");
-            jsonObject = JSONObject.parseObject(result);
-        }
-
-        httpPost.releaseConnection();
-        return jsonObject;
-    }
-
-    public static JSONObject doPostWithPairs(String url, List<NameValuePair> params) throws ParseException, IOException {
-        HttpClient httpClient = HttpClientBuilder.create().build();
-        //设置连接超时和读取超时
-        httpClient.getParams().setParameter(CoreConnectionPNames.CONNECTION_TIMEOUT, 15000);
-        httpClient.getParams().setParameter(CoreConnectionPNames.SO_TIMEOUT, 20000);
-
-        HttpPost httpPost = new HttpPost(url);
-
-        httpPost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
-        HttpResponse response = httpClient.execute(httpPost);
-
-        JSONObject jsonObject = null;
-        //获取连接状态码
-        int statusCode = response.getStatusLine().getStatusCode();
-        if (statusCode == HttpStatus.SC_OK) {
-            HttpEntity httpEntity = response.getEntity();
-            String result = EntityUtils.toString(httpEntity, "UTF-8");
-            jsonObject = JSONObject.parseObject(result);
-        }
-
-        httpPost.releaseConnection();
-        return jsonObject;
     }
 
     /**

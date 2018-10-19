@@ -1,6 +1,7 @@
 package com.ts.cpfr.ehcache;
 
 
+import com.ts.cpfr.utils.CommUtil;
 import com.ts.cpfr.utils.MD5Util;
 
 /**
@@ -25,7 +26,7 @@ public class TokenProcessor {
     }
 
     public String generateToken(String name, String password) {
-        return MD5Util.md5(name + password);
+        return MD5Util.md5(name + password + CommUtil.createStamp());
     }
 
     /**
@@ -33,7 +34,7 @@ public class TokenProcessor {
      * 再将Seed作为key，Token作为value保存到缓存中，这样即便Token是变化的，
      * 但每个用户的Seed是固定的，就可以通过Seed索引到Token，再通过Token清除上一次的登录信息，避免重复登录时缓存中保存过多无效的登录信息。
      */
-    public String generateSeed(String name) {
-        return MD5Util.md5(name);
+    public String generateSeed(int userId) {
+        return MD5Util.md5(userId + "");
     }
 }

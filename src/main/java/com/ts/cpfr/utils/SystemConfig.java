@@ -15,9 +15,13 @@ public class SystemConfig {
     public static final String SYD_BASE_URL = "http://132.232.4.69:9090";
     //用户登录
     public static final String SYD_USER_LOGIN = "/user/login";
+    //设备列表
+    public static final String SYD_DEVICE_LIST = "/device/list";
 
     //session存活时间 秒
     public static final int SESSION_LIVE_TIME_30 = 60 * 30;
+    //cookie存活时间 秒
+    public static final int COOKIE_LIVE_TIME_1 = 60;
 
     public static CopyOnWriteArrayList<String> allowUrlList = new CopyOnWriteArrayList<>();
 
