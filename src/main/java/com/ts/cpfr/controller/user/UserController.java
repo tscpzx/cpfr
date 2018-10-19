@@ -58,11 +58,14 @@ public class UserController extends BaseController {
                 String path = SystemConfig.SYD_USER_LOGIN;
                 String body = "name=" + name + "&password=" + password;
                 String checksum = MD5Util.md5(path + body + SystemConfig.SYD_CHECKSUM_KEY);
-                JSONObject jsonObject = HttpUtil.doPost(SystemConfig.SYD_BASE_URL + SystemConfig.SYD_USER_LOGIN + "?checksum=" + checksum, pd);
+                JSONObject jsonObject = HttpUtil.doPost(SystemConfig.SYD_BASE_URL + SystemConfig.SYD_USER_LOGIN + "?checksum=" + checksum, "", pd);
                 ResultData<JSONObject> sydJson = JSONObject.toJavaObject(jsonObject, ResultData.class);
                 if (0 == sydJson.getCode()) {//登录实义德成功
                     String sydToken = sydJson.getData().getString(CommConst.TOKEN);
-                    memory.saveLoginUser(cpUser, sydToken);
+                    int sydAdminId = sydJson.getData().getIntValue("admin_id");
+                    memory.saveLoginUser(cpUser);
+                    cpUser.setSydToken(sydToken);
+                    cpUser.setSydAdminId(sydAdminId);
 
                     //存入cookie中
                     Cookie cpCookie = new Cookie(CommConst.TOKEN, ThreadToken.getToken());
@@ -85,6 +88,38 @@ public class UserController extends BaseController {
                 }
             } else return new ResultData<ParamData>(HandleEnum.FAIL, "登录失败，账号或者密码有误");
 
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<ParamData>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("/logout")
+    public ResultData<JSONObject> logout(HttpServletRequest request) {
+        try {
+            ParamData pd = paramDataInit();
+            int sydAdminId = memory.currentLoginUser().getSydAdminId();
+            pd.put("admin_id", sydAdminId+"");
+            String path = SystemConfig.SYD_USER_LOGOUT;
+            String body = "admin_id=" + sydAdminId;
+            String checksum = MD5Util.md5(path + body + SystemConfig.SYD_CHECKSUM_KEY);
+
+            JSONObject jsonObject = HttpUtil.doPost(SystemConfig.SYD_BASE_URL + SystemConfig.SYD_USER_LOGOUT + "?checksum=" + checksum, memory
+              .currentLoginUser()
+              .getSydToken(), pd);
+            return new ResultData<JSONObject>(HandleEnum.SUCCESS, jsonObject);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<JSONObject>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("/nologin")
+    public ResultData<ParamData> noLogin(HttpServletRequest request) {
+        try {
+            return new ResultData<ParamData>(HandleEnum.SESSION_ERROR_102);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<ParamData>(HandleEnum.FAIL, e.getMessage());

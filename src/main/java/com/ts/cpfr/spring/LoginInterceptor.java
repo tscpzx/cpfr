@@ -1,6 +1,7 @@
 package com.ts.cpfr.spring;
 
 import com.ts.cpfr.ehcache.Memory;
+import com.ts.cpfr.ehcache.ThreadToken;
 import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.SystemConfig;
 
@@ -30,19 +31,15 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         if (!checkAllowAccess(request.getRequestURI())) {
             // 检查请求的token值是否为空
             String token = getTokenFromRequest(request);
+            // 保存当前token，用于Controller层获取登录用户信息
+            ThreadToken.setToken(token);
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.setCharacterEncoding("UTF-8");
             response.setHeader("Cache-Control", "no-cache, must-revalidate");
-            if (StringUtils.isEmpty(token)) {
-                request.setAttribute("message", "Token不能为空");
-            } else if (!memory.checkLoginUser(token)) {
-                request.setAttribute("message", "Session已过期，请重新登录");
-            } else {
-                return true;
-            }
-
-            request.getRequestDispatcher("/user/nologin").forward(request, response);
-            return false;
+            if (StringUtils.isEmpty(token) || !memory.checkLoginUser(token)) {
+                request.getRequestDispatcher("/user/nologin").forward(request, response);
+                return false;
+            } else return true;
         }
         return true;
     }

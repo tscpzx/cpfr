@@ -39,7 +39,7 @@ public class Memory {
      * timeToIdleSeconds -->  当对象自从最近一次被访问后，如果处于空闲状态的时间超过了timeToIdleSeconds属性值，这个对象就会过期，
      * EHCache将把它从缓存中清空；即缓存被创建后，最后一次访问时间到缓存失效之时，两者之间的间隔，单位为秒(s)
      */
-    public void saveLoginUser(LoginUser loginUser, String sydToken) {
+    public void saveLoginUser(LoginUser loginUser) {
         // 生成seed和token值
         String seed = TokenProcessor.getInstance().generateSeed(loginUser.getId());
         String token = TokenProcessor.getInstance()
@@ -47,7 +47,6 @@ public class Memory {
 
         // 保存token到登录用户中
         loginUser.setToken(token);
-        loginUser.setSydToken(sydToken);
         // 保存当前token，用于Controller层获取登录用户信息
         ThreadToken.setToken(token);
         // 清空之前的登录信息
@@ -58,17 +57,9 @@ public class Memory {
     }
 
     /**
-     * 获取用户信息
-     */
-    private LoginUser currentLoginUser(String token) {
-        Element element = ehcache.get(token);
-        return element == null ? null : (LoginUser) element.getObjectValue();
-    }
-
-    /**
      * 获取当前线程中的用户信息
      */
-    private LoginUser currentLoginUser() {
+    public LoginUser currentLoginUser() {
         Element element = ehcache.get(ThreadToken.getToken());
         return element == null ? null : (LoginUser) element.getObjectValue();
     }
@@ -84,19 +75,7 @@ public class Memory {
     /**
      * 清空登录信息
      */
-    public void clearLoginUser(String token) {
-        LoginUser loginUser = currentLoginUser(token);
-        if (loginUser != null) {
-            // 根据登录的用户名生成seed，然后清除登录信息
-            String seed = MD5Util.md5(loginUser.getId() + "");
-            clearLoginToken(seed);
-        }
-    }
-
-    /**
-     * 清空当前登录信息
-     */
-    public void clearCurrentLoginUser() {
+    public void clearLoginUser() {
         LoginUser loginUser = currentLoginUser();
         if (loginUser != null) {
             // 根据登录的用户名生成seed，然后清除登录信息

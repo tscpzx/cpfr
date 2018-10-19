@@ -2,6 +2,7 @@ package com.ts.cpfr.controller.device;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ts.cpfr.controller.base.BaseController;
+import com.ts.cpfr.ehcache.Memory;
 import com.ts.cpfr.service.DeviceService;
 import com.ts.cpfr.utils.HandleEnum;
 import com.ts.cpfr.utils.HttpUtil;
@@ -30,6 +31,8 @@ public class DeviceController extends BaseController {
 
     @Autowired
     DeviceService mDeviceService;
+    @Autowired
+    private Memory memory;
 
     @ResponseBody
     @RequestMapping("/list")
@@ -38,7 +41,9 @@ public class DeviceController extends BaseController {
             String path = SystemConfig.SYD_DEVICE_LIST;
             String body = "";
             String checksum = MD5Util.md5(path + body + SystemConfig.SYD_CHECKSUM_KEY);
-            JSONObject jsonObject = HttpUtil.doGet(SystemConfig.SYD_BASE_URL + SystemConfig.SYD_DEVICE_LIST + "?checksum=" + checksum);
+            JSONObject jsonObject = HttpUtil.doGet(SystemConfig.SYD_BASE_URL + SystemConfig.SYD_DEVICE_LIST + "?checksum=" + checksum, memory
+              .currentLoginUser()
+              .getSydToken());
             mDeviceService.getDeviceList();
             return new ResultData<JSONObject>(HandleEnum.SUCCESS, jsonObject);
         } catch (Exception e) {

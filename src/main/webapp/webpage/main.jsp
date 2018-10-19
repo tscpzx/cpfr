@@ -7,10 +7,10 @@
 </head>
 <body>
 
-</body>
 <script type="text/javascript">
-    ajaxDeviceList();
+    // ajaxDeviceList();
 
+    ajaxLogout();
     function ajaxDeviceList() {
         var loading = layLoading1();
         ajaxGet({
@@ -19,9 +19,23 @@
             success: function (data) {
                 layer.close(loading);
                 l(data);
-                layTip(data.msg);
+                if (checkSession(data)) {
+                }
+            }
+        });
+    }
+
+    function ajaxLogout() {
+        var loading = layLoading1();
+        ajaxPost({
+            url: "${pageContext.request.contextPath}/user/logout",
+            data: {},
+            success: function (data) {
+                layer.close(loading);
+                l(data);
             }
         });
     }
 </script>
+</body>
 </html>

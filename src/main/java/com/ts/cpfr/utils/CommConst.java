@@ -1,19 +1,6 @@
 package com.ts.cpfr.utils;
 
-import org.springframework.context.ApplicationContext;
-
 public class CommConst {
-    public static final String ACCESS_DENIED_403 = "SPRING_SECURITY_403_EXCEPTION";
-    public static final String AUTHENTICATION_EXCEPTION = "SPRING_SECURITY_LAST_EXCEPTION";
-    // 验证码
-    public static final String SESSION_SECURITY_CODE = "sessionSecCode";
-    // 分页条数配置路径
-    public static final String PAGE = "resource/config/page.txt";
-    // 不对匹配该值的访问路径拦截（正则）
-    public static final String NO_INTERCEPTOR_PATH = ".*/((login)|(logout)|(code)|(static)|(websocket)).*";
-    // 该值会在web容器启动时由WebAppContextListener初始化
-    public static ApplicationContext WEB_APP_CONTEXT = null;
-
     // 接口组装时返回的分页和结果属性
     public static String RESULT_PAGE = "page";
     public static String RESULT_DATA = "data";

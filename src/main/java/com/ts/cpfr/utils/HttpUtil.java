@@ -29,7 +29,7 @@ public class HttpUtil {
     public static final int REQUEST_TIME_OUT_1000 = 1000;
     public static final int SOCKET_TIME_OUT_5000 = 5000;
 
-    public static JSONObject doPost(String url, ParamData pd) throws Exception {
+    public static JSONObject doPost(String url, String token, ParamData pd) throws Exception {
         HttpClient httpClient = HttpClientBuilder.create().build();
         HttpPost httpPost = new HttpPost(url);
         RequestConfig requestConfig = RequestConfig.custom()
@@ -38,6 +38,7 @@ public class HttpUtil {
           .setSocketTimeout(SOCKET_TIME_OUT_5000)
           .build();
         httpPost.setConfig(requestConfig);
+        httpPost.addHeader(CommConst.ACS_ADMIN_COOKIE, token);
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         for (Object key : pd.keySet()) {
             params.add(new BasicNameValuePair((String) key, (String) pd.get(key)));
@@ -56,7 +57,7 @@ public class HttpUtil {
         return jsonObject;
     }
 
-    public static JSONObject doGet(String url) throws Exception {
+    public static JSONObject doGet(String url, String token) throws Exception {
         HttpClient httpClient = HttpClientBuilder.create().build();
         //设置连接超时和读取超时
         HttpGet httpGet = new HttpGet(url);
@@ -66,6 +67,7 @@ public class HttpUtil {
           .setSocketTimeout(5000)
           .build();
         httpGet.setConfig(requestConfig);
+        httpGet.addHeader(CommConst.ACS_ADMIN_COOKIE, token);
         HttpResponse httpResponse = httpClient.execute(httpGet);
         HttpEntity entity = httpResponse.getEntity();
         if (entity != null) {

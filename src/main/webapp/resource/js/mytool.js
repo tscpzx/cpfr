@@ -64,3 +64,22 @@ function ajaxPost(jsonObj) {
 function ajaxGet(jsonObj) {
     ajax("GET", jsonObj);
 }
+
+function checkSession(data) {
+    if (102 === data.code) {
+        layer.confirm(data.msg + ',是否重新登录?', {
+            icon: 0,
+            title: '提示',
+            btn: ['确定', '取消'],
+            btn1: function (index) {
+                window.location.href = "web";
+                layer.close(index);
+            },
+            btn2: function (index) {
+                layer.close(index);
+            }
+        });
+        return false;
+    }
+    return true;
+}

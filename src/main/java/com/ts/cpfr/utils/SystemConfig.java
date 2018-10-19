@@ -15,6 +15,10 @@ public class SystemConfig {
     public static final String SYD_BASE_URL = "http://132.232.4.69:9090";
     //用户登录
     public static final String SYD_USER_LOGIN = "/user/login";
+    //用户未登录
+    public static final String SYD_USER_NOLOGIN = "/user/nologin";
+    //用户注销
+    public static final String SYD_USER_LOGOUT = "/user/logout";
     //设备列表
     public static final String SYD_DEVICE_LIST = "/device/list";
 
@@ -27,5 +31,6 @@ public class SystemConfig {
 
     static {
         allowUrlList.add(SYD_USER_LOGIN);
+        allowUrlList.add(SYD_USER_NOLOGIN);
     }
 }
