@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ts.cpfr.dao.TableDao">
+	<select id="selectLastInsertID" resultType="int">
+		SELECT LAST_INSERT_ID()
+	</select>
+	<update id="createTblDevcie" parameterType="int">
+		CREATE TABLE `tbl_device_${value}` (
+		  `device_id` int(8) NOT NULL COMMENT '设备ID',
+		  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '分组类型 0:未确定，1:设备分组，2:子级分组',
+		  `group_id` int(8) NOT NULL DEFAULT '0' COMMENT '组ID',
+		  `parent_id` int(8) DEFAULT NULL COMMENT '父级ID',
+		  `lmt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
+		  PRIMARY KEY (`device_id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8
+	</update>
+</mapper>

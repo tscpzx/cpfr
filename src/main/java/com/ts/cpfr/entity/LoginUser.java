@@ -6,17 +6,17 @@ import java.io.Serializable;
  * Created by Administrator on 2018/1/4.
  */
 public class LoginUser implements Serializable {
-    private int id;
+    private int adminId;
     private String name;
     private String password;
     private String token;
 
-    public int getId() {
-        return id;
+    public int getAdminId() {
+        return adminId;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setAdminId(int adminId) {
+        this.adminId = adminId;
     }
 
     public String getToken() {

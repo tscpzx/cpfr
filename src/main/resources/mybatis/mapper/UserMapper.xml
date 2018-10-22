@@ -3,9 +3,12 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ts.cpfr.dao.UserDao">
 	<select id="selectUserByName" parameterType="pd" resultType="com.ts.cpfr.entity.LoginUser">
-        select id,name,password from tbl_user where name=#{name}
+        select admin_id,name,password from tbl_user where name=#{name}
     </select>
 	<insert id="insertAdminUser" parameterType="pd">
-		INSERT INTO tbl_user(wid,name,password,permission_level) VALUES(LAST_INSERT_ID(),#{name},#{password},0)
+		INSERT INTO tbl_user(name,password,permission_level) VALUES(#{name},#{password},0)
 	</insert>
+	<update id="updateUserWid" parameterType="int">
+		UPDATE tbl_user SET wid = #{adminId}  WHERE admin_id = #{adminId}
+	</update>
 </mapper>

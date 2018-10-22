@@ -54,18 +54,18 @@ public class UserController extends BaseController {
                     response.addCookie(cookie);
 
                     ParamData paramData = new ParamData();
-                    paramData.put("admin_id", user.getId());
+                    paramData.put("admin_id", user.getAdminId());
                     paramData.put("token", user.getToken());
 
-                    return new ResultData<ParamData>(HandleEnum.SUCCESS, paramData);
+                    return new ResultData<>(HandleEnum.SUCCESS, paramData);
                 } else {
-                    return new ResultData<ParamData>(HandleEnum.PASSWORD_ERROR_104);
+                    return new ResultData<>(HandleEnum.PASSWORD_ERROR_104);
                 }
-            } else return new ResultData<ParamData>(HandleEnum.ADMIN_NOT_EXIST_103);
+            } else return new ResultData<>(HandleEnum.ADMIN_NOT_EXIST_103);
 
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResultData<ParamData>(HandleEnum.FAIL, e.getMessage());
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
         }
     }
 
@@ -77,12 +77,15 @@ public class UserController extends BaseController {
             LoginUser user = mUserService.queryUserByName(pd);
             if (user == null) {
                 boolean result = mUserService.addAdminUser(pd);
-                if (result) return new ResultData<ParamData>(HandleEnum.SUCCESS);
-                else return new ResultData<ParamData>(HandleEnum.FAIL);
-            } else return new ResultData<ParamData>(HandleEnum.ADMIN_EXISTED_100);
+                if (result) {
+                    //注册成功，建立对应仓库
+                    mUserService.createTableWarehouse();
+                    return new ResultData<>(HandleEnum.SUCCESS);
+                } else return new ResultData<>(HandleEnum.FAIL);
+            } else return new ResultData<>(HandleEnum.ADMIN_EXISTED_100);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResultData<ParamData>(HandleEnum.FAIL, e.getMessage());
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
         }
     }
 
@@ -91,10 +94,10 @@ public class UserController extends BaseController {
     public ResultData<ParamData> logout(HttpServletRequest request) {
         try {
             memory.clearLoginUser();
-            return new ResultData<ParamData>(HandleEnum.SUCCESS);
+            return new ResultData<>(HandleEnum.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResultData<ParamData>(HandleEnum.FAIL, e.getMessage());
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
         }
     }
 
@@ -102,10 +105,10 @@ public class UserController extends BaseController {
     @RequestMapping("/nologin")
     public ResultData<ParamData> noLogin(HttpServletRequest request) {
         try {
-            return new ResultData<ParamData>(HandleEnum.SESSION_ERROR_102);
+            return new ResultData<>(HandleEnum.SESSION_ERROR_102);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResultData<ParamData>(HandleEnum.FAIL, e.getMessage());
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
         }
     }
 }

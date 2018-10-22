@@ -13,4 +13,6 @@ public interface UserDao {
     LoginUser selectUserByName(ParamData pd);
 
     boolean insertAdminUser(ParamData pd);
+
+    boolean updateUserWid(int id);
 }

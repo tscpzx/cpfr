@@ -1,5 +1,6 @@
 package com.ts.cpfr.service.impl;
 
+import com.ts.cpfr.dao.TableDao;
 import com.ts.cpfr.dao.UserDao;
 import com.ts.cpfr.entity.LoginUser;
 import com.ts.cpfr.service.UserService;
@@ -19,6 +20,8 @@ import javax.annotation.Resource;
 public class UserServiceImpl implements UserService {
     @Resource
     private UserDao mUserDao;
+    @Resource
+    private TableDao mTableDao;
 
     @Override
     public LoginUser queryUserByName(ParamData pd) {
@@ -27,7 +30,17 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean addAdminUser(ParamData pd) {
-        return mUserDao.insertAdminUser(pd);
+        boolean b = mUserDao.insertAdminUser(pd);
+        int id = mTableDao.selectLastInsertID();
+        boolean u = mUserDao.updateUserWid(id);
+        return b && u;
+    }
+
+    @Override
+    public void createTableWarehouse() {
+        int wid = mTableDao.selectLastInsertID();
+        boolean b = mTableDao.createTblDevcie(wid);
+        System.out.println(b);
     }
 
 }

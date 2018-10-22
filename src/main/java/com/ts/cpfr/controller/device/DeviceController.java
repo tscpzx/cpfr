@@ -35,10 +35,10 @@ public class DeviceController extends BaseController {
     @RequestMapping("/list")
     public ResultData<JSONObject> login(HttpServletRequest request, HttpServletResponse response) {
         try {
-            return new ResultData<JSONObject>(HandleEnum.SUCCESS);
+            return new ResultData<>(HandleEnum.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResultData<JSONObject>(HandleEnum.FAIL, e.getMessage());
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
         }
     }
 }

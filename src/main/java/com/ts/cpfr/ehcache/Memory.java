@@ -41,7 +41,7 @@ public class Memory {
      */
     public void saveLoginUser(LoginUser loginUser) {
         // 生成seed和token值
-        String seed = TokenProcessor.getInstance().generateSeed(loginUser.getId());
+        String seed = TokenProcessor.getInstance().generateSeed(loginUser.getAdminId());
         String token = TokenProcessor.getInstance()
           .generateToken(loginUser.getName(), loginUser.getPassword());
 
@@ -79,7 +79,7 @@ public class Memory {
         LoginUser loginUser = currentLoginUser();
         if (loginUser != null) {
             // 根据登录的用户名生成seed，然后清除登录信息
-            String seed = MD5Util.md5(loginUser.getId() + "");
+            String seed = MD5Util.md5(loginUser.getAdminId() + "");
             clearLoginToken(seed);
         }
     }

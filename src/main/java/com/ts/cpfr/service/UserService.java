@@ -13,4 +13,6 @@ public interface UserService {
     LoginUser queryUserByName(ParamData pd);
 
     boolean addAdminUser(ParamData pd);
+
+    void createTableWarehouse();
 }
