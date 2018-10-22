@@ -3,7 +3,7 @@ package com.ts.cpfr.utils;
 
 public class ResultData<T> {
     private int code;
-    private String msg;
+    private String message;
     private T data;
 
     public int getCode() {
@@ -14,12 +14,12 @@ public class ResultData<T> {
         this.code = code;
     }
 
-    public String getMsg() {
-        return msg;
+    public String getMessage() {
+        return message;
     }
 
-    public void setMsg(String msg) {
-        this.msg = msg;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public T getData() {
@@ -34,36 +34,36 @@ public class ResultData<T> {
 
     }
 
-    public ResultData(int code, String msg) {
+    public ResultData(int code, String message) {
         this.code = code;
-        this.msg = msg;
+        this.message = message;
     }
 
-    public ResultData(int code, String msg, T data) {
+    public ResultData(int code, String message, T data) {
         this.code = code;
-        this.msg = msg;
+        this.message = message;
         this.data = data;
     }
 
     public ResultData(HandleEnum operateEnum) {
         this.code = operateEnum.getCode();
-        this.msg = operateEnum.getMessage();
+        this.message = operateEnum.getMessage();
     }
 
     public ResultData(HandleEnum operateEnum, T data) {
         this.code = operateEnum.getCode();
-        this.msg = operateEnum.getMessage();
+        this.message = operateEnum.getMessage();
         this.data = data;
     }
 
-    public ResultData(HandleEnum operateEnum, String msg) {
+    public ResultData(HandleEnum operateEnum, String message) {
         this.code = operateEnum.getCode();
-        this.msg = msg;
+        this.message = message;
     }
 
-    public ResultData(HandleEnum operateEnum, String msg, T data) {
+    public ResultData(HandleEnum operateEnum, String message, T data) {
         this.code = operateEnum.getCode();
-        this.msg = msg;
+        this.message = message;
         this.data = data;
     }
 }

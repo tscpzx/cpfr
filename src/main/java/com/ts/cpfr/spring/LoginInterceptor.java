@@ -31,15 +31,17 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         if (!checkAllowAccess(request.getRequestURI())) {
             // 检查请求的token值是否为空
             String token = getTokenFromRequest(request);
-            // 保存当前token，用于Controller层获取登录用户信息
-            ThreadToken.setToken(token);
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.setCharacterEncoding("UTF-8");
-            response.setHeader("Cache-Control", "no-cache, must-revalidate");
             if (StringUtils.isEmpty(token) || !memory.checkLoginUser(token)) {
                 request.getRequestDispatcher("/user/nologin").forward(request, response);
                 return false;
-            } else return true;
+            } else {
+                // 保存当前token，用于Controller层获取登录用户信息
+                ThreadToken.setToken(token);
+                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+                response.setCharacterEncoding("UTF-8");
+                response.setHeader("Cache-Control", "no-cache, must-revalidate");
+                return true;
+            }
         }
         return true;
     }
@@ -69,18 +71,18 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 String cookieName = cookie.getName();
-                if (CommConst.TOKEN.equals(cookieName)) {
+                if (CommConst.ACCESS_CPFR_TOKEN.equals(cookieName)) {
                     token = cookie.getValue();
                     System.out.println("从cookie中获取token:" + token);
                 }
             }
         }
         if (StringUtils.isEmpty(token)) {
-            token = request.getHeader(CommConst.TOKEN);
+            token = request.getHeader(CommConst.ACCESS_CPFR_TOKEN);
             System.out.println("从header中获取token:" + token);
             if (StringUtils.isEmpty(token)) {
                 // 从请求信息中获取token值
-                token = request.getParameter(CommConst.TOKEN);
+                token = request.getParameter(CommConst.ACCESS_CPFR_TOKEN);
                 System.out.println("从url中获取token:" + token);
             }
         }

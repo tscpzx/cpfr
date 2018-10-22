@@ -21,12 +21,13 @@ public class UserServiceImpl implements UserService {
     private UserDao mUserDao;
 
     @Override
-    public LoginUser queryUser(ParamData pd) {
-        return mUserDao.selectUser(pd);
+    public LoginUser queryUserByName(ParamData pd) {
+        return mUserDao.selectUserByName(pd);
     }
 
     @Override
-    public LoginUser querySydUser(ParamData pd) {
-        return mUserDao.selectSydUser(pd);
+    public boolean addAdminUser(ParamData pd) {
+        return mUserDao.insertAdminUser(pd);
     }
+
 }

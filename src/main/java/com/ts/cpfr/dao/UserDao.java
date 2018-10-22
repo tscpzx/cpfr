@@ -10,7 +10,7 @@ import com.ts.cpfr.utils.ParamData;
  * @Created by cjw
  */
 public interface UserDao {
-    LoginUser selectUser(ParamData pd);
+    LoginUser selectUserByName(ParamData pd);
 
-    LoginUser selectSydUser(ParamData pd);
+    boolean insertAdminUser(ParamData pd);
 }

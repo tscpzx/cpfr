@@ -87,7 +87,7 @@
 	</filter-mapping>
 
 	<welcome-file-list>
-		<welcome-file>webpage/web.jsp</welcome-file>
+		<welcome-file>webpage/login.jsp</welcome-file>
 	</welcome-file-list>
 	<session-config>
 		<session-timeout>60</session-timeout>

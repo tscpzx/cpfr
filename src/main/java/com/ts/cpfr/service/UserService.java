@@ -10,7 +10,7 @@ import com.ts.cpfr.utils.ParamData;
  * @Created by cjw
  */
 public interface UserService {
-    LoginUser queryUser(ParamData pd);
+    LoginUser queryUserByName(ParamData pd);
 
-    LoginUser querySydUser(ParamData pd);
+    boolean addAdminUser(ParamData pd);
 }

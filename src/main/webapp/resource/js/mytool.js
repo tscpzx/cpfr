@@ -67,12 +67,12 @@ function ajaxGet(jsonObj) {
 
 function checkSession(data) {
     if (102 === data.code) {
-        layer.confirm(data.msg + ',是否重新登录?', {
+        layer.confirm(data.message + ',是否重新登录?', {
             icon: 0,
             title: '提示',
             btn: ['确定', '取消'],
             btn1: function (index) {
-                window.location.href = "web";
+                window.location.href = "login";
                 layer.close(index);
             },
             btn2: function (index) {

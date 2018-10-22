@@ -25,12 +25,13 @@ public class SystemConfig {
     //session存活时间 秒
     public static final int SESSION_LIVE_TIME_30 = 60 * 30;
     //cookie存活时间 秒
-    public static final int COOKIE_LIVE_TIME_1 = 60;
+    public static final int COOKIE_LIVE_TIME = 60;
 
     public static CopyOnWriteArrayList<String> allowUrlList = new CopyOnWriteArrayList<>();
 
     static {
         allowUrlList.add(SYD_USER_LOGIN);
         allowUrlList.add(SYD_USER_NOLOGIN);
+        allowUrlList.add("/user/register");
     }
 }
