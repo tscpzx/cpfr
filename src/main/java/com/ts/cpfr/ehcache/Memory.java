@@ -59,7 +59,7 @@ public class Memory {
     /**
      * 获取当前线程中的用户信息
      */
-    public LoginUser currentLoginUser() {
+    public LoginUser getLoginUser() {
         Element element = ehcache.get(ThreadToken.getToken());
         return element == null ? null : (LoginUser) element.getObjectValue();
     }
@@ -76,7 +76,7 @@ public class Memory {
      * 清空登录信息
      */
     public void clearLoginUser() {
-        LoginUser loginUser = currentLoginUser();
+        LoginUser loginUser = getLoginUser();
         if (loginUser != null) {
             // 根据登录的用户名生成seed，然后清除登录信息
             String seed = MD5Util.md5(loginUser.getAdminId() + "");

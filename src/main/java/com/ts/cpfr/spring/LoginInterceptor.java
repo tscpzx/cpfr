@@ -3,6 +3,7 @@ package com.ts.cpfr.spring;
 import com.ts.cpfr.ehcache.Memory;
 import com.ts.cpfr.ehcache.ThreadToken;
 import com.ts.cpfr.utils.CommConst;
+import com.ts.cpfr.utils.SysLog;
 import com.ts.cpfr.utils.SystemConfig;
 
 import org.apache.commons.lang.StringUtils;
@@ -73,17 +74,17 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                 String cookieName = cookie.getName();
                 if (CommConst.ACCESS_CPFR_TOKEN.equals(cookieName)) {
                     token = cookie.getValue();
-                    System.out.println("从cookie中获取token:" + token);
+                    SysLog.info("从cookie中获取token:" + token);
                 }
             }
         }
         if (StringUtils.isEmpty(token)) {
             token = request.getHeader(CommConst.ACCESS_CPFR_TOKEN);
-            System.out.println("从header中获取token:" + token);
+            SysLog.info("从header中获取token:" + token);
             if (StringUtils.isEmpty(token)) {
                 // 从请求信息中获取token值
                 token = request.getParameter(CommConst.ACCESS_CPFR_TOKEN);
-                System.out.println("从url中获取token:" + token);
+                SysLog.info("从url中获取token:" + token);
             }
         }
 

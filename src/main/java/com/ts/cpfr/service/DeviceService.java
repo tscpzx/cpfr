@@ -11,5 +11,5 @@ import java.util.List;
  * @Created by cjw
  */
 public interface DeviceService {
-    List<ParamData> getDeviceList();
+    List<ParamData> getDeviceList(ParamData pd);
 }

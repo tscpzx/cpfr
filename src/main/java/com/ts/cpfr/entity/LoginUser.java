@@ -7,6 +7,7 @@ import java.io.Serializable;
  */
 public class LoginUser implements Serializable {
     private int adminId;
+    private int wid;
     private String name;
     private String password;
     private String token;
@@ -41,5 +42,13 @@ public class LoginUser implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getWId() {
+        return wid;
+    }
+
+    public void setWId(int wid) {
+        this.wid = wid;
     }
 }

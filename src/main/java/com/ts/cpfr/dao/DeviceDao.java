@@ -11,5 +11,5 @@ import java.util.List;
  * @Created by cjw
  */
 public interface DeviceDao {
-    List<ParamData> selectDeviceList();
+    List<ParamData> selectDeviceList(ParamData pd);
 }

@@ -39,8 +39,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void createTableWarehouse() {
         int wid = mTableDao.selectLastInsertID();
-        boolean b = mTableDao.createTblDevcie(wid);
-        System.out.println(b);
+        mTableDao.createTblDevcie(wid);
     }
 
 }

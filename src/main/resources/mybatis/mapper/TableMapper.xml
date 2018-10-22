@@ -6,8 +6,8 @@
 		SELECT LAST_INSERT_ID()
 	</select>
 	<update id="createTblDevcie" parameterType="int">
-		CREATE TABLE `tbl_device_${value}` (
-		  `device_id` int(8) NOT NULL COMMENT '设备ID',
+		CREATE TABLE IF NOT EXISTS `tbl_${value}_device` (
+		  `device_id` int(8) NOT NULL AUTO_INCREMENT COMMENT '设备ID',
 		  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '分组类型 0:未确定，1:设备分组，2:子级分组',
 		  `group_id` int(8) NOT NULL DEFAULT '0' COMMENT '组ID',
 		  `parent_id` int(8) DEFAULT NULL COMMENT '父级ID',
