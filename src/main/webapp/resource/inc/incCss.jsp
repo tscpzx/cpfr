@@ -1,5 +1,6 @@
+<%@ page import="com.ts.cpfr.utils.CommConst" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<title>产品中心-人脸识别管理系统</title>
+<title><%=CommConst.WEB_TITLE%></title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">

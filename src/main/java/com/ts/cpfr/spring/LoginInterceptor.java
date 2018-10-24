@@ -74,17 +74,17 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
                 String cookieName = cookie.getName();
                 if (CommConst.ACCESS_CPFR_TOKEN.equals(cookieName)) {
                     token = cookie.getValue();
-                    SysLog.info("从cookie中获取token:" + token);
+                    SysLog.info("get token from cookie:" + token);
                 }
             }
         }
         if (StringUtils.isEmpty(token)) {
             token = request.getHeader(CommConst.ACCESS_CPFR_TOKEN);
-            SysLog.info("从header中获取token:" + token);
+            SysLog.info("get token from header:" + token);
             if (StringUtils.isEmpty(token)) {
                 // 从请求信息中获取token值
                 token = request.getParameter(CommConst.ACCESS_CPFR_TOKEN);
-                SysLog.info("从url中获取token:" + token);
+                SysLog.info("get token from url:" + token);
             }
         }
 

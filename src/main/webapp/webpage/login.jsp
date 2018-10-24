@@ -25,6 +25,9 @@
 
 <body>
 <div class="container">
+    <div class="nav background-color">
+        <h3 align="center" class="nav_title"><%=CommConst.WEB_TITLE%></h3>
+    </div>
     <form class="form_login">
         <div class="form-group">
             <input type="text" class="form-control" id="account" placeholder="账号">
@@ -68,7 +71,7 @@
 
                 layTip(data.message);
                 if (0 === data.code) {
-                    window.location.href="web";
+                    window.location.href = "web";
                 }
             }
         });

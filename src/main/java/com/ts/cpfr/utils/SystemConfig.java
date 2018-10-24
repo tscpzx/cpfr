@@ -33,5 +33,7 @@ public class SystemConfig {
         allowUrlList.add(SYD_USER_LOGIN);
         allowUrlList.add(SYD_USER_NOLOGIN);
         allowUrlList.add("/user/register");
+        allowUrlList.add("/websocket/login");
+        allowUrlList.add("/websocket/sendMsg");
     }
 }
