@@ -52,8 +52,8 @@ public class Memory {
         // 清空之前的登录信息
         clearLoginToken(seed);
         // 保存新的token和登录信息
-        ehcache.put(new Element(seed, token, SystemConfig.SESSION_LIVE_TIME_30, SystemConfig.SESSION_LIVE_TIME_30));
-        ehcache.put(new Element(token, loginUser, SystemConfig.SESSION_LIVE_TIME_30, SystemConfig.SESSION_LIVE_TIME_30));
+        ehcache.put(new Element(seed, token, SystemConfig.SESSION_TIME_TO_IDLE, SystemConfig.SESSION_TIME_LIVE_MAX));
+        ehcache.put(new Element(token, loginUser, SystemConfig.SESSION_TIME_TO_IDLE, SystemConfig.SESSION_TIME_LIVE_MAX));
     }
 
     /**

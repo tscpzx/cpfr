@@ -4,8 +4,6 @@ import com.ts.cpfr.utils.ParamData;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 /**
  * @Classname DeviceService
  * @Description
@@ -17,10 +15,11 @@ public interface DeviceService {
 
     boolean activateDevice(ParamData pd);
 
-    ParamData queryInactDevice(ParamData pd);
+    ParamData queryInActDevice(ParamData pd);
 
-    boolean addInactDevice(ParamData pd);
+    boolean addInActDevice(ParamData pd);
 
-    @PostConstruct
-    boolean updateInactDeviceOnline(ParamData pd);
+    boolean updateInActDeviceOnline(ParamData pd);
+
+    List<ParamData> getInActDeviceList(ParamData pd);
 }

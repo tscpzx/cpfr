@@ -59,7 +59,7 @@ public class SocketMessageHandle implements WebSocketHandler {
             ParamData pd = new ParamData();
             pd.put(CommConst.DEVICE_SN, deviceSn);
             pd.put("online", 1);
-            mDeviceService.updateInactDeviceOnline(pd);
+            mDeviceService.updateInActDeviceOnline(pd);
         }
     }
 
@@ -134,7 +134,7 @@ public class SocketMessageHandle implements WebSocketHandler {
             ParamData pd = new ParamData();
             pd.put(CommConst.DEVICE_SN, deviceSn);
             pd.put("online", 0);
-            mDeviceService.updateInactDeviceOnline(pd);
+            mDeviceService.updateInActDeviceOnline(pd);
         }
 
     }

@@ -34,9 +34,9 @@ public class AppDeviceController extends BaseController {
     public ResultData<List<ParamData>> login(HttpServletRequest request, HttpServletResponse response) {
         try {
             ParamData pd = paramDataInit();
-            ParamData paramData = mDeviceService.queryInactDevice(pd);
+            ParamData paramData = mDeviceService.queryInActDevice(pd);
             if (paramData == null) {
-                if (mDeviceService.addInactDevice(pd)) {
+                if (mDeviceService.addInActDevice(pd)) {
                     return new ResultData<>(HandleEnum.SUCCESS, "已注册新设备");
                 }
             } else return new ResultData<>(HandleEnum.SUCCESS, "设备已注册");

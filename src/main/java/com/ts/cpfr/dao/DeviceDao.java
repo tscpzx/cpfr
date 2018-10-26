@@ -15,12 +15,14 @@ import javax.annotation.PostConstruct;
 public interface DeviceDao {
     List<ParamData> selectDeviceList(ParamData pd);
 
-    ParamData selectInactDevice(ParamData pd);
+    ParamData selectInActDevice(ParamData pd);
 
-    boolean insertInactDevice(ParamData pd);
+    boolean insertInActDevice(ParamData pd);
 
-    boolean updateInactDeviceMacGrantKeyAndStatus(ParamData pd);
+    boolean updateInActDeviceMacGrantKeyAndStatus(ParamData pd);
 
     @PostConstruct
-    boolean updateInactDeviceOnline(ParamData pd);
+    boolean updateInActDeviceOnline(ParamData pd);
+
+    List<ParamData> selectInActDeviceList(ParamData pd);
 }

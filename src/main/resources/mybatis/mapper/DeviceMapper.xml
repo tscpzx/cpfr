@@ -6,19 +6,23 @@
 		select * from tbl_#{wid}_device
     </select>
 
-	<select id="selectInactDevice" parameterType="pd" resultType="pd">
+	<select id="selectInActDevice" parameterType="pd" resultType="pd">
 		select * from tbl_inactivated_device where device_sn=#{device_sn}
 	</select>
 
-	<insert id="insertInactDevice" parameterType="pd">
+	<insert id="insertInActDevice" parameterType="pd">
 		insert into tbl_inactivated_device(device_sn,status,online) values(#{device_sn},0,0)
 	</insert>
 
-	<update id="updateInactDeviceMacGrantKeyAndStatus" parameterType="pd">
+	<update id="updateInActDeviceMacGrantKeyAndStatus" parameterType="pd">
 		UPDATE tbl_inactivated_device SET mac_grant_key = #{mac_grant_key},stauts=1  WHERE device_sn=#{device_sn}
 	</update>
 
-	<update id="updateInactDeviceOnline" parameterType="pd">
+	<update id="updateInActDeviceOnline" parameterType="pd">
 		UPDATE tbl_inactivated_device SET online = #{online}  WHERE device_sn=#{device_sn}
 	</update>
+
+	<select id="selectInActDeviceList" parameterType="pd" resultType="pd">
+		select * from tbl_inactivated_device where status=0
+	</select>
 </mapper>

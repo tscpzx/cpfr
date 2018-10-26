@@ -48,10 +48,10 @@ public class DeviceController extends BaseController {
 
     @ResponseBody
     @RequestMapping("/activate")
-    public ResultData<List<ParamData>> activate(HttpServletRequest request) {
+    public ResultData<ParamData> activate(HttpServletRequest request) {
         try {
             ParamData pd = paramDataInit();
-            ParamData paramData = mDeviceService.queryInactDevice(pd);
+            ParamData paramData = mDeviceService.queryInActDevice(pd);
             if (paramData == null) return new ResultData<>(HandleEnum.FAIL, "设备不存在");
             if ("1".equals(paramData.getString("status"))) {
                 if (mDeviceService.activateDevice(pd)) {
@@ -61,6 +61,19 @@ public class DeviceController extends BaseController {
             } else {
                 return new ResultData<>(HandleEnum.FAIL, "设备不在线");
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("/inact/list")
+    public ResultData<List<ParamData>> inactList(HttpServletRequest request) {
+        try {
+            ParamData pd = paramDataInit();
+            List<ParamData> inActDeviceList = mDeviceService.getInActDeviceList(pd);
+            return new ResultData<>(HandleEnum.SUCCESS, inActDeviceList);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
