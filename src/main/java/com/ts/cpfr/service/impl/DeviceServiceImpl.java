@@ -25,4 +25,24 @@ public class DeviceServiceImpl implements DeviceService {
     public List<ParamData> getDeviceList(ParamData pd) {
         return mDeviceDao.selectDeviceList(pd);
     }
+
+    @Override
+    public boolean activateDevice(ParamData pd) {
+        return mDeviceDao.updateInactDeviceMacGrantKeyAndStatus(pd);
+    }
+
+    @Override
+    public ParamData queryInactDevice(ParamData pd) {
+        return mDeviceDao.selectInactDevice(pd);
+    }
+
+    @Override
+    public boolean addInactDevice(ParamData pd) {
+        return mDeviceDao.insertInactDevice(pd);
+    }
+
+    @Override
+    public boolean updateInactDeviceOnline(ParamData pd) {
+        return mDeviceDao.updateInactDeviceOnline(pd);
+    }
 }

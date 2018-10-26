@@ -7,4 +7,9 @@
 		<from>/webpage/((?!(.*?jsp$)).*)</from>
 		<to>/webpage/$1.jsp</to>
 	</rule>
+
+	<!--<rule>
+		<from>^/(.*)</from>
+		<to>/cpfr/$1</to>
+	</rule>-->
 </urlrewrite>

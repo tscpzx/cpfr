@@ -1,11 +1,10 @@
 package com.ts.cpfr.websocket;
 
-import com.ts.cpfr.spring.WebSocketHandshakeInterceptor;
+import com.ts.cpfr.spring.WsHandshakeInterceptor;
 
-import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
-import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
@@ -19,23 +18,19 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @Component
 @EnableWebSocket
 public class WebSocketConfig extends WebMvcConfigurerAdapter implements WebSocketConfigurer {
+
+    //需要用注入的方式，SocketMessageHandle才能交给spring管理
+    @Autowired
+    SocketMessageHandle handle;
+
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        System.out.println("==========================注册socket");
+        System.out.println("==========================socket配置==========================");
         //注册websocket server实现类，"/webSocketServer"访问websocket的地址
-        registry.addHandler(msgSocketHandle(), "/webSocketServer")
-          .addInterceptors(new WebSocketHandshakeInterceptor());
+        registry.addHandler(handle, "/ws").addInterceptors(new WsHandshakeInterceptor());
         //使用socketjs的注册方法
-        registry.addHandler(msgSocketHandle(), "/sockjs/webSocketServer")
-          .addInterceptors(new WebSocketHandshakeInterceptor())
+        registry.addHandler(handle, "/ws/sockjs")
+          .addInterceptors(new WsHandshakeInterceptor())
           .withSockJS();
-    }
-
-    /**
-     * @return 消息发送的Bean
-     */
-    @Bean(name = "msgSocketHandle")
-    public WebSocketHandler msgSocketHandle() {
-        return new MsgScoketHandle();
     }
 }

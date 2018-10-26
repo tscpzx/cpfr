@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @Classname DeviceController
@@ -35,12 +34,33 @@ public class DeviceController extends BaseController {
 
     @ResponseBody
     @RequestMapping("/list")
-    public ResultData<List<ParamData>> login(HttpServletRequest request, HttpServletResponse response) {
+    public ResultData<List<ParamData>> list(HttpServletRequest request) {
         try {
             ParamData pd = paramDataInit();
             pd.put("wid", memory.getLoginUser().getWId());
             List<ParamData> deviceList = mDeviceService.getDeviceList(pd);
             return new ResultData<>(HandleEnum.SUCCESS, deviceList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("/activate")
+    public ResultData<List<ParamData>> activate(HttpServletRequest request) {
+        try {
+            ParamData pd = paramDataInit();
+            ParamData paramData = mDeviceService.queryInactDevice(pd);
+            if (paramData == null) return new ResultData<>(HandleEnum.FAIL, "设备不存在");
+            if ("1".equals(paramData.getString("status"))) {
+                if (mDeviceService.activateDevice(pd)) {
+                    //激活成功，往对应仓库插入设备，返回
+                    return new ResultData<>(HandleEnum.SUCCESS);
+                } else return new ResultData<>(HandleEnum.FAIL);
+            } else {
+                return new ResultData<>(HandleEnum.FAIL, "设备不在线");
+            }
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
