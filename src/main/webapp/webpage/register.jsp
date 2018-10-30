@@ -75,6 +75,9 @@
                 layer.close(loading);
                 l(data);
                 layTip(data.message);
+                if (0 === data.code) {
+                    window.location.href = "login";
+                }
             }
         });
     }

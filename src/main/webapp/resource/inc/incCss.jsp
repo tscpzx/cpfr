@@ -9,6 +9,8 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/bootstrap.min.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resource/js/mobile/need/layer.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/base.css">
+<!--导入Font Awesome图标字库css文件-->
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/font-awesome.min.css"/>
 <style type="text/css">
     /*修复vue加载时显示{{}}问题 */
     [v-cloak] {

@@ -40,6 +40,8 @@ public class UserServiceImpl implements UserService {
     public void createTableWarehouse() {
         int wid = mTableDao.selectLastInsertID();
         mTableDao.createTblDevcie(wid);
+        mTableDao.createTblPerson(wid);
+        mTableDao.createTblGroup(wid);
     }
 
 }

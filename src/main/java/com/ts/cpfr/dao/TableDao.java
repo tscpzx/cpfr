@@ -10,4 +10,8 @@ public interface TableDao {
     int selectLastInsertID();
 
     boolean createTblDevcie(int wid);
+
+    boolean createTblPerson(int wid);
+
+    boolean createTblGroup(int wid);
 }

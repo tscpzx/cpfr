@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  * @Classname UserLoginController
@@ -45,6 +46,10 @@ public class UserController extends BaseController {
                 ////todo 解密对比
                 if (user.getPassword().equals(pd.getString("password"))) {
                     memory.saveLoginUser(user);
+
+                    HttpSession session = request.getSession();
+                    session.setMaxInactiveInterval(SystemConfig.SESSION_TIME_LIVE_MAX);
+                    session.setAttribute("user",user);
 
                     //存入cookie中
                     Cookie cookie = new Cookie(CommConst.ACCESS_CPFR_TOKEN, ThreadToken.getToken());

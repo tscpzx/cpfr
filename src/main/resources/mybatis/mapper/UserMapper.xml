@@ -6,7 +6,7 @@
         select admin_id,wid,name,password from tbl_user where name=#{name}
     </select>
 	<insert id="insertAdminUser" parameterType="pd">
-		INSERT INTO tbl_user(name,password,permission_level) VALUES(#{name},#{password},0)
+		INSERT INTO tbl_user(name,password,permission_level,register_time) VALUES(#{name},#{password},0,now())
 	</insert>
 	<update id="updateUserWid" parameterType="int">
 		UPDATE tbl_user SET wid = #{adminId}  WHERE admin_id = #{adminId}
