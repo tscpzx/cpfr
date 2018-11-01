@@ -17,6 +17,8 @@ public interface DeviceService {
 
     ParamData queryInActDevice(ParamData pd);
 
+    ParamData queryDevice(ParamData pd);
+
     boolean addInActDevice(ParamData pd);
 
     boolean updateAllDeviceOnline(ParamData pd);

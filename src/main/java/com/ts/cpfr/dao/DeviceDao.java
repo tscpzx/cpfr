@@ -4,8 +4,6 @@ import com.ts.cpfr.utils.ParamData;
 
 import java.util.List;
 
-import javax.annotation.PostConstruct;
-
 /**
  * @Classname DeviceDao
  * @Description
@@ -21,7 +19,6 @@ public interface DeviceDao {
 
     boolean updateInActDeviceMacGrantKeyAndStatus(ParamData pd);
 
-    @PostConstruct
     boolean updateInActDeviceOnline(ParamData pd);
 
     boolean updateDeviceOnline(ParamData pd);
@@ -29,4 +26,6 @@ public interface DeviceDao {
     List<ParamData> selectInActDeviceList(ParamData pd);
 
     boolean insertDevice(ParamData pd);
+
+    ParamData selectDevice(ParamData pd);
 }

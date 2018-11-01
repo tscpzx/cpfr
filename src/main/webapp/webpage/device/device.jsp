@@ -92,8 +92,6 @@
             data: {},
             success: function (result) {
                 vueInactDeviceList.items = result.data;
-                $(".navMenu li:first").addClass("active");
-                $(".navMenu li:first .subMenu").slideDown();
             }
         });
     }
@@ -111,12 +109,13 @@
     });
 
     function ajaxDeviceList() {
-
         ajaxGet({
             url: "${pageContext.request.contextPath}/device/list",
             data: {},
             success: function (result) {
                 vueDeviceList.items = result.data;
+                $(".navMenu li:eq(1)").addClass("active");
+                $(".navMenu li:eq(1) .subMenu").slideDown();
             }
         });
     }

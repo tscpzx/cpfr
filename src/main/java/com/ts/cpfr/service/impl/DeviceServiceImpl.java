@@ -42,6 +42,11 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
+    public ParamData queryDevice(ParamData pd) {
+        return mDeviceDao.selectDevice(pd);
+    }
+
+    @Override
     public boolean addInActDevice(ParamData pd) {
         return mDeviceDao.insertInActDevice(pd);
     }

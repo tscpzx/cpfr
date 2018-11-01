@@ -109,7 +109,7 @@ public class DeviceController extends BaseController {
     }
 
     @RequestMapping("/inact/detail")
-    public String sysDetail(Model model) {
+    public String inactDetail(Model model) {
         try {
             ParamData pd = paramDataInit();
             ParamData paramData = mDeviceService.queryInActDevice(pd);
@@ -118,6 +118,20 @@ public class DeviceController extends BaseController {
             e.printStackTrace();
         }
 
-        return "../webpage/device/device_inact";
+        return "device/device_inact_detail";
+    }
+
+    @RequestMapping("/detail")
+    public String detail(Model model) {
+        try {
+            ParamData pd = paramDataInit();
+            pd.put("wid", memory.getLoginUser().getWId());
+            ParamData paramData = mDeviceService.queryDevice(pd);
+            model.addAttribute(CommConst.DATA, paramData);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "device/device_detail";
     }
 }
