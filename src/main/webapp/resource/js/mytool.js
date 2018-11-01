@@ -4,32 +4,40 @@ function l(str) {
 
 /* layer弹出层 */
 function layTip(msg) {
-    layer.msg(msg);
+    top.layer.msg(msg);
 }
 
 //icon 0 警告 1 打钩 2 打叉 3 问号 4 锁头
-function layAlert(msg) {
-    layer.alert(msg, {
+function layAlert1(msg) {
+    return top.layer.msg(msg, {
+        icon: 0
+        , shade: 0.01
+        , time: 3000
+    });
+}
+
+function layAlert2(msg) {
+    top.layer.alert(msg, {
         icon: 0,
         shadeClose: true
     });
 }
 
 function layLoading1() {
-    return layer.load(0, {
+    return top.layer.load(0, {
         shade: false
     });
 }
 
 function layLoading2() {
-    return layer.load(1, {
+    return top.layer.load(1, {
         shade: [0.1, '#fff'] //0.1透明度的白色背景
     });
 }
 
 //loading带文字
 function layLoading3(msg) {
-    return layer.msg(msg, {
+    return top.layer.msg(msg, {
         icon: 16
         , shade: 0.01
         , time: 10000
@@ -38,10 +46,18 @@ function layLoading3(msg) {
 
 /* ajax请求 */
 function ajax(type, jsonObj) {
+    var loading = layLoading1();
+
     var beforeSend = jsonObj.beforeSend;
     var url = jsonObj.url;
     var data = jsonObj.data;
-    var success = jsonObj.success;
+    var success=function (result) {
+        l(result);
+        top.layer.close(loading);
+        if(checkSession(result)){
+            jsonObj.success(result);
+        }
+    };
     var complete = jsonObj.complete;//成败成功都会回调
     var error = jsonObj.error;
     var xhr = $.ajax({
@@ -67,12 +83,12 @@ function ajaxGet(jsonObj) {
 
 function checkSession(data) {
     if (102 === data.code) {
-        layer.confirm(data.message + ',是否重新登录?', {
+        top.layer.confirm(data.message + ',是否重新登录?', {
             icon: 0,
             title: '提示',
             btn: ['确定', '取消'],
             btn1: function (index) {
-                window.location.href = "login";
+                top.window.location.href = "/webpage/login";
                 layer.close(index);
             },
             btn2: function (index) {

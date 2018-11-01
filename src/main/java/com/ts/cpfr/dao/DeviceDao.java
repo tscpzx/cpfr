@@ -25,4 +25,6 @@ public interface DeviceDao {
     boolean updateInActDeviceOnline(ParamData pd);
 
     List<ParamData> selectInActDeviceList(ParamData pd);
+
+    boolean insertDevice(ParamData pd);
 }

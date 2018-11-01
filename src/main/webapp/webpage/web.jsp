@@ -21,13 +21,6 @@
             height: calc(100% - 52px);
         }
 
-        .if_window {
-            width: 100%;
-            height: 99.9%;
-            border: 0;
-            padding-top: 1px;
-        }
-
         .font_white_15 {
             color: white;
             font-size: 15px;
@@ -75,18 +68,17 @@
     <div class="nav">
         <table width="100%" style="height: 100%;">
             <tr>
-                <td width="50%">
+                <td>
                     <h4 align="left" class="nav_title"><%=CommConst.WEB_TITLE%>
                     </h4>
                 </td>
-                <td></td>
-                <td id="username" width="8%">
+                <td id="username" width="100px;">
                     <div class="font_white_15 font_center">${sessionScope.user.name},您好!</div>
                 </td>
-                <td id="change_password" width="8%">
+                <td id="change_password" width="100px;">
                     <a href="#" class="font_white_15 font_center">修改密码</a>
                 </td>
-                <td id="logout" width="8%">
+                <td id="logout" width="100px;">
                     <a href="#" class="font_white_15 font_center" onclick="ajaxLogout()">退出登录</a>
                 </td>
             </tr>
@@ -97,13 +89,13 @@
     <div class="main_body">
         <table width="100%" style="height: 100%;">
             <tr>
-                <td width="12.5%" class="menu">
+                <td width="200px;" class="menu">
                     <div class="navMenuBox">
                         <!--一级菜单-->
                         <ul class="navMenu">
                             <!--菜单项-->
                             <li>
-                                <a href="device/device.jsp" class="fa-microchip" target="iframe_window">设备管理</a>
+                                <a href="device/device.jsp" class="fa-microchip" target="if_main">设备管理</a>
                             </li>
                             <li>
                                 <a href="#" class="fa-user arrow">人员管理</a>
@@ -120,7 +112,7 @@
                     </div>
                 </td>
                 <td>
-                    <iframe class="if_window" name="iframe_window"></iframe>
+                    <iframe class="if_window" name="if_main"></iframe>
                 </td>
             </tr>
         </table>
@@ -128,20 +120,17 @@
 </div>
 <script type="text/javascript">
     function ajaxLogout() {
-        var loading = layLoading1();
         ajaxPost({
             url: "${pageContext.request.contextPath}/user/logout",
             data: {},
             success: function (data) {
-                layer.close(loading);
-                l(data);
                 layTip(data.message);
-                if (0 === data.code) {
-                    window.location.href = "login";
-                }
+                window.location.href = "login";
             }
         });
     }
+
+    $('.navMenu li:first a')[0].click();
 </script>
 </body>
 </html>

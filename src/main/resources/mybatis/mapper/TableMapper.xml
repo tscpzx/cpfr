@@ -5,7 +5,7 @@
 	<select id="selectLastInsertID" resultType="int">
 		SELECT LAST_INSERT_ID()
 	</select>
-	<update id="createTblDevcie" parameterType="int">
+	<update id="createTableWarehouse" parameterType="int">
 		CREATE TABLE IF NOT EXISTS `tbl_${value}_device` (
 		  `device_id` int(8) NOT NULL AUTO_INCREMENT COMMENT '设备ID',
 		  `group_id` int(8) NOT NULL DEFAULT '0' COMMENT '组ID',
@@ -19,9 +19,8 @@
 		  `online` tinyint(4) NOT NULL DEFAULT '0' COMMENT '设备是否在线 0:不在线 1:在线',
 		  `lmt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
 		  PRIMARY KEY (`device_id`)
-		) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8
-	</update>
-	<update id="createTblPerson" parameterType="int">
+		) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
 		CREATE TABLE IF NOT EXISTS `tbl_${value}_person` (
 		  `person_id` int(8) NOT NULL AUTO_INCREMENT COMMENT '人员ID',
 		  `group_id` int(8) NOT NULL DEFAULT '0' COMMENT '组ID',
@@ -31,9 +30,8 @@
 		  `base_image` varchar(200) NOT NULL COMMENT '存档图片(base64)/本地保存路径',
 		  `lmt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
 		  PRIMARY KEY (`person_id`)
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8
-	</update>
-	<update id="createTblGroup" parameterType="int">
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 		CREATE TABLE IF NOT EXISTS `tbl_${value}_group` (
 		  `group_id` int(8) NOT NULL AUTO_INCREMENT COMMENT '组ID',
 		  `gourp_name` varchar(20) NOT NULL COMMENT '组名',
@@ -41,6 +39,6 @@
 		  `type` tinyint(2) NOT NULL COMMENT '分组类型 0:未确定，1:设备分组 ，2:子级分组',
 		  `lmt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
 		  PRIMARY KEY (`group_id`)
-		) ENGINE=InnoDB DEFAULT CHARSET=utf8
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 	</update>
 </mapper>

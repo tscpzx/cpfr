@@ -9,45 +9,72 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/navMenu.js"></script>
     <style type="text/css">
         .navMenuBox {
-            width: 250px;
             height: 100%;
         }
+
+        .input-group {
+            margin: 15px 10px 15px 10px;
+        }
+
+        .i_circle {
+            float: left;
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background-color: #4cae4c;
+            margin: 15px 0 15px 10px;
+        }
+
     </style>
 </head>
 <body>
-<!--包裹层-->
-<div class="navMenuBox">
+<table style="width:100%;height: 100%;">
+    <tr>
+        <td width="250px;">
+            <!--包裹层-->
+            <div class="navMenuBox">
 
-    <div class="input-group">
-        <input type="text" class="form-control" placeholder="Search for...">
-        <span class="input-group-btn">
-        <button class="btn btn-default" type="button">go</button>
-      </span>
-    </div>
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="搜索设备">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">搜索</button>
+                      </span>
+                </div>
 
-    <!--一级菜单-->
-    <ul class="navMenu">
-        <!--菜单项-->
-        <li>
-            <!--arrow类给具有下级菜单项添加箭头图标-->
-            <a href="#" class="arrow">未激活设备</a>
-            <!--子菜单-->
-            <ul class="subMenu" v-cloak id="inact_device_list">
-                <li v-for="data in items" v-on:click="onClickItem(data)">
-                    <a href="#">{{data.device_sn}}</a>
-                </li>
-            </ul>
-        </li>
-        <li>
-            <!--arrow类给具有下级菜单项添加箭头图标-->
-            <a href="#" class="arrow">设备列表</a>
-        </li>
-    </ul>
-</div>
+                <!--一级菜单-->
+                <ul class="navMenu">
+                    <!--菜单项-->
+                    <li>
+                        <a href="#" class="arrow">未激活设备</a>
+                        <!--子菜单-->
+                        <ul class="subMenu" v-cloak id="inact_device_list">
+                            <li v-for="data in items" v-on:click="onClickItem(data)">
+                                <i v-if="data.online==1" class="i_circle"></i><a v-bind:href="'${pageContext.request.contextPath}/device/inact/detail?device_sn='+data.device_sn" target="if_device">{{data.device_sn}}</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" class="arrow">设备列表</a>
+                        <!--子菜单-->
+                        <ul class="subMenu" v-cloak id="device_list">
+                            <li v-for="data in items" v-on:click="onClickItem(data)">
+                                <i v-if="data.online==1" class="i_circle"></i><a v-bind:href="'${pageContext.request.contextPath}/device/detail?device_sn='+data.device_sn" target="if_device">{{data.device_sn}}</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </td>
+        <td>
+            <iframe class="if_window" name="if_device"></iframe>
+        </td>
+    </tr>
+</table>
 <script type="text/javascript">
     ajaxInActDeviceList();
+    ajaxDeviceList();
 
-    var listVm = new Vue({
+    var vueInactDeviceList = new Vue({
         el: "#inact_device_list",
         data: {
             items: [],
@@ -55,24 +82,41 @@
         },
         methods: {
             onClickItem: function (data) {
-                l(1)
             }
         }
     });
 
     function ajaxInActDeviceList() {
-        var loading = layLoading1();
         ajaxGet({
             url: "${pageContext.request.contextPath}/device/inact/list",
             data: {},
             success: function (result) {
-                layer.close(loading);
-                l(result);
-                if (checkSession(result)) {
-                    listVm.items = result.data;
-                    $(".navMenu li:first").addClass("active");
-                    $(".navMenu li:first .subMenu").slideDown();
-                }
+                vueInactDeviceList.items = result.data;
+                $(".navMenu li:first").addClass("active");
+                $(".navMenu li:first .subMenu").slideDown();
+            }
+        });
+    }
+
+    var vueDeviceList = new Vue({
+        el: "#device_list",
+        data: {
+            items: [],
+            searching: true
+        },
+        methods: {
+            onClickItem: function (data) {
+            }
+        }
+    });
+
+    function ajaxDeviceList() {
+
+        ajaxGet({
+            url: "${pageContext.request.contextPath}/device/list",
+            data: {},
+            success: function (result) {
+                vueDeviceList.items = result.data;
             }
         });
     }

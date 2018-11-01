@@ -26,7 +26,8 @@
 <body>
 <div class="container">
     <div class="nav background-color">
-        <h3 align="center" class="nav_title"><%=CommConst.WEB_TITLE%></h3>
+        <h3 align="center" class="nav_title"><%=CommConst.WEB_TITLE%>
+        </h3>
     </div>
     <form class="form_login">
         <div class="form-group">
@@ -64,7 +65,6 @@
     });
 
     function ajaxRegister(name, password) {
-        var loading = layLoading1();
         ajaxPost({
             url: "${pageContext.request.contextPath}/user/register",
             data: {
@@ -72,8 +72,6 @@
                 password: password
             },
             success: function (data) {
-                layer.close(loading);
-                l(data);
                 layTip(data.message);
                 if (0 === data.code) {
                     window.location.href = "login";

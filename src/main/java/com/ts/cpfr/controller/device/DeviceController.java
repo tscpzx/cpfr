@@ -1,18 +1,26 @@
 package com.ts.cpfr.controller.device;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ts.cpfr.controller.base.BaseController;
 import com.ts.cpfr.ehcache.Memory;
+import com.ts.cpfr.entity.LoginUser;
 import com.ts.cpfr.service.DeviceService;
+import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.HandleEnum;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
+import com.ts.cpfr.websocket.SocketMessageHandle;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.socket.TextMessage;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,9 +36,11 @@ import javax.servlet.http.HttpServletRequest;
 public class DeviceController extends BaseController {
 
     @Autowired
-    DeviceService mDeviceService;
+    private DeviceService mDeviceService;
     @Autowired
     private Memory memory;
+    @Autowired
+    private SocketMessageHandle mSocketMessageHandle;
 
     @ResponseBody
     @RequestMapping("/list")
@@ -51,13 +61,28 @@ public class DeviceController extends BaseController {
     public ResultData<ParamData> activate(HttpServletRequest request) {
         try {
             ParamData pd = paramDataInit();
+            LoginUser user = memory.getLoginUser();
             ParamData paramData = mDeviceService.queryInActDevice(pd);
             if (paramData == null) return new ResultData<>(HandleEnum.FAIL, "设备不存在");
-            if ("1".equals(paramData.getString("status"))) {
+            pd.put("admin_id", user.getAdminId());
+            if (1 == (Integer) paramData.get("online")) {
                 if (mDeviceService.activateDevice(pd)) {
                     //激活成功，往对应仓库插入设备，返回
-                    return new ResultData<>(HandleEnum.SUCCESS);
-                } else return new ResultData<>(HandleEnum.FAIL);
+                    ParamData insertPd = mDeviceService.queryInActDevice(pd);
+                    insertPd.put("wid", user.getWId());
+                    if (mDeviceService.addDevice(insertPd)) {
+                        //通知设备激活成功
+                        String device_sn = insertPd.getString(CommConst.DEVICE_SN);
+                        Map<String, Object> jsonMap = new HashMap<>();
+                        jsonMap.put("code", 101);
+                        jsonMap.put("admin_id", user.getAdminId());
+                        jsonMap.put("content", "激活成功");
+                        mSocketMessageHandle.sendMessageToDevice(device_sn, new TextMessage(JSONObject
+                          .toJSONString(jsonMap)));
+                        return new ResultData<>(HandleEnum.SUCCESS);
+                    }
+                }
+                return new ResultData<>(HandleEnum.FAIL);
             } else {
                 return new ResultData<>(HandleEnum.FAIL, "设备不在线");
             }
@@ -78,5 +103,18 @@ public class DeviceController extends BaseController {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
         }
+    }
+
+    @RequestMapping("/inact/detail")
+    public String sysDetail(Model model) {
+        try {
+            ParamData pd = paramDataInit();
+            ParamData paramData = mDeviceService.queryInActDevice(pd);
+            model.addAttribute(CommConst.DATA, paramData);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "../webpage/device/device_inact";
     }
 }

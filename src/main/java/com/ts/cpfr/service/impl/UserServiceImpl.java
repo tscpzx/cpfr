@@ -30,18 +30,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean addAdminUser(ParamData pd) {
-        boolean b = mUserDao.insertAdminUser(pd);
-        int id = mTableDao.selectLastInsertID();
-        boolean u = mUserDao.updateUserWid(id);
-        return b && u;
+        return mUserDao.insertAdminUser(pd);
     }
 
     @Override
     public void createTableWarehouse() {
         int wid = mTableDao.selectLastInsertID();
-        mTableDao.createTblDevcie(wid);
-        mTableDao.createTblPerson(wid);
-        mTableDao.createTblGroup(wid);
+        mTableDao.createTableWarehouse(wid);
     }
 
 }

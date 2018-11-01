@@ -58,7 +58,6 @@
     });
 
     function ajaxLogin(name, password) {
-        var loading = layLoading1();
         ajaxPost({
             url: "${pageContext.request.contextPath}/user/login",
             data: {
@@ -66,9 +65,6 @@
                 password: password
             },
             success: function (data) {
-                layer.close(loading);
-                l(data);
-
                 layTip(data.message);
                 if (0 === data.code) {
                     window.location.href = "web";

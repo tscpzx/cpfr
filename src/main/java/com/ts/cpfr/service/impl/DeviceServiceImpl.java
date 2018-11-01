@@ -50,4 +50,9 @@ public class DeviceServiceImpl implements DeviceService {
     public List<ParamData> getInActDeviceList(ParamData pd) {
         return mDeviceDao.selectInActDeviceList(pd);
     }
+
+    @Override
+    public boolean addDevice(ParamData pd) {
+        return mDeviceDao.insertDevice(pd);
+    }
 }

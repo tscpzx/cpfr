@@ -22,4 +22,6 @@ public interface DeviceService {
     boolean updateInActDeviceOnline(ParamData pd);
 
     List<ParamData> getInActDeviceList(ParamData pd);
+
+    boolean addDevice(ParamData pd);
 }
