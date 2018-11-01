@@ -1,9 +1,12 @@
 package com.ts.cpfr.service.impl;
 
 import com.ts.cpfr.dao.DeviceDao;
+import com.ts.cpfr.dao.UserDao;
 import com.ts.cpfr.service.DeviceService;
+import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.ParamData;
 
+import org.apache.http.util.TextUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +23,8 @@ import javax.annotation.Resource;
 public class DeviceServiceImpl implements DeviceService {
     @Resource
     private DeviceDao mDeviceDao;
+    @Resource
+    private UserDao mUserDao;
 
     @Override
     public List<ParamData> getDeviceList(ParamData pd) {
@@ -42,8 +47,15 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public boolean updateInActDeviceOnline(ParamData pd) {
-        return mDeviceDao.updateInActDeviceOnline(pd);
+    public boolean updateAllDeviceOnline(ParamData pd) {
+        boolean b = mDeviceDao.updateInActDeviceOnline(pd);
+        String adminId = pd.getString(CommConst.ADMIN_ID);
+        if (!TextUtils.isEmpty(adminId)) {
+            int wid = mUserDao.selectWidByAdminId(adminId);
+            pd.put("wid",wid);
+            mDeviceDao.updateDeviceOnline(pd);
+        }
+        return b;
     }
 
     @Override

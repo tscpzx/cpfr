@@ -22,6 +22,10 @@
 		UPDATE tbl_inactivated_device SET online = #{online}  WHERE device_sn=#{device_sn}
 	</update>
 
+	<update id="updateDeviceOnline" parameterType="pd">
+		UPDATE tbl_#{wid}_device SET online = #{online}  WHERE device_sn=#{device_sn}
+	</update>
+
 	<select id="selectInActDeviceList" parameterType="pd" resultType="pd">
 		select device_sn,online from tbl_inactivated_device where status=0
 	</select>

@@ -25,17 +25,28 @@ public class WsHandshakeInterceptor implements HandshakeInterceptor {
      * 握手前
      */
     @Override
-    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler webSocketHandler, Map<String, Object> attributes) throws Exception {
-        System.out.println("握手前");
-        if (request instanceof ServletServerHttpRequest) {
-            HttpServletRequest servletRequest = ((ServletServerHttpRequest) request).getServletRequest();
-            String device_sn = servletRequest.getHeader(CommConst.DEVICE_SN);
-            if (TextUtils.isEmpty(device_sn)) {
-                device_sn = servletRequest.getParameter(CommConst.DEVICE_SN);
+    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler webSocketHandler, Map<String, Object> attributes) {
+        try {
+            System.out.println("握手前");
+            if (request instanceof ServletServerHttpRequest) {
+                HttpServletRequest servletRequest = ((ServletServerHttpRequest) request).getServletRequest();
+                String deviceSn = servletRequest.getHeader(CommConst.DEVICE_SN);
+                String adminId = servletRequest.getHeader(CommConst.ADMIN_ID);
+                if (TextUtils.isEmpty(deviceSn))
+                    deviceSn = servletRequest.getParameter(CommConst.DEVICE_SN);
+                if (TextUtils.isEmpty(adminId))
+                    adminId = servletRequest.getParameter(CommConst.ADMIN_ID);
+
+                if (TextUtils.isEmpty(deviceSn)) return false;
+                attributes.put(CommConst.DEVICE_SN, deviceSn);
+                if (!TextUtils.isEmpty(adminId))
+                    attributes.put(CommConst.ADMIN_ID, adminId);
             }
-            attributes.put("device_sn", device_sn);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
-        return true;
     }
 
     /**

@@ -21,4 +21,5 @@ public class CommConst {
     public static final String ACCESS_CPFR_TOKEN = "access_cpfr_token";
     public static final String ACS_ADMIN_COOKIE = "acs_admin_cookie";
     public static final String DEVICE_SN = "device_sn";
+    public static final String ADMIN_ID = "admin_id";
 }

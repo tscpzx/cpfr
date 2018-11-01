@@ -71,6 +71,9 @@ public class DeviceController extends BaseController {
                     ParamData insertPd = mDeviceService.queryInActDevice(pd);
                     insertPd.put("wid", user.getWId());
                     if (mDeviceService.addDevice(insertPd)) {
+                        //增加websocketsession的admin_id
+                        mSocketMessageHandle.saveAdminIdToSession(insertPd.getString(CommConst.DEVICE_SN),user.getAdminId());
+
                         //通知设备激活成功
                         String device_sn = insertPd.getString(CommConst.DEVICE_SN);
                         Map<String, Object> jsonMap = new HashMap<>();

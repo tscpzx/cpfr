@@ -24,6 +24,8 @@ public interface DeviceDao {
     @PostConstruct
     boolean updateInActDeviceOnline(ParamData pd);
 
+    boolean updateDeviceOnline(ParamData pd);
+
     List<ParamData> selectInActDeviceList(ParamData pd);
 
     boolean insertDevice(ParamData pd);

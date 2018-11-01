@@ -52,14 +52,16 @@ public class SocketMessageHandle implements WebSocketHandler {
         Map<String, Object> attributes = webSocketSession.getAttributes();
         if (attributes != null) {
             String deviceSn = (String) attributes.get(CommConst.DEVICE_SN);
+            String adminId = (String) attributes.get(CommConst.ADMIN_ID);
             userMap.put(deviceSn, webSocketSession);
             System.out.println("=====================建立连接成功==========================");
             System.out.println("当前连接设备======" + deviceSn);
             System.out.println("设备连接数量=====" + userMap.size());
             ParamData pd = new ParamData();
             pd.put(CommConst.DEVICE_SN, deviceSn);
+            pd.put(CommConst.ADMIN_ID, adminId);
             pd.put("online", 1);
-            mDeviceService.updateInActDeviceOnline(pd);
+            mDeviceService.updateAllDeviceOnline(pd);
         }
     }
 
@@ -85,7 +87,6 @@ public class SocketMessageHandle implements WebSocketHandler {
             }
             System.out.println("收到用户:" + deviceSn + "的消息");
             System.out.println(message.getPayload().toString());
-
 
             sendMessageToDevice(deviceSn, new TextMessage("服务端收到了"));
             System.out.println("===========================================");
@@ -129,12 +130,14 @@ public class SocketMessageHandle implements WebSocketHandler {
         Map<String, Object> attributes = webSocketSession.getAttributes();
         if (attributes != null) {
             String deviceSn = (String) attributes.get(CommConst.DEVICE_SN);
+            String adminId = (String) attributes.get(CommConst.ADMIN_ID);
             userMap.remove(deviceSn);
             System.out.println(deviceSn + "断开连接");
             ParamData pd = new ParamData();
             pd.put(CommConst.DEVICE_SN, deviceSn);
+            pd.put(CommConst.ADMIN_ID, adminId);
             pd.put("online", 0);
-            mDeviceService.updateInActDeviceOnline(pd);
+            mDeviceService.updateAllDeviceOnline(pd);
         }
 
     }
@@ -157,6 +160,24 @@ public class SocketMessageHandle implements WebSocketHandler {
                     socketSession.sendMessage(messageInfo);
                     System.out.println("发送消息给：" + toDeviceSn + "内容：" + messageInfo);
                 }
+            }
+        }
+    }
+
+    /**
+     * 激活设备成功，应更新WebSocketSession的adminId
+     *
+     * @param deviceSn
+     * @param adminId
+     */
+    public void saveAdminIdToSession(String deviceSn, int adminId) {
+        Iterator<Map.Entry<String, WebSocketSession>> it = userMap.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<String, WebSocketSession> next = it.next();
+            if (next.getKey().equals(deviceSn)) {
+                WebSocketSession socketSession = next.getValue();
+                socketSession.getAttributes().put(CommConst.ADMIN_ID, adminId + "");
+                userMap.put(deviceSn, socketSession);
             }
         }
     }

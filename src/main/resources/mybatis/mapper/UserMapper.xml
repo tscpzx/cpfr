@@ -5,8 +5,13 @@
 	<select id="selectUserByName" parameterType="pd" resultType="com.ts.cpfr.entity.LoginUser">
         select admin_id,wid,name,password from tbl_user where name=#{name}
     </select>
+
 	<update id="insertAdminUser" parameterType="pd">
 		INSERT INTO tbl_user(name,password,permission_level,register_time) VALUES(#{name},#{password},0,now());
 		UPDATE tbl_user SET wid = (SELECT LAST_INSERT_ID())  WHERE admin_id =(SELECT LAST_INSERT_ID());
 	</update>
+
+	<select id="selectWidByAdminId" parameterType="String" resultType="int">
+		select wid from tbl_user where admin_id=#{adminId}
+	</select>
 </mapper>
