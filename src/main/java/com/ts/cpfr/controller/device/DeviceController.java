@@ -1,11 +1,14 @@
 package com.ts.cpfr.controller.device;
 
 import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.ts.cpfr.controller.base.BaseController;
 import com.ts.cpfr.ehcache.Memory;
 import com.ts.cpfr.entity.LoginUser;
 import com.ts.cpfr.service.DeviceService;
 import com.ts.cpfr.utils.CommConst;
+import com.ts.cpfr.utils.CommUtil;
 import com.ts.cpfr.utils.HandleEnum;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
@@ -57,6 +60,24 @@ public class DeviceController extends BaseController {
     }
 
     @ResponseBody
+    @RequestMapping("/list/page")
+    public ResultData<PageInfo<ParamData>> listPage(HttpServletRequest request) {
+        try {
+            ParamData pd = paramDataInit();     //初始化分页参数
+            int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
+            int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
+            PageHelper.startPage(pageNum, pageSize);
+            pd.put("wid", memory.getLoginUser().getWId());
+            List<ParamData> deviceList = mDeviceService.getDeviceList(pd);
+            PageInfo<ParamData> pageInfo = new PageInfo<>(deviceList);
+            return new ResultData<>(HandleEnum.SUCCESS, pageInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
+    @ResponseBody
     @RequestMapping("/activate")
     public ResultData<ParamData> activate(HttpServletRequest request) {
         try {
@@ -72,7 +93,8 @@ public class DeviceController extends BaseController {
                     insertPd.put("wid", user.getWId());
                     if (mDeviceService.addDevice(insertPd)) {
                         //增加websocketsession的admin_id
-                        mSocketMessageHandle.saveAdminIdToSession(insertPd.getString(CommConst.DEVICE_SN),user.getAdminId());
+                        mSocketMessageHandle.saveAdminIdToSession(insertPd.getString(CommConst.DEVICE_SN), user
+                          .getAdminId());
 
                         //通知设备激活成功
                         String device_sn = insertPd.getString(CommConst.DEVICE_SN);
@@ -99,9 +121,26 @@ public class DeviceController extends BaseController {
     @RequestMapping("/inact/list")
     public ResultData<List<ParamData>> inactList(HttpServletRequest request) {
         try {
-            ParamData pd = paramDataInit();
+            ParamData pd = paramDataInit();     //初始化分页参数
             List<ParamData> inActDeviceList = mDeviceService.getInActDeviceList(pd);
             return new ResultData<>(HandleEnum.SUCCESS, inActDeviceList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("/inact/list/page")
+    public ResultData<PageInfo<ParamData>> inactListPage(HttpServletRequest request) {
+        try {
+            ParamData pd = paramDataInit();     //初始化分页参数
+            int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
+            int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
+            PageHelper.startPage(pageNum, pageSize);
+            List<ParamData> inActDeviceList = mDeviceService.getInActDeviceList(pd);
+            PageInfo<ParamData> pageInfo = new PageInfo<>(inActDeviceList);
+            return new ResultData<>(HandleEnum.SUCCESS, pageInfo);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());

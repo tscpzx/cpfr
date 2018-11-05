@@ -45,7 +45,7 @@
                 <ul class="navMenu">
                     <!--菜单项-->
                     <li>
-                        <a href="#" class="arrow">未激活设备</a>
+                        <a class="arrow" onclick="onClickInActMenu(this)">未激活设备</a>
                         <!--子菜单-->
                         <ul class="subMenu" v-cloak id="inact_device_list">
                             <li v-for="data in items" v-on:click="onClickItem(data)">
@@ -54,7 +54,7 @@
                         </ul>
                     </li>
                     <li>
-                        <a href="#" class="arrow">设备列表</a>
+                        <a class="arrow" onclick="onClickActMenu(this)">设备列表</a>
                         <!--子菜单-->
                         <ul class="subMenu" v-cloak id="device_list">
                             <li v-for="data in items" v-on:click="onClickItem(data)">
@@ -66,7 +66,7 @@
             </div>
         </td>
         <td>
-            <iframe class="if_window" name="if_device"></iframe>
+            <iframe class="if_window" name="if_device" src="device_inact_tbl.jsp"></iframe>
         </td>
     </tr>
 </table>
@@ -114,12 +114,23 @@
             data: {},
             success: function (result) {
                 vueDeviceList.items = result.data;
-                $(".navMenu li:eq(1)").addClass("active");
-                $(".navMenu li:eq(1) .subMenu").slideDown();
+                $(".navMenu li:eq(0)").addClass("active");
+                $(".navMenu li:eq(0) .subMenu").slideDown();
             }
         });
     }
 
+    function onClickInActMenu(e) {
+        if (!$(e).parent().hasClass("active")) {
+            $(".if_window").attr("src", "device_inact_tbl.jsp");
+        }
+    }
+
+    function onClickActMenu(e) {
+        if (!$(e).parent().hasClass("active")) {
+            $(".if_window").attr("src", "device_tbl.jsp");
+        }
+    }
 </script>
 </body>
 </html>

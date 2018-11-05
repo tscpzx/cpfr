@@ -2,12 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ts.cpfr.dao.DeviceDao">
+	<select id="selectDevice" parameterType="pd" resultType="pd">
+		select * from tbl_#{wid}_device where device_sn=#{device_sn}
+	</select>
+
 	<select id="selectDeviceList" parameterType="pd" resultType="pd">
-		select device_sn,online from tbl_#{wid}_device
+		select device_id,device_name,device_sn,online from tbl_#{wid}_device
     </select>
 
 	<select id="selectInActDevice" parameterType="pd" resultType="pd">
 		select device_sn,status,online,register_time,mac_grant_key from tbl_inactivated_device where device_sn=#{device_sn}
+	</select>
+
+	<select id="selectInActDeviceList" parameterType="pd" resultType="pd">
+		select id,device_sn,status,online,register_time from tbl_inactivated_device where status=0
 	</select>
 
 	<insert id="insertInActDevice" parameterType="pd">
@@ -26,15 +34,9 @@
 		UPDATE tbl_#{wid}_device SET online = #{online}  WHERE device_sn=#{device_sn}
 	</update>
 
-	<select id="selectInActDeviceList" parameterType="pd" resultType="pd">
-		select device_sn,online from tbl_inactivated_device where status=0
-	</select>
-
 	<insert id="insertDevice" parameterType="pd">
 		INSERT INTO tbl_#{wid}_device (device_name,device_sn,mac_grant_key,device_ip_address,online) VALUES(#{device_sn},#{device_sn},#{mac_grant_key},#{device_ip_address},#{online})
 	</insert>
 
-	<select id="selectDevice" parameterType="pd" resultType="pd">
-		select * from tbl_#{wid}_device where device_sn=#{device_sn}
-	</select>
+
 </mapper>
