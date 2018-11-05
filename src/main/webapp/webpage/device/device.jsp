@@ -66,7 +66,7 @@
             </div>
         </td>
         <td>
-            <iframe class="if_window" name="if_device" src="device_inact_tbl.jsp"></iframe>
+            <iframe class="if_window" name="if_device" src="device_tbl.jsp"></iframe>
         </td>
     </tr>
 </table>
@@ -114,8 +114,8 @@
             data: {},
             success: function (result) {
                 vueDeviceList.items = result.data;
-                $(".navMenu li:eq(0)").addClass("active");
-                $(".navMenu li:eq(0) .subMenu").slideDown();
+                $(".navMenu li:eq(1)").addClass("active");
+                $(".navMenu li:eq(1) .subMenu").slideDown();
             }
         });
     }

@@ -25,7 +25,7 @@
 
 <body>
 <div class="container">
-    <div class="nav background-color">
+    <div class="navi background-color">
         <h3 align="center" class="nav_title"><%=CommConst.WEB_TITLE%>
         </h3>
     </div>

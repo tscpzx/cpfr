@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/navMenu.css"/>
     <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/navMenu.js"></script>
     <style type="text/css">
-        .nav {
+        .navi {
             height: 52px;
         }
 
@@ -65,7 +65,7 @@
 <body>
 <div class="container">
     <%-- 导航栏 --%>
-    <div class="nav">
+    <div class="navi">
         <table width="100%" style="height: 100%;">
             <tr>
                 <td>

@@ -14,12 +14,12 @@ html, body {
     padding: 0;
 }
 
-.nav {
+.navi {
     width: 100%;
     background: #337AB7;
 }
 
-.nav .nav_title {
+.navi .nav_title {
     color: white;
     margin: 0;
     padding: 15px;

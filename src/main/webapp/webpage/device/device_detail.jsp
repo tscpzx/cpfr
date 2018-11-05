@@ -29,66 +29,61 @@
             color: #606266;
             font-weight: 500;
         }
-
-        #btn_active {
-            width: 100px;
-            margin-left: 20px;
-        }
     </style>
 </head>
 <body>
 <div class="device_info_box">
-    <div class="div_group">
-        <label>设备指纹：&nbsp;</label>
-        <input type="text" class="form-control" placeholder="" readonly="readonly" value="${data.device_sn}">
-    </div>
-    <div class="div_group">
-        <label>设备授权码：&nbsp;</label>
-        <input type="text" id="input_grant_key" class="form-control" placeholder="">
-    </div>
-    <div class="div_group">
-        <label>注册时间：&nbsp;</label>
-        <span>${data.register_time}</span>
-    </div>
-    <div class="div_group">
-        <label>激活状态：&nbsp;</label>
-        <c:choose>
-            <c:when test="${data.status==0}">
-                <span>未激活</span>
-                <button id="btn_active" type="button" class="btn btn-success">激活
-                </button>
-            </c:when>
-            <c:otherwise>
-                <span>已激活</span>
-                <button id="btn_active" type="button" class="btn btn-success" disabled="disabled">
-                    已激活
-                </button>
-            </c:otherwise>
-        </c:choose>
+    <ul class="nav nav-tabs">
+        <li class="active">
+            <a href="#base_info" data-toggle="tab">基本信息</a>
+        </li>
+        <li><a href="#fun_config" data-toggle="tab">功能配置</a></li>
+        <li><a href="#grant_person" data-toggle="tab">授权人员</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane fade in active" id="base_info">
+            <div class="div_group">
+                <label>设备编号：&nbsp;</label>
+                <span>${data.device_sn}</span>
+            </div>
+            <div class="div_group">
+                <label>设备名称：&nbsp;</label>
+                <span>${data.device_name}</span>
+            </div>
+            <div class="div_group">
+                <label>授权码：&nbsp;</label>
+                <span>${data.mac_grant_key}</span>
+            </div>
+            <div class="div_group">
+                <label>在线：&nbsp;</label>
+                <c:if test="${data.online==1}"> <span>在线</span></c:if>
+                <c:if test="${data.online==0}"> <span>离线</span></c:if>
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="fun_config">
+            <div class="div_group">
+                <label>设备序列号：&nbsp;</label>
+                <input type="text" class="form-control" readonly="readonly" value="${data.device_sn}">
+            </div>
+            <div class="div_group">
+                <label>设备授权码：&nbsp;</label>
+                <input type="text" class="form-control" readonly="readonly" value="${data.mac_grant_key}">
+            </div>
+            <div class="div_group">
+                <label>设备名：&nbsp;</label>
+                <input type="text" class="form-control" placeholder="输入设备名" value="${data.device_name}">
+            </div>
+        </div>
+
+        <div class="tab-pane fade" id="grant_person">
+            <p>iOS 是一个由苹果公司开发和发布的手机操作系统。最初是于 2007 年首次发布 iPhone、iPod Touch 和 Apple
+                TV。iOS 派生自 OS X，它们共享 Darwin 基础。OS X 操作系统是用在苹果电脑上，iOS 是苹果的移动版本。</p>
+        </div>
     </div>
 </div>
 
 <script type="text/javascript">
-    $('#btn_active').click(function () {
-        var mac_grant_key = $('#input_grant_key').val().trim();
-        if (!mac_grant_key) {
-            layTip("设备授权码不能为空");
-            return;
-        }
-        ajaxPost({
-            url: "${pageContext.request.contextPath}/device/activate",
-            data: {
-                device_sn: '${data.device_sn}',
-                mac_grant_key: mac_grant_key
-            },
-            success: function (result) {
-                layAlert1(result.message);
-                if (0 === result.code) {
-                    parent.location.reload();
-                }
-            }
-        })
-    });
 </script>
 </body>
 </html>
