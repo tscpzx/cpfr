@@ -37,9 +37,14 @@
             background-color: #333743;
         }
 
-        .navMenu > li > a, .subMenu > li > a {
+        .navMenu > li > a{
             color: white;
             padding: 15px 0 15px 10px;
+        }
+
+        .subMenu > li > a {
+            color: white;
+            padding: 15px 0 15px 30px;
         }
 
         .navMenu > li > a:before {
@@ -101,7 +106,7 @@
                                 <a href="#" class="fa-user arrow">人员管理</a>
                                 <!--子菜单-->
                                 <ul class="subMenu">
-                                    <li><a href="#">人员列表</a></li>
+                                    <li><a href="person/person.jsp" target="if_main">人员列表</a></li>
                                     <li><a href="#">批量上传</a></li>
                                 </ul>
                             </li>

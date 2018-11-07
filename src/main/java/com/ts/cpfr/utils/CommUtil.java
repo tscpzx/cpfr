@@ -4,6 +4,7 @@ import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,112 +17,122 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
 public class CommUtil {
-	/**
-	 * 随机生成六位数验证码
-	 * @return
-	 */
-	public static int getRandomNum(){
-		 Random r = new Random();
-		 return r.nextInt(900000)+100000;
-		 //(Math.random()*(999999-100000)+100000)
-	}
+    /**
+     * 随机生成六位数验证码
+     *
+     * @return
+     */
+    public static int getRandomNum() {
+        Random r = new Random();
+        return r.nextInt(900000) + 100000;
+        //(Math.random()*(999999-100000)+100000)
+    }
 
-	/**
-	 * 检测字符串是否不为空(null,"","null")
-	 * @param s
-	 * @return 不为空则返回true，否则返回false
-	 */
-	public static boolean notEmpty(String s){
-		return s!=null && !"".equals(s) && !"null".equals(s);
-	}
+    /**
+     * 检测字符串是否不为空(null,"","null")
+     *
+     * @param s
+     * @return 不为空则返回true，否则返回false
+     */
+    public static boolean notEmpty(String s) {
+        return s != null && !"".equals(s) && !"null".equals(s);
+    }
 
-	/**
-	 * 检测字符串是否为空(null,"","null")
-	 * @param s
-	 * @return 为空则返回true，不否则返回false
-	 */
-	public static boolean isEmpty(String s){
-		return s==null || "".equals(s) || "null".equals(s);
-	}
+    /**
+     * 检测字符串是否为空(null,"","null")
+     *
+     * @param s
+     * @return 为空则返回true，不否则返回false
+     */
+    public static boolean isEmpty(String s) {
+        return s == null || "".equals(s) || "null".equals(s);
+    }
 
-	/**
-	 * 字符串转换为字符串数组
-	 * @param str 字符串
-	 * @param splitRegex 分隔符
-	 * @return
-	 */
-	public static String[] str2StrArray(String str, String splitRegex){
-		if(isEmpty(str)){
-			return null;
-		}
-		return str.split(splitRegex);
-	}
+    /**
+     * 字符串转换为字符串数组
+     *
+     * @param str        字符串
+     * @param splitRegex 分隔符
+     * @return
+     */
+    public static String[] str2StrArray(String str, String splitRegex) {
+        if (isEmpty(str)) {
+            return null;
+        }
+        return str.split(splitRegex);
+    }
 
-	/**
-	 * 用默认的分隔符(,)将字符串转换为字符串数组
-	 * @param str	字符串
-	 * @return
-	 */
-	public static String[] str2StrArray(String str){
-		return str2StrArray(str,",\\s*");
-	}
+    /**
+     * 用默认的分隔符(,)将字符串转换为字符串数组
+     *
+     * @param str 字符串
+     * @return
+     */
+    public static String[] str2StrArray(String str) {
+        return str2StrArray(str, ",\\s*");
+    }
 
-	/**
-	 * 按照yyyy-MM-dd HH:mm:ss的格式，日期转字符串
-	 * @param date
-	 * @return yyyy-MM-dd HH:mm:ss
-	 */
-	public static String date2Str(Date date){
-		return date2Str(date,"yyyy-MM-dd HH:mm:ss");
-	}
+    /**
+     * 按照yyyy-MM-dd HH:mm:ss的格式，日期转字符串
+     *
+     * @param date
+     * @return yyyy-MM-dd HH:mm:ss
+     */
+    public static String date2Str(Date date) {
+        return date2Str(date, "yyyy-MM-dd HH:mm:ss");
+    }
 
-	/**
-	 * 按照yyyy-MM-dd HH:mm:ss的格式，字符串转日期
-	 * @param date
-	 * @return
-	 */
-	public static Date str2Date(String date){
-		if(notEmpty(date)){
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			try {
-				return sdf.parse(date);
-			} catch (ParseException e) {
-				e.printStackTrace();
-			}
-			return new Date();
-		}else{
-			return null;
-		}
-	}
+    /**
+     * 按照yyyy-MM-dd HH:mm:ss的格式，字符串转日期
+     *
+     * @param date
+     * @return
+     */
+    public static Date str2Date(String date) {
+        if (notEmpty(date)) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            try {
+                return sdf.parse(date);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            return new Date();
+        } else {
+            return null;
+        }
+    }
 
-	/**
-	 * 按照参数format的格式，日期转字符串
-	 * @param date
-	 * @param format
-	 * @return
-	 */
-	public static String date2Str(Date date, String format){
-		if(date!=null){
-			SimpleDateFormat sdf = new SimpleDateFormat(format);
-			return sdf.format(date);
-		}else{
-			return "";
-		}
-	}
-	public static String long2DateStr(Object time, String format){
-		if(time == null || "".equals(time)){
-			return "";
-		}
-		SimpleDateFormat sdf = new SimpleDateFormat(format);
-		String d = sdf.format(time);
-		return d;
-	}
-	public static String get32UUID() {
-		String uuid = UUID.randomUUID().toString().trim().replaceAll("-", "");
-		return uuid;
-	}
+    /**
+     * 按照参数format的格式，日期转字符串
+     *
+     * @param date
+     * @param format
+     * @return
+     */
+    public static String date2Str(Date date, String format) {
+        if (date != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat(format);
+            return sdf.format(date);
+        } else {
+            return "";
+        }
+    }
 
-    public static String getIpAddress(HttpServletRequest request){
+    public static String long2DateStr(Object time, String format) {
+        if (time == null || "".equals(time)) {
+            return "";
+        }
+        SimpleDateFormat sdf = new SimpleDateFormat(format);
+        String d = sdf.format(time);
+        return d;
+    }
+
+    public static String get32UUID() {
+        String uuid = UUID.randomUUID().toString().trim().replaceAll("-", "");
+        return uuid;
+    }
+
+    public static String getIpAddress(HttpServletRequest request) {
         String ip = request.getHeader("x-forwarded-for");
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
             ip = request.getHeader("Proxy-Client-IP");
@@ -141,79 +152,80 @@ public class CommUtil {
         return ip;
     }
 
-    public static String paramByString(Object object){
-    	if(object != null && !"".equals(object)){
-    		StringBuffer result = new StringBuffer("(");
-    		String[] objs = object.toString().split(",");
-    		for(String str : objs){
-    			result.append("'"+str+"',");
-    		}
-    		result.setCharAt(result.length()-1, ')');
-    		return result.toString();
-    	}
-    	return null;
+    public static String paramByString(Object object) {
+        if (object != null && !"".equals(object)) {
+            StringBuffer result = new StringBuffer("(");
+            String[] objs = object.toString().split(",");
+            for (String str : objs) {
+                result.append("'" + str + "',");
+            }
+            result.setCharAt(result.length() - 1, ')');
+            return result.toString();
+        }
+        return null;
     }
 
-    public static String paramByLong(Object object){
-    	if(object != null && !"".equals(object)){
-    		StringBuffer result = new StringBuffer("(");
-    		String[] objs = object.toString().split(",");
-    		for(String str : objs){
-    			result.append(str+",");
-    		}
-    		result.setCharAt(result.length()-1, ')');
-    		return result.toString();
-    	}
-    	return null;
+    public static String paramByLong(Object object) {
+        if (object != null && !"".equals(object)) {
+            StringBuffer result = new StringBuffer("(");
+            String[] objs = object.toString().split(",");
+            for (String str : objs) {
+                result.append(str + ",");
+            }
+            result.setCharAt(result.length() - 1, ')');
+            return result.toString();
+        }
+        return null;
     }
 
-    public static int paramConvert(String param, int initValue){
-    	return param==null ? initValue : Integer.parseInt(param);
+    public static int paramConvert(String param, int initValue) {
+        return param == null ? initValue : Integer.parseInt(param);
     }
 
-    public static String getFieldNameByLevel(String level){
-		String fieldName=null;
-		if(level.equals("Ⅰ级")){
-			fieldName="LEVEL1_DESC";
-		}else if(level.equals("Ⅱ级")){
-			fieldName="LEVEL2_DESC";
-		}else if(level.equals("Ⅲ级")){
-			fieldName="LEVEL3_DESC";
-		}else if(level.equals("Ⅳ级")){
-			fieldName="LEVEL4_DESC";
-		}
-		return fieldName;
-	}
+    public static String getFieldNameByLevel(String level) {
+        String fieldName = null;
+        if (level.equals("Ⅰ级")) {
+            fieldName = "LEVEL1_DESC";
+        } else if (level.equals("Ⅱ级")) {
+            fieldName = "LEVEL2_DESC";
+        } else if (level.equals("Ⅲ级")) {
+            fieldName = "LEVEL3_DESC";
+        } else if (level.equals("Ⅳ级")) {
+            fieldName = "LEVEL4_DESC";
+        }
+        return fieldName;
+    }
 
-	//生成当前时间戳
-	public static String createStamp() {
-		return Long.toString(System.currentTimeMillis() / 1000);
-	}
+    //生成当前时间戳
+    public static String createStamp() {
+        return Long.toString(System.currentTimeMillis() / 1000);
+    }
 
     /*
      * 将时间转换为时间戳
      */
     public static String dateToStamp(String s) {
-    	Date date;
+        Date date;
         String res;
-		try {
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			date = simpleDateFormat.parse(s);
-			long ts = date.getTime();
-			res = String.valueOf(ts).substring(0, 10);
-			return res;
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return null;
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            date = simpleDateFormat.parse(s);
+            long ts = date.getTime();
+            res = String.valueOf(ts).substring(0, 10);
+            return res;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
+
     /*
      * 将时间戳转换为时间
      */
-    public static String stampToDate(String s){
+    public static String stampToDate(String s) {
         String res;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        long lt = new Long(s+"000");
+        long lt = new Long(s + "000");
         Date date = new Date(lt);
         res = simpleDateFormat.format(date);
         return res;
@@ -226,7 +238,7 @@ public class CommUtil {
             ParamData vo = buildXmlBody2map(body);
             return vo;
         } catch (DocumentException e) {
-            throw new RuntimeException(e.getMessage(),e);
+            throw new RuntimeException(e.getMessage(), e);
         }
     }
 
@@ -236,7 +248,7 @@ public class CommUtil {
             List<Element> elements = body.elements();
             for (Element element : elements) {
                 String key = element.getName();
-                if (key!=null&&!"".equals(key)) {
+                if (key != null && !"".equals(key)) {
                     if (element.elements().size() > 0) {
                         vo.put(element.getName(), buildXmlBody2map(element));
                     } else {
@@ -275,13 +287,19 @@ public class CommUtil {
         return vo;
     }
 
-    public static String resultMapToXml(String result){
-        Map<Object,Object> resultmap = new HashMap<Object,Object>();
+    public static String resultMapToXml(String result) {
+        Map<Object, Object> resultmap = new HashMap<Object, Object>();
         resultmap.put("CODE", "00");
         resultmap.put("MESSAGE", result);
         resultmap.put("TIME", new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()));
-	    String resultXml ="";
-	    //        String resultXml = XmlUtils.converterKitData(resultmap);
+        String resultXml = "";
+        //        String resultXml = XmlUtils.converterKitData(resultmap);
         return resultXml;
+    }
+
+    public static boolean mkdir(String filePath) {
+        File file = new File(filePath);
+        if (!file.exists()) return file.mkdirs();
+        return true;
     }
 }

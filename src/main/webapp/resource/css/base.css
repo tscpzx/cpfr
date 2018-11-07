@@ -35,3 +35,19 @@ a:hover, a:visited, a:active, a:focus {
     border: 0;
     padding-top: 1px;
 }
+
+.icon{
+    display: block;
+    float: left;
+    margin: 0 5px;
+    font-size: 17px;
+    line-height: 20px;
+    font-family: FontAwesome;
+    font-weight: 300;
+    text-shadow: none;
+}
+
+.image{
+    width: 148px;
+    height: 148px;
+}

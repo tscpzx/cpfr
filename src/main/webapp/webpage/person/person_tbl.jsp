@@ -23,7 +23,14 @@
             height: 35px;
             margin: 10px 0;
         }
-        .input-group{
+
+        .div_header button {
+            top: 0;
+            left: 0;
+            position: absolute;
+        }
+
+        .input-group {
             width: 250px;
             position: absolute;
             top: 0;
@@ -34,6 +41,10 @@
 <body>
 <div class="div_box">
     <div class="div_header">
+        <button type="button" class="btn btn-success">
+            <span class="icon fa-plus"></span>添加
+        </button>
+
         <div class="input-group">
             <input type="text" class="form-control" placeholder="搜索设备">
             <span class="input-group-btn">
@@ -42,26 +53,24 @@
         </div>
     </div>
 
-    <table border="1px" class="table table-bordered table-hover" v-cloak id="inact_device_list">
+    <table border="1px" class="table table-bordered table-hover" v-cloak id="person_list">
         <thead>
         <tr>
-            <td>ID</td>
-            <td>设备序列号</td>
-            <td>状态</td>
-            <td>在线</td>
-            <td>注册时间</td>
+            <td>人员ID</td>
+            <td>姓名</td>
+            <td>工号</td>
+            <td>底库图片</td>
+            <td>操作</td>
         </tr>
         </thead>
 
         <tbody>
         <tr v-for="data in items" v-on:click="onClickItem(data)">
-            <td>{{data.id}}</td>
-            <td>{{data.device_sn}}</td>
-            <td v-if="data.status==1">已激活</td>
-            <td v-else="data.status==0">未激活</td>
-            <td v-if="data.online==1">在线</td>
-            <td v-else="data.online==0">离线</td>
-            <td>{{data.register_time|formatDate}}</td>
+            <td>{{data.person_id}}</td>
+            <td>{{data.person_name}}</td>
+            <td>{{data.emp_number}}</td>
+            <td><img class="image" v-bind:src="'data:image/jpeg;base64,'+data.base_image"></td>
+            <td></td>
         </tr>
         </tbody>
 
@@ -79,7 +88,7 @@
     var pageSize = 10;
 
     ajaxGet({
-        url: "${pageContext.request.contextPath}/device/inact/list/page",
+        url: "${pageContext.request.contextPath}/person/list/page",
         data: {
             pageNum: pageNum,
             pageSize: pageSize
@@ -94,14 +103,14 @@
                 prev_text: '上一页',
                 next_text: '下一页',
                 callback: function (pageNum) {
-                    ajaxInActDeviceList(pageNum, pageSize);
+                    ajaxPersonList(pageNum, pageSize);
                 }
             });
         }
     });
 
-    var vueInactDeviceList = new Vue({
-        el: "#inact_device_list",
+    var vuePersonList = new Vue({
+        el: "#person_list",
         data: {
             items: [],
             searching: true
@@ -109,27 +118,25 @@
         methods: {
             onClickItem: function (data) {
             }
-        },
-        filters: {
-            formatDate: function (time) {
-                var data = new Date(time);
-                return formatDate(data, 'yyyy-MM-dd hh:mm:ss');
-            }
         }
     });
 
-    function ajaxInActDeviceList(pageNum, pageSize) {
+    function ajaxPersonList(pageNum, pageSize) {
         ajaxGet({
-            url: "${pageContext.request.contextPath}/device/inact/list/page",
+            url: "${pageContext.request.contextPath}/person/list/page",
             data: {
                 pageNum: pageNum + 1,
                 pageSize: pageSize
             },
             success: function (result) {
-                vueInactDeviceList.items = result.data.list;
+                vuePersonList.items = result.data.list;
             }
         });
     }
+
+    $(".div_header button").click(function () {
+        window.location.href = "person_add";
+    });
 
 </script>
 </body>
