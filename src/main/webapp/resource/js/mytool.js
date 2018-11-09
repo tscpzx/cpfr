@@ -44,18 +44,32 @@ function layLoading3(msg) {
     });
 }
 
+function elmLoading1() {
+    return new Vue().$loading();
+}
+
+function elmAlert1(msg) {
+    new Vue().$alert(msg, '提示', {
+        type: 'warning',
+        showConfirmButton: false,
+        closeOnClickModal: true
+    });
+}
+
 /* ajax请求 */
 function ajax(type, jsonObj) {
-    var loading = layLoading1();
+    // var loading = layLoading1();
+    var loading = elmLoading1();
 
     var beforeSend = jsonObj.beforeSend;
     var url = jsonObj.url;
     var data = jsonObj.data;
-    var success=function (result) {
+    var success = function (result) {
         // console.log(JSON.stringify(result, null, 1));
-        top.layer.close(loading);
-        if(checkSession(result)){
-            if(result.code!==0){
+        // top.layer.close(loading);
+        loading.close();
+        if (checkSession(result)) {
+            if (result.code !== 0) {
                 layAlert1(result.message);
                 return;
             }

@@ -1,7 +1,7 @@
 package com.ts.cpfr.utils;
 
 public class CommConst {
-    public static String WEB_TITLE = "产品中心-人脸识别管理系统";
+    public static String WEB_TITLE = "人脸识别管理系统";
     // 接口组装时返回的分页和结果属性
     public static String RESULT_PAGE = "page";
     public static String RESULT_DATA = "data";

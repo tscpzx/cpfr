@@ -36,7 +36,7 @@ a:hover, a:visited, a:active, a:focus {
     padding-top: 1px;
 }
 
-.icon{
+.icon {
     display: block;
     float: left;
     margin: 0 5px;
@@ -47,7 +47,15 @@ a:hover, a:visited, a:active, a:focus {
     text-shadow: none;
 }
 
-.image{
+.image {
     width: 148px;
     height: 148px;
+}
+
+.el-message-box {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: 0 !important;
+    transform: translate(-50%, -50%);
 }
