@@ -4,57 +4,119 @@
 <head>
     <%@include file="../resource/inc/incCss.jsp" %>
     <%@include file="../resource/inc/incJs.jsp" %>
-
-    <style type="text/css">
-        form.form_login {
-            width: 60%;
-            max-width: 450px;
-            margin: auto;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            margin-top: 20%;
+    <style scoped>
+        .el-header {
+            background-color: #409EFF;
+            color: white;
+            text-align: center;
+            line-height: 60px;
         }
 
-        button.login {
+        .login-container {
+            border-radius: 5px;
+            -moz-border-radius: 5px;
+            background-clip: padding-box;
+            margin: 180px auto;
+            width: 450px;
+            padding: 35px 35px 15px;
+            background: white;
+            border: 1px solid #eaeaea;
+            box-shadow: 0 0 25px #cac6c6;
+        }
+
+        .login-container .title {
+            margin: 0 auto 40px;
+            text-align: center;
+            color: #505458;
+            font-weight: 600;
+        }
+
+        .el-button {
             width: 100%;
+        }
+
+        body {
+            background: url("../resource/images/bg_login.png") no-repeat;
+            background-size: 100% 100%;
+            -moz-background-size: 100% 100%;
+            overflow-y: hidden;
         }
     </style>
 </head>
 
 <body>
-<div class="container">
-    <div class="navi background-color">
-        <h3 align="center" class="nav_title"><%=CommConst.WEB_TITLE%></h3>
+<div id="app">
+    <div class="container">
+        <el-container>
+            <el-header>
+                <h3><%=CommConst.WEB_TITLE%>
+                </h3>
+            </el-header>
+            <%--
+             model:数据对象
+             prop:传入model中的字段
+             rules:验证规则
+             ref:组件元素本身
+
+             注意：在el-form中，需要用冒号 :model  :rules
+             --%>
+            <el-main>
+                <el-form class="demo-ruleForm login-container" :model="loginModel" :rules="loginRules" ref="loginForm">
+                    <h4 class="title">管理员登录</h4>
+                    <el-form-item prop="name">
+                        <el-input v-model="loginModel.name" type="text" autocomplete="off" placeholder="请输入账号" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item prop="password">
+                        <el-input v-model="loginModel.password" type="password" autocomplete="off" placeholder="请输入密码" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" v-on:click="onClickLogin('loginForm')">登录
+                        </el-button>
+                    </el-form-item>
+                </el-form>
+            </el-main>
+        </el-container>
     </div>
-    <form class="form_login">
-        <div class="form-group">
-            <input type="text" class="form-control" id="account" placeholder="账号">
-        </div>
-        <div class="form-group">
-            <input type="password" class="form-control" id="password" placeholder="密码">
-        </div>
-        <button type="button" class="btn btn-primary login">登录</button>
-    </form>
 </div>
 
 <script type="text/javascript">
-    $('.form_login button.login').click(function () {
-        var name = $('input#account').val().trim();
-        var password = $('input#password').val().trim();
-        var pattern = /^[0-9a-zA-Z]{4,12}$/;
+    new Vue({
+        el: '#app',
+        data: function () {
+            var checkInput = function (rule, value, callback) {
+                var pattern = /^[0-9a-zA-Z]{4,12}$/;
+                if (!pattern.test(value)) {
+                    callback(new Error("需要4个字符以上，并且只能是数字或者字母组成"));
+                } else callback()
+            };
 
-        if (!name)
-            layTip("账号不能为空");
-        else if (!password)
-            layTip("密码不能为空");
-        else if (!pattern.test(name))
-            layTip("账号需要4个字符以上，并且只能是数字或者字母组成");
-        else if (!pattern.test(password))
-            layTip("密码需要4个字符以上，并且只能是数字或者字母组成");
-        else
-            ajaxLogin(name, password);
+            return {
+                loginModel: {
+                    name: '',
+                    password: ''
+                },
+                loginRules: {
+                    name: [
+                        {required: true, message: '请输入账号', trigger: 'blur'},
+                        {validator: checkInput, trigger: 'blur'}
+                    ],
+                    password: [
+                        {required: true, message: '请输入密码', trigger: 'blur'},
+                        {validator: checkInput, trigger: 'blur'}
+                    ]
+                }
+            }
+        },
+        methods: {
+            onClickLogin(formName) {
+                this.$refs[formName].validate((isValid) => {
+                    var model = this.$refs[formName].model;
+                    if (isValid) {
+                        ajaxLogin(model.name, model.password)
+                    }
+                });
+            }
+        }
     });
 
     function ajaxLogin(name, password) {

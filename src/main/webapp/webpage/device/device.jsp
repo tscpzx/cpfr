@@ -1,136 +1,94 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <%@include file="../../resource/inc/incCss.jsp" %>
-    <%@include file="../../resource/inc/incJs.jsp" %>
-    <!--navMenu-->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/navMenu.css"/>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/navMenu.js"></script>
-    <style type="text/css">
-        .navMenuBox {
-            height: 100%;
-        }
+<style type="text/css">
+    .el-tree-node__content {
+        height: 36px;
+    }
 
-        .input-group {
-            margin: 15px 10px 15px 10px;
-        }
+    .custom-tree-node {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+    }
 
-        .i_circle {
-            float: left;
-            width: 5px;
-            height: 5px;
-            border-radius: 50%;
-            background-color: #4cae4c;
-            margin: 15px 0 15px 10px;
-        }
+    #device {
+        width: 250px;
+        height: 100%;
+        background: #EBEFF2;
+        overflow-y: auto;
+        float: left;
+    }
 
-    </style>
-</head>
-<body>
-<table style="width:100%;height: 100%;">
-    <tr>
-        <td width="250px;">
-            <!--包裹层-->
-            <div class="navMenuBox">
+    .el-tree {
+        background: #EBEFF2;
+    }
+</style>
+<div id="device">
+    <el-tree :data="items" :props="defaultProps" @node-click="onNodeClick" @node-expand="onHandleExpand" node-key="id" :default-expanded-keys="[1]" ref="tree">
+      <span class="custom-tree-node" slot-scope="{ node, data }">
+            <span v-if="data.online==1" class="circle"></span>
+            <span>{{ data.device_sn }}</span>
+      </span>
+    </el-tree>
+</div>
+<div id="device_content" style="float: left; width: calc(100% - 250px);"></div>
 
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="搜索设备">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">搜索</button>
-                      </span>
-                </div>
-
-                <!--一级菜单-->
-                <ul class="navMenu">
-                    <!--菜单项-->
-                    <li>
-                        <a class="arrow" onclick="onClickInActMenu(this)">未激活设备</a>
-                        <!--子菜单-->
-                        <ul class="subMenu" v-cloak id="inact_device_list">
-                            <li v-for="data in items" v-on:click="onClickItem(data)">
-                                <i v-if="data.online==1" class="i_circle"></i><a v-bind:href="'${pageContext.request.contextPath}/device/inact/detail?device_sn='+data.device_sn" target="if_device">{{data.device_sn}}</a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li>
-                        <a class="arrow" onclick="onClickActMenu(this)">设备列表</a>
-                        <!--子菜单-->
-                        <ul class="subMenu" v-cloak id="device_list">
-                            <li v-for="data in items" v-on:click="onClickItem(data)">
-                                <i v-if="data.online==1" class="i_circle"></i><a v-bind:href="'${pageContext.request.contextPath}/device/detail?device_sn='+data.device_sn" target="if_device">{{data.device_sn}}</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </td>
-        <td>
-            <iframe class="if_window" name="if_device" src="device_tbl.jsp"></iframe>
-        </td>
-    </tr>
-</table>
 <script type="text/javascript">
     ajaxInActDeviceList();
     ajaxDeviceList();
 
-    var vueInactDeviceList = new Vue({
-        el: "#inact_device_list",
+    var vmList = new Vue({
+        el: "#device",
         data: {
-            items: [],
-            searching: true
+            items: [{
+                id: 2,
+                device_sn: '未激活设备',
+                children: []
+            }, {
+                id: 1,
+                device_sn: '已激活设备',
+                children: []
+            }],
+            defaultProps: {
+                children: 'children',
+                label: 'device_sn'
+            }
         },
         methods: {
-            onClickItem: function (data) {
+            onNodeClick(data) {
+                if (data.device_sn !== "未激活设备" && data.device_sn !== "已激活设备") {
+                    $("#device_content").load("${pageContext.request.contextPath}/device/inact/detail?device_sn=" + data.device_sn);
+                }
+            },
+            onHandleExpand(data, node, tree) {
+                if (data.device_sn === "已激活设备") {
+                    $("#device_content").load("device/device_tbl");
+                } else if (data.device_sn === "未激活设备") {
+                    $("#device_content").load("device/device_inact_tbl");
+                }
             }
         }
     });
+
+    $("#device_content").load("device/device_tbl");
 
     function ajaxInActDeviceList() {
         ajaxGet({
             url: "${pageContext.request.contextPath}/device/inact/list",
             data: {},
             success: function (result) {
-                vueInactDeviceList.items = result.data;
+                vmList.items[0].children = result.data;
             }
         });
     }
-
-    var vueDeviceList = new Vue({
-        el: "#device_list",
-        data: {
-            items: [],
-            searching: true
-        },
-        methods: {
-            onClickItem: function (data) {
-            }
-        }
-    });
 
     function ajaxDeviceList() {
         ajaxGet({
             url: "${pageContext.request.contextPath}/device/list",
             data: {},
             success: function (result) {
-                vueDeviceList.items = result.data;
-                $(".navMenu li:eq(1)").addClass("active");
-                $(".navMenu li:eq(1) .subMenu").slideDown();
+                vmList.items[1].children = result.data;
             }
         });
     }
-
-    function onClickInActMenu(e) {
-        if (!$(e).parent().hasClass("active")) {
-            $(".if_window").attr("src", "device_inact_tbl.jsp");
-        }
-    }
-
-    function onClickActMenu(e) {
-        if (!$(e).parent().hasClass("active")) {
-            $(".if_window").attr("src", "device_tbl.jsp");
-        }
-    }
 </script>
-</body>
-</html>

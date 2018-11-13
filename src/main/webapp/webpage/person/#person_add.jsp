@@ -1,44 +1,52 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
-<style type="text/css">
-    .person_add_box {
-        padding: 20px;
-    }
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <%@include file="../../resource/inc/incCss.jsp" %>
+    <%@include file="../../resource/inc/incJs.jsp" %>
 
-    .form-control {
-        width: 400px;
-        display: inline-block;
-    }
+    <style type="text/css">
+        .person_add_box {
+            padding: 20px;
+        }
 
-    .div_group {
-        margin: 10px 10px 20px 10px;
-    }
+        .form-control {
+            width: 400px;
+            display: inline-block;
+        }
 
-    .div_group label {
-        width: 150px;
-        line-height: 32px;
-        text-align: right;
-        padding-right: 10px;
-        font-size: 14px;
-        color: #606266;
-        font-weight: 500;
-    }
+        .div_group {
+            margin: 10px 10px 20px 10px;
+        }
 
-    .div_group label.radio-inline {
-        width: 50px;
-    }
+        .div_group label {
+            width: 150px;
+            line-height: 32px;
+            text-align: right;
+            padding-right: 10px;
+            font-size: 14px;
+            color: #606266;
+            font-weight: 500;
+        }
 
-    input[type=radio] {
-        margin: 10px 0 0 20px;
-    }
+        .div_group label.radio-inline {
+            width: 50px;
+        }
 
-    input[type=file] {
-        display: inline-block;
-    }
+        input[type=radio] {
+            margin: 10px 0 0 20px;
+        }
 
-    .div_group:last-child {
-        padding-left: 150px;
-    }
-</style>
+        input[type=file] {
+            display: inline-block;
+        }
+
+        .div_group:last-child {
+            padding-left: 150px;
+        }
+    </style>
+</head>
+<body>
 <div class="person_add_box">
     <form>
         <div class="div_group">
@@ -83,7 +91,7 @@
     });
 
     function uploadToAddPerson(person_name, emp_number, file) {
-        var loading = layLoading3("上传中...");
+        var loading=layLoading3("上传中...");
         var formData = new FormData();
         formData.append("person_name", person_name);
         formData.append("emp_number", emp_number);
@@ -113,9 +121,11 @@
             error: function (error) {
                 layAlert1(result.message);
             },
-            complete: function (xhr, textStatus) {
+            complete:function (xhr, textStatus) {
                 top.layer.close(loading);
             }
         });
     }
 </script>
+</body>
+</html>

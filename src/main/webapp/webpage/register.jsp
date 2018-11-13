@@ -6,62 +6,131 @@
     <%@include file="../resource/inc/incJs.jsp" %>
 
     <style type="text/css">
-        form.form_login {
-            width: 60%;
-            max-width: 450px;
-            margin: auto;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            margin-top: 20%;
+        .el-header {
+            background-color: #409EFF;
+            color: white;
+            text-align: center;
+            line-height: 60px;
         }
 
-        button.login {
+        .register-container {
+            border-radius: 5px;
+            -moz-border-radius: 5px;
+            background-clip: padding-box;
+            margin: 180px auto;
+            width: 450px;
+            padding: 35px 35px 15px;
+            background: white;
+            border: 1px solid #eaeaea;
+            box-shadow: 0 0 25px #cac6c6;
+        }
+
+        .register-container .title {
+            margin: 0 auto 40px;
+            text-align: center;
+            color: #505458;
+            font-weight: 600;
+        }
+
+        .el-button {
             width: 100%;
+        }
+
+        body {
+            background: url("../resource/images/bg_login.png") no-repeat;
+            background-size: 100% 100%;
+            -moz-background-size: 100% 100%;
+            overflow-y: hidden;
         }
     </style>
 </head>
 
 <body>
-<div class="container">
-    <div class="navi background-color">
-        <h3 align="center" class="nav_title"><%=CommConst.WEB_TITLE%>
-        </h3>
+<div id="app">
+    <div class="container">
+        <el-container>
+            <el-header>
+                <h3><%=CommConst.WEB_TITLE%>
+                </h3>
+            </el-header>
+            <%--
+             model:数据对象
+             prop:传入model中的字段
+             rules:验证规则
+             ref:组件元素本身
+
+             注意：在el-form中，需要用冒号 :model  :rules
+             --%>
+            <el-main>
+                <el-form class="demo-ruleForm register-container" :model="registerModel" :rules="registerRules" ref="registerForm">
+                    <h4 class="title">管理员注册</h4>
+                    <el-form-item prop="name">
+                        <el-input v-model="registerModel.name" type="text" autocomplete="off" placeholder="请输入账号" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item prop="password">
+                        <el-input v-model="registerModel.password" type="password" autocomplete="off" placeholder="请输入密码" clearable id="password"></el-input>
+                    </el-form-item>
+                    <el-form-item prop="passwordConfirm">
+                        <el-input v-model="registerModel.passwordConfirm" type="password" autocomplete="off" placeholder="请再次输入密码" clearable></el-input>
+                    </el-form-item>
+                    <el-form-item>
+                        <el-button type="primary" v-on:click="onClickRegister('registerForm')">注册
+                        </el-button>
+                    </el-form-item>
+                </el-form>
+            </el-main>
+        </el-container>
     </div>
-    <form class="form_login">
-        <div class="form-group">
-            <input type="text" class="form-control" id="account" placeholder="账号">
-        </div>
-        <div class="form-group">
-            <input type="password" class="form-control" id="password" placeholder="密码">
-        </div>
-        <div class="form-group">
-            <input type="password" class="form-control" id="password_confirm" placeholder="再输入密码">
-        </div>
-        <button type="button" class="btn btn-primary login">注册</button>
-    </form>
 </div>
 
 <script type="text/javascript">
-    $('.form_login button.login').click(function () {
-        var name = $('input#account').val().trim();
-        var password = $('input#password').val().trim();
-        var passwordConfirm = $('input#password_confirm').val().trim();
-        var pattern = /^[0-9a-zA-Z]{4,12}$/;
+    new Vue({
+        el: '#app',
+        data: function () {
+            var checkInput = function (rule, value, callback) {
+                var pattern = /^[0-9a-zA-Z]{4,12}$/;
+                if (!pattern.test(value)) {
+                    callback(new Error("需要4个字符以上，并且只能是数字或者字母组成"));
+                } else callback()
+            };
+            var checkPsConf = function (rule, value, callback) {
+                var password = $("#password").val().trim();
+                if (password !== value)
+                    callback(new Error("两次输入的密码不一致"));
+            }
 
-        if (!name)
-            layTip("账号不能为空");
-        else if (!password || !passwordConfirm)
-            layTip("密码不能为空");
-        else if (!pattern.test(name))
-            layTip("账号需要4个字符以上，并且只能是数字或者字母组成");
-        else if (!pattern.test(password))
-            layTip("密码需要4个字符以上，并且只能是数字或者字母组成");
-        else if (password !== passwordConfirm)
-            layTip("两次输入的密码不一致");
-        else
-            ajaxRegister(name, password);
+            return {
+                registerModel: {
+                    name: '',
+                    password: '',
+                    passwordConfirm: ''
+                },
+                registerRules: {
+                    name: [
+                        {required: true, message: '请输入账号', trigger: 'blur'},
+                        {validator: checkInput, trigger: 'blur'}
+                    ],
+                    password: [
+                        {required: true, message: '请输入密码', trigger: 'blur'},
+                        {validator: checkInput, trigger: 'blur'}
+                    ],
+                    passwordConfirm: [
+                        {required: true, message: '请输入密码', trigger: 'blur'},
+                        {validator: checkPsConf, trigger: 'blur'}
+                    ]
+                }
+            }
+        },
+        methods: {
+            onClickRegister(formName) {
+                this.$refs[formName].validate((isValid) => {
+                    var model = this.$refs[formName].model;
+                    if (isValid) {
+                        ajaxRegister(model.name, model.password)
+                    }
+                });
+            }
+        }
     });
 
     function ajaxRegister(name, password) {

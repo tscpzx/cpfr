@@ -1,34 +1,42 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<style type="text/css">
-    .device_info_box {
-        padding: 20px;
-    }
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <%@include file="../../resource/inc/incCss.jsp" %>
+    <%@include file="../../resource/inc/incJs.jsp" %>
 
-    .form-control {
-        width: 400px;
-        display: inline-block;
-    }
+    <style type="text/css">
+        .device_info_box {
+            padding: 20px;
+        }
 
-    .div_group {
-        margin: 10px 10px 20px 10px;
-    }
+        .form-control {
+            width: 400px;
+            display: inline-block;
+        }
 
-    .div_group label {
-        width: 150px;
-        line-height: 32px;
-        text-align: right;
-        padding-right: 10px;
-        font-size: 14px;
-        color: #606266;
-        font-weight: 500;
-    }
+        .div_group {
+            margin: 10px 10px 20px 10px;
+        }
 
-    #btn_active {
-        width: 100px;
-        margin-left: 20px;
-    }
-</style>
+        .div_group label {
+            width: 150px;
+            line-height: 32px;
+            text-align: right;
+            padding-right: 10px;
+            font-size: 14px;
+            color: #606266;
+            font-weight: 500;
+        }
+
+        #btn_active {
+            width: 100px;
+            margin-left: 20px;
+        }
+    </style>
+</head>
+<body>
 <div class="device_info_box">
     <div class="div_group">
         <label>设备指纹：&nbsp;</label>
@@ -82,3 +90,5 @@
         })
     });
 </script>
+</body>
+</html>

@@ -1,88 +1,71 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <%@include file="../../resource/inc/incCss.jsp" %>
-    <%@include file="../../resource/inc/incJs.jsp" %>
-    <!--navMenu-->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/navMenu.css"/>
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/navMenu.js"></script>
-    <style type="text/css">
-        .navMenuBox {
-            height: 100%;
-        }
+<style type="text/css">
+    .el-tree-node__content {
+        height: 36px;
+    }
 
-        .input-group {
-            margin: 15px 10px 15px 10px;
-        }
+    .custom-tree-node {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        font-size: 14px;
+    }
 
-    </style>
-</head>
-<body>
-<table style="width:100%;height: 100%;">
-    <tr>
-        <td width="250px;">
-            <!--包裹层-->
-            <div class="navMenuBox">
+    #person {
+        width: 250px;
+        height: 100%;
+        background: #EBEFF2;
+        overflow-y: auto;
+        float: left;
+    }
 
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="搜索设备">
-                    <span class="input-group-btn">
-                        <button class="btn btn-default" type="button">搜索</button>
-                      </span>
-                </div>
+    .el-tree {
+        background: #EBEFF2;
+    }
+</style>
+<div id="person">
+    <el-tree :data="items" :props="defaultProps" @node-click="onNodeClick" @node-expand="onHandleExpand" node-key="id" :default-expanded-keys="[1]" ref="tree"></el-tree>
+</div>
+<div id="person_content" style="float: left;width: calc(100% - 250px);"></div>
 
-                <!--一级菜单-->
-                <ul class="navMenu">
-                    <!--菜单项-->
-                    <li>
-                        <a class="arrow" onclick="onClickPersonMenu(this)">人员列表</a>
-                        <!--子菜单-->
-                        <ul class="subMenu" v-cloak id="person_list">
-                            <li v-for="data in items" v-on:click="onClickItem(data)">
-                                <a v-bind:href="'${pageContext.request.contextPath}/person/detail?person_id='+data.person_id" target="if_person">{{data.person_name}}</a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-        </td>
-        <td>
-            <iframe class="if_window" name="if_person" src="person_tbl.jsp"></iframe>
-        </td>
-    </tr>
-</table>
 <script type="text/javascript">
     ajaxPersonList();
-    var personList = new Vue({
-        el: "#person_list",
+    var vmList = new Vue({
+        el: "#person",
         data: {
-            items: [],
-            searching: true
+            items: [{
+                id: 1,
+                person_name: '人员列表',
+                children: []
+            }],
+            defaultProps: {
+                children: 'children',
+                label: 'person_name'
+            }
         },
         methods: {
-            onClickItem: function (data) {
+            onNodeClick(data) {
+                if (data.person_name !== "人员列表") {
+                    $("#person_content").load("${pageContext.request.contextPath}/person/detail?person_id=" + data.person_id);
+                }
+            },
+            onHandleExpand(data, node, tree) {
+                if (data.person_name === "人员列表") {
+                    $("#person_content").load("person/person_tbl");
+                }
             }
         }
     });
+
+    $("#person_content").load("person/person_tbl");
 
     function ajaxPersonList() {
         ajaxGet({
             url: "${pageContext.request.contextPath}/person/list",
             data: {},
             success: function (result) {
-                personList.items = result.data;
-                $(".navMenu li:eq(0)").addClass("active");
-                $(".navMenu li:eq(0) .subMenu").slideDown();
+                vmList.items[0].children = result.data;
             }
         });
     }
-
-    function onClickPersonMenu(e) {
-        if (!$(e).parent().hasClass("active")) {
-            $(".if_window").attr("src", "person_tbl.jsp");
-        }
-    }
 </script>
-</body>
-</html>
