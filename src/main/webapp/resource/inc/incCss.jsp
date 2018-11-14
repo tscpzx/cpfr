@@ -12,6 +12,8 @@
 <!--导入Font Awesome图标字库css文件-->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/font-awesome.min.css"/>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resource/component/element-ui/index.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/pagination.css"/>
+
 <style type="text/css">
     /*修复vue加载时显示{{}}问题 */
     [v-cloak] {

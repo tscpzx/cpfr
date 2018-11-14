@@ -34,7 +34,7 @@
 
 		CREATE TABLE IF NOT EXISTS `tbl_${value}_group` (
 		  `group_id` int(8) NOT NULL AUTO_INCREMENT COMMENT '组ID',
-		  `gourp_name` varchar(20) NOT NULL COMMENT '组名',
+		  `group_name` varchar(20) NOT NULL COMMENT '组名',
 		  `super_id` int(20) NOT NULL COMMENT '父分组ID,为0时表示第一级分组',
 		  `type` tinyint(2) NOT NULL COMMENT '分组类型 0:未确定，1:设备分组 ，2:子级分组',
 		  `lmt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',

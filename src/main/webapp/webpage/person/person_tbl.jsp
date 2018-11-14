@@ -1,7 +1,4 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/pagination.css"/>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/jquery.pagination.js"></script>
-
 <style type="text/css">
     .person_tbl_box {
         padding: 30px;

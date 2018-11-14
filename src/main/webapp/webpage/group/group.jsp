@@ -24,38 +24,49 @@
     }
 </style>
 <div id="group">
-    <el-tree :data="items" :props="defaultProps" @node-click="onNodeClick"></el-tree>
+    <el-tree :data="items" :props="defaultProps" @node-click="onNodeClick" @node-expand="onHandleExpand" node-key="id" :default-expanded-keys="[1]" ref="tree"></el-tree>
 </div>
-<div id="group_content" style="float: left"></div>
+<div id="group_content" style="float: left;width: calc(100% - 250px);"></div>
 
 <script type="text/javascript">
     ajaxGroupList();
-
     var vmList = new Vue({
         el: "#group",
         data: {
             items: [{
-                device_sn: '分组列表',
+                id: 1,
+                group_name: '分组列表',
                 children: []
             }],
             defaultProps: {
                 children: 'children',
-                label: 'device_sn'
-            }
+                label: 'group_name'
+            },
+            length: ''
         },
         methods: {
             onNodeClick(data) {
-                $("#group_content").load();
+                if (data.group_name !== "分组列表") {
+                    <%--$("#person_content").load("${pageContext.request.contextPath}/group/detail?group_id=" + data.person_id);--%>
+                }
+            },
+            onHandleExpand(data, node, tree) {
+                if (data.group_name === "分组列表") {
+                    $("#person_content").load("group/group_tbl?length=" + this.length);
+                }
             }
         }
     });
 
     function ajaxGroupList() {
         ajaxGet({
-            url: "${pageContext.request.contextPath}/device/inact/list",
+            url: "${pageContext.request.contextPath}/group/list",
             data: {},
             success: function (result) {
                 vmList.items[0].children = result.data;
+                vmList.length = result.data.length;
+
+                $("#person_content").load("group/group_tbl?length=" + vmList.length);
             }
         });
     }

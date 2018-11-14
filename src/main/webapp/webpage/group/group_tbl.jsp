@@ -1,30 +1,37 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <style type="text/css">
-    .device_tbl_box {
+    .group_tbl_box {
         padding: 30px;
         text-align: center;
     }
 
-    .device_tbl_box .el-table {
+    .group_tbl_box .el-table {
         margin: 0 auto;
     }
+
+    .el-form-item {
+        text-align: left;
+    }
 </style>
-<div class="device_tbl_box">
-    <div id="device_tbl">
+<div class="group_tbl_box">
+    <div id="group_tbl">
+        <el-form label-width="20px">
+            <el-form-item>
+                <el-button type="primary" icon="el-icon-plus" id="btn_add_group">添加</el-button>
+            </el-form-item>
+        </el-form>
+
         <template>
             <el-table :data="tableData" style="width: 80%" border>
-                <el-table-column prop="device_id" label="设备ID" width="180">
+                <el-table-column prop="group_id" label="组ID" width="180">
                 </el-table-column>
-                <el-table-column prop="device_name" label="设备名称" width="180">
+                <el-table-column prop="group_name" label="组名" width="180">
                 </el-table-column>
-                <el-table-column prop="online" label="在线" width="180">
-                </el-table-column>
-                <el-table-column prop="device_sn" label="设备序列号">
+                <el-table-column label="操作">
                 </el-table-column>
             </el-table>
         </template>
     </div>
-
     <div class="pagination"></div>
 </div>
 
@@ -41,12 +48,12 @@
         prev_text: '上一页',
         next_text: '下一页',
         callback: function (pageNum) {
-            ajaxDeviceList(pageNum, pageSize);
+            ajaxGroupList(pageNum, pageSize);
         }
     });
 
-    var vueDeviceList = new Vue({
-        el: "#device_tbl",
+    var vueGroupList = new Vue({
+        el: "#group_tbl",
         data: {
             tableData: [],
             searching: true
@@ -57,17 +64,20 @@
         }
     });
 
-    function ajaxDeviceList(pageNum, pageSize) {
+    function ajaxGroupList(pageNum, pageSize) {
         ajaxGet({
-            url: "${pageContext.request.contextPath}/device/list/page",
+            url: "${pageContext.request.contextPath}/group/list/page",
             data: {
                 pageNum: pageNum + 1,
                 pageSize: pageSize
             },
             success: function (result) {
-                vueDeviceList.tableData = result.data.list;
+                vueGroupList.tableData = result.data.list;
             }
         });
     }
+
+    $("#btn_add_person").click(function () {
+    });
 
 </script>

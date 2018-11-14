@@ -7,3 +7,4 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/tool.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/mytool.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/resource/component/element-ui/index.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/jquery.pagination.js"></script>
