@@ -52,29 +52,29 @@
             defaultProps: {
                 children: 'children',
                 label: 'device_sn'
-            }
+            },
+            device_length: '',
+            inact_device_length: ''
         },
         methods: {
             onNodeClick(data) {
                 if (data.device_sn !== "未激活设备" && data.device_sn !== "已激活设备") {
-                    if (data.status === 0){
+                    if (data.status === 0) {
                         $("#device_content").load("${pageContext.request.contextPath}/device/inact/detail?device_sn=" + data.device_sn);
-                    }else {
+                    } else {
                         $("#device_content").load("${pageContext.request.contextPath}/device/detail?device_sn=" + data.device_sn);
                     }
                 }
             },
             onHandleExpand(data, node, tree) {
                 if (data.device_sn === "已激活设备") {
-                    $("#device_content").load("device/device_tbl");
+                    $("#device_content").load("device/device_tbl?length=" + this.device_length);
                 } else if (data.device_sn === "未激活设备") {
-                    $("#device_content").load("device/device_inact_tbl");
+                    $("#device_content").load("device/device_inact_tbl?length=" + this.inact_device_length);
                 }
             }
         }
     });
-
-    $("#device_content").load("device/device_tbl");
 
     function ajaxInActDeviceList() {
         ajaxGet({
@@ -82,6 +82,7 @@
             data: {},
             success: function (result) {
                 vmList.items[0].children = result.data;
+                vmList.inact_device_length = result.data.length;
             }
         });
     }
@@ -92,6 +93,9 @@
             data: {},
             success: function (result) {
                 vmList.items[1].children = result.data;
+                vmList.device_length = result.data.length;
+
+                $("#device_content").load("device/device_tbl?length=" + vmList.device_length);
             }
         });
     }

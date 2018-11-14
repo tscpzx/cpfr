@@ -34,25 +34,16 @@
     var pageNum = 1;
     var pageSize = 10;
 
-    ajaxGet({
-        url: "${pageContext.request.contextPath}/device/list/page",
-        data: {
-            pageNum: pageNum,
-            pageSize: pageSize
-        },
-        success: function (result) {
-            $(".pagination").pagination(result.data.total, {
-                current_page: pageNum - 1,//当前选中的页面
-                items_per_page: pageSize, //每页显示的条目数
-                num_display_entries: 5, // 中间页数
-                num_edge_entries: 1,// 0没有省略号 1有  两侧显示的首尾分页的条目数
-                is_show_skip_page: true,
-                prev_text: '上一页',
-                next_text: '下一页',
-                callback: function (pageNum) {
-                    ajaxDeviceList(pageNum, pageSize);
-                }
-            });
+    $(".pagination").pagination(${param.length}, {
+        current_page: pageNum - 1,//当前选中的页面
+        items_per_page: pageSize, //每页显示的条目数
+        num_display_entries: 5, // 中间页数
+        num_edge_entries: 1,// 0没有省略号 1有  两侧显示的首尾分页的条目数
+        is_show_skip_page: true,
+        prev_text: '上一页',
+        next_text: '下一页',
+        callback: function (pageNum) {
+            ajaxDeviceList(pageNum, pageSize);
         }
     });
 

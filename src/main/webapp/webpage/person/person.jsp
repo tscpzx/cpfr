@@ -41,7 +41,8 @@
             defaultProps: {
                 children: 'children',
                 label: 'person_name'
-            }
+            },
+            length: ''
         },
         methods: {
             onNodeClick(data) {
@@ -51,13 +52,11 @@
             },
             onHandleExpand(data, node, tree) {
                 if (data.person_name === "人员列表") {
-                    $("#person_content").load("person/person_tbl");
+                    $("#person_content").load("person/person_tbl?length=" + this.length);
                 }
             }
         }
     });
-
-    $("#person_content").load("person/person_tbl");
 
     function ajaxPersonList() {
         ajaxGet({
@@ -65,6 +64,9 @@
             data: {},
             success: function (result) {
                 vmList.items[0].children = result.data;
+                vmList.length = result.data.length;
+
+                $("#person_content").load("person/person_tbl?length=" + vmList.length);
             }
         });
     }
