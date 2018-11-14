@@ -4,7 +4,6 @@
 
 <style type="text/css">
     .device_inact_tbl_box {
-        width: 100%;
         padding: 30px;
         text-align: center;
     }
@@ -16,7 +15,7 @@
 <div class="device_inact_tbl_box">
     <div id="device_inact_tbl">
         <template>
-            <el-table :data="tableData" style="width: 80%" border>
+            <el-table :data="tableData" style="width: 90%" border>
                 <el-table-column prop="id" label="ID" width="180">
                 </el-table-column>
                 <el-table-column prop="device_sn" label="设备序列号" width="180">

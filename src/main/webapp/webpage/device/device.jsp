@@ -57,7 +57,11 @@
         methods: {
             onNodeClick(data) {
                 if (data.device_sn !== "未激活设备" && data.device_sn !== "已激活设备") {
-                    $("#device_content").load("${pageContext.request.contextPath}/device/inact/detail?device_sn=" + data.device_sn);
+                    if (data.status === 0){
+                        $("#device_content").load("${pageContext.request.contextPath}/device/inact/detail?device_sn=" + data.device_sn);
+                    }else {
+                        $("#device_content").load("${pageContext.request.contextPath}/device/detail?device_sn=" + data.device_sn);
+                    }
                 }
             },
             onHandleExpand(data, node, tree) {

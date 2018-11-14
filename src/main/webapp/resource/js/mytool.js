@@ -45,7 +45,10 @@ function layLoading3(msg) {
 }
 
 function elmLoading1() {
-    return new Vue().$loading();
+    return new Vue().$loading({
+        lock: true,
+        background: 'rgba(0, 0, 0, 0.1)'
+    });
 }
 
 function elmAlert1(msg) {

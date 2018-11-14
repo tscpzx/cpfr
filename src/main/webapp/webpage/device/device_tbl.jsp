@@ -3,7 +3,6 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/resource/js/jquery.pagination.js"></script>
 <style type="text/css">
     .device_tbl_box {
-        width: 100%;
         padding: 30px;
         text-align: center;
     }

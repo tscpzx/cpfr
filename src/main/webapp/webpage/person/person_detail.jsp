@@ -1,63 +1,55 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <style type="text/css">
-    .person_info_box {
+    .person_detail_box {
         padding: 20px;
     }
 
-    .form-control {
+    .el-input {
         width: 400px;
-        display: inline-block;
     }
 
     .div_group {
-        margin: 10px 10px 20px 10px;
+        margin: 10px 0 10px 0;
     }
 
     .div_group label {
         width: 150px;
-        line-height: 32px;
         text-align: right;
-        padding-right: 10px;
+        float: left;
         font-size: 14px;
         color: #606266;
-        font-weight: 500;
+        line-height: 40px;
+        padding: 0 12px 0 0;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
     }
-
 </style>
-<div class="person_info_box">
-    <ul class="nav nav-tabs">
-        <li class="active">
-            <a href="#base_info" data-toggle="tab">基本信息</a>
-        </li>
-        <li><a href="#grant_device" data-toggle="tab">可通行设备</a></li>
-    </ul>
-    <div class="tab-content">
-        <div class="tab-pane fade in active" id="base_info">
-            <div class="div_group">
-                <label>人员ID：&nbsp;</label>
+<div class="person_detail_box">
+    <div id="person_detail">
+        <el-form label-width="150px">
+            <el-form-item label="人员ID:">
                 <span>${data.person_id}</span>
-            </div>
-            <div class="div_group">
-                <label>添加时间：&nbsp;</label>
+            </el-form-item>
+            <el-form-item label="注册时间:">
                 <span>${data.add_time}</span>
-            </div>
-            <div class="div_group">
-                <label>姓名：&nbsp;</label>
-                <input type="text" class="form-control" readonly="readonly" value="${data.person_name}">
-            </div>
-            <div class="div_group">
-                <label>工号：&nbsp;</label>
-                <input type="text" class="form-control" readonly="readonly" value="${data.emp_number}">
-            </div>
-            <div class="div_group">
-                <label>底库图片：&nbsp;</label>
-                <img class="image" src="data:image/jpeg;base64,${data.base_image}">
-            </div>
-        </div>
-
-        <div class="tab-pane fade" id="grant_device">
-        </div>
-
+            </el-form-item>
+            <el-form-item label="姓名:">
+                <el-input value="${data.person_name}" :disabled="true" type="text" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="工号:">
+                <el-input value="${data.emp_number}" :disabled="true" type="text" autocomplete="off"></el-input>
+            </el-form-item>
+        </el-form>
+    </div>
+    <div class="div_group">
+        <label>底库图片:</label>
+        <img class="image" src="data:image/jpeg;base64,${data.base_image}">
     </div>
 </div>
+
+<script type="text/javascript">
+    new Vue({
+        el: "#person_detail"
+    });
+</script>

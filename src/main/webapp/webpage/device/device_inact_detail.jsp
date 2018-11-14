@@ -1,66 +1,51 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <style type="text/css">
-    .device_info_box {
+    .device_detail_box {
         padding: 20px;
     }
 
-    .form-control {
+    .el-input {
         width: 400px;
-        display: inline-block;
-    }
-
-    .div_group {
-        margin: 10px 10px 20px 10px;
-    }
-
-    .div_group label {
-        width: 150px;
-        line-height: 32px;
-        text-align: right;
-        padding-right: 10px;
-        font-size: 14px;
-        color: #606266;
-        font-weight: 500;
     }
 
     #btn_active {
-        width: 100px;
-        margin-left: 20px;
+        margin-left: 50px;
     }
 </style>
-<div class="device_info_box">
-    <div class="div_group">
-        <label>设备指纹：&nbsp;</label>
-        <input type="text" class="form-control" placeholder="" readonly="readonly" value="${data.device_sn}">
-    </div>
-    <div class="div_group">
-        <label>设备授权码：&nbsp;</label>
-        <input type="text" id="input_grant_key" class="form-control" placeholder="">
-    </div>
-    <div class="div_group">
-        <label>注册时间：&nbsp;</label>
-        <span>${data.register_time}</span>
-    </div>
-    <div class="div_group">
-        <label>激活状态：&nbsp;</label>
-        <c:choose>
-            <c:when test="${data.status==0}">
-                <span>未激活</span>
-                <button id="btn_active" type="button" class="btn btn-success">激活
-                </button>
-            </c:when>
-            <c:otherwise>
-                <span>已激活</span>
-                <button id="btn_active" type="button" class="btn btn-success" disabled="disabled">
-                    已激活
-                </button>
-            </c:otherwise>
-        </c:choose>
+<div class="device_detail_box">
+    <div id="device_detail">
+        <el-form label-width="150px">
+            <el-form-item label="设备序列号:">
+                <el-input value="${data.device_sn}" :disabled="true" type="text" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="授权码:">
+                <el-input value="${data.mac_grant_key}" type="text" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="注册时间:">
+                <span>${data.register_time}</span>
+            </el-form-item>
+            <el-form-item label="在线:">
+                <c:if test="${data.online==1}"> <span>在线</span></c:if>
+                <c:if test="${data.online==0}"> <span>离线</span></c:if>
+            </el-form-item>
+            <el-form-item label="激活状态:">
+                <c:if test="${data.status==1}">
+                    <span>已激活</span>
+                </c:if>
+                <c:if test="${data.status==0}">
+                    <span>未激活</span>
+                    <el-button type="primary" round id="btn_active">激活</el-button>
+                </c:if>
+            </el-form-item>
+        </el-form>
     </div>
 </div>
 
 <script type="text/javascript">
+    new Vue({
+        el: "#device_detail"
+    });
     $('#btn_active').click(function () {
         var mac_grant_key = $('#input_grant_key').val().trim();
         if (!mac_grant_key) {

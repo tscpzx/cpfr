@@ -4,37 +4,26 @@
 
 <style type="text/css">
     .person_tbl_box {
-        width: 100%;
         padding: 30px;
         text-align: center;
     }
 
-    .person_tbl_box .el-table  {
+    .person_tbl_box .el-table {
         margin: 0 auto;
     }
 
-    .div_header {
-        position: relative;
-        height: 35px;
-        margin: 10px 0;
+    .el-form-item{
+        text-align: left;
     }
-
-    .div_header button {
-        top: 0;
-        left: 0;
-        position: absolute;
-    }
-
 </style>
 <div class="person_tbl_box">
-    <div class="div_header">
-        <button type="button" class="btn btn-success">
-            <span class="icon fa-plus"></span>添加
-        </button>
-
-    </div>
-
     <div id="person_tbl">
+        <el-form label-width="20px">
+            <el-form-item>
+                <el-button type="primary" icon="el-icon-plus" id="btn_add_person">添加</el-button>
+            </el-form-item>
+        </el-form>
+
         <template>
             <el-table :data="tableData" style="width: 80%" border>
                 <el-table-column prop="person_id" label="人员ID" width="180">
@@ -48,7 +37,7 @@
                         <img class="image_tbl" v-bind:src="'data:image/jpeg;base64,'+scope.row.base_image">
                     </template>
                 </el-table-column>
-                <el-table-column  label="操作">
+                <el-table-column label="操作">
                 </el-table-column>
             </el-table>
         </template>
@@ -58,7 +47,7 @@
 
 <script type="text/javascript">
     var pageNum = 1;
-    var pageSize = 10;
+    var pageSize = 5;
 
     ajaxGet({
         url: "${pageContext.request.contextPath}/person/list/page",
@@ -107,7 +96,7 @@
         });
     }
 
-    $(".div_header button").click(function () {
+    $("#btn_add_person").click(function () {
         $("#person_content").load("person/person_add");
     });
 
