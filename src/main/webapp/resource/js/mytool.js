@@ -69,8 +69,6 @@ function ajax(type, jsonObj) {
     var data = jsonObj.data;
     var success = function (result) {
         // console.log(JSON.stringify(result, null, 1));
-        // top.layer.close(loading);
-        loading.close();
         if (checkSession(result)) {
             if (result.code !== 0) {
                 layAlert1(result.message);
@@ -79,7 +77,10 @@ function ajax(type, jsonObj) {
             jsonObj.success(result);
         }
     };
-    var complete = jsonObj.complete;//成败成功都会回调
+    var complete = function (xhr) {
+        // top.layer.close(loading);
+        loading.close();
+    };//成败成功都会回调
     var error = jsonObj.error;
     var xhr = $.ajax({
         type: type,
@@ -140,3 +141,13 @@ function formatDate(date, fmt) {
     }
     return fmt;
 }
+
+//求数据差集
+$.arrayIntersect = function (a, b) {
+    return $.merge($.grep(a, function (i) {
+            return $.inArray(i, b) === -1;
+        }), $.grep(b, function (i) {
+            return $.inArray(i, a) === -1;
+        })
+    );
+};

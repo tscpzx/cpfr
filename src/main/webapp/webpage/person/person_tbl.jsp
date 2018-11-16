@@ -73,7 +73,7 @@
 
     function ajaxPersonList(pageNum, pageSize) {
         ajaxGet({
-            url: "${pageContext.request.contextPath}/person/list/page",
+            url: "${pageContext.request.contextPath}/person/page",
             data: {
                 pageNum: pageNum + 1,
                 pageSize: pageSize

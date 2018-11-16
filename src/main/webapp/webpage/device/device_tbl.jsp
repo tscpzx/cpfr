@@ -59,7 +59,7 @@
 
     function ajaxDeviceList(pageNum, pageSize) {
         ajaxGet({
-            url: "${pageContext.request.contextPath}/device/list/page",
+            url: "${pageContext.request.contextPath}/device/page",
             data: {
                 pageNum: pageNum + 1,
                 pageSize: pageSize

@@ -25,4 +25,9 @@ public class GroupServiceImpl implements GroupService {
     public List<ParamData> getGroupList(ParamData pd) {
         return mGroupDao.selectGroupList(pd);
     }
+
+    @Override
+    public ParamData queryGroup(ParamData pd) {
+        return mGroupDao.selectGroup(pd);
+    }
 }

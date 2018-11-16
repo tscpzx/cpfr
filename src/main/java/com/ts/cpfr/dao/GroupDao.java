@@ -12,4 +12,6 @@ import java.util.List;
  */
 public interface GroupDao {
     List<ParamData> selectGroupList(ParamData pd);
+
+    ParamData selectGroup(ParamData pd);
 }

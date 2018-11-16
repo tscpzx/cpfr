@@ -1,14 +1,22 @@
 package com.ts.cpfr.controller.group;
 
+import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.ts.cpfr.controller.base.BaseController;
 import com.ts.cpfr.ehcache.Memory;
+import com.ts.cpfr.service.DeviceService;
 import com.ts.cpfr.service.GroupService;
+import com.ts.cpfr.service.PersonService;
+import com.ts.cpfr.utils.CommConst;
+import com.ts.cpfr.utils.CommUtil;
 import com.ts.cpfr.utils.HandleEnum;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -30,6 +38,10 @@ public class GroupController extends BaseController {
     @Autowired
     private GroupService mGroupService;
     @Autowired
+    private PersonService mPersonService;
+    @Autowired
+    private DeviceService mDeviceService;
+    @Autowired
     private Memory memory;
 
     @ResponseBody
@@ -46,4 +58,41 @@ public class GroupController extends BaseController {
         }
     }
 
+    @ResponseBody
+    @RequestMapping("/page")
+    public ResultData<PageInfo<ParamData>> listPage(HttpServletRequest request) {
+        try {
+            ParamData pd = paramDataInit();     //初始化分页参数
+            int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
+            int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
+            PageHelper.startPage(pageNum, pageSize);
+            pd.put("wid", memory.getLoginUser().getWId());
+            List<ParamData> groupList = mGroupService.getGroupList(pd);
+            PageInfo<ParamData> pageInfo = new PageInfo<>(groupList);
+            return new ResultData<>(HandleEnum.SUCCESS, pageInfo);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
+    @RequestMapping("/detail")
+    public String detail(Model model, HttpServletRequest request) {
+        try {
+            ParamData pd = paramDataInit();
+            pd.put("wid", memory.getLoginUser().getWId());
+            ParamData group = mGroupService.queryGroup(pd);
+            List<ParamData> personList = mPersonService.getPersonList(pd);
+            List<ParamData> deviceList = mDeviceService.getDeviceList(pd);
+            ParamData data = new ParamData();
+            data.put("group", group);
+            data.put("person_list", personList);
+            data.put("device_list", deviceList);
+            model.addAttribute(CommConst.DATA, JSON.toJSONString(data));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "group/group_detail";
+    }
 }

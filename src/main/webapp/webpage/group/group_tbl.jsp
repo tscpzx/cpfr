@@ -66,7 +66,7 @@
 
     function ajaxGroupList(pageNum, pageSize) {
         ajaxGet({
-            url: "${pageContext.request.contextPath}/group/list/page",
+            url: "${pageContext.request.contextPath}/group/page",
             data: {
                 pageNum: pageNum + 1,
                 pageSize: pageSize

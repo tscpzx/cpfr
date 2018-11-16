@@ -78,7 +78,7 @@
 
     function ajaxInActDeviceList() {
         ajaxGet({
-            url: "${pageContext.request.contextPath}/device/inact/list",
+            url: "${pageContext.request.contextPath}/device/inact_list",
             data: {},
             success: function (result) {
                 vmList.items[0].children = result.data;

@@ -5,4 +5,8 @@
 	<select id="selectGroupList" parameterType="pd" resultType="pd">
 		select * from tbl_#{wid}_group
 	</select>
+
+	<select id="selectGroup" parameterType="pd" resultType="pd">
+		select * from tbl_#{wid}_group where group_id=#{group_id}
+	</select>
 </mapper>

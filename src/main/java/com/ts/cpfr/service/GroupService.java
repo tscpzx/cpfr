@@ -12,4 +12,6 @@ import java.util.List;
  */
 public interface GroupService {
     List<ParamData> getGroupList(ParamData pd);
+
+    ParamData queryGroup(ParamData pd);
 }

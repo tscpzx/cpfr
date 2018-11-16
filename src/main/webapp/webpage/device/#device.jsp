@@ -88,7 +88,7 @@
 
     function ajaxInActDeviceList() {
         ajaxGet({
-            url: "${pageContext.request.contextPath}/device/inact/list",
+            url: "${pageContext.request.contextPath}/device/inact_list",
             data: {},
             success: function (result) {
                 vueInactDeviceList.items = result.data;

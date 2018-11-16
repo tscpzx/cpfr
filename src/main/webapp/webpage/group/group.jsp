@@ -47,12 +47,12 @@
         methods: {
             onNodeClick(data) {
                 if (data.group_name !== "分组列表") {
-                    <%--$("#person_content").load("${pageContext.request.contextPath}/group/detail?group_id=" + data.person_id);--%>
+                    $("#group_content").load("${pageContext.request.contextPath}/group/detail?group_id=" + data.group_id);
                 }
             },
             onHandleExpand(data, node, tree) {
                 if (data.group_name === "分组列表") {
-                    $("#person_content").load("group/group_tbl?length=" + this.length);
+                    $("#group_content").load("group/group_tbl?length=" + this.length);
                 }
             }
         }
@@ -66,7 +66,7 @@
                 vmList.items[0].children = result.data;
                 vmList.length = result.data.length;
 
-                $("#person_content").load("group/group_tbl?length=" + vmList.length);
+                $("#group_content").load("group/group_tbl?length=" + vmList.length);
             }
         });
     }

@@ -29,27 +29,39 @@
     <div id="person_detail">
         <el-form label-width="150px">
             <el-form-item label="人员ID:">
-                <span>${data.person_id}</span>
+                <span>{{data.person_id}}</span>
             </el-form-item>
             <el-form-item label="注册时间:">
-                <span>${data.add_time}</span>
+                <span>{{data.add_time|formatDate}}</span>
             </el-form-item>
             <el-form-item label="姓名:">
-                <el-input value="${data.person_name}" :disabled="true" type="text" autocomplete="off"></el-input>
+                <el-input v-bind:value="data.person_name" :disabled="true" type="text" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="工号:">
-                <el-input value="${data.emp_number}" :disabled="true" type="text" autocomplete="off"></el-input>
+                <el-input :value="data.emp_number" :disabled="true" type="text" autocomplete="off"></el-input>
+            </el-form-item>
+            <el-form-item label="底库图片:">
+                <img class="image" :src="'data:image/jpeg;base64,'+data.base_image">
             </el-form-item>
         </el-form>
-    </div>
-    <div class="div_group">
-        <label>底库图片:</label>
-        <img class="image" src="data:image/jpeg;base64,${data.base_image}">
     </div>
 </div>
 
 <script type="text/javascript">
+    var data = '${data}';
+    //base64去换行
+    data = data.replace(/<\/?.+?>/g, "");
+    data = data.replace(/[\r\n]/g, "");
+    data = $.parseJSON(data);
     new Vue({
-        el: "#person_detail"
+        el: "#person_detail",
+        data: data
+        ,
+        filters: {
+            formatDate: function (time) {
+                var data = new Date(time);
+                return formatDate(data, 'yyyy-MM-dd hh:mm:ss');
+            }
+        }
     });
 </script>

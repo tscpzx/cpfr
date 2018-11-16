@@ -70,7 +70,7 @@
 
     function ajaxInActDeviceList(pageNum, pageSize) {
         ajaxGet({
-            url: "${pageContext.request.contextPath}/device/inact/list/page",
+            url: "${pageContext.request.contextPath}/device/inact_page",
             data: {
                 pageNum: pageNum + 1,
                 pageSize: pageSize

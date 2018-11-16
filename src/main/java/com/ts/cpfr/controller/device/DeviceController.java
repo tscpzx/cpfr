@@ -60,7 +60,7 @@ public class DeviceController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping("/list/page")
+    @RequestMapping("/page")
     public ResultData<PageInfo<ParamData>> listPage(HttpServletRequest request) {
         try {
             ParamData pd = paramDataInit();     //初始化分页参数
@@ -118,7 +118,7 @@ public class DeviceController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping("/inact/list")
+    @RequestMapping("/inact_list")
     public ResultData<List<ParamData>> inactList(HttpServletRequest request) {
         try {
             ParamData pd = paramDataInit();     //初始化分页参数
@@ -131,7 +131,7 @@ public class DeviceController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping("/inact/list/page")
+    @RequestMapping("/inact_page")
     public ResultData<PageInfo<ParamData>> inactListPage(HttpServletRequest request) {
         try {
             ParamData pd = paramDataInit();     //初始化分页参数
@@ -147,7 +147,7 @@ public class DeviceController extends BaseController {
         }
     }
 
-    @RequestMapping("/inact/detail")
+    @RequestMapping("/inact_detail")
     public String inactDetail(Model model) {
         try {
             ParamData pd = paramDataInit();

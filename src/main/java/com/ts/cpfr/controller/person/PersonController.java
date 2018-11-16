@@ -1,5 +1,6 @@
 package com.ts.cpfr.controller.person;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.ts.cpfr.controller.base.BaseController;
@@ -55,7 +56,7 @@ public class PersonController extends BaseController {
     }
 
     @ResponseBody
-    @RequestMapping("/list/page")
+    @RequestMapping("/page")
     public ResultData<PageInfo<ParamData>> listPage(HttpServletRequest request) {
         try {
             ParamData pd = paramDataInit();     //初始化分页参数
@@ -99,7 +100,7 @@ public class PersonController extends BaseController {
             BASE64Encoder base64Encoder = new BASE64Encoder();
             String base64 = base64Encoder.encode(bytes);
             paramData.put("base_image", base64);
-            model.addAttribute(CommConst.DATA, paramData);
+            model.addAttribute(CommConst.DATA, JSON.toJSONString(paramData));
         } catch (Exception e) {
             e.printStackTrace();
         }

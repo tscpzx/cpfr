@@ -20,7 +20,7 @@
                 <el-input value="${data.device_sn}" :disabled="true" type="text" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="授权码:">
-                <el-input value="${data.mac_grant_key}" type="text" autocomplete="off"></el-input>
+                <el-input id="input_grant_key" value="${data.mac_grant_key}" type="text" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="注册时间:">
                 <span>${data.register_time}</span>
