@@ -62,12 +62,12 @@
             <el-aside width="200px" style="height: 100%;background:#545c64;">
                 <el-menu default-active="device/device" class="el-menu-vertical-demo" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
                     <el-menu-item index="device/device" @click="onClick($event)">
-                        <i class="el-icon-menu"></i>
+                        <i class="el-icon-mobile-phone"></i>
                         <span slot="title">设备管理</span>
                     </el-menu-item>
                     <el-submenu index="person">
                         <template slot="title">
-                            <i class="el-icon-location"></i>
+                            <i class="el-icon-service"></i>
                             <span>人员管理</span>
                         </template>
                         <el-menu-item-group>
@@ -85,7 +85,7 @@
                         <span slot="title">记录管理</span>
                     </el-menu-item>
                     <el-menu-item index="5">
-                        <i class="el-icon-document"></i>
+                        <i class="el-icon-edit-outline"></i>
                         <span slot="title">账号管理</span>
                     </el-menu-item>
                 </el-menu>

@@ -42,4 +42,11 @@
 	<insert id="insertDevice" parameterType="pd">
 		INSERT INTO tbl_#{wid}_device (device_name,device_sn,mac_grant_key,device_ip_address,online) VALUES(#{device_sn},#{device_sn},#{mac_grant_key},#{device_ip_address},#{online})
 	</insert>
+
+	<update id="updateDeviceGroupID" parameterType="pd">
+		UPDATE tbl_#{wid}_device SET group_id = #{group_id}  WHERE
+		<foreach collection="list" item="data" separator=" or ">
+			device_id=#{data.device_id}
+		</foreach>
+	</update>
 </mapper>

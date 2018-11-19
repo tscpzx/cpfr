@@ -1,6 +1,8 @@
 package com.ts.cpfr.service.impl;
 
+import com.ts.cpfr.dao.DeviceDao;
 import com.ts.cpfr.dao.GroupDao;
+import com.ts.cpfr.dao.PersonDao;
 import com.ts.cpfr.service.GroupService;
 import com.ts.cpfr.utils.ParamData;
 
@@ -20,6 +22,10 @@ import javax.annotation.Resource;
 public class GroupServiceImpl implements GroupService {
     @Resource
     private GroupDao mGroupDao;
+    @Resource
+    private PersonDao mPersonDao;
+    @Resource
+    private DeviceDao mDeviceDao;
 
     @Override
     public List<ParamData> getGroupList(ParamData pd) {
@@ -29,5 +35,20 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public ParamData queryGroup(ParamData pd) {
         return mGroupDao.selectGroup(pd);
+    }
+
+    @Override
+    public boolean addGroup(ParamData pd) {
+        return mGroupDao.insertGroup(pd);
+    }
+
+    @Override
+    public boolean addGroupPerson(ParamData pd) {
+        return mPersonDao.updatePersonGroupID(pd);
+    }
+
+    @Override
+    public boolean addGroupDevice(ParamData pd) {
+        return mDeviceDao.updateDeviceGroupID(pd);
     }
 }

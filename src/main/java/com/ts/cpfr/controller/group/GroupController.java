@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -85,5 +86,77 @@ public class GroupController extends BaseController {
         }
 
         return "group/group_detail";
+    }
+
+    @ResponseBody
+    @RequestMapping("/add")
+    public ResultData<ParamData> add(HttpServletRequest request) {
+        try {
+            ParamData pd = paramDataInit();
+            pd.put("wid", memory.getLoginUser().getWId());
+            if (mGroupService.addGroup(pd)) return new ResultData<>(HandleEnum.SUCCESS);
+            else return new ResultData<>(HandleEnum.FAIL);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("/add_person")
+    public ResultData<ParamData> addPerson(HttpServletRequest request) {
+        try {
+            ParamData pd = paramDataInit();
+            String person_ids = pd.getString("person_ids");
+
+            List<ParamData> list = new ArrayList<>();
+            String[] personIdArr = person_ids.split(",");
+            for (String personId : personIdArr) {
+                ParamData paramData = new ParamData();
+                int person_id = Integer.parseInt(personId);
+                paramData.put("person_id", person_id);
+                list.add(paramData);
+            }
+
+            ParamData paramData = new ParamData();
+            paramData.put("wid", memory.getLoginUser().getWId());
+            paramData.put("group_id", pd.getString("group_id"));
+            paramData.put("list", list);
+            if (mGroupService.addGroupPerson(paramData))
+                return new ResultData<>(HandleEnum.SUCCESS);
+            else return new ResultData<>(HandleEnum.FAIL);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("/add_device")
+    public ResultData<ParamData> addDevice(HttpServletRequest request) {
+        try {
+            ParamData pd = paramDataInit();
+            String device_ids = pd.getString("device_ids");
+
+            List<ParamData> list = new ArrayList<>();
+            String[] deviceIdArr = device_ids.split(",");
+            for (String deviceId : deviceIdArr) {
+                ParamData paramData = new ParamData();
+                int device_id = Integer.parseInt(deviceId);
+                paramData.put("device_id", device_id);
+                list.add(paramData);
+            }
+
+            ParamData paramData = new ParamData();
+            paramData.put("wid", memory.getLoginUser().getWId());
+            paramData.put("group_id", pd.getString("group_id"));
+            paramData.put("list", list);
+            if (mGroupService.addGroupDevice(paramData))
+                return new ResultData<>(HandleEnum.SUCCESS);
+            else return new ResultData<>(HandleEnum.FAIL);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
     }
 }

@@ -14,4 +14,10 @@ public interface GroupService {
     List<ParamData> getGroupList(ParamData pd);
 
     ParamData queryGroup(ParamData pd);
+
+    boolean addGroup(ParamData pd);
+
+    boolean addGroupPerson(ParamData pd);
+
+    boolean addGroupDevice(ParamData pd);
 }

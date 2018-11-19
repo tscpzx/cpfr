@@ -16,4 +16,6 @@ public interface PersonDao {
     List<ParamData> selectPersonList(ParamData pd);
 
     boolean insertPerson(ParamData pd);
+
+    boolean updatePersonGroupID(ParamData pd);
 }

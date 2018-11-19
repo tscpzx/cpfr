@@ -24,7 +24,7 @@
     }
 </style>
 <div id="group">
-    <el-tree :data="items" :props="defaultProps" @node-click="onNodeClick" @node-expand="onHandleExpand" node-key="id" :default-expanded-keys="[1]" ref="tree"></el-tree>
+    <el-tree :data="items" :props="defaultProps" @node-click="onNodeClick" @node-expand="onHandleExpand" node-key="group_id" :default-expanded-keys="[-1]" ref="tree"></el-tree>
 </div>
 <div id="group_content" style=" float: left;
     width: calc(100% - 250px);
@@ -37,7 +37,7 @@
         el: "#group",
         data: {
             items: [{
-                id: 1,
+                group_id: -1,
                 group_name: '分组列表',
                 children: []
             }],
@@ -49,12 +49,12 @@
         },
         methods: {
             onNodeClick(data) {
-                if (data.group_name !== "分组列表") {
+                if (data.group_id !== -1) {
                     $("#group_content").load("${pageContext.request.contextPath}/group/detail?group_id=" + data.group_id);
                 }
             },
             onHandleExpand(data, node, tree) {
-                if (data.group_name === "分组列表") {
+                if (data.group_id === -1) {
                     $("#group_content").load("group/group_tbl?length=" + this.length);
                 }
             }

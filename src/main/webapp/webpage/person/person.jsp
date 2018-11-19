@@ -24,7 +24,14 @@
     }
 </style>
 <div id="person">
-    <el-tree :data="items" :props="defaultProps" @node-click="onNodeClick" @node-expand="onHandleExpand" node-key="id" :default-expanded-keys="[1]" ref="tree"></el-tree>
+    <el-tree
+            :data="items"
+            :props="defaultProps"
+            @node-click="onNodeClick"
+            @node-expand="onHandleExpand"
+            node-key="person_id"
+            :default-expanded-keys="[-1]"
+            ref="tree"></el-tree>
 </div>
 <div id="person_content" style=" float: left;
     width: calc(100% - 250px);
@@ -37,7 +44,7 @@
         el: "#person",
         data: {
             items: [{
-                id: 1,
+                person_id: -1,
                 person_name: '人员列表',
                 children: []
             }],
@@ -49,12 +56,12 @@
         },
         methods: {
             onNodeClick(data) {
-                if (data.person_name !== "人员列表") {
+                if (data.person_id !== -1) {
                     $("#person_content").load("${pageContext.request.contextPath}/person/detail?person_id=" + data.person_id);
                 }
             },
             onHandleExpand(data, node, tree) {
-                if (data.person_name === "人员列表") {
+                if (data.person_id === -1) {
                     $("#person_content").load("person/person_tbl?length=" + this.length);
                 }
             }

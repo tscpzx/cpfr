@@ -9,7 +9,7 @@
 	<select id="selectPersonList" parameterType="pd" resultType="pd">
 		select person_id,person_name,emp_number,base_image from tbl_#{wid}_person
 		<where>
-			<if test="group_id!=null and group_id!=''" >
+			<if test="group_id!=null and group_id!=''">
 				group_id=#{group_id}
 			</if>
 		</where>
@@ -18,4 +18,11 @@
 	<insert id="insertPerson" parameterType="pd">
 		INSERT INTO tbl_#{wid}_person(person_name,emp_number,add_time,base_image) VALUES(#{person_name},#{emp_number},now(),#{base_image})
 	</insert>
+
+	<update id="updatePersonGroupID" parameterType="pd">
+		UPDATE tbl_#{wid}_person SET group_id = #{group_id}  WHERE
+		<foreach collection="list" item="data" separator=" or ">
+			person_id=#{data.person_id}
+		</foreach>
+	</update>
 </mapper>

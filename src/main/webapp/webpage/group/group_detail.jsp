@@ -33,24 +33,26 @@
             <el-tabs v-model="activeName">
                 <%--基本信息--%>
                 <el-tab-pane label="基本信息" name="first">
-                    <%@include file="tabs/base_info.jsp" %>
+                    <%@include file="inc_tabs/base_info.jsp" %>
                 </el-tab-pane>
                 <%--人员列表--%>
                 <el-tab-pane label="人员列表" name="second">
-                    <%@include file="tabs/person_list.jsp" %>
+                    <%@include file="inc_tabs/person_list.jsp" %>
                 </el-tab-pane>
                 <%--设备列表--%>
                 <el-tab-pane label="设备列表" name="third">
-                    <%@include file="tabs/device_list.jsp" %>
+                    <%@include file="inc_tabs/device_list.jsp" %>
                 </el-tab-pane>
                 <%--分配权限--%>
                 <el-tab-pane label="分配权限" name="fourth">
-                    <%@include file="tabs/grant.jsp" %>
+                    <%@include file="inc_tabs/grant.jsp" %>
                 </el-tab-pane>
             </el-tabs>
         </template>
     </div>
 </div>
+<%@include file="inc_dialog/dialog_person_list.jsp" %>
+<%@include file="inc_dialog/dialog_device_list.jsp" %>
 <script type="text/javascript">
     var data = $.parseJSON('${data}');
 
@@ -83,7 +85,7 @@
             tableData2: [],
             currentPage2: 1,
             pageSizes2: [5, 10, 20],
-            pageSize2: 5
+            pageSize2: 10
         },
         methods: {
             clickGrant() {
@@ -127,7 +129,6 @@
     ajaxPersonList(vm.currentPage1, vm.pageSize1);
 
     function ajaxPersonList(pageNum, pageSize) {
-        l(pageNum + "," + pageSize)
         ajaxGet({
             url: "${pageContext.request.contextPath}/person/list",
             data: {
@@ -144,7 +145,6 @@
     ajaxDeviceList(vm.currentPage2, vm.pageSize2);
 
     function ajaxDeviceList(pageNum, pageSize) {
-        l(pageNum + "," + pageSize)
         ajaxGet({
             url: "${pageContext.request.contextPath}/device/list",
             data: {
@@ -154,6 +154,94 @@
             },
             success: function (result) {
                 vm.tableData2 = result.data;
+            }
+        });
+    }
+
+    var vmDialogPersonList = new Vue({
+        el: "#dialog_person_list",
+        data: {
+            items: [{
+                person_id: -1,
+                person_name: '人员列表',
+                children: []
+            }],
+            defaultProps: {
+                children: 'children',
+                label: 'person_name'
+            },
+            visible: false
+        },
+        methods: {
+            onClickGroupAddPerson() {
+                var person_ids = this.$refs.tree.getCheckedKeys().join(",");
+                ajaxPost({
+                    url: "${pageContext.request.contextPath}/group/add_person",
+                    data: {
+                        person_ids: person_ids,
+                        group_id: data.group.group_id
+                    },
+                    success: function (result) {
+                        layTip(result.message);
+                        vmDialogPersonList.visible = false;
+                        $("#group_content").load("${pageContext.request.contextPath}/group/detail?group_id=" + data.group.group_id);
+                    }
+                });
+            }
+        }
+    });
+
+    var vmDialogDeviceList = new Vue({
+        el: "#dialog_device_list",
+        data: {
+            items: [{
+                device_id: -1,
+                device_name: '设备列表',
+                children: []
+            }],
+            defaultProps: {
+                children: 'children',
+                label: 'device_name'
+            },
+            visible: false
+        },
+        methods: {
+            onClickGroupAddDevice() {
+                var device_ids = this.$refs.tree.getCheckedKeys().join(",");
+                ajaxPost({
+                    url: "${pageContext.request.contextPath}/group/add_device",
+                    data: {
+                        device_ids: device_ids,
+                        group_id: data.group.group_id
+                    },
+                    success: function (result) {
+                        layTip(result.message);
+                        vmDialogDeviceList.visible = false;
+                        $("#group_content").load("${pageContext.request.contextPath}/group/detail?group_id=" + data.group.group_id);
+                    }
+                });
+            }
+        }
+    });
+
+    function openDialogPerson() {
+        ajaxGet({
+            url: "${pageContext.request.contextPath}/person/list",
+            data: {},
+            success: function (result) {
+                vmDialogPersonList.items[0].children = result.data;
+                vmDialogPersonList.visible = true;
+            }
+        });
+    }
+
+    function openDialogDevice() {
+        ajaxGet({
+            url: "${pageContext.request.contextPath}/device/list",
+            data: {},
+            success: function (result) {
+                vmDialogDeviceList.items[0].children = result.data;
+                vmDialogDeviceList.visible = true;
             }
         });
     }

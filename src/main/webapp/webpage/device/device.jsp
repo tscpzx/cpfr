@@ -24,7 +24,13 @@
     }
 </style>
 <div id="device">
-    <el-tree :data="items" :props="defaultProps" @node-click="onNodeClick" @node-expand="onHandleExpand" node-key="id" :default-expanded-keys="[1]" ref="tree">
+    <el-tree :data="items"
+             :props="defaultProps"
+             @node-click="onNodeClick"
+             @node-expand="onHandleExpand"
+             node-key="id"
+             :default-expanded-keys="[-2]"
+             ref="tree">
       <span class="custom-tree-node" slot-scope="{ node, data }">
             <span v-if="data.online==1" class="circle"></span>
             <span>{{ data.device_sn }}</span>
@@ -44,11 +50,11 @@
         el: "#device",
         data: {
             items: [{
-                id: 2,
+                id: -1,
                 device_sn: '未激活设备',
                 children: []
             }, {
-                id: 1,
+                id: -2,
                 device_sn: '已激活设备',
                 children: []
             }],
@@ -61,7 +67,7 @@
         },
         methods: {
             onNodeClick(data) {
-                if (data.device_sn !== "未激活设备" && data.device_sn !== "已激活设备") {
+                if (data.id !== -1 && data.id !== -2) {
                     if (data.status === 0) {
                         $("#device_content").load("${pageContext.request.contextPath}/device/inact_detail?device_sn=" + data.device_sn);
                     } else {
@@ -70,9 +76,9 @@
                 }
             },
             onHandleExpand(data, node, tree) {
-                if (data.device_sn === "已激活设备") {
+                if (data.id === -2) {
                     $("#device_content").load("device/device_tbl?length=" + this.device_length);
-                } else if (data.device_sn === "未激活设备") {
+                } else if (data.id === -1) {
                     $("#device_content").load("device/device_inact_tbl?length=" + this.inact_device_length);
                 }
             }

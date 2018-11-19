@@ -28,4 +28,6 @@ public interface DeviceDao {
     boolean insertDevice(ParamData pd);
 
     ParamData selectDevice(ParamData pd);
+
+    boolean updateDeviceGroupID(ParamData pd);
 }

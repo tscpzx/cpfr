@@ -9,4 +9,8 @@
 	<select id="selectGroup" parameterType="pd" resultType="pd">
 		select * from tbl_#{wid}_group where group_id=#{group_id}
 	</select>
+
+	<insert id="insertGroup" parameterType="pd">
+		INSERT INTO tbl_#{wid}_group(group_name,super_id,type) values(#{group_name},0,1)
+	</insert>
 </mapper>

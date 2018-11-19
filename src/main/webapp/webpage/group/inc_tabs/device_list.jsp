@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <el-form label-width="20px">
     <el-form-item>
-        <el-button type="primary" icon="el-icon-plus" id="">添加</el-button>
+        <el-button type="primary" icon="el-icon-plus" @click="openDialogDevice">添加</el-button>
     </el-form-item>
 </el-form>
 <template>
