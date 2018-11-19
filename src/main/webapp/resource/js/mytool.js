@@ -71,7 +71,7 @@ function ajax(type, jsonObj) {
         // console.log(JSON.stringify(result, null, 1));
         if (checkSession(result)) {
             if (result.code !== 0) {
-                layAlert1(result.message);
+                elmAlert1(result.message);
                 return;
             }
             jsonObj.success(result);
@@ -103,20 +103,32 @@ function ajaxGet(jsonObj) {
     ajax("GET", jsonObj);
 }
 
+var elm;
+
 function checkSession(data) {
     if (102 === data.code) {
-        top.layer.confirm(data.message + ',是否重新登录?', {
-            icon: 0,
-            title: '提示',
-            btn: ['确定', '取消'],
-            btn1: function (index) {
-                top.window.location.href = "/webpage/login";
-                layer.close(index);
-            },
-            btn2: function (index) {
-                layer.close(index);
-            }
+        // top.layer.confirm(data.message + ',是否重新登录?', {
+        //     icon: 0,
+        //     title: '提示',
+        //     btn: ['确定', '取消'],
+        //     btn1: function (index) {
+        //         top.window.location.href = "/webpage/login";
+        //         layer.close(index);
+        //     },
+        //     btn2: function (index) {
+        //         layer.close(index);
+        //     }
+        // });
+        if (elm) return false;
+        elm = new Vue().$confirm(data.message + ',是否重新登录?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+        }).then(() => {
+            top.window.location.href = "/webpage/login";
+        }).catch(() => {
         });
+
         return false;
     }
     return true;

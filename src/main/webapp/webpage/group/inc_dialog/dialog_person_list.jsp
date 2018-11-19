@@ -1,8 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <div id="dialog_person_list">
-    <el-dialog title="添加人员" :visible.sync="visible">
+    <el-dialog title="添加人员" :visible.sync="visible" width="500px">
         <el-tree
-                style="background-color: white"
+                style="background-color: white;max-height: 300px;overflow: auto;"
                 :data="items"
                 :props="defaultProps"
                 node-key="person_id"
