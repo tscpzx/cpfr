@@ -2,7 +2,6 @@ package com.ts.cpfr.controller.device;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.ts.cpfr.controller.base.BaseController;
 import com.ts.cpfr.ehcache.Memory;
 import com.ts.cpfr.entity.LoginUser;
@@ -49,28 +48,20 @@ public class DeviceController extends BaseController {
     @RequestMapping("/list")
     public ResultData<List<ParamData>> list(HttpServletRequest request) {
         try {
-            ParamData pd = paramDataInit();
-            pd.put("wid", memory.getLoginUser().getWId());
-            List<ParamData> deviceList = mDeviceService.getDeviceList(pd);
-            return new ResultData<>(HandleEnum.SUCCESS, deviceList);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping("/page")
-    public ResultData<PageInfo<ParamData>> listPage(HttpServletRequest request) {
-        try {
             ParamData pd = paramDataInit();     //初始化分页参数
             int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
             int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
-            PageHelper.startPage(pageNum, pageSize);
             pd.put("wid", memory.getLoginUser().getWId());
-            List<ParamData> deviceList = mDeviceService.getDeviceList(pd);
-            PageInfo<ParamData> pageInfo = new PageInfo<>(deviceList);
-            return new ResultData<>(HandleEnum.SUCCESS, pageInfo);
+
+            List<ParamData> deviceList;
+            if (pageSize == 0) {//查询出所有结果
+                deviceList = mDeviceService.getDeviceList(pd);
+            } else {
+                PageHelper.startPage(pageNum, pageSize);
+                deviceList = mDeviceService.getDeviceList(pd);
+            }
+
+            return new ResultData<>(HandleEnum.SUCCESS, deviceList);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
@@ -122,25 +113,17 @@ public class DeviceController extends BaseController {
     public ResultData<List<ParamData>> inactList(HttpServletRequest request) {
         try {
             ParamData pd = paramDataInit();     //初始化分页参数
-            List<ParamData> inActDeviceList = mDeviceService.getInActDeviceList(pd);
-            return new ResultData<>(HandleEnum.SUCCESS, inActDeviceList);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping("/inact_page")
-    public ResultData<PageInfo<ParamData>> inactListPage(HttpServletRequest request) {
-        try {
-            ParamData pd = paramDataInit();     //初始化分页参数
             int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
             int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
-            PageHelper.startPage(pageNum, pageSize);
-            List<ParamData> inActDeviceList = mDeviceService.getInActDeviceList(pd);
-            PageInfo<ParamData> pageInfo = new PageInfo<>(inActDeviceList);
-            return new ResultData<>(HandleEnum.SUCCESS, pageInfo);
+
+            List<ParamData> inActDeviceList;
+            if (pageSize == 0) {//查询出所有结果
+                inActDeviceList = mDeviceService.getInActDeviceList(pd);
+            } else {
+                PageHelper.startPage(pageNum, pageSize);
+                inActDeviceList = mDeviceService.getInActDeviceList(pd);
+            }
+            return new ResultData<>(HandleEnum.SUCCESS, inActDeviceList);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());

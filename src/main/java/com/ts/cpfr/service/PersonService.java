@@ -22,5 +22,5 @@ public interface PersonService {
 
     ParamData queryPerson(ParamData pd);
 
-      byte[] blobToByte(Blob blob) throws Exception;
+    byte[] blobToByte(Blob blob) throws Exception;
 }

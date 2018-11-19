@@ -8,6 +8,11 @@
 
 	<select id="selectDeviceList" parameterType="pd" resultType="pd">
 		select device_id,device_name,device_sn,online from tbl_#{wid}_device
+		<where>
+			<if test="group_id!=null and group_id!=''" >
+				group_id=#{group_id}
+			</if>
+		</where>
     </select>
 
 	<select id="selectInActDevice" parameterType="pd" resultType="pd">
@@ -37,6 +42,4 @@
 	<insert id="insertDevice" parameterType="pd">
 		INSERT INTO tbl_#{wid}_device (device_name,device_sn,mac_grant_key,device_ip_address,online) VALUES(#{device_sn},#{device_sn},#{mac_grant_key},#{device_ip_address},#{online})
 	</insert>
-
-
 </mapper>

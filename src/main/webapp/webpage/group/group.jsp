@@ -26,7 +26,10 @@
 <div id="group">
     <el-tree :data="items" :props="defaultProps" @node-click="onNodeClick" @node-expand="onHandleExpand" node-key="id" :default-expanded-keys="[1]" ref="tree"></el-tree>
 </div>
-<div id="group_content" style="float: left;width: calc(100% - 250px);"></div>
+<div id="group_content" style=" float: left;
+    width: calc(100% - 250px);
+    height: 100%;
+    overflow: auto;"></div>
 
 <script type="text/javascript">
     ajaxGroupList();

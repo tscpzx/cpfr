@@ -2,7 +2,6 @@ package com.ts.cpfr.controller.group;
 
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.ts.cpfr.controller.base.BaseController;
 import com.ts.cpfr.ehcache.Memory;
 import com.ts.cpfr.service.DeviceService;
@@ -48,28 +47,20 @@ public class GroupController extends BaseController {
     @RequestMapping("/list")
     public ResultData<List<ParamData>> list(HttpServletRequest request) {
         try {
-            ParamData pd = paramDataInit();
-            pd.put("wid", memory.getLoginUser().getWId());
-            List<ParamData> groupList = mGroupService.getGroupList(pd);
-            return new ResultData<>(HandleEnum.SUCCESS, groupList);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping("/page")
-    public ResultData<PageInfo<ParamData>> listPage(HttpServletRequest request) {
-        try {
             ParamData pd = paramDataInit();     //初始化分页参数
             int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
             int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
-            PageHelper.startPage(pageNum, pageSize);
             pd.put("wid", memory.getLoginUser().getWId());
-            List<ParamData> groupList = mGroupService.getGroupList(pd);
-            PageInfo<ParamData> pageInfo = new PageInfo<>(groupList);
-            return new ResultData<>(HandleEnum.SUCCESS, pageInfo);
+
+            List<ParamData> groupList;
+            if (pageSize == 0) {//查询出所有结果
+                groupList = mGroupService.getGroupList(pd);
+            } else {
+                PageHelper.startPage(pageNum, pageSize);
+                groupList = mGroupService.getGroupList(pd);
+            }
+
+            return new ResultData<>(HandleEnum.SUCCESS, groupList);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());

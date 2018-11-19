@@ -22,62 +22,64 @@
         </el-form>
 
         <template>
-            <el-table :data="tableData" style="width: 80%" border>
-                <el-table-column prop="group_id" label="组ID" width="180">
+            <el-table :data="tableData" style="width: 100%" stripe>
+                <el-table-column prop="group_id" label="组ID" width="100">
                 </el-table-column>
-                <el-table-column prop="group_name" label="组名" width="180">
+                <el-table-column prop="group_name" label="组名" width="100">
                 </el-table-column>
                 <el-table-column label="操作">
                 </el-table-column>
             </el-table>
         </template>
+
+        <template>
+            <div class="block">
+                <el-pagination ref="pagination"
+                               @size-change="handleChange"
+                               @current-change="handleChange"
+                               :current-page.sync="currentPage"
+                               :page-size.sync="pageSize"
+                               :page-sizes="pageSizes"
+                               prev-text="上一页"
+                               next-text="下一页"
+                               layout="total, sizes, prev, pager, next, jumper"
+                               :total="${param.length}">
+                </el-pagination>
+            </div>
+        </template>
     </div>
-    <div class="pagination"></div>
 </div>
 
 <script type="text/javascript">
-    var pageNum = 1;
-    var pageSize = 10;
-
-    $(".pagination").pagination(${param.length}, {
-        current_page: pageNum - 1,//当前选中的页面
-        items_per_page: pageSize, //每页显示的条目数
-        num_display_entries: 5, // 中间页数
-        num_edge_entries: 1,// 0没有省略号 1有  两侧显示的首尾分页的条目数
-        is_show_skip_page: true,
-        prev_text: '上一页',
-        next_text: '下一页',
-        callback: function (pageNum) {
-            ajaxGroupList(pageNum, pageSize);
-        }
-    });
-
-    var vueGroupList = new Vue({
+    var vm = new Vue({
         el: "#group_tbl",
         data: {
             tableData: [],
-            searching: true
+            searching: true,
+            currentPage: 1,
+            pageSizes: [5, 10, 20],
+            pageSize: 10
         },
         methods: {
-            onClickItem: function (data) {
+            handleChange(val) {
+                ajaxGroupList(this.currentPage, this.pageSize);
             }
         }
     });
 
+    ajaxGroupList(vm.currentPage, vm.pageSize);
+
     function ajaxGroupList(pageNum, pageSize) {
         ajaxGet({
-            url: "${pageContext.request.contextPath}/group/page",
+            url: "${pageContext.request.contextPath}/group/list",
             data: {
-                pageNum: pageNum + 1,
+                pageNum: pageNum,
                 pageSize: pageSize
             },
             success: function (result) {
-                vueGroupList.tableData = result.data.list;
+                vm.tableData = result.data;
             }
         });
     }
-
-    $("#btn_add_person").click(function () {
-    });
 
 </script>

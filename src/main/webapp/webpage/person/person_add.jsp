@@ -50,7 +50,6 @@
                            :show-file-list="true"
                            :http-request="myUpload"
                            :auto-upload="false"
-                           :limit=1
                            :on-change="onChange"
                            :before-upload="beforeUpload"
                            ref="upload">
@@ -84,8 +83,10 @@
             }
         },
         methods: {
-            onChange(file, fileLis) {
+            onChange(file, fileList) {
+                this.$refs.upload.clearFiles();
                 this.imageUrl = URL.createObjectURL(file.raw);
+                this.$refs.upload.uploadFiles[0] = file;
             },
             beforeUpload(file) {
                 const isSuppType = file.type.indexOf("image") !== -1;

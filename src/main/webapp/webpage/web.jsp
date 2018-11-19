@@ -73,7 +73,7 @@
                         <el-menu-item-group>
                             <el-menu-item index="person/person" @click="onClick($event)">人员列表
                             </el-menu-item>
-                            <el-menu-item index="1-2">批量上传</el-menu-item>
+                            <%--<el-menu-item index="1-2">批量上传</el-menu-item>--%>
                         </el-menu-item-group>
                     </el-submenu>
                     <el-menu-item index="group/group" @click="onClick($event)">
@@ -83,6 +83,10 @@
                     <el-menu-item index="4">
                         <i class="el-icon-document"></i>
                         <span slot="title">记录管理</span>
+                    </el-menu-item>
+                    <el-menu-item index="5">
+                        <i class="el-icon-document"></i>
+                        <span slot="title">账号管理</span>
                     </el-menu-item>
                 </el-menu>
             </el-aside>

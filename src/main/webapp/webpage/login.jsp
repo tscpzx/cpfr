@@ -17,7 +17,7 @@
             -moz-border-radius: 5px;
             background-clip: padding-box;
             margin: 180px auto;
-            width: 450px;
+            width: 350px;
             padding: 35px 35px 15px;
             background: white;
             border: 1px solid #eaeaea;

@@ -31,7 +31,10 @@
       </span>
     </el-tree>
 </div>
-<div id="device_content" style="float: left; width: calc(100% - 250px);"></div>
+<div id="device_content" style=" float: left;
+    width: calc(100% - 250px);
+    height: 100%;
+    overflow: auto;"></div>
 
 <script type="text/javascript">
     ajaxInActDeviceList();
@@ -60,7 +63,7 @@
             onNodeClick(data) {
                 if (data.device_sn !== "未激活设备" && data.device_sn !== "已激活设备") {
                     if (data.status === 0) {
-                        $("#device_content").load("${pageContext.request.contextPath}/device/inact/detail?device_sn=" + data.device_sn);
+                        $("#device_content").load("${pageContext.request.contextPath}/device/inact_detail?device_sn=" + data.device_sn);
                     } else {
                         $("#device_content").load("${pageContext.request.contextPath}/device/detail?device_sn=" + data.device_sn);
                     }

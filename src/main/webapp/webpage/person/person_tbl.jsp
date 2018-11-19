@@ -22,14 +22,14 @@
         </el-form>
 
         <template>
-            <el-table :data="tableData" style="width: 80%" border>
-                <el-table-column prop="person_id" label="人员ID" width="180">
+            <el-table :data="tableData" style="width: 100%" stripe>
+                <el-table-column prop="person_id" label="人员ID" width="100">
                 </el-table-column>
-                <el-table-column prop="person_name" label="姓名" width="180">
+                <el-table-column prop="person_name" label="姓名" width="100">
                 </el-table-column>
-                <el-table-column prop="emp_number" label="工号" width="180">
+                <el-table-column prop="emp_number" label="工号" width="100">
                 </el-table-column>
-                <el-table-column label="底库图片" width="180">
+                <el-table-column label="底库图片" width="120">
                     <template slot-scope="scope">
                         <img class="image_tbl" v-bind:src="'data:image/jpeg;base64,'+scope.row.base_image">
                     </template>
@@ -38,48 +38,53 @@
                 </el-table-column>
             </el-table>
         </template>
+
+        <template>
+            <div class="block">
+                <el-pagination ref="pagination"
+                               @size-change="handleChange"
+                               @current-change="handleChange"
+                               :current-page.sync="currentPage"
+                               :page-size.sync="pageSize"
+                               :page-sizes="pageSizes"
+                               prev-text="上一页"
+                               next-text="下一页"
+                               layout="total, sizes, prev, pager, next, jumper"
+                               :total="${param.length}">
+                </el-pagination>
+            </div>
+        </template>
     </div>
-    <div class="pagination"></div>
 </div>
 
 <script type="text/javascript">
-    var pageNum = 1;
-    var pageSize = 5;
-
-    $(".pagination").pagination(${param.length}, {
-        current_page: pageNum - 1,//当前选中的页面
-        items_per_page: pageSize, //每页显示的条目数
-        num_display_entries: 5, // 中间页数
-        num_edge_entries: 1,// 0没有省略号 1有  两侧显示的首尾分页的条目数
-        is_show_skip_page: true,
-        prev_text: '上一页',
-        next_text: '下一页',
-        callback: function (pageNum) {
-            ajaxPersonList(pageNum, pageSize);
-        }
-    });
-
-    var vuePersonList = new Vue({
+    var vm = new Vue({
         el: "#person_tbl",
         data: {
             tableData: [],
-            searching: true
+            searching: true,
+            currentPage: 1,
+            pageSizes: [5, 10, 20],
+            pageSize: 5
         },
         methods: {
-            onClickItem: function (data) {
+            handleChange(val) {
+                ajaxPersonList(this.currentPage, this.pageSize);
             }
         }
     });
 
+    ajaxPersonList(vm.currentPage, vm.pageSize);
+
     function ajaxPersonList(pageNum, pageSize) {
         ajaxGet({
-            url: "${pageContext.request.contextPath}/person/page",
+            url: "${pageContext.request.contextPath}/person/list",
             data: {
-                pageNum: pageNum + 1,
+                pageNum: pageNum,
                 pageSize: pageSize
             },
             success: function (result) {
-                vuePersonList.tableData = result.data.list;
+                vm.tableData = result.data;
             }
         });
     }
