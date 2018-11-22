@@ -88,11 +88,17 @@
             pageSize2: 10
         },
         methods: {
-            clickGrant() {
+            clickGrantPass() {
                 var selectedPersonID = this.value1.join(',');
                 var selectedDeviceID = $.arrayIntersect(value2, this.value2).join(',');
 
-                ajaxGrant(selectedPersonID, selectedDeviceID);
+                ajaxGrant(selectedPersonID, selectedDeviceID, 1);
+            },
+            clickGrantBan() {
+                var selectedPersonID = this.value1.join(',');
+                var selectedDeviceID = $.arrayIntersect(value2, this.value2).join(',');
+
+                ajaxGrant(selectedPersonID, selectedDeviceID, 0);
             },
             filterMethod1(query, item) {
                 return item.person_name.indexOf(query) > -1;
@@ -109,19 +115,19 @@
         }
     });
 
-    function ajaxGrant(person_ids, device_ids) {
+    function ajaxGrant(person_ids, device_ids, type) {
         ajaxPost({
             url: "${pageContext.request.contextPath}/grant/add",
             data: {
                 person_ids: person_ids,
                 device_ids: device_ids,
-                type: 1,
+                type: type,
                 pass_number: -1,
                 pass_start_time: -1,
                 pass_end_time: -1
             },
             success: function (result) {
-                layTip("授权成功");
+                layTip(result.message);
             }
         })
     }

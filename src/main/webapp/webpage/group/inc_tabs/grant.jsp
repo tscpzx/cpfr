@@ -16,9 +16,10 @@
     </el-transfer>
 
     <el-form label-width="60px" style="margin-top: 30px;">
-        <el-form-item>
-            <el-button type="primary" @click="clickGrant">授权</el-button>
-        </el-form-item>
+        <el-row>
+            <el-button type="primary" @click="clickGrantPass">授权通行</el-button>
+            <el-button type="danger" @click="clickGrantBan">禁止通行</el-button>
+        </el-row>
     </el-form>
 
 </template>
