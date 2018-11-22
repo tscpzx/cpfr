@@ -105,7 +105,6 @@
             }
         }
     });
-
     $("#content-container").load("device/device");
 
     function ajaxLogout() {
