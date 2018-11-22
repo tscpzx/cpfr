@@ -15,11 +15,16 @@ public class CommConst {
     //上传临时存放地址，文件过大时
     public static final String UPLOAD_TEMP = "F:/upload/Temp/";
 
-    public static final String COAD = "code";
-    public static final String MSG = "msg";
+    public static final String CODE = "code";
+    public static final String MESSAGE = "message";
     public static final String DATA = "data";
     public static final String ACCESS_CPFR_TOKEN = "access_cpfr_token";
     public static final String ACS_ADMIN_COOKIE = "acs_admin_cookie";
     public static final String DEVICE_SN = "device_sn";
     public static final String ADMIN_ID = "admin_id";
+
+    /////websocket 状态码//////
+    public static final int CODE_1000 = 1000;//操作成功
+    public static final int CODE_999 = 999;//操作失败
+    public static final int CODE_1001 = 1001;//激活成功
 }

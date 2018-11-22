@@ -90,9 +90,9 @@ public class DeviceController extends BaseController {
                         //通知设备激活成功
                         String device_sn = insertPd.getString(CommConst.DEVICE_SN);
                         Map<String, Object> jsonMap = new HashMap<>();
-                        jsonMap.put("code", 101);
-                        jsonMap.put("admin_id", user.getAdminId());
-                        jsonMap.put("content", "激活成功");
+                        jsonMap.put(CommConst.CODE, CommConst.CODE_1001);
+                        jsonMap.put(CommConst.ADMIN_ID, user.getAdminId());
+                        jsonMap.put(CommConst.MESSAGE, "激活成功");
                         mSocketMessageHandle.sendMessageToDevice(device_sn, new TextMessage(JSONObject
                           .toJSONString(jsonMap)));
                         return new ResultData<>(HandleEnum.SUCCESS);

@@ -3,48 +3,56 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ts.cpfr.dao.DeviceDao">
 	<select id="selectDevice" parameterType="pd" resultType="pd">
-		select * from tbl_#{wid}_device where device_sn=#{device_sn}
+		select device_id,device_name,device_sn,mac_grant_key,online,register_time,activate_time,last_online_time,last_offine_time
+		 from tbl_#{wid}_device where device_sn=#{device_sn}
 	</select>
 
 	<select id="selectDeviceList" parameterType="pd" resultType="pd">
 		select device_id,device_name,device_sn,online from tbl_#{wid}_device
 		<where>
-			<if test="group_id!=null and group_id!=''" >
+			<if test="group_id!=null and group_id!=''">
 				group_id=#{group_id}
 			</if>
 		</where>
-    </select>
+	</select>
 
 	<select id="selectInActDevice" parameterType="pd" resultType="pd">
-		select device_sn,status,online,register_time,mac_grant_key from tbl_inactivated_device where device_sn=#{device_sn}
+		select device_sn,status,online,register_time,activate_time,mac_grant_key from tbl_inact_device where device_sn=#{device_sn}
 	</select>
 
 	<select id="selectInActDeviceList" parameterType="pd" resultType="pd">
-		select id,device_sn,status,online,register_time from tbl_inactivated_device where status=0
+		select id,device_sn,status,online,register_time from tbl_inact_device where status=0
 	</select>
 
 	<insert id="insertInActDevice" parameterType="pd">
-		insert into tbl_inactivated_device(device_sn,status,online,register_time) values(#{device_sn},0,0,now())
+		insert into tbl_inact_device(device_sn,status,online,register_time) values(#{device_sn},0,0,now())
 	</insert>
 
 	<update id="updateInActDeviceMacGrantKeyAndStatus" parameterType="pd">
-		UPDATE tbl_inactivated_device SET mac_grant_key = #{mac_grant_key},status=1,admin_id=#{admin_id},activate_time=now()  WHERE device_sn=#{device_sn}
+		UPDATE tbl_inact_device SET mac_grant_key = #{mac_grant_key},status=1,admin_id=#{admin_id},activate_time=now()  WHERE device_sn=#{device_sn}
 	</update>
 
 	<update id="updateInActDeviceOnline" parameterType="pd">
-		UPDATE tbl_inactivated_device SET online = #{online}  WHERE device_sn=#{device_sn}
+		UPDATE tbl_inact_device SET online = #{online} WHERE device_sn=#{device_sn}
 	</update>
 
 	<update id="updateDeviceOnline" parameterType="pd">
-		UPDATE tbl_#{wid}_device SET online = #{online}  WHERE device_sn=#{device_sn}
+		UPDATE tbl_#{wid}_device SET online = #{online}
+		<if test="online==1 or online=='1'">
+			,last_online_time=now()
+		</if>
+		<if test="online==0 or online=='0'">
+			,last_offine_time=now()
+		</if>
+		WHERE device_sn=#{device_sn}
 	</update>
 
 	<insert id="insertDevice" parameterType="pd">
-		INSERT INTO tbl_#{wid}_device (device_name,device_sn,mac_grant_key,device_ip_address,online) VALUES(#{device_sn},#{device_sn},#{mac_grant_key},#{device_ip_address},#{online})
+		INSERT INTO tbl_#{wid}_device (device_name,device_sn,mac_grant_key,register_time,activate_time,online) VALUES(#{device_sn},#{device_sn},#{mac_grant_key},#{register_time},#{activate_time},#{online})
 	</insert>
 
 	<update id="updateDeviceGroupID" parameterType="pd">
-		UPDATE tbl_#{wid}_device SET group_id = #{group_id}  WHERE
+		UPDATE tbl_#{wid}_device SET group_id = #{group_id} WHERE
 		<foreach collection="list" item="data" separator=" or ">
 			device_id=#{data.device_id}
 		</foreach>
