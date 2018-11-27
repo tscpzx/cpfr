@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ts.cpfr.dao.AppDao">
+	<insert id="insertInActDevice" parameterType="pd">
+		insert into tbl_inact_device(device_sn,status,online,register_time) values(#{device_sn},0,0,now())
+	</insert>
+
+	<select id="selectUserWid" parameterType="pd" resultType="int">
+		select wid from tbl_user where admin_id=#{admin_id}
+	</select>
+
+	<select id="selectDevice" parameterType="pd" resultType="pd">
+		select d.device_id,d.device_name,d.device_sn,d.mac_grant_key,d.lmt
+		from tbl_#{wid}_device d left join tbl_#{wid}_device_config c on d.device_id=c.device_id where d.device_sn=#{device_sn} and d.lmt>#{lmt}
+	</select>
+
+	<select id="selectPersonList" parameterType="pd" resultType="pd">
+		SELECT p.person_id,p.person_name,p.emp_number,p.base_image,p.lmt FROM tbl_#{wid}_person p RIGHT JOIN (SELECT person_id FROM tbl_#{wid}_grant WHERE device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn})) g ON p.person_id=g.person_id where p.lmt>#{lmt}
+	</select>
+
+	<select id="selectGrantList" parameterType="pd" resultType="pd">
+		SELECT person_id,type,pass_number,pass_start_time,pass_end_time,lmt FROM tbl_#{wid}_grant WHERE device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn}) and lmt>#{lmt}
+	</select>
+</mapper>

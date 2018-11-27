@@ -90,15 +90,16 @@ public class DeviceController extends BaseController {
                         //通知设备激活成功
                         String device_sn = insertPd.getString(CommConst.DEVICE_SN);
                         Map<String, Object> jsonMap = new HashMap<>();
+                        ParamData data = new ParamData();
+                        data.put(CommConst.ADMIN_ID, user.getAdminId());
                         jsonMap.put(CommConst.CODE, CommConst.CODE_1001);
-                        jsonMap.put(CommConst.ADMIN_ID, user.getAdminId());
+                        jsonMap.put(CommConst.DATA, data);
                         jsonMap.put(CommConst.MESSAGE, "激活成功");
                         mSocketMessageHandle.sendMessageToDevice(device_sn, new TextMessage(JSONObject
                           .toJSONString(jsonMap)));
                         return new ResultData<>(HandleEnum.SUCCESS);
                     }
-                }
-                return new ResultData<>(HandleEnum.FAIL);
+                } return new ResultData<>(HandleEnum.FAIL);
             } else {
                 return new ResultData<>(HandleEnum.FAIL, "设备不在线");
             }

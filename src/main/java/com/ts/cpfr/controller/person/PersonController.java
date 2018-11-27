@@ -23,8 +23,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import sun.misc.BASE64Encoder;
-
 /**
  * @Classname PersonController
  * @Description
@@ -87,10 +85,6 @@ public class PersonController extends BaseController {
             ParamData pd = paramDataInit();
             pd.put("wid", memory.getLoginUser().getWId());
             ParamData paramData = mPersonService.queryPerson(pd);
-            byte[] bytes = (byte[]) paramData.get("base_image");
-            BASE64Encoder base64Encoder = new BASE64Encoder();
-            String base64 = base64Encoder.encode(bytes);
-            paramData.put("base_image", base64);
             model.addAttribute(CommConst.DATA, JSON.toJSONString(paramData));
         } catch (Exception e) {
             e.printStackTrace();

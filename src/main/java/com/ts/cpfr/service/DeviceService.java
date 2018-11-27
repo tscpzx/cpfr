@@ -19,8 +19,6 @@ public interface DeviceService {
 
     ParamData queryDevice(ParamData pd);
 
-    boolean addInActDevice(ParamData pd);
-
     boolean updateAllDeviceOnline(ParamData pd);
 
     List<ParamData> getInActDeviceList(ParamData pd);

@@ -33,6 +33,9 @@ public class SystemConfig {
         allowUrlList.add(PROJECT_NAME + "/user/login");//用户登录
         allowUrlList.add(PROJECT_NAME + "/user/nologin");//用户未登录
         allowUrlList.add(PROJECT_NAME + "/user/register");//用户注册
-        allowUrlList.add(PROJECT_NAME + "/app/device/register");
+        allowUrlList.add(PROJECT_NAME + "/app/device_register");
+        allowUrlList.add(PROJECT_NAME + "/app/device_info");
+        allowUrlList.add(PROJECT_NAME + "/app/person_list");
+        allowUrlList.add(PROJECT_NAME + "/app/grant_list");
     }
 }

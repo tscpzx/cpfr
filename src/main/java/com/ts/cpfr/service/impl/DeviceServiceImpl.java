@@ -47,11 +47,6 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public boolean addInActDevice(ParamData pd) {
-        return mDeviceDao.insertInActDevice(pd);
-    }
-
-    @Override
     public boolean updateAllDeviceOnline(ParamData pd) {
         boolean b = mDeviceDao.updateInActDeviceOnline(pd);
         String adminId = pd.getString(CommConst.ADMIN_ID);

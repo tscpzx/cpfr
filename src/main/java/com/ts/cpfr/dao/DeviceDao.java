@@ -15,8 +15,6 @@ public interface DeviceDao {
 
     ParamData selectInActDevice(ParamData pd);
 
-    boolean insertInActDevice(ParamData pd);
-
     boolean updateInActDeviceMacGrantKeyAndStatus(ParamData pd);
 
     boolean updateInActDeviceOnline(ParamData pd);

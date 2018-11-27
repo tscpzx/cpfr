@@ -24,10 +24,6 @@
 		select id,device_sn,status,online,register_time from tbl_inact_device where status=0
 	</select>
 
-	<insert id="insertInActDevice" parameterType="pd">
-		insert into tbl_inact_device(device_sn,status,online,register_time) values(#{device_sn},0,0,now())
-	</insert>
-
 	<update id="updateInActDeviceMacGrantKeyAndStatus" parameterType="pd">
 		UPDATE tbl_inact_device SET mac_grant_key = #{mac_grant_key},status=1,admin_id=#{admin_id},activate_time=now()  WHERE device_sn=#{device_sn}
 	</update>
