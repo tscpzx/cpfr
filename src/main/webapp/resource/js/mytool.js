@@ -125,7 +125,7 @@ function checkSession(data) {
             cancelButtonText: '取消',
             type: 'warning'
         }).then(() => {
-            top.window.location.href = "/webpage/login";
+            top.window.location.href = "/cpfr/webpage/login";
         }).catch(() => {
         });
 

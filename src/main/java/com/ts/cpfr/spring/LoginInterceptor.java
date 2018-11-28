@@ -29,7 +29,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //如果是登录页面则放行
-        if (!checkAllowAccess(request.getRequestURI())) {
+        if (!checkAllowAccess(request.getServletPath())) {
             // 检查请求的token值是否为空
             String token = getTokenFromRequest(request);
             if (StringUtils.isEmpty(token) || !memory.checkLoginUser(token)) {
