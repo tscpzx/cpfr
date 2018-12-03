@@ -114,4 +114,21 @@ public class PersonServiceImpl implements PersonService {
             if (fos != null) fos.close();
         }
     }
+
+    @Override
+    public void base64Convert(List<ParamData> list) throws Exception {
+        for (ParamData pd : list) {
+            base64Convert(pd);
+        }
+    }
+
+    @Override
+    public void base64Convert(ParamData pd) throws Exception {
+        File file = new File(pd.getString("image_path"));
+        FileInputStream fis = new FileInputStream(file);
+        byte[] bytes = new byte[fis.available()];
+        fis.read(bytes);
+        pd.put("base_image", bytes);
+        pd.remove("image_path");
+    }
 }

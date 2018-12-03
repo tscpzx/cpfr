@@ -56,6 +56,7 @@ public class PersonController extends BaseController {
                 personList = mPersonService.getPersonList(pd);
             }
 
+            mPersonService.base64Convert(personList);
             return new ResultData<>(HandleEnum.SUCCESS, personList);
         } catch (Exception e) {
             e.printStackTrace();
@@ -86,6 +87,7 @@ public class PersonController extends BaseController {
             ParamData pd = paramDataInit();
             pd.put("wid", memory.getLoginUser().getWId());
             ParamData paramData = mPersonService.queryPerson(pd);
+            mPersonService.base64Convert(paramData);
             model.addAttribute(CommConst.DATA, JSON.toJSONString(paramData));
         } catch (Exception e) {
             e.printStackTrace();

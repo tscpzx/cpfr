@@ -15,7 +15,8 @@
         </el-table-column>
         <el-table-column label="底库图片" width="120">
             <template slot-scope="scope">
-                <img class="image_tbl" v-bind:src="'${pageContext.request.contextPath}/person/image?image_path='+scope.row.image_path">
+                <img class="image_tbl" v-bind:src="'data:image/jpeg;base64,'+scope.row.base_image">
+                <%--<img class="image_tbl" v-bind:src="'${pageContext.request.contextPath}/person/image?image_path='+scope.row.image_path">--%>
             </template>
         </el-table-column>
         <el-table-column label="操作">

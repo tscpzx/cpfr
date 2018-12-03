@@ -24,4 +24,8 @@ public interface PersonService {
     ParamData queryPerson(ParamData pd);
 
     void loadImage(ParamData pd, HttpServletResponse response) throws Exception;
+
+    void base64Convert(List<ParamData> list) throws Exception;
+
+    void base64Convert(ParamData pd) throws Exception;
 }
