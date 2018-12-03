@@ -4,8 +4,9 @@ import com.ts.cpfr.utils.ParamData;
 
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import java.sql.Blob;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @Classname PersonService
@@ -16,11 +17,11 @@ import java.util.List;
 public interface PersonService {
     List<ParamData> getPersonList(ParamData pd);
 
-    boolean uploadImage(CommonsMultipartFile file, ParamData pd);
+    boolean uploadImage(CommonsMultipartFile file, ParamData pd) throws Exception;
 
     boolean addPerson(ParamData pd);
 
     ParamData queryPerson(ParamData pd);
 
-    byte[] blobToByte(Blob blob) throws Exception;
+    void loadImage(ParamData pd, HttpServletResponse response) throws Exception;
 }

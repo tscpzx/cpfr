@@ -3,11 +3,11 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ts.cpfr.dao.PersonDao">
 	<select id="selectPerson" parameterType="pd" resultType="pd">
-		SELECT person_id,person_name,emp_number,add_time,base_image from tbl_#{wid}_person where person_id=#{person_id}
+		SELECT person_id,person_name,emp_number,add_time,image_path from tbl_#{wid}_person where person_id=#{person_id}
 	</select>
 
 	<select id="selectPersonList" parameterType="pd" resultType="pd">
-		select person_id,person_name,emp_number,base_image from tbl_#{wid}_person
+		select person_id,person_name,emp_number,image_path from tbl_#{wid}_person
 		<where>
 			<if test="group_id!=null and group_id!=''">
 				group_id=#{group_id}
@@ -16,7 +16,7 @@
 	</select>
 
 	<insert id="insertPerson" parameterType="pd">
-		INSERT INTO tbl_#{wid}_person(person_name,emp_number,add_time,base_image) VALUES(#{person_name},#{emp_number},now(),#{base_image})
+		INSERT INTO tbl_#{wid}_person(person_name,emp_number,add_time,image_path) VALUES(#{person_name},#{emp_number},now(),#{image_path})
 	</insert>
 
 	<update id="updatePersonGroupID" parameterType="pd">

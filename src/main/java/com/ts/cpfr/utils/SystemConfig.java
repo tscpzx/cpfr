@@ -20,6 +20,10 @@ public class SystemConfig {
     //cookie存活时间 秒
     public static final int COOKIE_LIVE_TIME = 60 * 60 * 12;
 
+    //上传文件的地址
+    public static final String UPLOAD_IMAGE_DIR = "D:/cpfr_upload/image/";
+//    public static final String UPLOAD_IMAGE_DIR = "/home/cpfr_upload/image/";
+
     public static CopyOnWriteArrayList<String> allowUrlList = new CopyOnWriteArrayList<>();
 
     static {

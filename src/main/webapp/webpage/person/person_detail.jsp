@@ -41,7 +41,7 @@
                 <el-input :value="data.emp_number" :disabled="true" type="text" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="底库图片:">
-                <img class="image" :src="'data:image/jpeg;base64,'+data.base_image">
+                <img class="image" :src="'${pageContext.request.contextPath}/person/image?image_path='+data.image_path">
             </el-form-item>
         </el-form>
     </div>

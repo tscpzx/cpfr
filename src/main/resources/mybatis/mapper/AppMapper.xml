@@ -16,7 +16,7 @@
 	</select>
 
 	<select id="selectPersonList" parameterType="pd" resultType="pd">
-		SELECT p.person_id,p.person_name,p.emp_number,p.base_image,p.lmt FROM tbl_#{wid}_person p RIGHT JOIN (SELECT person_id FROM tbl_#{wid}_grant WHERE device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn})) g ON p.person_id=g.person_id where p.lmt>#{lmt}
+		SELECT p.person_id,p.person_name,p.emp_number,p.image_path,p.lmt FROM tbl_#{wid}_person p RIGHT JOIN (SELECT person_id FROM tbl_#{wid}_grant WHERE device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn})) g ON p.person_id=g.person_id where p.lmt>#{lmt}
 	</select>
 
 	<select id="selectGrantList" parameterType="pd" resultType="pd">

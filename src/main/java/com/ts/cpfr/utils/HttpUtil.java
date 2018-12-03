@@ -38,7 +38,7 @@ public class HttpUtil {
           .setSocketTimeout(SOCKET_TIME_OUT_5000)
           .build();
         httpPost.setConfig(requestConfig);
-        httpPost.addHeader(CommConst.ACS_ADMIN_COOKIE, token);
+//        httpPost.addHeader(CommConst.ACS_ADMIN_COOKIE, token);
         List<NameValuePair> params = new ArrayList<NameValuePair>();
         for (Object key : pd.keySet()) {
             params.add(new BasicNameValuePair((String) key, (String) pd.get(key)));
@@ -67,7 +67,7 @@ public class HttpUtil {
           .setSocketTimeout(5000)
           .build();
         httpGet.setConfig(requestConfig);
-        httpGet.addHeader(CommConst.ACS_ADMIN_COOKIE, token);
+//        httpGet.addHeader(CommConst.ACS_ADMIN_COOKIE, token);
         HttpResponse httpResponse = httpClient.execute(httpGet);
         HttpEntity entity = httpResponse.getEntity();
         if (entity != null) {

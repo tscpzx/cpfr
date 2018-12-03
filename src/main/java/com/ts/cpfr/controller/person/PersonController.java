@@ -22,6 +22,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @Classname PersonController
@@ -69,9 +70,9 @@ public class PersonController extends BaseController {
             ParamData pd = new ParamData();
             pd.put("person_name", request.getParameter("person_name"));
             pd.put("emp_number", request.getParameter("emp_number"));
-            pd.put("base_image", file.getBytes());
             pd.put("wid", memory.getLoginUser().getWId());
-            if (mPersonService.addPerson(pd)) return new ResultData<>(HandleEnum.SUCCESS);
+            if (mPersonService.uploadImage(file, pd))
+                if (mPersonService.addPerson(pd)) return new ResultData<>(HandleEnum.SUCCESS);
             return new ResultData<>(HandleEnum.FAIL);
         } catch (Exception e) {
             e.printStackTrace();
@@ -92,4 +93,16 @@ public class PersonController extends BaseController {
         return "person/person_detail";
     }
 
+    @ResponseBody
+    @RequestMapping("/image")
+    public ResultData<ParamData> image(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            ParamData pd = paramDataInit();
+            mPersonService.loadImage(pd, response);
+            return new ResultData<>(HandleEnum.SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
 }
