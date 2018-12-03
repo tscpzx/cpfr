@@ -28,10 +28,10 @@ public class WebSocketConfig extends WebMvcConfigurerAdapter implements WebSocke
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         System.out.println("==========================socket配置==========================");
         //注册websocket server实现类，"/webSocketServer"访问websocket的地址
-        registry.addHandler(handle, SystemConfig.PROJECT_NAME + SystemConfig.WEB_SOCKET_URL)
+        registry.addHandler(handle, SystemConfig.WEB_SOCKET_URL)
           .addInterceptors(new WsHandshakeInterceptor());
         //使用socketjs的注册方法 兼容低端浏览器,不加还不行？
-//        registry.addHandler(handle, SystemConfig.PROJECT_NAME + SystemConfig.WEB_SOCKET_URL + "/sockjs")
+//        registry.addHandler(handle, SystemConfig.WEB_SOCKET_URL + "/sockjs")
 //          .addInterceptors(new WsHandshakeInterceptor())
 //          .withSockJS();
     }
