@@ -36,7 +36,7 @@
         }
 
         body {
-            background: url("../resource/images/bg_login.jpg") no-repeat;
+            background: url("${pageContext.request.contextPath}/resource/images/bg_login.jpg") no-repeat;
             background-size: 100% 100%;
             -moz-background-size: 100% 100%;
             overflow-y: hidden;
@@ -129,7 +129,7 @@
             success: function (data) {
                 layTip(data.message);
                 if (0 === data.code) {
-                    window.location.href = "web";
+                    window.location.href = "/cpfr/webpage/web";
                 }
             }
         });

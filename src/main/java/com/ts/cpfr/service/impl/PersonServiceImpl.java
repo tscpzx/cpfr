@@ -96,18 +96,20 @@ public class PersonServiceImpl implements PersonService {
         BufferedOutputStream fos = null;
         try {
             File file = new File(pd.getString("image_path"));
-            bis = new BufferedInputStream(new FileInputStream(file));
-            fos = new BufferedOutputStream(response.getOutputStream());
+            if(file.exists()){
+                bis = new BufferedInputStream(new FileInputStream(file));
+                fos = new BufferedOutputStream(response.getOutputStream());
 
-            response.setHeader("Cache-Control", "no-cache,must-revalidate");//告诉浏览器当前页面不进行缓存，每次访问的时间必须从服务器上读取最新的数据
-            response.setContentLength(bis.available());
+                response.setHeader("Cache-Control", "no-cache,must-revalidate");//告诉浏览器当前页面不进行缓存，每次访问的时间必须从服务器上读取最新的数据
+                response.setContentLength(bis.available());
 
-            byte[] buffer = new byte[1024 << 2];
-            int length;
-            while ((length = bis.read(buffer)) > 0) {
-                fos.write(buffer, 0, length);
+                byte[] buffer = new byte[1024 << 2];
+                int length;
+                while ((length = bis.read(buffer)) > 0) {
+                    fos.write(buffer, 0, length);
+                }
+                fos.flush();
             }
-            fos.flush();
 
         } finally {
             if (bis != null) bis.close();
@@ -125,10 +127,12 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void base64Convert(ParamData pd) throws Exception {
         File file = new File(pd.getString("image_path"));
-        FileInputStream fis = new FileInputStream(file);
-        byte[] bytes = new byte[fis.available()];
-        fis.read(bytes);
-        pd.put("base_image", bytes);
+        if(file.exists()){
+            FileInputStream fis = new FileInputStream(file);
+            byte[] bytes = new byte[fis.available()];
+            fis.read(bytes);
+            pd.put("base_image", bytes);
+        }
         pd.remove("image_path");
     }
 }

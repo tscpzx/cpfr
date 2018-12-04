@@ -143,7 +143,7 @@
             success: function (data) {
                 layTip(data.message);
                 if (0 === data.code) {
-                    window.location.href = "login";
+                    window.location.href = "/cpfr/";
                 }
             }
         });

@@ -114,7 +114,7 @@
             data: {},
             success: function (data) {
                 layTip(data.message);
-                window.location.href = "login";
+                window.location.href = "/cpfr/";
             }
         });
     }
