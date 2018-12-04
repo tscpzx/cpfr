@@ -2,6 +2,8 @@ package com.ts.cpfr.service;
 
 import com.ts.cpfr.utils.ParamData;
 
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
+
 import java.util.List;
 
 /**
@@ -20,4 +22,8 @@ public interface AppService {
     List<ParamData> getPersonList(ParamData pd);
 
     List<ParamData> getGrantList(ParamData pd);
+
+    boolean uploadRecordImage(CommonsMultipartFile file, ParamData pd) throws Exception;
+
+    boolean addRecord(ParamData pd);
 }

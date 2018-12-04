@@ -22,4 +22,8 @@
 	<select id="selectGrantList" parameterType="pd" resultType="pd">
 		SELECT person_id,type,pass_number,pass_start_time,pass_end_time,lmt FROM tbl_#{wid}_grant WHERE device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn}) and lmt>#{lmt}
 	</select>
+
+	<insert id="insertRecord" parameterType="pd">
+		insert into tbl_#{wid}_record(person_id,device_id,record_time,image_path,recog_type) values(#{person_id},(select device_id from tbl_#{wid}_device where device_sn=#{device_sn}),now(),#{image_path},#{recog_type})
+	</insert>
 </mapper>

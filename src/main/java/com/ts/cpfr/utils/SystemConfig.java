@@ -9,6 +9,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @Created by cjw
  */
 public class SystemConfig {
+    public static final boolean DEBUG = false;
     //websocket 地址
     public static final String WEB_SOCKET_URL = "/ws";
     public static final String PROJECT_NAME = "/cpfr";
@@ -21,8 +22,18 @@ public class SystemConfig {
     public static final int COOKIE_LIVE_TIME = 60 * 60 * 12;
 
     //上传文件的地址
-    public static final String UPLOAD_IMAGE_DIR = "D:/cpfr_upload/image/";
-//    public static final String UPLOAD_IMAGE_DIR = "/home/cpfr_upload/image/";
+    public static String UPLOAD_IMAGE_DIR;
+    public static String UPLOAD_RECORD_IMAGE_DIR;
+
+    static {
+        if (DEBUG) {
+            UPLOAD_IMAGE_DIR = "D:/cpfr_upload/image/";
+            UPLOAD_RECORD_IMAGE_DIR = "D:/cpfr_upload/record_image/";
+        } else {
+            UPLOAD_IMAGE_DIR = "/home/cpfr_upload/image/";
+            UPLOAD_RECORD_IMAGE_DIR = "/home/cpfr_upload/record_image/";
+        }
+    }
 
     public static CopyOnWriteArrayList<String> allowUrlList = new CopyOnWriteArrayList<>();
 
@@ -34,5 +45,6 @@ public class SystemConfig {
         allowUrlList.add("/app/device_info");
         allowUrlList.add("/app/person_list");
         allowUrlList.add("/app/grant_list");
+        allowUrlList.add("/app/upload_record");
     }
 }

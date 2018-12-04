@@ -20,4 +20,6 @@ public interface AppDao {
     List<ParamData> selectPersonList(ParamData pd);
 
     List<ParamData> selectGrantList(ParamData pd);
+
+    boolean insertRecord(ParamData pd);
 }

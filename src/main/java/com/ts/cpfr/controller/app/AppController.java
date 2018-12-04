@@ -11,7 +11,9 @@ import com.ts.cpfr.utils.ResultData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.util.List;
 
@@ -94,5 +96,24 @@ public class AppController extends BaseController {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
         }
+    }
+
+    @ResponseBody
+    @RequestMapping("/upload_record")
+    public ResultData<ParamData> uploadRecord(@RequestParam("file") CommonsMultipartFile file, HttpServletRequest request) {
+        try {
+            ParamData pd = new ParamData();
+            pd.put("device_sn", request.getParameter("device_sn"));
+            pd.put("admin_id", request.getParameter("admin_id"));
+            pd.put("person_id", request.getParameter("person_id"));
+            pd.put("recog_type", request.getParameter("recog_type"));
+            pd.put("wid", mAppService.getUserWid(pd));
+            if (mAppService.uploadRecordImage(file, pd))
+                if (mAppService.addRecord(pd)) return new ResultData<>(HandleEnum.SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+        return new ResultData<>(HandleEnum.FAIL);
     }
 }
