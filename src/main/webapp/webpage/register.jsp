@@ -37,7 +37,7 @@
         }
 
         body {
-            background: url("../resource/images/bg_login.jpg") no-repeat;
+            background: url("${pageContext.request.contextPath}/resource/images/bg_login.jpg") no-repeat;
             background-size: 100% 100%;
             -moz-background-size: 100% 100%;
             overflow-y: hidden;
