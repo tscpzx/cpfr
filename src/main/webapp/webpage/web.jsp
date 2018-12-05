@@ -80,7 +80,7 @@
                         <i class="el-icon-menu"></i>
                         <span slot="title">分组管理</span>
                     </el-menu-item>
-                    <el-menu-item index="4">
+                    <el-menu-item index="record/record_tbl" @click="onClick($event)">
                         <i class="el-icon-document"></i>
                         <span slot="title">记录管理</span>
                     </el-menu-item>
