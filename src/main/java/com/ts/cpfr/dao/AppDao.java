@@ -17,9 +17,9 @@ public interface AppDao {
 
     int selectUserWid(ParamData pd);
 
-    List<ParamData> selectPersonList(ParamData pd);
-
     List<ParamData> selectGrantList(ParamData pd);
 
     boolean insertRecord(ParamData pd);
+
+    List<ParamData> selectPersonListWithBlob(ParamData pd);
 }

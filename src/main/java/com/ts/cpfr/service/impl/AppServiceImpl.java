@@ -43,8 +43,8 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public List<ParamData> getPersonList(ParamData pd) {
-        return mAppDao.selectPersonList(pd);
+    public List<ParamData> getPersonBase64List(ParamData pd) {
+        return mAppDao.selectPersonListWithBlob(pd);
     }
 
     @Override

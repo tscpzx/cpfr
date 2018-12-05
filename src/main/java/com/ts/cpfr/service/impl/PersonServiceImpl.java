@@ -1,11 +1,13 @@
 package com.ts.cpfr.service.impl;
 
 import com.ts.cpfr.dao.PersonDao;
+import com.ts.cpfr.ehcache.Memory;
 import com.ts.cpfr.service.PersonService;
 import com.ts.cpfr.utils.CommUtil;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.SystemConfig;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
@@ -33,6 +35,8 @@ public class PersonServiceImpl implements PersonService {
 
     @Resource
     private PersonDao mPersonDao;
+    @Autowired
+    private Memory memory;
 
     @Override
     public List<ParamData> getPersonList(ParamData pd) {
@@ -42,7 +46,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public boolean addPerson(ParamData pd) {
-        return mPersonDao.insertPerson(pd);
+        return mPersonDao.insertImage(pd) && mPersonDao.insertPerson(pd);
     }
 
     @Override
@@ -65,7 +69,7 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public boolean uploadImage(CommonsMultipartFile file, ParamData pd) throws Exception {
+    public boolean uploadImageFile(CommonsMultipartFile file, ParamData pd) throws Exception {
         BufferedOutputStream fos = null;
         try {
             String realPath = SystemConfig.UPLOAD_IMAGE_DIR;
@@ -91,12 +95,12 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public void loadImage(ParamData pd, HttpServletResponse response) throws Exception {
+    public void loadImageFile(ParamData pd, HttpServletResponse response) throws Exception {
         BufferedInputStream bis = null;
         BufferedOutputStream fos = null;
         try {
             File file = new File(pd.getString("image_path"));
-            if(file.exists()){
+            if (file.exists()) {
                 bis = new BufferedInputStream(new FileInputStream(file));
                 fos = new BufferedOutputStream(response.getOutputStream());
 
@@ -118,21 +122,43 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public void base64Convert(List<ParamData> list) throws Exception {
+    public void file2base64(List<ParamData> list) throws Exception {
         for (ParamData pd : list) {
-            base64Convert(pd);
+            file2base64(pd);
         }
     }
 
     @Override
-    public void base64Convert(ParamData pd) throws Exception {
+    public void file2base64(ParamData pd) throws Exception {
         File file = new File(pd.getString("image_path"));
-        if(file.exists()){
+        if (file.exists()) {
             FileInputStream fis = new FileInputStream(file);
             byte[] bytes = new byte[fis.available()];
             fis.read(bytes);
             pd.put("base_image", bytes);
         }
         pd.remove("image_path");
+    }
+
+    @Override
+    public void blob2base64(List<ParamData> list) throws Exception {
+        for (ParamData pd : list) {
+            blob2base64(pd);
+        }
+    }
+
+    @Override
+    public void blob2base64(ParamData pd) throws Exception {
+        pd.put("wid", memory.getLoginUser().getWId());
+        ParamData paramData = mPersonDao.selectImage(pd);
+        if (paramData != null) {
+            pd.put("base_image", paramData.get("blob_image"));
+        }
+        pd.remove("wid");
+    }
+
+    @Override
+    public List<ParamData> getPersonBase64List(ParamData pd) {
+        return mPersonDao.selectPersonListWithBlob(pd);
     }
 }

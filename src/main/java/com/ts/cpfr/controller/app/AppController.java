@@ -75,8 +75,7 @@ public class AppController extends BaseController {
         try {
             ParamData pd = paramDataInit();
             pd.put("wid", mAppService.getUserWid(pd));
-            List<ParamData> list = mAppService.getPersonList(pd);
-            mPersonService.base64Convert(list);
+            List<ParamData> list = mAppService.getPersonBase64List(pd);
             return new ResultData<>(HandleEnum.SUCCESS, list);
         } catch (Exception e) {
             e.printStackTrace();
@@ -107,9 +106,9 @@ public class AppController extends BaseController {
             pd.put("admin_id", request.getParameter("admin_id"));
             pd.put("person_id", request.getParameter("person_id"));
             pd.put("recog_type", request.getParameter("recog_type"));
+            pd.put("record_image", file.getBytes());
             pd.put("wid", mAppService.getUserWid(pd));
-            if (mAppService.uploadRecordImage(file, pd))
-                if (mAppService.addRecord(pd)) return new ResultData<>(HandleEnum.SUCCESS);
+            if (mAppService.addRecord(pd)) return new ResultData<>(HandleEnum.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());

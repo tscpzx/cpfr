@@ -17,15 +17,21 @@ import javax.servlet.http.HttpServletResponse;
 public interface PersonService {
     List<ParamData> getPersonList(ParamData pd);
 
-    boolean uploadImage(CommonsMultipartFile file, ParamData pd) throws Exception;
+    boolean uploadImageFile(CommonsMultipartFile file, ParamData pd) throws Exception;
 
     boolean addPerson(ParamData pd);
 
     ParamData queryPerson(ParamData pd);
 
-    void loadImage(ParamData pd, HttpServletResponse response) throws Exception;
+    void loadImageFile(ParamData pd, HttpServletResponse response) throws Exception;
 
-    void base64Convert(List<ParamData> list) throws Exception;
+    void file2base64(List<ParamData> list) throws Exception;
 
-    void base64Convert(ParamData pd) throws Exception;
+    void file2base64(ParamData pd) throws Exception;
+
+    void blob2base64(List<ParamData> list) throws Exception;
+
+    void blob2base64(ParamData pd) throws Exception;
+
+    List<ParamData> getPersonBase64List(ParamData pd);
 }

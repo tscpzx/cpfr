@@ -56,7 +56,30 @@ public class PersonController extends BaseController {
                 personList = mPersonService.getPersonList(pd);
             }
 
-            mPersonService.base64Convert(personList);
+            return new ResultData<>(HandleEnum.SUCCESS, personList);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("/list_base64")
+    public ResultData<List<ParamData>> listBase64(HttpServletRequest request) {
+        try {
+            ParamData pd = paramDataInit();     //初始化分页参数
+            int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
+            int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
+            pd.put("wid", memory.getLoginUser().getWId());
+
+            List<ParamData> personList;
+            if (pageSize == 0) {//查询出所有结果
+                personList = mPersonService.getPersonBase64List(pd);
+            } else {
+                PageHelper.startPage(pageNum, pageSize);
+                personList = mPersonService.getPersonBase64List(pd);
+            }
+
             return new ResultData<>(HandleEnum.SUCCESS, personList);
         } catch (Exception e) {
             e.printStackTrace();
@@ -71,9 +94,9 @@ public class PersonController extends BaseController {
             ParamData pd = new ParamData();
             pd.put("person_name", request.getParameter("person_name"));
             pd.put("emp_number", request.getParameter("emp_number"));
+            pd.put("blob_image",file.getBytes());
             pd.put("wid", memory.getLoginUser().getWId());
-            if (mPersonService.uploadImage(file, pd))
-                if (mPersonService.addPerson(pd)) return new ResultData<>(HandleEnum.SUCCESS);
+            if (mPersonService.addPerson(pd)) return new ResultData<>(HandleEnum.SUCCESS);
             return new ResultData<>(HandleEnum.FAIL);
         } catch (Exception e) {
             e.printStackTrace();
@@ -87,7 +110,6 @@ public class PersonController extends BaseController {
             ParamData pd = paramDataInit();
             pd.put("wid", memory.getLoginUser().getWId());
             ParamData paramData = mPersonService.queryPerson(pd);
-            mPersonService.base64Convert(paramData);
             model.addAttribute(CommConst.DATA, JSON.toJSONString(paramData));
         } catch (Exception e) {
             e.printStackTrace();
@@ -100,7 +122,7 @@ public class PersonController extends BaseController {
     public ResultData<ParamData> image(HttpServletRequest request, HttpServletResponse response) {
         try {
             ParamData pd = paramDataInit();
-            mPersonService.loadImage(pd, response);
+            mPersonService.loadImageFile(pd, response);
             return new ResultData<>(HandleEnum.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();

@@ -19,7 +19,7 @@ public interface AppService {
 
     int getUserWid(ParamData pd);
 
-    List<ParamData> getPersonList(ParamData pd);
+    List<ParamData> getPersonBase64List(ParamData pd);
 
     List<ParamData> getGrantList(ParamData pd);
 

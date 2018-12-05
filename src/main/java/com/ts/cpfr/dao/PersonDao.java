@@ -18,4 +18,10 @@ public interface PersonDao {
     boolean insertPerson(ParamData pd);
 
     boolean updatePersonGroupID(ParamData pd);
+
+    ParamData selectImage(ParamData pd);
+
+    List<ParamData> selectPersonListWithBlob(ParamData pd);
+
+    boolean insertImage(ParamData pd);
 }
