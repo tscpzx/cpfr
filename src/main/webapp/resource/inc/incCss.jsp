@@ -7,6 +7,7 @@
 <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resource/css/base.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resource/component/element-ui/index.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resource/component/cropper/cropper.min.css">
 
 <style type="text/css">
     /*修复vue加载时显示{{}}问题 */
