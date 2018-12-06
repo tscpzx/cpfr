@@ -91,10 +91,11 @@ public class PersonController extends BaseController {
     @RequestMapping("/add")
     public ResultData<ParamData> add(@RequestParam("file") CommonsMultipartFile file, HttpServletRequest request) {
         try {
+            if (file.getSize() / 1024 > 65) return new ResultData<>(HandleEnum.FAIL, "上传失败，图片过大!");
             ParamData pd = new ParamData();
             pd.put("person_name", request.getParameter("person_name"));
             pd.put("emp_number", request.getParameter("emp_number"));
-            pd.put("blob_image",file.getBytes());
+            pd.put("blob_image", file.getBytes());
             pd.put("wid", memory.getLoginUser().getWId());
             if (mPersonService.addPerson(pd)) return new ResultData<>(HandleEnum.SUCCESS);
             return new ResultData<>(HandleEnum.FAIL);

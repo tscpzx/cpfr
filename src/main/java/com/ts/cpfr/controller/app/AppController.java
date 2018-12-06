@@ -101,6 +101,7 @@ public class AppController extends BaseController {
     @RequestMapping("/upload_record")
     public ResultData<ParamData> uploadRecord(@RequestParam("file") CommonsMultipartFile file, HttpServletRequest request) {
         try {
+            if (file.getSize() / 1024 > 65) return new ResultData<>(HandleEnum.FAIL, "上传失败，图片过大!");
             ParamData pd = new ParamData();
             pd.put("device_sn", request.getParameter("device_sn"));
             pd.put("admin_id", request.getParameter("admin_id"));
