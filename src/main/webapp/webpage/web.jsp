@@ -15,7 +15,6 @@
 
         .el-col, .nav_title {
             color: white;
-            height: 60px;
             line-height: 60px;
         }
 
@@ -35,24 +34,23 @@
         <el-header>
             <el-row>
                 <el-col :span="8">
-                    <div class="grid-content bg-purple">
-                        <h3 class="nav_title"><%=CommConst.WEB_TITLE%>
-                        </h3>
+                    <div>
+                        <h3 class="nav_title"><%=CommConst.WEB_TITLE%></h3>
                     </div>
                 </el-col>
                 <el-col :span="10">
-                    <div class="grid-content bg-purple-light"></div>
+                    <div style="height: 60px;"></div>
                 </el-col>
                 <el-col :span="2">
-                    <div class="grid-content bg-purple" style="float: right">
+                    <div style="float: right">
                         <a href="#">${sessionScope.user.name},您好!</a></div>
                 </el-col>
                 <el-col :span="2">
-                    <div class="grid-content bg-purple" style="float: right"><a href="#">修改密码</a>
+                    <div style="float: right"><a href="#">修改密码</a>
                     </div>
                 </el-col>
                 <el-col :span="2">
-                    <div class="grid-content bg-purple" style="float: right" onclick="ajaxLogout()"><a href="#">退出登录</a>
+                    <div style="float: right" onclick="ajaxLogout()"><a href="#">退出登录</a>
                     </div>
                 </el-col>
             </el-row>

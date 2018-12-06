@@ -34,6 +34,18 @@
         height: 178px;
         display: block;
     }
+
+    .cropper-container {
+        width: 100%;
+    }
+
+    .cropper-preview {
+        margin-left: 5px;
+        width: 100%;
+        height: 200px;
+        background-color: black;
+        overflow: hidden;
+    }
 </style>
 <div class="person_add_box">
     <div id="person_add">
@@ -61,6 +73,7 @@
                 <el-button type="primary" v-on:click="onClickUpload()">添加</el-button>
             </el-form-item>
         </el-form>
+        <%@include file="inc_dialog/dialog_cropper.jsp" %>
     </div>
 </div>
 
@@ -80,25 +93,37 @@
                 },
                 imageUrl: '',
                 action: "${pageContext.request.contextPath}/person/add",
+                visible: false,
+                file: '',
+                replace: false,
+                uploadBlob: ''
             }
         },
         methods: {
             onChange(file, fileList) {
                 this.$refs.upload.clearFiles();
-                this.imageUrl = URL.createObjectURL(file.raw);
-                this.$refs.upload.uploadFiles[0] = file;
-            },
-            beforeUpload(file) {
-                const isSuppType = file.type.indexOf("image") !== -1;
-                const isLt3M = file.size / 1024 / 1024 < 3;
+                const isSuppType = file.raw.type.indexOf("image") !== -1;
+                const isLt3M = file.raw.size / 1024 / 1024 < 3;
 
                 if (!isSuppType) {
                     this.$message.error('不支持该类型的文件!');
+                    return;
                 }
                 if (!isLt3M) {
                     this.$message.error('上传图片大小不能超过 3MB!');
+                    return;
                 }
-                return isSuppType && isLt3M;
+
+                // this.$refs.upload.uploadFiles[0] = file;
+                // this.imageUrl = URL.createObjectURL(file.raw);
+                this.file = file;
+                this.visible = true;
+            },
+            beforeUpload(file) {
+                const isLt = this.uploadBlob.size < 65;
+                if (!isLt) this.$message.error('上传图片过大,请重新选择图片');
+
+                return isLt;
             },
             onClickUpload() {
                 this.$refs.uploadForm.validate((isValid) => {
@@ -116,7 +141,8 @@
             },
             myUpload() {
                 var model = this.$refs.uploadForm.model;
-                var file = this.$refs.upload.uploadFiles[0].raw;
+                // var file = this.$refs.upload.uploadFiles[0].raw;
+                var file = this.uploadBlob;
 
                 var loading = layLoading3("上传中...");
                 var formData = new FormData();
@@ -152,7 +178,59 @@
                         top.layer.close(loading);
                     }
                 });
+            },
+            onClickCropper() {
+                var canvas = $('.cropper-container>img').cropper('getCroppedCanvas', {
+                    width: 480,
+                    height: 480,
+                    minWidth: 240,
+                    minHeight: 240,
+                    maxWidth: 480,
+                    maxHeight: 480,
+                    fillColor: '#000',
+                    imageSmoothingEnabled: false,//如果图像被设置为平滑(true，默认)
+                    imageSmoothingQuality: 'high'//设置图像的质量
+                });
+
+                var fileSize = this.file.raw.size / 1024;
+                var quality;
+                if (fileSize > 2048) quality = 0.6;
+                else if (fileSize > 1024 && fileSize < 2048) quality = 0.7;
+                else if (fileSize > 65 && fileSize < 1024) quality = 0.75;
+                else quality = 0.9;
+
+                var base64url = canvas.toDataURL('image/jpeg', quality);
+                this.$refs.upload.uploadFiles[0] = this.file;
+                this.uploadBlob = dataURLtoBlob(base64url);//生成base64格式的blob
+                this.visible = false;
+                this.imageUrl = base64url;
+            },
+            opened() {
+                if (this.replace) {
+                    $('.cropper-container>img').cropper('replace', URL.createObjectURL(this.file.raw));
+                } else {
+                    $('.cropper-container>img').attr('src', URL.createObjectURL(this.file.raw)).cropper({
+                        aspectRatio: 1,
+                        viewMode: 0,
+                        preview: ".cropper-preview"
+                    });
+                    this.replace = true;
+                }
+            },
+            closed() {
+                this.file = '';
             }
         }
     });
+
+
+    //将base64格式图片转换为文件形式
+    function dataURLtoBlob(dataurl) {
+        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new Blob([u8arr], {type: mime});
+    }
 </script>
