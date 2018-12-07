@@ -39,4 +39,9 @@ public class UserServiceImpl implements UserService {
         mTableDao.createTableWarehouse(wid);
     }
 
+    @Override
+    public void updateUserLoginTime(ParamData pd) {
+        mUserDao.updateUserLoginTime(pd);
+    }
+
 }

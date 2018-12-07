@@ -15,4 +15,6 @@ public interface UserService {
     boolean addAdminUser(ParamData pd);
 
     void createTableWarehouse();
+
+    void updateUserLoginTime(ParamData paramData);
 }

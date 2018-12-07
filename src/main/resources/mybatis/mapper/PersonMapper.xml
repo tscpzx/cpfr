@@ -25,7 +25,8 @@
 	</select>
 
 	<insert id="insertPerson" parameterType="pd">
-		INSERT INTO tbl_#{wid}_person(person_name,emp_number,add_time,image_id) VALUES(#{person_name},#{emp_number},now(),(select LAST_INSERT_ID()))
+		insert into tbl_#{wid}_image (blob_image) values (#{blob_image});
+		INSERT INTO tbl_#{wid}_person(person_name,emp_number,add_time,image_id) VALUES(#{person_name},#{emp_number},now(),(select LAST_INSERT_ID()));
 	</insert>
 
 	<update id="updatePersonGroupID" parameterType="pd">
@@ -38,8 +39,4 @@
 	<select id="selectImage" parameterType="pd" resultType="pd">
 		SELECT blob_image FROM tbl_#{wid}_image WHERE image_id=#{image_id}
 	</select>
-
-	<insert id="insertImage" parameterType="pd">
-		insert into tbl_#{wid}_image (blob_image) values (#{blob_image})
-	</insert>
 </mapper>

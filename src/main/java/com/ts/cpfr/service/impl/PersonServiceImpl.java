@@ -46,7 +46,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public boolean addPerson(ParamData pd) {
-        return mPersonDao.insertImage(pd) && mPersonDao.insertPerson(pd);
+        return mPersonDao.insertPerson(pd);
     }
 
     @Override

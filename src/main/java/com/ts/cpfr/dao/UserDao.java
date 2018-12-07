@@ -15,4 +15,6 @@ public interface UserDao {
     boolean insertAdminUser(ParamData pd);
 
     int selectWidByAdminId(String adminId);
+
+    void updateUserLoginTime(ParamData pd);
 }

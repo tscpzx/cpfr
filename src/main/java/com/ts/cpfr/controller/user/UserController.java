@@ -61,6 +61,9 @@ public class UserController extends BaseController {
                     ParamData paramData = new ParamData();
                     paramData.put("admin_id", user.getAdminId());
                     paramData.put("token", user.getToken());
+
+                    mUserService.updateUserLoginTime(paramData);
+
                     return new ResultData<>(HandleEnum.SUCCESS, paramData);
                 } else {
                     return new ResultData<>(HandleEnum.PASSWORD_ERROR_104);

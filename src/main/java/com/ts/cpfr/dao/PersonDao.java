@@ -22,6 +22,4 @@ public interface PersonDao {
     ParamData selectImage(ParamData pd);
 
     List<ParamData> selectPersonListWithBlob(ParamData pd);
-
-    boolean insertImage(ParamData pd);
 }

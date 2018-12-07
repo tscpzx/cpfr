@@ -120,7 +120,7 @@
                 this.visible = true;
             },
             beforeUpload(file) {
-                const isLt = this.uploadBlob.size < 65;
+                const isLt = this.uploadBlob.size / 1024 < 65;
                 if (!isLt) this.$message.error('上传图片过大,请重新选择图片');
 
                 return isLt;
