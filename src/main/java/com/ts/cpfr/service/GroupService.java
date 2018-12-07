@@ -1,6 +1,7 @@
 package com.ts.cpfr.service;
 
 import com.ts.cpfr.utils.ParamData;
+import com.ts.cpfr.utils.ResultData;
 
 import java.util.List;
 
@@ -11,13 +12,13 @@ import java.util.List;
  * @Created by cjw
  */
 public interface GroupService {
-    List<ParamData> getGroupList(ParamData pd);
+    ResultData<List<ParamData>> getGroupList(ParamData pd);
 
     ParamData queryGroup(ParamData pd);
 
-    boolean addGroup(ParamData pd);
+    ResultData<ParamData> addGroup(ParamData pd);
 
-    boolean addGroupPerson(ParamData pd);
+    ResultData<ParamData> addGroupPerson(ParamData pd);
 
-    boolean addGroupDevice(ParamData pd);
+    ResultData<ParamData> addGroupDevice(ParamData pd);
 }

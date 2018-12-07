@@ -13,19 +13,19 @@ import java.util.List;
 public interface DeviceDao {
     List<ParamData> selectDeviceList(ParamData pd);
 
-    ParamData selectInActDevice(ParamData pd);
-
-    boolean updateInActDeviceMacGrantKeyAndStatus(ParamData pd);
-
-    boolean updateInActDeviceOnline(ParamData pd);
-
-    boolean updateDeviceOnline(ParamData pd);
-
     List<ParamData> selectInActDeviceList(ParamData pd);
 
-    boolean insertDevice(ParamData pd);
+    ParamData selectInActDevice(ParamData pd);
 
     ParamData selectDevice(ParamData pd);
+
+    boolean updateInActDeviceGrantKeyAndStatus(ParamData pd);
+
+    void updateInActDeviceOnline(ParamData pd);
+
+    void updateDeviceOnline(ParamData pd);
+
+    boolean insertDevice(ParamData pd);
 
     boolean updateDeviceGroupID(ParamData pd);
 }

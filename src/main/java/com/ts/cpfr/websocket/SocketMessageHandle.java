@@ -61,7 +61,7 @@ public class SocketMessageHandle implements WebSocketHandler {
             pd.put(CommConst.DEVICE_SN, deviceSn);
             pd.put(CommConst.ADMIN_ID, adminId);
             pd.put("online", 1);
-            mDeviceService.updateAllDeviceOnline(pd);
+            mDeviceService.updateDeviceOnline(pd);
         }
     }
 
@@ -137,7 +137,7 @@ public class SocketMessageHandle implements WebSocketHandler {
             pd.put(CommConst.DEVICE_SN, deviceSn);
             pd.put(CommConst.ADMIN_ID, adminId);
             pd.put("online", 0);
-            mDeviceService.updateAllDeviceOnline(pd);
+            mDeviceService.updateDeviceOnline(pd);
         }
 
     }

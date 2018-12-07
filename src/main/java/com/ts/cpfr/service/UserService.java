@@ -1,7 +1,10 @@
 package com.ts.cpfr.service;
 
-import com.ts.cpfr.entity.LoginUser;
 import com.ts.cpfr.utils.ParamData;
+import com.ts.cpfr.utils.ResultData;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @Classname UserService
@@ -10,11 +13,9 @@ import com.ts.cpfr.utils.ParamData;
  * @Created by cjw
  */
 public interface UserService {
-    LoginUser queryUserByName(ParamData pd);
+    ResultData<ParamData> login(ParamData pd, HttpServletRequest request, HttpServletResponse response);
 
-    boolean addAdminUser(ParamData pd);
+    ResultData<ParamData> register(ParamData pd);
 
-    void createTableWarehouse();
-
-    void updateUserLoginTime(ParamData paramData);
+    void logout();
 }

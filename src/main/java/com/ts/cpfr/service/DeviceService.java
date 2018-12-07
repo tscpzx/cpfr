@@ -1,6 +1,7 @@
 package com.ts.cpfr.service;
 
 import com.ts.cpfr.utils.ParamData;
+import com.ts.cpfr.utils.ResultData;
 
 import java.util.List;
 
@@ -11,17 +12,15 @@ import java.util.List;
  * @Created by cjw
  */
 public interface DeviceService {
-    List<ParamData> getDeviceList(ParamData pd);
+    ResultData<List<ParamData>> getDeviceList(ParamData pd);
 
-    boolean activateDevice(ParamData pd);
+    ResultData<List<ParamData>> getInActDeviceList(ParamData pd);
+
+    ResultData<ParamData> activateDevice(ParamData pd) throws Exception;
+
+    void updateDeviceOnline(ParamData pd);
 
     ParamData queryInActDevice(ParamData pd);
 
     ParamData queryDevice(ParamData pd);
-
-    boolean updateAllDeviceOnline(ParamData pd);
-
-    List<ParamData> getInActDeviceList(ParamData pd);
-
-    boolean addDevice(ParamData pd);
 }

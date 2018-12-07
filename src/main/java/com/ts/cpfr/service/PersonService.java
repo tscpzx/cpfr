@@ -1,11 +1,13 @@
 package com.ts.cpfr.service;
 
 import com.ts.cpfr.utils.ParamData;
+import com.ts.cpfr.utils.ResultData;
 
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -15,13 +17,15 @@ import javax.servlet.http.HttpServletResponse;
  * @Created by cjw
  */
 public interface PersonService {
-    List<ParamData> getPersonList(ParamData pd);
+    ResultData<List<ParamData>> getPersonList(ParamData pd);
 
-    boolean uploadImageFile(CommonsMultipartFile file, ParamData pd) throws Exception;
+    ResultData<List<ParamData>> getPersonBase64List(ParamData pd);
 
-    boolean addPerson(ParamData pd);
+    ResultData<ParamData> addPerson(CommonsMultipartFile file, HttpServletRequest request);
 
     ParamData queryPerson(ParamData pd);
+
+    boolean uploadImageFile(CommonsMultipartFile file, ParamData pd) throws Exception;
 
     void loadImageFile(ParamData pd, HttpServletResponse response) throws Exception;
 
@@ -32,6 +36,4 @@ public interface PersonService {
     void blob2base64(List<ParamData> list) throws Exception;
 
     void blob2base64(ParamData pd) throws Exception;
-
-    List<ParamData> getPersonBase64List(ParamData pd);
 }

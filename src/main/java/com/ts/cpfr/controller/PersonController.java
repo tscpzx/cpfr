@@ -1,12 +1,9 @@
-package com.ts.cpfr.controller.person;
+package com.ts.cpfr.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.github.pagehelper.PageHelper;
 import com.ts.cpfr.controller.base.BaseController;
-import com.ts.cpfr.ehcache.Memory;
 import com.ts.cpfr.service.PersonService;
 import com.ts.cpfr.utils.CommConst;
-import com.ts.cpfr.utils.CommUtil;
 import com.ts.cpfr.utils.HandleEnum;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
@@ -36,27 +33,12 @@ public class PersonController extends BaseController {
 
     @Autowired
     private PersonService mPersonService;
-    @Autowired
-    private Memory memory;
 
     @ResponseBody
     @RequestMapping("/list")
     public ResultData<List<ParamData>> list(HttpServletRequest request) {
         try {
-            ParamData pd = paramDataInit();     //初始化分页参数
-            int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
-            int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
-            pd.put("wid", memory.getLoginUser().getWId());
-
-            List<ParamData> personList;
-            if (pageSize == 0) {//查询出所有结果
-                personList = mPersonService.getPersonList(pd);
-            } else {
-                PageHelper.startPage(pageNum, pageSize);
-                personList = mPersonService.getPersonList(pd);
-            }
-
-            return new ResultData<>(HandleEnum.SUCCESS, personList);
+            return mPersonService.getPersonList(paramDataInit());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
@@ -67,20 +49,7 @@ public class PersonController extends BaseController {
     @RequestMapping("/list_base64")
     public ResultData<List<ParamData>> listBase64(HttpServletRequest request) {
         try {
-            ParamData pd = paramDataInit();     //初始化分页参数
-            int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
-            int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
-            pd.put("wid", memory.getLoginUser().getWId());
-
-            List<ParamData> personList;
-            if (pageSize == 0) {//查询出所有结果
-                personList = mPersonService.getPersonBase64List(pd);
-            } else {
-                PageHelper.startPage(pageNum, pageSize);
-                personList = mPersonService.getPersonBase64List(pd);
-            }
-
-            return new ResultData<>(HandleEnum.SUCCESS, personList);
+            return mPersonService.getPersonBase64List(paramDataInit());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
@@ -91,14 +60,7 @@ public class PersonController extends BaseController {
     @RequestMapping("/add")
     public ResultData<ParamData> add(@RequestParam("file") CommonsMultipartFile file, HttpServletRequest request) {
         try {
-            if (file.getSize() / 1024 > 65) return new ResultData<>(HandleEnum.FAIL, "上传失败，图片过大!");
-            ParamData pd = new ParamData();
-            pd.put("person_name", request.getParameter("person_name"));
-            pd.put("emp_number", request.getParameter("emp_number"));
-            pd.put("blob_image", file.getBytes());
-            pd.put("wid", memory.getLoginUser().getWId());
-            if (mPersonService.addPerson(pd)) return new ResultData<>(HandleEnum.SUCCESS);
-            return new ResultData<>(HandleEnum.FAIL);
+            return mPersonService.addPerson(file, request);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
@@ -108,9 +70,7 @@ public class PersonController extends BaseController {
     @RequestMapping("/detail")
     public String detail(Model model, HttpServletRequest request) {
         try {
-            ParamData pd = paramDataInit();
-            pd.put("wid", memory.getLoginUser().getWId());
-            ParamData paramData = mPersonService.queryPerson(pd);
+            ParamData paramData = mPersonService.queryPerson(paramDataInit());
             model.addAttribute(CommConst.DATA, JSON.toJSONString(paramData));
         } catch (Exception e) {
             e.printStackTrace();
@@ -122,8 +82,7 @@ public class PersonController extends BaseController {
     @RequestMapping("/image")
     public ResultData<ParamData> image(HttpServletRequest request, HttpServletResponse response) {
         try {
-            ParamData pd = paramDataInit();
-            mPersonService.loadImageFile(pd, response);
+            mPersonService.loadImageFile(paramDataInit(), response);
             return new ResultData<>(HandleEnum.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();

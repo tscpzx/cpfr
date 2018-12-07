@@ -1,8 +1,8 @@
 package com.ts.cpfr.service;
 
+import com.github.pagehelper.PageInfo;
 import com.ts.cpfr.utils.ParamData;
-
-import java.util.List;
+import com.ts.cpfr.utils.ResultData;
 
 /**
  * @Classname RecordService
@@ -11,5 +11,5 @@ import java.util.List;
  * @Created by cjw
  */
 public interface RecordService {
-    List<ParamData> getRecordBase64List(ParamData pd);
+    ResultData<PageInfo<ParamData>> getRecordBase64List(ParamData pd);
 }

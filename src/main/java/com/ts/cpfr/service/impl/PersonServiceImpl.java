@@ -1,10 +1,13 @@
 package com.ts.cpfr.service.impl;
 
+import com.github.pagehelper.PageHelper;
 import com.ts.cpfr.dao.PersonDao;
 import com.ts.cpfr.ehcache.Memory;
 import com.ts.cpfr.service.PersonService;
 import com.ts.cpfr.utils.CommUtil;
+import com.ts.cpfr.utils.HandleEnum;
 import com.ts.cpfr.utils.ParamData;
+import com.ts.cpfr.utils.ResultData;
 import com.ts.cpfr.utils.SystemConfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +25,9 @@ import java.sql.Blob;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 
 /**
  * @Classname PersonServiceImpl
@@ -31,26 +36,50 @@ import javax.servlet.http.HttpServletResponse;
  * @Created by cjw
  */
 @Service
+@Transactional
 public class PersonServiceImpl implements PersonService {
-
     @Resource
     private PersonDao mPersonDao;
     @Autowired
     private Memory memory;
 
     @Override
-    public List<ParamData> getPersonList(ParamData pd) {
-        return mPersonDao.selectPersonList(pd);
+    public ResultData<List<ParamData>> getPersonList(ParamData pd) {
+        int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
+        int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
+        pd.put("wid", memory.getLoginUser().getWId());
+
+        if (pageSize != 0) PageHelper.startPage(pageNum, pageSize);
+        List<ParamData> personList = mPersonDao.selectPersonList(pd);
+        return new ResultData<>(HandleEnum.SUCCESS, personList);
     }
 
+    @Override
+    public ResultData<List<ParamData>> getPersonBase64List(ParamData pd) {
+        int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
+        int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
+        pd.put("wid", memory.getLoginUser().getWId());
+
+        if (pageSize != 0) PageHelper.startPage(pageNum, pageSize);
+        List<ParamData> personList = mPersonDao.selectPersonListWithBlob(pd);
+        return new ResultData<>(HandleEnum.SUCCESS, personList);
+    }
 
     @Override
-    public boolean addPerson(ParamData pd) {
-        return mPersonDao.insertPerson(pd);
+    public ResultData<ParamData> addPerson(CommonsMultipartFile file, HttpServletRequest request) {
+        if (file.getSize() / 1024 > 65) return new ResultData<>(HandleEnum.FAIL, "上传失败，图片过大!");
+        ParamData pd = new ParamData();
+        pd.put("person_name", request.getParameter("person_name"));
+        pd.put("emp_number", request.getParameter("emp_number"));
+        pd.put("blob_image", file.getBytes());
+        pd.put("wid", memory.getLoginUser().getWId());
+        if (mPersonDao.insertPerson(pd)) return new ResultData<>(HandleEnum.SUCCESS);
+        return new ResultData<>(HandleEnum.FAIL);
     }
 
     @Override
     public ParamData queryPerson(ParamData pd) {
+        pd.put("wid", memory.getLoginUser().getWId());
         return mPersonDao.selectPerson(pd);
     }
 
@@ -155,10 +184,5 @@ public class PersonServiceImpl implements PersonService {
             pd.put("base_image", paramData.get("blob_image"));
         }
         pd.remove("wid");
-    }
-
-    @Override
-    public List<ParamData> getPersonBase64List(ParamData pd) {
-        return mPersonDao.selectPersonListWithBlob(pd);
     }
 }

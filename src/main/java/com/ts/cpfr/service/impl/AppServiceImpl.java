@@ -1,9 +1,12 @@
 package com.ts.cpfr.service.impl;
 
 import com.ts.cpfr.dao.AppDao;
+import com.ts.cpfr.dao.DeviceDao;
 import com.ts.cpfr.service.AppService;
 import com.ts.cpfr.utils.CommUtil;
+import com.ts.cpfr.utils.HandleEnum;
 import com.ts.cpfr.utils.ParamData;
+import com.ts.cpfr.utils.ResultData;
 import com.ts.cpfr.utils.SystemConfig;
 
 import org.springframework.stereotype.Service;
@@ -15,6 +18,8 @@ import java.io.FileOutputStream;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 
 /**
  * @Classname AppServiceImpl
@@ -23,33 +28,57 @@ import javax.annotation.Resource;
  * @Created by cjw
  */
 @Service
+@Transactional
 public class AppServiceImpl implements AppService {
     @Resource
     private AppDao mAppDao;
+    @Resource
+    private DeviceDao mDeviceDao;
 
     @Override
-    public boolean addInActDevice(ParamData pd) {
-        return mAppDao.insertInActDevice(pd);
+    public ResultData<List<ParamData>> register(ParamData pd) {
+        ParamData paramData = mDeviceDao.selectInActDevice(pd);
+        if (paramData == null) {
+            if (mAppDao.insertInActDevice(pd)) {
+                return new ResultData<>(HandleEnum.SUCCESS, "已注册新设备");
+            }
+        } else return new ResultData<>(HandleEnum.SUCCESS, "设备已注册");
+        return new ResultData<>(HandleEnum.FAIL, "设备注册失败，请重新连接");
     }
 
     @Override
-    public ParamData getDeviceInfo(ParamData pd) {
-        return mAppDao.selectDevice(pd);
+    public ResultData<ParamData> getDeviceInfo(ParamData pd) {
+        pd.put("wid", mAppDao.selectUserWid(pd));
+        ParamData paramData = mAppDao.selectDevice(pd);
+        return new ResultData<>(HandleEnum.SUCCESS, paramData);
     }
 
     @Override
-    public int getUserWid(ParamData pd) {
-        return mAppDao.selectUserWid(pd);
+    public ResultData<List<ParamData>> getPersonBase64List(ParamData pd) {
+        pd.put("wid", mAppDao.selectUserWid(pd));
+        List<ParamData> list = mAppDao.selectPersonListWithBlob(pd);
+        return new ResultData<>(HandleEnum.SUCCESS, list);
     }
 
     @Override
-    public List<ParamData> getPersonBase64List(ParamData pd) {
-        return mAppDao.selectPersonListWithBlob(pd);
+    public ResultData<List<ParamData>> getGrantList(ParamData pd) {
+        pd.put("wid", mAppDao.selectUserWid(pd));
+        List<ParamData> list = mAppDao.selectGrantList(pd);
+        return new ResultData<>(HandleEnum.SUCCESS, list);
     }
 
     @Override
-    public List<ParamData> getGrantList(ParamData pd) {
-        return mAppDao.selectGrantList(pd);
+    public ResultData<ParamData> addRecord(CommonsMultipartFile file, HttpServletRequest request) {
+        if (file.getSize() / 1024 > 65) return new ResultData<>(HandleEnum.FAIL, "上传失败，图片过大!");
+        ParamData pd = new ParamData();
+        pd.put("device_sn", request.getParameter("device_sn"));
+        pd.put("admin_id", request.getParameter("admin_id"));
+        pd.put("person_id", request.getParameter("person_id"));
+        pd.put("recog_type", request.getParameter("recog_type"));
+        pd.put("record_image", file.getBytes());
+        pd.put("wid", mAppDao.selectUserWid(pd));
+        if (mAppDao.insertRecord(pd)) return new ResultData<>(HandleEnum.SUCCESS);
+        return new ResultData<>(HandleEnum.FAIL);
     }
 
     @Override
@@ -76,10 +105,5 @@ public class AppServiceImpl implements AppService {
             if (fos != null) fos.close();
         }
         return false;
-    }
-
-    @Override
-    public boolean addRecord(ParamData pd) {
-        return mAppDao.insertRecord(pd);
     }
 }

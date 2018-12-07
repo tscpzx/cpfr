@@ -1,6 +1,9 @@
 package com.ts.cpfr.service;
 
 import com.ts.cpfr.utils.ParamData;
+import com.ts.cpfr.utils.ResultData;
+
+import java.util.List;
 
 /**
  * @Classname GrantDao
@@ -9,5 +12,5 @@ import com.ts.cpfr.utils.ParamData;
  * @Created by cjw
  */
 public interface GrantService {
-    boolean addGrants(ParamData pd);
+    ResultData<List<ParamData>> addGrants(ParamData pd);
 }

@@ -1,10 +1,13 @@
 package com.ts.cpfr.service;
 
 import com.ts.cpfr.utils.ParamData;
+import com.ts.cpfr.utils.ResultData;
 
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @Classname AppService
@@ -13,17 +16,15 @@ import java.util.List;
  * @Created by cjw
  */
 public interface AppService {
-    boolean addInActDevice(ParamData pd);
+    ResultData<List<ParamData>> register(ParamData paramDataInit);
 
-    ParamData getDeviceInfo(ParamData pd);
+    ResultData<ParamData> getDeviceInfo(ParamData pd);
 
-    int getUserWid(ParamData pd);
+    ResultData<List<ParamData>> getPersonBase64List(ParamData pd);
 
-    List<ParamData> getPersonBase64List(ParamData pd);
+    ResultData<List<ParamData>> getGrantList(ParamData pd);
 
-    List<ParamData> getGrantList(ParamData pd);
+    ResultData<ParamData> addRecord(CommonsMultipartFile file, HttpServletRequest request);
 
     boolean uploadRecordImage(CommonsMultipartFile file, ParamData pd) throws Exception;
-
-    boolean addRecord(ParamData pd);
 }
