@@ -56,6 +56,7 @@ function elmAlert1(msg) {
         type: 'warning',
         showConfirmButton: false,
         closeOnClickModal: true
+    }).catch(() => {
     });
 }
 

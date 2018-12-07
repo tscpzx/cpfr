@@ -100,7 +100,6 @@
                 pageSize: pageSize
             },
             success: function (result) {
-                console.log(result);
                 vm.tableData = result.data.total;
                 vm.tableData = result.data.list;
             }
