@@ -9,7 +9,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @Created by cjw
  */
 public class SystemConfig {
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
     //websocket 地址
     public static final String WEB_SOCKET_URL = "/ws";
     public static final String PROJECT_NAME = "/cpfr";

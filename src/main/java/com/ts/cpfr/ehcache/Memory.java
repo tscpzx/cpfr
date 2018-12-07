@@ -69,7 +69,7 @@ public class Memory {
      */
     public boolean checkLoginUser(String token) {
         Element element = ehcache.get(token);
-        return element != null && (LoginUser) element.getObjectValue() != null;
+        return element != null && element.getObjectValue() != null;
     }
 
     /**

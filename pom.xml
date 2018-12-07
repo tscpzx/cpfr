@@ -183,11 +183,11 @@
 				</exclusion>
 			</exclusions>
 		</dependency>-->
-		<dependency>
+		<!--<dependency>
 			<groupId>org.ehcache</groupId>
 			<artifactId>ehcache</artifactId>
 			<version>3.4.0</version>
-		</dependency>
+		</dependency>-->
 		<dependency>
 			<groupId>net.sf.ehcache</groupId>
 			<artifactId>ehcache</artifactId>

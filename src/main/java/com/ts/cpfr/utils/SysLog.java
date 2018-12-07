@@ -16,9 +16,11 @@ public class SysLog {
      * 打印信息
      */
     public static void info(String src) {
-        String location = "";
-        StackTraceElement[] stacks = Thread.currentThread().getStackTrace();
-        location = stacks[2].getClassName() + "." + stacks[2].getMethodName() + "(" + stacks[2].getLineNumber() + ")";
-        log.info(location + src);
+        if (SystemConfig.DEBUG) {
+            String location = "";
+            StackTraceElement[] stacks = Thread.currentThread().getStackTrace();
+            location = stacks[2].getClassName() + "." + stacks[2].getMethodName() + "(" + stacks[2].getLineNumber() + ")";
+            log.info(location + src);
+        }
     }
 }
