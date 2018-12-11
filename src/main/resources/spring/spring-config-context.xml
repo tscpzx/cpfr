@@ -90,4 +90,9 @@
         <property name="cacheName" value="myCache" />
         <property name="cacheManager" ref="cacheManager" />
     </bean>
+
+	<!--定义solr的客户端 -->
+	<bean id="httpSolrClient" class="org.apache.solr.client.solrj.impl.HttpSolrClient">
+		<constructor-arg value="http://localhost:8088/solr/collection1"/>
+	</bean>
 </beans>
