@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
  * @Created by cjw
  */
 public interface AppService {
-    ResultData<List<ParamData>> register(ParamData paramDataInit);
+    ResultData<ParamData> register(ParamData paramDataInit);
 
     ResultData<ParamData> getDeviceInfo(ParamData pd);
 

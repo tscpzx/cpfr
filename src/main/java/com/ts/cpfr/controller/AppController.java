@@ -33,7 +33,7 @@ public class AppController extends BaseController {
 
     @ResponseBody
     @RequestMapping("/device_register")
-    public ResultData<List<ParamData>> deviceRegister(HttpServletRequest request, HttpServletResponse response) {
+    public ResultData<ParamData> deviceRegister(HttpServletRequest request, HttpServletResponse response) {
         try {
             return mAppService.register(paramDataInit());
         } catch (Exception e) {

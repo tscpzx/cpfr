@@ -36,7 +36,7 @@ public class AppServiceImpl implements AppService {
     private DeviceDao mDeviceDao;
 
     @Override
-    public ResultData<List<ParamData>> register(ParamData pd) {
+    public ResultData<ParamData> register(ParamData pd) {
         ParamData paramData = mDeviceDao.selectInActDevice(pd);
         if (paramData == null) {
             if (mAppDao.insertInActDevice(pd)) {
