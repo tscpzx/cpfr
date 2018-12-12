@@ -3,30 +3,27 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ts.cpfr.dao.PersonDao">
 	<select id="selectPerson" parameterType="pd" resultType="pd">
-		SELECT p.person_id,p.person_name,p.emp_number,p.add_time,i.blob_image base_image from tbl_#{wid}_person  p left join tbl_#{wid}_image i on p.image_id=i.image_id where person_id=#{person_id}
+		SELECT p.person_id,p.person_name,p.emp_number,p.add_time,i.blob_image base_image from tbl_#{wid}_person  p left join tbl_#{wid}_image i on p.image_id=i.image_id where p.person_id=#{person_id} and p.status &lt;&gt; 3
 	</select>
 
 	<select id="selectPersonList" parameterType="pd" resultType="pd">
-		select person_id,person_name,emp_number,add_time,image_id from tbl_#{wid}_person
-		<where>
-			<if test="group_id!=null and group_id!=''">
-				group_id=#{group_id}
-			</if>
-		</where>
+		select person_id,person_name,emp_number,add_time,image_id from tbl_#{wid}_person where status &lt;&gt; 3
+		<if test="group_id!=null and group_id!=''">
+			and group_id=#{group_id}
+		</if>
 	</select>
 
 	<select id="selectPersonListWithBlob" parameterType="pd" resultType="pd">
 		select p.person_id,p.person_name,p.emp_number,p.add_time,i.blob_image base_image from tbl_#{wid}_person p left join tbl_#{wid}_image i on p.image_id=i.image_id
-		<where>
-			<if test="group_id!=null and group_id!=''">
-				p.group_id=#{group_id}
-			</if>
-		</where>
+		where p.status &lt;&gt; 3
+		<if test="group_id!=null and group_id!=''">
+			and p.group_id=#{group_id}
+		</if>
 	</select>
 
 	<insert id="insertPerson" parameterType="pd">
 		insert into tbl_#{wid}_image (blob_image) values (#{blob_image});
-		INSERT INTO tbl_#{wid}_person(person_name,emp_number,add_time,image_id) VALUES(#{person_name},#{emp_number},now(),(select LAST_INSERT_ID()));
+		INSERT INTO tbl_#{wid}_person(person_name,emp_number,status,add_time,image_id) VALUES(#{person_name},#{emp_number},1,now(),(select LAST_INSERT_ID()));
 	</insert>
 
 	<update id="updatePersonGroupID" parameterType="pd">

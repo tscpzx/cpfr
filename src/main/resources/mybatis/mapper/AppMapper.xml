@@ -16,11 +16,11 @@
 	</select>
 
 	<select id="selectPersonListWithBlob" parameterType="pd" resultType="pd">
-		SELECT a.person_id,a.person_name,a.emp_number,i.blob_image base_image,a.lmt FROM (SELECT p.person_id,p.person_name,p.emp_number,p.image_id,p.lmt FROM tbl_#{wid}_person p RIGHT JOIN (SELECT person_id FROM tbl_#{wid}_grant WHERE device_id=(SELECT device_id FROM tbl_#{wid}_device WHERE device_sn=#{device_sn})) g ON p.person_id=g.person_id WHERE p.lmt>#{lmt}) a LEFT JOIN tbl_#{wid}_image i ON a.image_id=i.image_id
+		SELECT a.person_id,a.person_name,a.emp_number,i.blob_image base_image,a.status,a.lmt FROM (SELECT p.person_id,p.person_name,p.emp_number,p.image_id,p.status,p.lmt FROM tbl_#{wid}_person p RIGHT JOIN (SELECT person_id FROM tbl_#{wid}_grant WHERE device_id=(SELECT device_id FROM tbl_#{wid}_device WHERE device_sn=#{device_sn})) g ON p.person_id=g.person_id WHERE p.lmt>#{lmt}) a LEFT JOIN tbl_#{wid}_image i ON a.image_id=i.image_id
 	</select>
 
 	<select id="selectGrantList" parameterType="pd" resultType="pd">
-		SELECT person_id,type,pass_number,pass_start_time,pass_end_time,lmt FROM tbl_#{wid}_grant WHERE device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn}) and lmt>#{lmt}
+		SELECT person_id,type,pass_number,status,pass_start_time,pass_end_time,lmt FROM tbl_#{wid}_grant WHERE device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn}) and lmt>#{lmt}
 	</select>
 
 	<insert id="insertRecord" parameterType="pd">

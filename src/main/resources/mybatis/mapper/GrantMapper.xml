@@ -7,12 +7,13 @@
 			SELECT LAST_INSERT_ID()
 		</selectKey>
 		INSERT INTO tbl_#{wid}_grant
-		(device_id,person_id,type,pass_number,pass_start_time,pass_end_time) VALUES
+		(device_id,person_id,type,status,pass_number,pass_start_time,pass_end_time) VALUES
 		<foreach collection="list" item="data" separator=",">
 			(
 				#{data.device_id},
 				#{data.person_id},
 				#{data.type},
+		        1,
 				#{data.pass_number,},
 				#{data.pass_start_time},
 				#{data.pass_end_time}

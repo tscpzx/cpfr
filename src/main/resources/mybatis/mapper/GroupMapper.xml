@@ -3,11 +3,11 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ts.cpfr.dao.GroupDao">
 	<select id="selectGroupList" parameterType="pd" resultType="pd">
-		select * from tbl_#{wid}_group
+		select group_id,group_name,super_id,type,lmt from tbl_#{wid}_group
 	</select>
 
 	<select id="selectGroup" parameterType="pd" resultType="pd">
-		select * from tbl_#{wid}_group where group_id=#{group_id}
+		select group_id,group_name,super_id,type,lmt from tbl_#{wid}_group where group_id=#{group_id}
 	</select>
 
 	<insert id="insertGroup" parameterType="pd">
