@@ -6,6 +6,7 @@ import com.ts.cpfr.ehcache.Memory;
 import com.ts.cpfr.service.PersonService;
 import com.ts.cpfr.utils.CommUtil;
 import com.ts.cpfr.utils.HandleEnum;
+import com.ts.cpfr.utils.PageData;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
 import com.ts.cpfr.utils.SystemConfig;
@@ -44,25 +45,25 @@ public class PersonServiceImpl implements PersonService {
     private Memory memory;
 
     @Override
-    public ResultData<List<ParamData>> getPersonList(ParamData pd) {
+    public ResultData<PageData<ParamData>> getPersonList(ParamData pd) {
         int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
         int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
         pd.put("wid", memory.getLoginUser().getWId());
 
         if (pageSize != 0) PageHelper.startPage(pageNum, pageSize);
         List<ParamData> personList = mPersonDao.selectPersonList(pd);
-        return new ResultData<>(HandleEnum.SUCCESS, personList);
+        return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(personList));
     }
 
     @Override
-    public ResultData<List<ParamData>> getPersonBase64List(ParamData pd) {
+    public ResultData<PageData<ParamData>> getPersonBase64List(ParamData pd) {
         int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
         int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
         pd.put("wid", memory.getLoginUser().getWId());
 
         if (pageSize != 0) PageHelper.startPage(pageNum, pageSize);
         List<ParamData> personList = mPersonDao.selectPersonListWithBlob(pd);
-        return new ResultData<>(HandleEnum.SUCCESS, personList);
+        return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(personList));
     }
 
     @Override

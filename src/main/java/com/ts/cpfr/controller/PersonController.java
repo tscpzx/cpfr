@@ -5,6 +5,7 @@ import com.ts.cpfr.controller.base.BaseController;
 import com.ts.cpfr.service.PersonService;
 import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.HandleEnum;
+import com.ts.cpfr.utils.PageData;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
 
@@ -36,7 +37,7 @@ public class PersonController extends BaseController {
 
     @ResponseBody
     @RequestMapping("/list")
-    public ResultData<List<ParamData>> list(HttpServletRequest request) {
+    public ResultData<PageData<ParamData>> list(HttpServletRequest request) {
         try {
             return mPersonService.getPersonList(paramDataInit());
         } catch (Exception e) {
@@ -47,7 +48,7 @@ public class PersonController extends BaseController {
 
     @ResponseBody
     @RequestMapping("/list_base64")
-    public ResultData<List<ParamData>> listBase64(HttpServletRequest request) {
+    public ResultData<PageData<ParamData>> listBase64(HttpServletRequest request) {
         try {
             return mPersonService.getPersonBase64List(paramDataInit());
         } catch (Exception e) {

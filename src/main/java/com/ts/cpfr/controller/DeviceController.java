@@ -4,6 +4,7 @@ import com.ts.cpfr.controller.base.BaseController;
 import com.ts.cpfr.service.DeviceService;
 import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.HandleEnum;
+import com.ts.cpfr.utils.PageData;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
 
@@ -12,8 +13,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -33,7 +32,7 @@ public class DeviceController extends BaseController {
 
     @ResponseBody
     @RequestMapping("/list")
-    public ResultData<List<ParamData>> list(HttpServletRequest request) {
+    public ResultData<PageData<ParamData>> list(HttpServletRequest request) {
         try {
             return mDeviceService.getDeviceList(paramDataInit());
         } catch (Exception e) {
@@ -44,7 +43,7 @@ public class DeviceController extends BaseController {
 
     @ResponseBody
     @RequestMapping("/inact_list")
-    public ResultData<List<ParamData>> inactList(HttpServletRequest request) {
+    public ResultData<PageData<ParamData>> inactList(HttpServletRequest request) {
         try {
             return mDeviceService.getInActDeviceList(paramDataInit());
         } catch (Exception e) {

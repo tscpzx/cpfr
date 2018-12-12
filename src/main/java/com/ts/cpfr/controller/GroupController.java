@@ -5,6 +5,7 @@ import com.ts.cpfr.controller.base.BaseController;
 import com.ts.cpfr.service.GroupService;
 import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.HandleEnum;
+import com.ts.cpfr.utils.PageData;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
 
@@ -13,8 +14,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -34,7 +33,7 @@ public class GroupController extends BaseController {
 
     @ResponseBody
     @RequestMapping("/list")
-    public ResultData<List<ParamData>> list(HttpServletRequest request) {
+    public ResultData<PageData<ParamData>> list(HttpServletRequest request) {
         try {
             return mGroupService.getGroupList(paramDataInit());
         } catch (Exception e) {

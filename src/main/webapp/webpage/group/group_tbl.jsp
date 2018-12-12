@@ -43,7 +43,7 @@
                                prev-text="上一页"
                                next-text="下一页"
                                layout="total, sizes, prev, pager, next, jumper"
-                               :total="${param.length}">
+                               :total="total">
                 </el-pagination>
             </div>
         </template>
@@ -58,7 +58,8 @@
             searching: true,
             currentPage: 1,
             pageSizes: [5, 10, 20],
-            pageSize: 10
+            pageSize: 10,
+            total:''
         },
         methods: {
             handleChange(val) {
@@ -88,7 +89,8 @@
                 pageSize: pageSize
             },
             success: function (result) {
-                vm.tableData = result.data;
+                vm.total = result.data.total;
+                vm.tableData = result.data.list;
             }
         });
     }

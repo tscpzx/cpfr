@@ -143,7 +143,7 @@
                 group_id: data.group.group_id
             },
             success: function (result) {
-                vm.tableData1 = result.data;
+                vm.tableData1 = result.data.list;
             }
         });
     }
@@ -159,7 +159,7 @@
                 group_id: data.group.group_id
             },
             success: function (result) {
-                vm.tableData2 = result.data;
+                vm.tableData2 = result.data.list;
             }
         });
     }
@@ -235,7 +235,7 @@
             url: "${pageContext.request.contextPath}/person/list",
             data: {},
             success: function (result) {
-                vmDialogPersonList.items[0].children = result.data;
+                vmDialogPersonList.items[0].children = result.data.list;
                 vmDialogPersonList.visible = true;
             }
         });
@@ -246,7 +246,7 @@
             url: "${pageContext.request.contextPath}/device/list",
             data: {},
             success: function (result) {
-                vmDialogDeviceList.items[0].children = result.data;
+                vmDialogDeviceList.items[0].children = result.data.list;
                 vmDialogDeviceList.visible = true;
             }
         });

@@ -51,7 +51,7 @@
                                prev-text="上一页"
                                next-text="下一页"
                                layout="total, sizes, prev, pager, next, jumper"
-                               :total="${param.length}">
+                               :total="total">
                 </el-pagination>
             </div>
         </template>
@@ -66,18 +66,19 @@
             searching: true,
             currentPage: 1,
             pageSizes: [5, 10, 20],
-            pageSize: 5
+            pageSize: 5,
+            total:''
         },
         methods: {
             handleChange(val) {
-                ajaxPersonList(this.currentPage, this.pageSize);
+                ajaxPersonPage(this.currentPage, this.pageSize);
             }
         }
     });
 
-    ajaxPersonList(vm.currentPage, vm.pageSize);
+    ajaxPersonPage(vm.currentPage, vm.pageSize);
 
-    function ajaxPersonList(pageNum, pageSize) {
+    function ajaxPersonPage(pageNum, pageSize) {
         ajaxGet({
             url: "${pageContext.request.contextPath}/person/list_base64",
             data: {
@@ -85,7 +86,8 @@
                 pageSize: pageSize
             },
             success: function (result) {
-                vm.tableData = result.data;
+                vm.total = result.data.total;
+                vm.tableData = result.data.list;
             }
         });
     }

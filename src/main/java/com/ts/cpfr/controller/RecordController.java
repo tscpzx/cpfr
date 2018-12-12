@@ -1,9 +1,9 @@
 package com.ts.cpfr.controller;
 
-import com.github.pagehelper.PageInfo;
 import com.ts.cpfr.controller.base.BaseController;
 import com.ts.cpfr.service.RecordService;
 import com.ts.cpfr.utils.HandleEnum;
+import com.ts.cpfr.utils.PageData;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
 
@@ -29,7 +29,7 @@ public class RecordController extends BaseController {
 
     @ResponseBody
     @RequestMapping("/list_base64")
-    public ResultData<PageInfo<ParamData>> listBase64(HttpServletRequest request) {
+    public ResultData<PageData<ParamData>> listBase64(HttpServletRequest request) {
         try {
             return mRecordService.getRecordBase64List(paramDataInit());
         } catch (Exception e) {

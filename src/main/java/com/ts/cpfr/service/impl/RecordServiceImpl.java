@@ -1,12 +1,12 @@
 package com.ts.cpfr.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.ts.cpfr.dao.RecordDao;
 import com.ts.cpfr.ehcache.Memory;
 import com.ts.cpfr.service.RecordService;
 import com.ts.cpfr.utils.CommUtil;
 import com.ts.cpfr.utils.HandleEnum;
+import com.ts.cpfr.utils.PageData;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
 
@@ -33,13 +33,13 @@ public class RecordServiceImpl implements RecordService {
     private Memory memory;
 
     @Override
-    public ResultData<PageInfo<ParamData>> getRecordBase64List(ParamData pd) {
+    public ResultData<PageData<ParamData>> getRecordBase64List(ParamData pd) {
         int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
         int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
         pd.put("wid", memory.getLoginUser().getWId());
 
         if (pageSize != 0) PageHelper.startPage(pageNum, pageSize);
         List<ParamData> recordList = mRecordDao.selectRecordListWithBlob(pd);
-        return new ResultData<>(HandleEnum.SUCCESS, new PageInfo<>(recordList));
+        return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(recordList));
     }
 }

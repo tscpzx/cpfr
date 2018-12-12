@@ -1,5 +1,6 @@
 package com.ts.cpfr.service;
 
+import com.ts.cpfr.utils.PageData;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
 
@@ -17,9 +18,9 @@ import javax.servlet.http.HttpServletResponse;
  * @Created by cjw
  */
 public interface PersonService {
-    ResultData<List<ParamData>> getPersonList(ParamData pd);
+    ResultData<PageData<ParamData>> getPersonList(ParamData pd);
 
-    ResultData<List<ParamData>> getPersonBase64List(ParamData pd);
+    ResultData<PageData<ParamData>> getPersonBase64List(ParamData pd);
 
     ResultData<ParamData> addPerson(CommonsMultipartFile file, HttpServletRequest request);
 

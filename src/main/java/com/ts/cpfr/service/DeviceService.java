@@ -1,9 +1,8 @@
 package com.ts.cpfr.service;
 
+import com.ts.cpfr.utils.PageData;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
-
-import java.util.List;
 
 /**
  * @Classname DeviceService
@@ -12,9 +11,9 @@ import java.util.List;
  * @Created by cjw
  */
 public interface DeviceService {
-    ResultData<List<ParamData>> getDeviceList(ParamData pd);
+    ResultData<PageData<ParamData>> getDeviceList(ParamData pd);
 
-    ResultData<List<ParamData>> getInActDeviceList(ParamData pd);
+    ResultData<PageData<ParamData>> getInActDeviceList(ParamData pd);
 
     ResultData<ParamData> activateDevice(ParamData pd) throws Exception;
 

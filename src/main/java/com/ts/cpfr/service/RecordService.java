@@ -1,6 +1,6 @@
 package com.ts.cpfr.service;
 
-import com.github.pagehelper.PageInfo;
+import com.ts.cpfr.utils.PageData;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
 
@@ -11,5 +11,5 @@ import com.ts.cpfr.utils.ResultData;
  * @Created by cjw
  */
 public interface RecordService {
-    ResultData<PageInfo<ParamData>> getRecordBase64List(ParamData pd);
+    ResultData<PageData<ParamData>> getRecordBase64List(ParamData pd);
 }

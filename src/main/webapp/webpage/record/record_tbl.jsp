@@ -100,7 +100,7 @@
                 pageSize: pageSize
             },
             success: function (result) {
-                vm.tableData = result.data.total;
+                vm.total = result.data.total;
                 vm.tableData = result.data.list;
             }
         });

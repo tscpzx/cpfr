@@ -10,6 +10,7 @@ import com.ts.cpfr.service.DeviceService;
 import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.CommUtil;
 import com.ts.cpfr.utils.HandleEnum;
+import com.ts.cpfr.utils.PageData;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
 import com.ts.cpfr.websocket.SocketMessageHandle;
@@ -45,24 +46,24 @@ public class DeviceServiceImpl implements DeviceService {
     private SocketMessageHandle mSocketMessageHandle;
 
     @Override
-    public ResultData<List<ParamData>> getDeviceList(ParamData pd) {
+    public ResultData<PageData<ParamData>> getDeviceList(ParamData pd) {
         int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
         int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
         pd.put("wid", memory.getLoginUser().getWId());
 
         if (pageSize != 0) PageHelper.startPage(pageNum, pageSize);
         List<ParamData> deviceList = mDeviceDao.selectDeviceList(pd);
-        return new ResultData<>(HandleEnum.SUCCESS, deviceList);
+        return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(deviceList));
     }
 
     @Override
-    public ResultData<List<ParamData>> getInActDeviceList(ParamData pd) {
+    public ResultData<PageData<ParamData>> getInActDeviceList(ParamData pd) {
         int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
         int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
 
         if (pageSize != 0) PageHelper.startPage(pageNum, pageSize);
         List<ParamData> inActDeviceList = mDeviceDao.selectInActDeviceList(pd);
-        return new ResultData<>(HandleEnum.SUCCESS, inActDeviceList);
+        return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(inActDeviceList));
     }
 
     @Override

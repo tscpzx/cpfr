@@ -170,6 +170,10 @@
                     },
                     success: function (result) {
                         layTip(result.message);
+                        if (0 === result.code) {
+                            $("#person_tree").load("person/person_tree");
+                            $("#person_content").load("person/person_add");
+                        }
                     },
                     error: function (error) {
                         layAlert1(error.statusText);
