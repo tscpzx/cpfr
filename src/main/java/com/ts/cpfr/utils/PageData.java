@@ -17,6 +17,6 @@ public class PageData<T> extends PageSerializable<T> {
 
     @Override
     public String toString() {
-        return "Page{total=" + this.total + ", list=" + this.list + ",size=0" + '}';
+        return "Page{total=" + this.total + ", list=" + this.list + '}';
     }
 }
