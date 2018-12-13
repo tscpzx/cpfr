@@ -70,6 +70,8 @@ public class AppServiceImpl implements AppService {
     @Override
     public ResultData<ParamData> addRecord(CommonsMultipartFile file, HttpServletRequest request) {
         if (file.getSize() / 1024 > 65) return new ResultData<>(HandleEnum.FAIL, "上传失败，图片过大!");
+        if (!file.getContentType().contains("image"))
+            return new ResultData<>(HandleEnum.FAIL, "文件类型有误!");
         ParamData pd = new ParamData();
         pd.put("device_sn", request.getParameter("device_sn"));
         pd.put("admin_id", request.getParameter("admin_id"));

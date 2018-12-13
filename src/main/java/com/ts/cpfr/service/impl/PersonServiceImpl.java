@@ -69,6 +69,8 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public ResultData<ParamData> addPerson(CommonsMultipartFile file, HttpServletRequest request) {
         if (file.getSize() / 1024 > 65) return new ResultData<>(HandleEnum.FAIL, "上传失败，图片过大!");
+        if (!file.getContentType().contains("image"))
+            return new ResultData<>(HandleEnum.FAIL, "文件类型有误!");
         ParamData pd = new ParamData();
         pd.put("person_name", request.getParameter("person_name"));
         pd.put("emp_number", request.getParameter("emp_number"));
