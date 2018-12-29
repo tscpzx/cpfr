@@ -16,10 +16,11 @@
 
     .el-transfer {
         display: inline-block;
+        width: 48%;
     }
 
     .el-transfer-panel {
-        width: 200px;
+        width: 40%;
         height: 400px;
     }
 
@@ -85,20 +86,20 @@
             tableData2: [],
             currentPage2: 1,
             pageSizes2: [5, 10, 20],
-            pageSize2: 10
+            pageSize2: 10,
+            radio1: '2',
+            radio2: '4',
+            dateValue: ''
         },
         methods: {
-            clickGrantPass() {
+            clickGrant(code) {
                 var selectedPersonID = this.value1.join(',');
                 var selectedDeviceID = $.arrayIntersect(value2, this.value2).join(',');
 
-                ajaxGrant(selectedPersonID, selectedDeviceID, 1);
-            },
-            clickGrantBan() {
-                var selectedPersonID = this.value1.join(',');
-                var selectedDeviceID = $.arrayIntersect(value2, this.value2).join(',');
-
-                ajaxGrant(selectedPersonID, selectedDeviceID, 0);
+                if (!selectedPersonID) elmMessage1("请添加授权人员");
+                else if (!selectedDeviceID) elmMessage1("请添加授权设备");
+                else
+                    ajaxGrant(selectedPersonID, selectedDeviceID, code);
             },
             filterMethod1(query, item) {
                 return item.person_name.indexOf(query) > -1;
@@ -111,6 +112,24 @@
             },
             handleChange2(val) {
                 ajaxDeviceList(this.currentPage2, this.pageSize2);
+            },
+            onChangeRadio(index) {
+                var $input = $('.input_pass_number');
+                var $datePicker = $('.date_picker_pass_number');
+                switch (index) {
+                    case '1':
+                        $input.show();
+                        break;
+                    case '2':
+                        $input.hide();
+                        break;
+                    case '3':
+                        $datePicker.show();
+                        break;
+                    case '4':
+                        $datePicker.hide();
+                        break;
+                }
             }
         }
     });

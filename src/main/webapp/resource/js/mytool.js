@@ -60,6 +60,10 @@ function elmAlert1(msg) {
     });
 }
 
+function elmMessage1(msg) {
+    new Vue().$message.error(msg);
+}
+
 /* ajax请求 */
 function ajax(type, jsonObj) {
     // var loading = layLoading1();

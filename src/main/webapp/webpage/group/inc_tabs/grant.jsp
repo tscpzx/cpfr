@@ -15,11 +15,34 @@
             :button-texts="['添加', '移除']">
     </el-transfer>
 
-    <el-form label-width="60px" style="margin-top: 30px;">
-        <el-row>
-            <el-button type="primary" @click="clickGrantPass">授权通行</el-button>
-            <el-button type="danger" @click="clickGrantBan">禁止通行</el-button>
-        </el-row>
+    <el-form label-width="150px" style="margin-top: 30px;width: 500px;" size="small">
+        <el-form-item label="通行次数">
+            <el-radio-group v-model="radio1" @change="onChangeRadio">
+                <el-radio label="1">指定次数</el-radio>
+                <el-radio label="2">无限次数</el-radio>
+            </el-radio-group>
+            <el-input placeholder="请输入次数" style="width: 100%;display: none;" class="input_pass_number"></el-input>
+        </el-form-item>
+        <el-form-item label="通行时间">
+            <el-radio-group v-model="radio2" @change="onChangeRadio">
+                <el-radio label="3">指定时间</el-radio>
+                <el-radio label="4">无限时间</el-radio>
+            </el-radio-group>
+
+            <el-date-picker
+                    class="date_picker_pass_number"
+                    style="display: none;"
+                    v-model="dateValue"
+                    type="datetimerange"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期">
+            </el-date-picker>
+        </el-form-item>
+        <el-form-item label="">
+            <el-button type="primary" @click="clickGrant(1)">授权通行</el-button>
+            <el-button type="danger" @click="clickGrant(0)">禁止通行</el-button>
+        </el-form-item>
     </el-form>
 
 </template>
