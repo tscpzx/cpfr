@@ -10,12 +10,14 @@
         }
 
         .el-header {
-            background-color: #409EFF;
+            background-color: #63BBD0;
         }
 
         .el-col, .nav_title {
             color: white;
             line-height: 60px;
+            font-weight: 500;
+            font-size: 18px;
         }
 
         .el-header a {
@@ -35,7 +37,8 @@
             <el-row>
                 <el-col :span="8">
                     <div>
-                        <h3 class="nav_title"><%=CommConst.WEB_TITLE%></h3>
+                        <p class="nav_title"><%=CommConst.WEB_TITLE%>
+                        </p>
                     </div>
                 </el-col>
                 <el-col :span="10">
@@ -46,7 +49,7 @@
                         <a href="#">${sessionScope.user.name},您好!</a></div>
                 </el-col>
                 <el-col :span="2">
-                    <div style="float: right"><a href="#">修改密码</a>
+                    <div style="float: right"><a href="register.jsp">修改密码</a>
                     </div>
                 </el-col>
                 <el-col :span="2">
@@ -58,7 +61,8 @@
 
         <el-container>
             <el-aside width="200px" style="height: 100%;background:#545c64;">
-                <el-menu default-active="device/device" class="el-menu-vertical-demo" background-color="#545c64" text-color="#fff" active-text-color="#ffd04b">
+                <el-menu default-active="device/device" class="el-menu-vertical-demo" background-color="#545c64"
+                         text-color="#fff" active-text-color="#ffd04b">
                     <el-menu-item index="device/device" @click="onClick($event)">
                         <i class="el-icon-mobile-phone"></i>
                         <span slot="title">设备管理</span>

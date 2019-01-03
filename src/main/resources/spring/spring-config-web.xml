@@ -35,7 +35,7 @@
 
 	<!-- 对静态资源文件的访问  restful-->
 	<mvc:resources mapping="/resource/**" location="/resource/"/>
-	<mvc:resources mapping="/upload/**" location="/upload/"/>
+	<!--<mvc:resources mapping="/upload/**" location="/upload/"/>-->
 
 	<!-- 访问拦截  -->
 	<mvc:interceptors>

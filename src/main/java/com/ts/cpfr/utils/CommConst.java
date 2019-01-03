@@ -1,5 +1,8 @@
 package com.ts.cpfr.utils;
 
+/**
+ * 常量
+ */
 public class CommConst {
     public static String WEB_TITLE = "人脸识别管理系统";
     // 接口组装时返回的分页和结果属性
