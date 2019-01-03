@@ -16,11 +16,11 @@
 
     .el-transfer {
         display: inline-block;
-        width: 48%;
+        width: 49%;
     }
 
     .el-transfer-panel {
-        width: 40%;
+        width: 35%;
         height: 400px;
     }
 
