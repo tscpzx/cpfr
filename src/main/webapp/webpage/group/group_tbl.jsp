@@ -23,9 +23,9 @@
 
         <template>
             <el-table :data="tableData" style="width: 100%" stripe>
-                <el-table-column prop="group_id" label="组ID" width="100">
+                <el-table-column prop="group_id" label="组ID" width="150">
                 </el-table-column>
-                <el-table-column prop="group_name" label="组名" width="100">
+                <el-table-column prop="group_name" label="组名" width="200">
                 </el-table-column>
                 <el-table-column label="操作">
                 </el-table-column>

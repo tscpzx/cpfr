@@ -27,6 +27,9 @@
     .el-transfer-panel__list.is-filterable {
         height: 300px;
     }
+    .el-date-editor--datetimerange.el-input__inner {
+        width: 350px;
+    }
 </style>
 <div class="group_detail_box">
     <div id="group_detail">

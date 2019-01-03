@@ -13,13 +13,13 @@
     <div id="device_tbl">
         <template>
             <el-table :data="tableData" style="width: 100%" stripe>
-                <el-table-column prop="device_id" label="设备ID" width="100">
+                <el-table-column prop="device_id" label="设备ID" width="150">
                 </el-table-column>
-                <el-table-column prop="device_name" label="设备名称" width="150">
+                <el-table-column prop="device_name" label="设备名称" width="200">
                 </el-table-column>
-                <el-table-column prop="online" label="在线" width="100">
+                <el-table-column prop="online" label="在线" width="150">
                 </el-table-column>
-                <el-table-column prop="device_sn" label="设备序列号" width="150">
+                <el-table-column prop="device_sn" label="设备序列号">
                 </el-table-column>
             </el-table>
         </template>
