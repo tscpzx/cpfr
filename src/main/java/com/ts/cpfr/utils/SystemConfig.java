@@ -46,5 +46,6 @@ public class SystemConfig {
         allowUrlList.add("/app/person_list");
         allowUrlList.add("/app/grant_list");
         allowUrlList.add("/app/upload_record");
+        allowUrlList.add("/app/current_date");
     }
 }
