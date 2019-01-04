@@ -1,6 +1,5 @@
 package com.ts.cpfr.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.ts.cpfr.dao.DeviceDao;
 import com.ts.cpfr.dao.UserDao;
@@ -20,9 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.transaction.Transactional;
@@ -84,13 +81,10 @@ public class DeviceServiceImpl implements DeviceService {
 
                     //通知设备激活成功
                     String device_sn = insertPd.getString(CommConst.DEVICE_SN);
-                    Map<String, Object> jsonMap = new HashMap<>();
                     ParamData data = new ParamData();
                     data.put(CommConst.ADMIN_ID, user.getAdminId());
-                    jsonMap.put(CommConst.CODE, CommConst.CODE_1001);
-                    jsonMap.put(CommConst.DATA, data);
-                    jsonMap.put(CommConst.MESSAGE, "激活成功");
-                    mSocketMessageHandle.sendMessageToDevice(device_sn, new TextMessage(JSONObject.toJSONString(jsonMap)));
+                    TextMessage message = mSocketMessageHandle.obtainMessage(CommConst.CODE_1001, "激活成功", data);
+                    mSocketMessageHandle.sendMessageToDevice(device_sn, message);
                     return new ResultData<>(HandleEnum.SUCCESS);
                 }
             }

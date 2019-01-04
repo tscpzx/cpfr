@@ -1,5 +1,6 @@
 package com.ts.cpfr.websocket;
 
+import com.alibaba.fastjson.JSONObject;
 import com.ts.cpfr.service.DeviceService;
 import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.ParamData;
@@ -15,6 +16,7 @@ import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -180,5 +182,19 @@ public class SocketMessageHandle implements WebSocketHandler {
                 userMap.put(deviceSn, socketSession);
             }
         }
+    }
+
+    /**
+     * @param code
+     * @param message
+     * @param data
+     * @return
+     */
+    public TextMessage obtainMessage(int code, String message, ParamData data) {
+        Map<String, Object> jsonMap = new HashMap<>();
+        jsonMap.put(CommConst.CODE, code);
+        jsonMap.put(CommConst.DATA, data);
+        jsonMap.put(CommConst.MESSAGE, message);
+        return new TextMessage(JSONObject.toJSONString(jsonMap));
     }
 }
