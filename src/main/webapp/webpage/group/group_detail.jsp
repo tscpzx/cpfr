@@ -27,6 +27,7 @@
     .el-transfer-panel__list.is-filterable {
         height: 300px;
     }
+
     .el-date-editor--datetimerange.el-input__inner {
         width: 350px;
     }
@@ -92,17 +93,51 @@
             pageSize2: 10,
             radio1: '2',
             radio2: '4',
+            pass_number: '',
             dateValue: ''
         },
         methods: {
-            clickGrant(code) {
-                var selectedPersonID = this.value1.join(',');
-                var selectedDeviceID = $.arrayIntersect(value2, this.value2).join(',');
+            clickGrant(type) {
+                var person_ids = this.value1.join(',');
+                var device_ids = $.arrayIntersect(value2, this.value2).join(',');
+                var pass_number = -1;
+                var pass_start_time = '0000-00-00 00:00:00';
+                var pass_end_time = '0000-00-00 00:00:00';
 
-                if (!selectedPersonID) elmMessage1("请添加授权人员");
-                else if (!selectedDeviceID) elmMessage1("请添加授权设备");
-                else
-                    ajaxGrant(selectedPersonID, selectedDeviceID, code);
+                if (!person_ids) {
+                    elmMessage1("请添加授权人员");
+                    return;
+                }
+                if (!device_ids) {
+                    elmMessage1("请添加授权设备");
+                    return;
+                }
+
+                if (this.radio1 === '1') {
+                    if (!this.pass_number.trim()) {
+                        elmMessage1("请填写可通行次数");
+                        return;
+                    }
+                    pass_number = this.pass_number;
+                }
+                if (this.radio2 === '3') {
+                    if (!this.dateValue) {
+                        elmMessage1("请填写可通行时间");
+                        return;
+                    }
+                    pass_start_time = this.dateValue[0];
+                    pass_end_time = this.dateValue[1];
+                }
+
+                var data = {
+                    person_ids: person_ids,
+                    device_ids: device_ids,
+                    type: type,
+                    pass_number: pass_number,
+                    pass_start_time: pass_start_time,
+                    pass_end_time: pass_end_time
+                };
+                ajaxGrant(data);
             },
             filterMethod1(query, item) {
                 return item.person_name.indexOf(query) > -1;
@@ -137,17 +172,10 @@
         }
     });
 
-    function ajaxGrant(person_ids, device_ids, type) {
+    function ajaxGrant(data) {
         ajaxPost({
             url: "${pageContext.request.contextPath}/grant/add",
-            data: {
-                person_ids: person_ids,
-                device_ids: device_ids,
-                type: type,
-                pass_number: -1,
-                pass_start_time: -1,
-                pass_end_time: -1
-            },
+            data: data,
             success: function (result) {
                 layTip(result.message);
             }

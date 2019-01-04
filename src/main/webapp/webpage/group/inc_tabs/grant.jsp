@@ -21,7 +21,7 @@
                 <el-radio label="1">指定次数</el-radio>
                 <el-radio label="2">无限次数</el-radio>
             </el-radio-group>
-            <el-input placeholder="请输入次数" style="width: 100%;display: none;" class="input_pass_number"></el-input>
+            <el-input  v-model="pass_number" autocomplete="off" placeholder="请输入次数" style="width: 100%;display: none;" class="input_pass_number"></el-input>
         </el-form-item>
         <el-form-item label="通行时间">
             <el-radio-group v-model="radio2" @change="onChangeRadio">
@@ -35,6 +35,7 @@
                     v-model="dateValue"
                     type="datetimerange"
                     range-separator="至"
+                    value-format="yyyy-MM-dd HH:mm:ss"
                     start-placeholder="开始日期"
                     end-placeholder="结束日期">
             </el-date-picker>
