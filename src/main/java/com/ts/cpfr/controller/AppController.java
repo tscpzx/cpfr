@@ -85,4 +85,15 @@ public class AppController extends BaseController {
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
         }
     }
+
+    @ResponseBody
+    @RequestMapping("/current_date")
+    public ResultData<ParamData> currentDate(HttpServletRequest request) {
+        try {
+            return mAppService.getCurrentDate();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
 }

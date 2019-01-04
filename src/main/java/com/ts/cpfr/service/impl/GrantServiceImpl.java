@@ -1,14 +1,18 @@
 package com.ts.cpfr.service.impl;
 
+import com.ts.cpfr.dao.DeviceDao;
 import com.ts.cpfr.dao.GrantDao;
 import com.ts.cpfr.ehcache.Memory;
 import com.ts.cpfr.service.GrantService;
+import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.HandleEnum;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
+import com.ts.cpfr.websocket.SocketMessageHandle;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.socket.TextMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,11 +32,15 @@ public class GrantServiceImpl implements GrantService {
 
     @Resource
     private GrantDao mGrantDao;
+    @Resource
+    private DeviceDao mDeviceDao;
     @Autowired
     private Memory memory;
+    @Autowired
+    private SocketMessageHandle mSocketMessageHandle;
 
     @Override
-    public ResultData<List<ParamData>> addGrants(ParamData pd) {
+    public ResultData<List<ParamData>> addGrants(ParamData pd) throws Exception {
         String person_ids = pd.getString("person_ids");
         String device_ids = pd.getString("device_ids");
         String type = pd.getString("type");
@@ -61,7 +69,15 @@ public class GrantServiceImpl implements GrantService {
         ParamData paramData = new ParamData();
         paramData.put("wid", memory.getLoginUser().getWId());
         paramData.put("list", list);
-        if (mGrantDao.insertGrants(paramData)) return new ResultData<>(HandleEnum.SUCCESS);
+        if (mGrantDao.insertGrants(paramData)) {
+            //通知设备权限更新
+            TextMessage message = mSocketMessageHandle.obtainMessage(CommConst.CODE_1004, "权限更新", null);
+            List<ParamData> deviceSnList = mDeviceDao.selectDeviceSnList(paramData);
+            for (ParamData p : deviceSnList) {
+                mSocketMessageHandle.sendMessageToDevice(p.getString(CommConst.DEVICE_SN), message);
+            }
+            return new ResultData<>(HandleEnum.SUCCESS);
+        }
         return new ResultData<>(HandleEnum.FAIL);
     }
 }

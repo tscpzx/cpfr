@@ -53,4 +53,11 @@
 			device_id=#{data.device_id}
 		</foreach>
 	</update>
+
+	<select id="selectDeviceSnList" parameterType="pd" resultType="pd">
+		select device_sn from tbl_#{wid}_device where
+		<foreach collection="list" item="data" separator=" or ">
+		    device_id=#{data.device_id}
+		</foreach>
+	</select>
 </mapper>

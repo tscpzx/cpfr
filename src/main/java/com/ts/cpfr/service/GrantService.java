@@ -12,5 +12,5 @@ import java.util.List;
  * @Created by cjw
  */
 public interface GrantService {
-    ResultData<List<ParamData>> addGrants(ParamData pd);
+    ResultData<List<ParamData>> addGrants(ParamData pd) throws Exception;
 }
