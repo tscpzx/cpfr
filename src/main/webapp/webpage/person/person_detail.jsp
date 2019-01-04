@@ -27,23 +27,18 @@
 </style>
 <div class="person_detail_box">
     <div id="person_detail">
-        <el-form label-width="150px">
-            <el-form-item label="人员ID:">
-                <span>{{data.person_id}}</span>
-            </el-form-item>
-            <el-form-item label="注册时间:">
-                <span>{{data.add_time|formatDate}}</span>
-            </el-form-item>
-            <el-form-item label="姓名:">
-                <el-input v-bind:value="data.person_name" :disabled="true" type="text" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="工号:">
-                <el-input :value="data.emp_number" :disabled="true" type="text" autocomplete="off"></el-input>
-            </el-form-item>
-            <el-form-item label="底库图片:">
-                <img class="image" :src="'data:image/jpeg;base64,'+data.base_image">
-            </el-form-item>
-        </el-form>
+        <template>
+            <el-tabs type="card" v-model="activeName">
+                <%--基本信息--%>
+                <el-tab-pane label="基本信息" name="first">
+                    <%@include file="inc_tabs/base_info.jsp" %>
+                </el-tab-pane>
+                <%--可通行设备--%>
+                <el-tab-pane label="可通行设备" name="second">
+                    <%@include file="inc_tabs/access_device.jsp" %>
+                </el-tab-pane>
+            </el-tabs>
+        </template>
     </div>
 </div>
 
@@ -55,8 +50,18 @@
     data = $.parseJSON(data);
     new Vue({
         el: "#person_detail",
-        data: data
-        ,
+        data:function() {
+            return{
+                data:data,
+                activeName: 'first'
+            }
+        },
+        methods:{
+            clickBase(code){
+
+            },
+
+        },
         filters: {
             formatDate: function (time) {
                 var data = new Date(time);

@@ -18,7 +18,7 @@
             -moz-border-radius: 5px;
             background-clip: padding-box;
             margin:auto;
-            width: 350px;
+            width: 320px;
             padding: 25px 35px 15px;
             background: white;
             filter:alpha(opacity:90);
@@ -31,7 +31,7 @@
             margin: 0 auto 25px;
             text-align: center;
             color: #222222;
-            font-size:17px;
+            font-size:16px;
         }
 
         .el-button {
@@ -55,7 +55,7 @@ a{
     <div class="container">
         <el-container>
             <el-header>
-                <p style="font-size:26px;font-weight: 500 "><%=CommConst.WEB_TITLE%>
+                <p style="font-size:24px;font-weight: 500 "><%=CommConst.WEB_TITLE%>
                 </p>
             </el-header>
             <%--
@@ -70,10 +70,10 @@ a{
                 <el-form class="demo-ruleForm login-container" :model="loginModel" :rules="loginRules" ref="loginForm">
                     <p class="title">管理员登录</p>
                     <el-form-item prop="name">
-                        <el-input v-model="loginModel.name" type="text" autocomplete="off" placeholder="请输入账号" clearable></el-input>
+                        <el-input  v-model="loginModel.name" type="text" autocomplete="off" placeholder="请输入账号" clearable></el-input>
                     </el-form-item>
                     <el-form-item prop="password">
-                        <el-input v-model="loginModel.password" type="password" autocomplete="off" placeholder="请输入密码" clearable></el-input>
+                        <el-input  v-model="loginModel.password" type="password" autocomplete="off" placeholder="请输入密码" clearable></el-input>
                     </el-form-item>
                     <el-form-item>
                         <el-checkbox style="float: left;color: #222222">记住密码</el-checkbox>
