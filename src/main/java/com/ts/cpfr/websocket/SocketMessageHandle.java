@@ -193,7 +193,8 @@ public class SocketMessageHandle implements WebSocketHandler {
     public TextMessage obtainMessage(int code, String message, ParamData data) {
         Map<String, Object> jsonMap = new HashMap<>();
         jsonMap.put(CommConst.CODE, code);
-        jsonMap.put(CommConst.DATA, data);
+        if (data == null) jsonMap.put(CommConst.DATA, "");
+        else jsonMap.put(CommConst.DATA, data);
         jsonMap.put(CommConst.MESSAGE, message);
         return new TextMessage(JSONObject.toJSONString(jsonMap));
     }

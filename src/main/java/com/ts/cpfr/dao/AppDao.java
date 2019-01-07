@@ -22,4 +22,6 @@ public interface AppDao {
     boolean insertRecord(ParamData pd);
 
     List<ParamData> selectPersonListWithBlob(ParamData pd);
+
+    ParamData selectNow();
 }

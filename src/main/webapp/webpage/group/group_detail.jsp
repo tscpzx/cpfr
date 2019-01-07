@@ -100,9 +100,9 @@
             clickGrant(type) {
                 var person_ids = this.value1.join(',');
                 var device_ids = $.arrayIntersect(value2, this.value2).join(',');
-                var pass_number = -1;
-                var pass_start_time = '0000-00-00 00:00:00';
-                var pass_end_time = '0000-00-00 00:00:00';
+                var pass_number = 9999999999;
+                var pass_start_time = stampToDate(9999999999);
+                var pass_end_time = stampToDate(9999999999);
 
                 if (!person_ids) {
                     elmMessage1("请添加授权人员");

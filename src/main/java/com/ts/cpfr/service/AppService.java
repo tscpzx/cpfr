@@ -27,4 +27,6 @@ public interface AppService {
     ResultData<ParamData> addRecord(CommonsMultipartFile file, HttpServletRequest request);
 
     boolean uploadRecordImage(CommonsMultipartFile file, ParamData pd) throws Exception;
+
+    ResultData<ParamData> getCurrentDate();
 }
