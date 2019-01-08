@@ -2,6 +2,7 @@ package com.ts.cpfr.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.ts.cpfr.dao.DeviceDao;
+import com.ts.cpfr.dao.PersonDao;
 import com.ts.cpfr.dao.UserDao;
 import com.ts.cpfr.ehcache.Memory;
 import com.ts.cpfr.entity.LoginUser;
@@ -35,6 +36,8 @@ import javax.transaction.Transactional;
 public class DeviceServiceImpl implements DeviceService {
     @Resource
     private DeviceDao mDeviceDao;
+    @Resource
+    private PersonDao mPersonDao;
     @Resource
     private UserDao mUserDao;
     @Autowired
@@ -114,5 +117,16 @@ public class DeviceServiceImpl implements DeviceService {
             pd.put("wid", wid);
             mDeviceDao.updateDeviceOnline(pd);
         }
+    }
+
+    @Override
+    public ResultData<PageData<ParamData>> getGrantPersonList(ParamData pd) {
+        int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
+        int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
+        pd.put("wid", memory.getLoginUser().getWId());
+
+        if (pageSize != 0) PageHelper.startPage(pageNum, pageSize);
+        List<ParamData> personList = mPersonDao.selectGrantPersonListByDeviceSn(pd);
+        return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(personList));
     }
 }

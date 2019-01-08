@@ -1,5 +1,6 @@
 package com.ts.cpfr.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.ts.cpfr.controller.base.BaseController;
 import com.ts.cpfr.service.DeviceService;
 import com.ts.cpfr.utils.CommConst;
@@ -78,12 +79,23 @@ public class DeviceController extends BaseController {
     @RequestMapping("/detail")
     public String detail(Model model) {
         try {
-            ParamData paramData = mDeviceService.queryDevice(paramDataInit());
-            model.addAttribute(CommConst.DATA, paramData);
+            ParamData data = mDeviceService.queryDevice(paramDataInit());
+            model.addAttribute(CommConst.DATA, JSON.toJSONString(data));
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         return "device/device_detail";
+    }
+
+    @ResponseBody
+    @RequestMapping("/grant_person_list")
+    public ResultData<PageData<ParamData>> personList(HttpServletRequest request) {
+        try {
+            return mDeviceService.getGrantPersonList(paramDataInit());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
     }
 }

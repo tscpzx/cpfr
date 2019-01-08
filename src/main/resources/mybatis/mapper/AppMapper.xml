@@ -11,7 +11,7 @@
 	</select>
 
 	<select id="selectDevice" parameterType="pd" resultType="pd">
-		select d.device_id,d.device_name,d.device_sn,d.mac_grant_key,d.lmt
+		select d.device_id,d.device_name,d.device_sn,d.mac_grant_key,d.lmt,c.success_msg,c.fail_msg
 		from tbl_#{wid}_device d left join tbl_#{wid}_device_config c on d.device_id=c.device_id where d.device_sn=#{device_sn} and d.lmt>#{lmt}
 	</select>
 

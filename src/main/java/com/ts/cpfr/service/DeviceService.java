@@ -22,4 +22,6 @@ public interface DeviceService {
     ParamData queryInActDevice(ParamData pd);
 
     ParamData queryDevice(ParamData pd);
+
+    ResultData<PageData<ParamData>> getGrantPersonList(ParamData pd);
 }
