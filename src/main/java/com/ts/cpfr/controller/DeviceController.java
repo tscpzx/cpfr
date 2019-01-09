@@ -98,4 +98,15 @@ public class DeviceController extends BaseController {
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
         }
     }
+
+    @ResponseBody
+    @RequestMapping("/change_info")
+    public ResultData<ParamData> changeInfo(HttpServletRequest request) {
+        try {
+            return mDeviceService.changeDeviceInfo(paramDataInit());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
 }

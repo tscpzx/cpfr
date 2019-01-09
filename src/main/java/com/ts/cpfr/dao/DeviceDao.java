@@ -19,8 +19,6 @@ public interface DeviceDao {
 
     ParamData selectDevice(ParamData pd);
 
-    boolean updateInActDeviceGrantKeyAndStatus(ParamData pd);
-
     void updateInActDeviceOnline(ParamData pd);
 
     void updateDeviceOnline(ParamData pd);
@@ -30,4 +28,6 @@ public interface DeviceDao {
     boolean updateDeviceGroupID(ParamData pd);
 
     List<ParamData> selectDeviceSnList(ParamData pd);
+
+    boolean updateDeviceInfo(ParamData pd);
 }

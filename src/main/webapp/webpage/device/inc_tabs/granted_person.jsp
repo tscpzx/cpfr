@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <template>
     <el-table :data="tableData1" style="width: 100%" stripe>
-        <el-table-column prop="person_id" label="人员ID">
+        <el-table-column prop="grant_id" label="授权ID">
         </el-table-column>
         <el-table-column prop="person_name" label="姓名">
         </el-table-column>

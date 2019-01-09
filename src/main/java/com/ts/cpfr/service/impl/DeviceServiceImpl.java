@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -72,24 +73,20 @@ public class DeviceServiceImpl implements DeviceService {
         ParamData paramData = mDeviceDao.selectInActDevice(pd);
         if (paramData == null) return new ResultData<>(HandleEnum.FAIL, "设备不存在");
         pd.put("admin_id", user.getAdminId());
+        pd.put("wid", user.getWId());
         if (1 == (Integer) paramData.get("online")) {
-            if (mDeviceDao.updateInActDeviceGrantKeyAndStatus(pd)) {
-                //激活成功，往对应仓库插入设备，返回
-                ParamData insertPd = mDeviceDao.selectInActDevice(pd);
-                insertPd.put("wid", user.getWId());
-                if (mDeviceDao.insertDevice(insertPd)) {
-                    //增加websocketsession的admin_id
-                    mSocketMessageHandle.saveAdminIdToSession(insertPd.getString(CommConst.DEVICE_SN), user
-                      .getAdminId());
+            //激活成功，往对应仓库插入设备，返回
+            if (mDeviceDao.insertDevice(pd)) {
+                //增加websocketsession的admin_id
+                String device_sn = pd.getString(CommConst.DEVICE_SN);
+                mSocketMessageHandle.saveAdminIdToSession(device_sn, user.getAdminId());
 
-                    //通知设备激活成功
-                    String device_sn = insertPd.getString(CommConst.DEVICE_SN);
-                    ParamData data = new ParamData();
-                    data.put(CommConst.ADMIN_ID, user.getAdminId());
-                    TextMessage message = mSocketMessageHandle.obtainMessage(CommConst.CODE_1001, "激活成功", data);
-                    mSocketMessageHandle.sendMessageToDevice(device_sn, message);
-                    return new ResultData<>(HandleEnum.SUCCESS);
-                }
+                //通知设备激活成功
+                ParamData data = new ParamData();
+                data.put(CommConst.ADMIN_ID, user.getAdminId());
+                TextMessage message = mSocketMessageHandle.obtainMessage(CommConst.CODE_1001, "激活成功", data);
+                mSocketMessageHandle.sendMessageToDevice(device_sn, message);
+                return new ResultData<>(HandleEnum.SUCCESS);
             }
             return new ResultData<>(HandleEnum.FAIL);
         } else {
@@ -128,5 +125,15 @@ public class DeviceServiceImpl implements DeviceService {
         if (pageSize != 0) PageHelper.startPage(pageNum, pageSize);
         List<ParamData> personList = mPersonDao.selectGrantPersonListByDeviceSn(pd);
         return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(personList));
+    }
+
+    @Override
+    public ResultData<ParamData> changeDeviceInfo(ParamData pd) throws IOException {
+        pd.put("wid", memory.getLoginUser().getWId());
+        if (mDeviceDao.updateDeviceInfo(pd)) {
+            TextMessage message = mSocketMessageHandle.obtainMessage(CommConst.CODE_1002, "设备更新", null);
+            mSocketMessageHandle.sendMessageToDevice(pd.getString(CommConst.DEVICE_SN), message);
+            return new ResultData<>(HandleEnum.SUCCESS);
+        } else return new ResultData<>(HandleEnum.FAIL);
     }
 }

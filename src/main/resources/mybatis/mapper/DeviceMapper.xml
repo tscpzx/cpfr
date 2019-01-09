@@ -24,10 +24,6 @@
 		select id,device_sn,status,online,register_time from tbl_inact_device where status=0
 	</select>
 
-	<update id="updateInActDeviceMacGrantKeyAndStatus" parameterType="pd">
-		UPDATE tbl_inact_device SET mac_grant_key = #{mac_grant_key},status=1,admin_id=#{admin_id},activate_time=now()  WHERE device_sn=#{device_sn}
-	</update>
-
 	<update id="updateInActDeviceOnline" parameterType="pd">
 		UPDATE tbl_inact_device SET online = #{online} WHERE device_sn=#{device_sn}
 	</update>
@@ -44,8 +40,11 @@
 	</update>
 
 	<insert id="insertDevice" parameterType="pd">
-		INSERT INTO tbl_#{wid}_device (device_name,device_sn,mac_grant_key,register_time,activate_time,online) VALUES(#{device_sn},#{device_sn},#{mac_grant_key},#{register_time},#{activate_time},#{online});
-		INSERT INTO tbl_#{wid}_device_config (device_id) values(select LAST_INSERT_ID());
+		UPDATE tbl_inact_device SET mac_grant_key = #{mac_grant_key},status=1,admin_id=#{admin_id},activate_time=now() WHERE device_sn=#{device_sn};
+
+		INSERT INTO tbl_#{wid}_device (device_name,device_sn,last_online_time,mac_grant_key,register_time,activate_time,online) select device_sn,device_sn,now(),mac_grant_key,register_time,activate_time,online from tbl_inact_device where device_sn=#{device_sn};
+
+		INSERT INTO tbl_#{wid}_device_config (device_id) select device_id from tbl_#{wid}_device where device_sn=#{device_sn};
 	</insert>
 
 	<update id="updateDeviceGroupID" parameterType="pd">
@@ -61,4 +60,10 @@
 		    device_id=#{data.device_id}
 		</foreach>
 	</select>
+
+	<update id="updateDeviceInfo" parameterType="pd">
+		UPDATE tbl_#{wid}_device SET device_name = #{device_name} where device_sn=#{device_sn};
+
+		UPDATE tbl_#{wid}_device_config SET open_door_type = #{open_door_type},success_msg=#{success_msg},fail_msg=#{fail_msg} where device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn});
+	</update>
 </mapper>

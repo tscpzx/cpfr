@@ -38,6 +38,6 @@
 	</select>
 
 	<select id="selectGrantPersonListByDeviceSn" parameterType="pd" resultType="pd">
-		SELECT p.person_id,p.person_name,p.emp_number,p.status,p.lmt,g.type,g.pass_number,g.pass_start_time,g.pass_end_time FROM tbl_#{wid}_person p RIGHT JOIN (SELECT person_id,type,pass_number,pass_start_time,pass_end_time FROM tbl_#{wid}_grant  WHERE device_id =  (SELECT  device_id FROM tbl_#{wid}_device  WHERE device_sn = #{device_sn})) g ON p.person_id=g.person_id
+		SELECT p.person_id,p.person_name,p.emp_number,p.status,p.lmt,g.grant_id,g.type,g.pass_number,g.pass_start_time,g.pass_end_time FROM tbl_#{wid}_person p RIGHT JOIN (SELECT grant_id,person_id,type,pass_number,pass_start_time,pass_end_time FROM tbl_#{wid}_grant WHERE device_id =  (SELECT  device_id FROM tbl_#{wid}_device  WHERE device_sn = #{device_sn})) g ON p.person_id=g.person_id
 	</select>
 </mapper>

@@ -60,13 +60,31 @@
             pageSize1: 10,
             tableTotal: ''
             ,
-            configModel: {
+            model: {
+                device_name: device.device_name,
                 open_door_type: device.open_door_type,
+                success_msg: device.success_msg,
+                fail_msg: device.fail_msg
             }
         },
         methods: {
             handleChange1(val) {
                 ajaxGrantPersonList(this.currentPage1, this.pageSize1);
+            },
+            changeDeviceInfo() {
+                ajaxChangeDeviceInfo({
+                    device_sn: device.device_sn,
+                    device_name: this.model.device_name,
+                    open_door_type: this.model.open_door_type,
+                    success_msg: this.model.success_msg,
+                    fail_msg: this.model.fail_msg
+                })
+            },
+            restoreDeviceInfo(){
+                this.model.device_name=device.device_name;
+                this.model.open_door_type=device.open_door_type;
+                this.model.success_msg=device.success_msg;
+                this.model.fail_msg=device.fail_msg;
             }
         },
         filters: {
@@ -90,6 +108,16 @@
             success: function (result) {
                 vm.tableTotal = result.data.total;
                 vm.tableData1 = result.data.list;
+            }
+        });
+    }
+
+    function ajaxChangeDeviceInfo(data) {
+        ajaxGet({
+            url: "${pageContext.request.contextPath}/device/change_info",
+            data: data,
+            success: function (result) {
+                layAlert1(result.message);
             }
         });
     }
