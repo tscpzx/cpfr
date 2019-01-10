@@ -48,7 +48,7 @@
     data = data.replace(/<\/?.+?>/g, "");
     data = data.replace(/[\r\n]/g, "");
     data = $.parseJSON(data);
-    new Vue({
+    var vue =  new Vue({
         el: "#person_detail",
         data: function () {
             return {
@@ -59,7 +59,7 @@
                     person_name:data.person_name ,
                     emp_number:data.emp_number
                 },
-                dialogVisible: false,
+                dialogVisible:false,
             }
         },
         methods: {
@@ -73,19 +73,19 @@
                         emp_number:model.emp_number
                     },
                     success: function (data) {
-                        layAlert1(data.message);
+                       layAlert1(data.message);
                     }
                 });
 
             },
             deletePerson(){
-                data.dialogVisible = false;
                 ajaxPost({
                     url: "${pageContext.request.contextPath}/person/delete",
                     data: {
                         person_id: data.person_id
                     },
                     success: function (data) {
+                        vue.dialogVisible = false;
                         layTip(data.message);
                     }
                 });
