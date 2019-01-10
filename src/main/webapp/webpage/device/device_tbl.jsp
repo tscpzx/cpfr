@@ -13,13 +13,29 @@
     <div id="device_tbl">
         <template>
             <el-table :data="tableData" style="width: 100%" stripe>
-                <el-table-column prop="device_id" label="设备ID" width="150">
+                <el-table-column prop="device_id" label="设备ID">
                 </el-table-column>
-                <el-table-column prop="device_name" label="设备名称" width="200">
-                </el-table-column>
-                <el-table-column prop="online" label="在线" width="150">
+                <el-table-column prop="device_name" label="设备名称">
                 </el-table-column>
                 <el-table-column prop="device_sn" label="设备序列号">
+                </el-table-column>
+                <el-table-column prop="online" label="在线">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.online===1">在线</span>
+                        <span v-if="scope.row.online===0">离线</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="注册时间">
+                    <template slot-scope="scope">
+                        <i class="el-icon-time"></i>
+                        <span style="margin-left: 10px">{{ scope.row.register_time}}</span>
+                    </template>
+                </el-table-column>
+                <el-table-column label="激活时间">
+                    <template slot-scope="scope">
+                        <i class="el-icon-time"></i>
+                        <span style="margin-left: 10px">{{ scope.row.activate_time}}</span>
+                    </template>
                 </el-table-column>
             </el-table>
         </template>

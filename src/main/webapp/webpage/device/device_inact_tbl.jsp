@@ -13,13 +13,20 @@
     <div id="device_inact_tbl">
         <template>
             <el-table :data="tableData" style="width: 100%" stripe>
-                <el-table-column prop="id" label="ID" width="150">
+                <el-table-column prop="id" label="ID">
                 </el-table-column>
-                <el-table-column prop="device_sn" label="设备序列号" width="200">
+                <el-table-column prop="device_name" label="设备序列号">
                 </el-table-column>
-                <el-table-column prop="status" label="状态" width="150">
+                <el-table-column prop="status" label="激活状态">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.status===0">未激活</span>
+                    </template>
                 </el-table-column>
-                <el-table-column prop="online" label="在线" width="150">
+                <el-table-column prop="online" label="在线状态">
+                    <template slot-scope="scope">
+                        <span v-if="scope.row.online===1">在线</span>
+                        <span v-if="scope.row.online===0">离线</span>
+                    </template>
                 </el-table-column>
                 <el-table-column label="注册时间">
                     <template slot-scope="scope">

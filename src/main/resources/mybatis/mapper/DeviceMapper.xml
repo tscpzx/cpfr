@@ -8,7 +8,7 @@
 	</select>
 
 	<select id="selectDeviceList" parameterType="pd" resultType="pd">
-		select device_id,device_name,device_sn,online from tbl_#{wid}_device
+		select device_id,device_name,device_sn,online,status,register_time,activate_time,last_online_time,last_offine_time from tbl_#{wid}_device
 		<where>
 			<if test="group_id!=null and group_id!=''">
 				group_id=#{group_id}
