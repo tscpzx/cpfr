@@ -9,8 +9,14 @@ function layTip(msg) {
 
 //icon 0 警告 1 打钩 2 打叉 3 问号 4 锁头
 function layAlert1(msg) {
+    if(msg=="操作成功")
     return top.layer.msg(msg, {
-         icon: 0
+         icon: 1
+        , shade: 0.01
+        , time: 3000
+    });
+    else  return top.layer.msg(msg, {
+        icon: 0
         , shade: 0.01
         , time: 3000
     });
@@ -24,12 +30,7 @@ function layAlert2(msg) {
     });
 }
 
-function layAlertSuccess(msg) {
-    top.layer.$notify(msg, {
-        title: '成功',
-        type: 'success'
-    });
-}
+
 function layLoading1() {
     return top.layer.load(0, {
         shade: false
