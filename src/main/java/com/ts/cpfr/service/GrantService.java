@@ -3,8 +3,6 @@ package com.ts.cpfr.service;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
 
-import java.util.List;
-
 /**
  * @Classname GrantDao
  * @Description
@@ -12,5 +10,7 @@ import java.util.List;
  * @Created by cjw
  */
 public interface GrantService {
-    ResultData<List<ParamData>> addGrants(ParamData pd) throws Exception;
+    ResultData<ParamData> addGrant(ParamData pd) throws Exception;
+
+    ResultData<ParamData> banGrant(ParamData pd) throws Exception;
 }

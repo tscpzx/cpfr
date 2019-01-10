@@ -9,5 +9,7 @@ import com.ts.cpfr.utils.ParamData;
  * @Created by cjw
  */
 public interface GrantDao {
-    boolean insertGrants(ParamData pd);
+    boolean insertGrant(ParamData pd);
+
+    boolean updateGrantBan(ParamData pd);
 }

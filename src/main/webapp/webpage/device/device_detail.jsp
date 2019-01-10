@@ -23,7 +23,7 @@
                 </el-tab-pane>
                 <%--已授权人员--%>
                 <el-tab-pane label="已授权人员" name="third">
-                    <%@include file="inc_tabs/granted_person.jsp" %>
+                    <%@include file="inc_tabs/grant_person.jsp" %>
                 </el-tab-pane>
             </el-tabs>
         </template>
@@ -80,11 +80,14 @@
                     fail_msg: this.model.fail_msg
                 })
             },
-            restoreDeviceInfo(){
-                this.model.device_name=device.device_name;
-                this.model.open_door_type=device.open_door_type;
-                this.model.success_msg=device.success_msg;
-                this.model.fail_msg=device.fail_msg;
+            restoreDeviceInfo() {
+                this.model.device_name = device.device_name;
+                this.model.open_door_type = device.open_door_type;
+                this.model.success_msg = device.success_msg;
+                this.model.fail_msg = device.fail_msg;
+            },
+            banGrantPerson(scope) {
+                ajaxBanGrantPerson(scope);
             }
         },
         filters: {
@@ -118,6 +121,21 @@
             data: data,
             success: function (result) {
                 layAlert1(result.message);
+            }
+        });
+    }
+
+    function ajaxBanGrantPerson(scope) {
+        ajaxGet({
+            url: "${pageContext.request.contextPath}/grant/ban",
+            data:{
+                device_ids:device.device_id,
+                person_ids:scope.row.person_id
+            },
+            success: function (result) {
+                layAlert1(result.message);
+                arrayRemoveObj(vm.tableData1,scope.row);
+                vm.tableTotal--;
             }
         });
     }

@@ -12,7 +12,6 @@
 			(
 				#{data.device_id},
 				#{data.person_id},
-				#{data.type},
 		        1,
 				#{data.pass_number,},
 				#{data.pass_start_time},
@@ -20,6 +19,15 @@
 			)
 		</foreach>
 		ON DUPLICATE KEY UPDATE
-		type=#{data.type},status=1,pass_number=#{data.pass_number},pass_start_time=#{data.pass_start_time},pass_end_time=#{data.pass_end_time},lmt=now();
+		status=2,pass_number=#{data.pass_number},pass_start_time=#{data.pass_start_time},pass_end_time=#{data.pass_end_time},lmt=now();
 	</insert>
+
+	<update id="updateGrantBan" parameterType="pd">
+		update tbl_#{wid}_grant set status=3 where
+		<foreach collection="list" item="data" separator=" or ">
+			(
+				device_id=#{data.device_id} and person_id=#{data.person_id}
+			)
+		</foreach>
+	</update>
 </mapper>

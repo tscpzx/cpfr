@@ -7,12 +7,6 @@
         </el-table-column>
         <el-table-column prop="emp_number" label="工号">
         </el-table-column>
-        <el-table-column prop="type" label="是否通行">
-            <template slot-scope="scope">
-                <span v-if="scope.row.type===1">允许</span>
-                <span v-if="scope.row.type===0">禁止</span>
-            </template>
-        </el-table-column>
         <el-table-column prop="pass_number" label="通行次数">
             <template slot-scope="scope">
                 <span v-if="scope.row.pass_number===9999999999">无限次数</span>
@@ -28,7 +22,7 @@
         <el-table-column label="操作">
             <template slot-scope="scope">
                 <el-button type="success" size="small">修改</el-button>
-                <el-button type="danger" size="small">删除</el-button>
+                <el-button type="danger" size="small" @click="banGrantPerson(scope)">禁止</el-button>
             </template>
         </el-table-column>
     </el-table>

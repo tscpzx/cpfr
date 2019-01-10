@@ -41,8 +41,8 @@
             </el-date-picker>
         </el-form-item>
         <el-form-item label="">
-            <el-button type="primary" @click="clickGrant(1)">授权通行</el-button>
-            <el-button type="danger" @click="clickGrant(0)">禁止通行</el-button>
+            <el-button type="primary" @click="grantPass()">授权通行</el-button>
+            <el-button type="danger" @click="banPass()">禁止通行</el-button>
         </el-form-item>
     </el-form>
 

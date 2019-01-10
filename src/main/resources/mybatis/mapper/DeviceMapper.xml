@@ -21,7 +21,7 @@
 	</select>
 
 	<select id="selectInActDeviceList" parameterType="pd" resultType="pd">
-		select id,device_sn,status,online,register_time from tbl_inact_device where status=0
+		select id,device_sn device_name,status,online,register_time from tbl_inact_device where status=0
 	</select>
 
 	<update id="updateInActDeviceOnline" parameterType="pd">

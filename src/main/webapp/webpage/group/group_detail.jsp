@@ -97,7 +97,7 @@
             dateValue: ''
         },
         methods: {
-            clickGrant(type) {
+            grantPass() {
                 var person_ids = this.value1.join(',');
                 var device_ids = $.arrayIntersect(value2, this.value2).join(',');
                 var pass_number = 9999999999;
@@ -128,16 +128,32 @@
                     pass_start_time = this.dateValue[0];
                     pass_end_time = this.dateValue[1];
                 }
-
                 var data = {
                     person_ids: person_ids,
                     device_ids: device_ids,
-                    type: type,
                     pass_number: pass_number,
                     pass_start_time: pass_start_time,
                     pass_end_time: pass_end_time
                 };
-                ajaxGrant(data);
+                ajaxGrantPass(data);
+            },
+            banPass() {
+                var person_ids = this.value1.join(',');
+                var device_ids = $.arrayIntersect(value2, this.value2).join(',');
+                if (!person_ids) {
+                    elmMessage1("请添加授权人员");
+                    return;
+                }
+                if (!device_ids) {
+                    elmMessage1("请添加授权设备");
+                    return;
+                }
+
+                var data = {
+                    person_ids: person_ids,
+                    device_ids: device_ids
+                };
+                ajaxBanPass(data);
             },
             filterMethod1(query, item) {
                 return item.person_name.indexOf(query) > -1;
@@ -172,9 +188,19 @@
         }
     });
 
-    function ajaxGrant(data) {
+    function ajaxGrantPass(data) {
         ajaxPost({
             url: "${pageContext.request.contextPath}/grant/add",
+            data: data,
+            success: function (result) {
+                layTip(result.message);
+            }
+        })
+    }
+
+    function ajaxBanPass(data){
+        ajaxPost({
+            url: "${pageContext.request.contextPath}/grant/ban",
             data: data,
             success: function (result) {
                 layTip(result.message);

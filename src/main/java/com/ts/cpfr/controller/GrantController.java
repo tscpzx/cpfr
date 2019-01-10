@@ -11,8 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -31,13 +29,23 @@ public class GrantController extends BaseController {
 
     @ResponseBody
     @RequestMapping("/add")
-    public ResultData<List<ParamData>> add(HttpServletRequest request) {
+    public ResultData<ParamData> add(HttpServletRequest request) {
         try {
-            return mGrantService.addGrants(paramDataInit());
+            return mGrantService.addGrant(paramDataInit());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
         }
     }
 
+    @ResponseBody
+    @RequestMapping("/ban")
+    public ResultData<ParamData> ban(HttpServletRequest request) {
+        try {
+            return mGrantService.banGrant(paramDataInit());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
 }

@@ -40,10 +40,9 @@ public class GrantServiceImpl implements GrantService {
     private SocketMessageHandle mSocketMessageHandle;
 
     @Override
-    public ResultData<List<ParamData>> addGrants(ParamData pd) throws Exception {
+    public ResultData<ParamData> addGrant(ParamData pd) throws Exception {
         String person_ids = pd.getString("person_ids");
         String device_ids = pd.getString("device_ids");
-        String type = pd.getString("type");
         String pass_number = pd.getString("pass_number");
         String pass_start_time = pd.getString("pass_start_time");
         String pass_end_time = pd.getString("pass_end_time");
@@ -58,7 +57,6 @@ public class GrantServiceImpl implements GrantService {
                 int device_id = Integer.parseInt(deviceId);
                 paramData.put("person_id", person_id);
                 paramData.put("device_id", device_id);
-                paramData.put("type", type);
                 paramData.put("pass_number", pass_number);
                 paramData.put("pass_start_time", pass_start_time);
                 paramData.put("pass_end_time", pass_end_time);
@@ -69,7 +67,41 @@ public class GrantServiceImpl implements GrantService {
         ParamData paramData = new ParamData();
         paramData.put("wid", memory.getLoginUser().getWId());
         paramData.put("list", list);
-        if (mGrantDao.insertGrants(paramData)) {
+        if (mGrantDao.insertGrant(paramData)) {
+            //通知设备权限更新
+            TextMessage message = mSocketMessageHandle.obtainMessage(CommConst.CODE_1004, "权限更新", null);
+            List<ParamData> deviceSnList = mDeviceDao.selectDeviceSnList(paramData);
+            for (ParamData p : deviceSnList) {
+                mSocketMessageHandle.sendMessageToDevice(p.getString(CommConst.DEVICE_SN), message);
+            }
+            return new ResultData<>(HandleEnum.SUCCESS);
+        }
+        return new ResultData<>(HandleEnum.FAIL);
+    }
+
+    @Override
+    public ResultData<ParamData> banGrant(ParamData pd) throws Exception {
+        String person_ids = pd.getString("person_ids");
+        String device_ids = pd.getString("device_ids");
+
+        List<ParamData> list = new ArrayList<>();
+        String[] personIdArr = person_ids.split(",");
+        String[] deviceIdArr = device_ids.split(",");
+        for (String personId : personIdArr) {
+            for (String deviceId : deviceIdArr) {
+                ParamData paramData = new ParamData();
+                int person_id = Integer.parseInt(personId);
+                int device_id = Integer.parseInt(deviceId);
+                paramData.put("person_id", person_id);
+                paramData.put("device_id", device_id);
+                list.add(paramData);
+            }
+        }
+
+        ParamData paramData = new ParamData();
+        paramData.put("wid", memory.getLoginUser().getWId());
+        paramData.put("list", list);
+        if (mGrantDao.updateGrantBan(paramData)) {
             //通知设备权限更新
             TextMessage message = mSocketMessageHandle.obtainMessage(CommConst.CODE_1004, "权限更新", null);
             List<ParamData> deviceSnList = mDeviceDao.selectDeviceSnList(paramData);

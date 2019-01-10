@@ -26,7 +26,7 @@
              ref="tree">
       <span class="custom-tree-node" slot-scope="{ node, data }">
             <span v-if="data.online==1" class="circle"></span>
-            <span>{{ data.device_sn }}</span>
+            <span>{{ data.device_name }}</span>
       </span>
     </el-tree>
 </div>
@@ -40,16 +40,16 @@
         data: {
             items: [{
                 id: -1,
-                device_sn: '未激活设备',
+                device_name: '未激活设备',
                 children: []
             }, {
                 id: -2,
-                device_sn: '已激活设备',
+                device_name: '已激活设备',
                 children: []
             }],
             defaultProps: {
                 children: 'children',
-                label: 'device_sn'
+                label: 'device_name'
             },
             device_length: '',
             inact_device_length: ''
@@ -58,7 +58,7 @@
             onNodeClick(data) {
                 if (data.id !== -1 && data.id !== -2) {
                     if (data.status === 0) {
-                        $("#device_content").load("${pageContext.request.contextPath}/device/inact_detail?device_sn=" + data.device_sn);
+                        $("#device_content").load("${pageContext.request.contextPath}/device/inact_detail?device_sn=" + data.device_name);
                     } else {
                         $("#device_content").load("${pageContext.request.contextPath}/device/detail?device_sn=" + data.device_sn);
                     }
