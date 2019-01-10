@@ -9,6 +9,19 @@
             </div>
         </el-row>
     </el-form-item>
-
-
 </el-form>
+
+<template>
+    <el-table :data="tableData" style="width: 100%" stripe>
+        <el-table-column prop="device" label="设备" >
+        </el-table-column>
+        <el-table-column prop="access_time" label="通行时间" >
+        </el-table-column>
+        <el-table-column prop="access_num" label="通行次数">
+        </el-table-column>
+        <el-table-column prop="time_name" label="时段名称" >
+        </el-table-column>
+        <el-table-column prop="time_name" label="操作">
+        </el-table-column>
+    </el-table>
+</template>

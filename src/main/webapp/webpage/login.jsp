@@ -18,7 +18,7 @@
             -moz-border-radius: 5px;
             background-clip: padding-box;
             margin:auto;
-            width: 320px;
+            width: 350px;
             padding: 25px 35px 15px;
             background: white;
             filter:alpha(opacity:90);
@@ -31,7 +31,7 @@
             margin: 0 auto 25px;
             text-align: center;
             color: #222222;
-            font-size:16px;
+            font-size:17px;
         }
 
         .el-button {
@@ -55,7 +55,7 @@ a{
     <div class="container">
         <el-container>
             <el-header>
-                <p style="font-size:24px;font-weight: 500 "><%=CommConst.WEB_TITLE%>
+                <p style="font-size:26px;font-weight: 500 "><%=CommConst.WEB_TITLE%>
                 </p>
             </el-header>
             <%--

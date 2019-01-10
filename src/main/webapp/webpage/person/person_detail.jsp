@@ -50,14 +50,30 @@
     data = $.parseJSON(data);
     new Vue({
         el: "#person_detail",
-        data:function() {
-            return{
-                data:data,
-                activeName: 'first'
+        data: function () {
+            return {
+                data: data,
+                activeName: 'first',
+                tableData:[],
+                personModel: {
+                    person_name:data.person_name ,
+                    emp_number:data.emp_number
+                },
             }
         },
-        methods:{
-            clickBase(code){
+        methods: {
+            updatePerson(formName) {
+                var model = this.$refs[formName].model;
+                ajaxPost({
+                    url: "${pageContext.request.contextPath}/person/updatePerson",
+                    data: {
+                        person_name: model.person_name,
+                        emp_number:model.emp_number
+                    },
+                    success: function (data) {
+                        layAlertSuccess(data.message);
+                    }
+                });
 
             },
 

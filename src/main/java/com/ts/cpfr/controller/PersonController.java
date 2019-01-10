@@ -80,6 +80,19 @@ public class PersonController extends BaseController {
     }
 
     @ResponseBody
+    @RequestMapping("/updatePerson")
+    public ResultData<ParamData> updatePersonInfo(HttpServletRequest request){
+        System.out.println(request.getParameter("person_name"));
+        System.out.println(request.getParameter("emp_number"));
+        try {
+            return mPersonService.updatePerson(request);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
+    @ResponseBody
     @RequestMapping("/image")
     public ResultData<ParamData> image(HttpServletRequest request, HttpServletResponse response) {
         try {

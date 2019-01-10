@@ -81,6 +81,11 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
+    public ResultData<ParamData> updatePerson(HttpServletRequest request) {
+        return new ResultData<>(HandleEnum.SUCCESS);
+    }
+
+    @Override
     public ParamData queryPerson(ParamData pd) {
         pd.put("wid", memory.getLoginUser().getWId());
         return mPersonDao.selectPerson(pd);

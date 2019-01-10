@@ -97,7 +97,9 @@
                 </el-menu>
             </el-aside>
 
-            <el-main id="content-container"></el-main>
+            <el-main id="content-container">
+
+            </el-main>
         </el-container>
     </el-container>
 </div>

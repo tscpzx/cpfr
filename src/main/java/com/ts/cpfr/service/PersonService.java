@@ -24,6 +24,7 @@ public interface PersonService {
 
     ResultData<ParamData> addPerson(CommonsMultipartFile file, HttpServletRequest request);
 
+    ResultData<ParamData> updatePerson(HttpServletRequest request);
     ParamData queryPerson(ParamData pd);
 
     boolean uploadImageFile(CommonsMultipartFile file, ParamData pd) throws Exception;
@@ -37,4 +38,5 @@ public interface PersonService {
     void blob2base64(List<ParamData> list) throws Exception;
 
     void blob2base64(ParamData pd) throws Exception;
+
 }
