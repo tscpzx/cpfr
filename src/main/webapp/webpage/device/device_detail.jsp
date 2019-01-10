@@ -121,6 +121,12 @@
             data: data,
             success: function (result) {
                 layAlert1(result.message);
+                var deviceList = vmDeviceTree.items[1].children;
+                for (var index in deviceList) {
+                    if (data.device_sn === deviceList[index].device_sn) {
+                        deviceList[index].device_name = data.device_name;
+                    }
+                }
             }
         });
     }
@@ -128,13 +134,13 @@
     function ajaxBanGrantPerson(scope) {
         ajaxGet({
             url: "${pageContext.request.contextPath}/grant/ban",
-            data:{
-                device_ids:device.device_id,
-                person_ids:scope.row.person_id
+            data: {
+                device_ids: device.device_id,
+                person_ids: scope.row.person_id
             },
             success: function (result) {
                 layAlert1(result.message);
-                arrayRemoveObj(vm.tableData1,scope.row);
+                arrayRemoveObj(vm.tableData1, scope.row);
                 vm.tableTotal--;
             }
         });

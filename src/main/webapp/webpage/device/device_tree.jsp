@@ -35,7 +35,7 @@
     ajaxInActDeviceList();
     ajaxDeviceList();
 
-    var vmList = new Vue({
+    var vmDeviceTree = new Vue({
         el: "#device",
         data: {
             items: [{
@@ -79,8 +79,8 @@
             url: "${pageContext.request.contextPath}/device/inact_list",
             data: {},
             success: function (result) {
-                vmList.items[0].children = result.data.list;
-                vmList.inact_device_length = result.data.list.length;
+                vmDeviceTree.items[0].children = result.data.list;
+                vmDeviceTree.inact_device_length = result.data.list.length;
             }
         });
     }
@@ -90,8 +90,8 @@
             url: "${pageContext.request.contextPath}/device/list",
             data: {},
             success: function (result) {
-                vmList.items[1].children = result.data.list;
-                vmList.device_length = result.data.list.length;
+                vmDeviceTree.items[1].children = result.data.list;
+                vmDeviceTree.device_length = result.data.list.length;
             }
         });
     }
