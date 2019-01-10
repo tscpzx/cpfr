@@ -3,7 +3,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ts.cpfr.dao.PersonDao">
 	<select id="selectPerson" parameterType="pd" resultType="pd">
-		SELECT p.person_id,p.person_name,p.emp_number,p.add_time,i.blob_image base_image from tbl_#{wid}_person  p left join tbl_#{wid}_image i on p.image_id=i.image_id where p.person_id=#{person_id} and p.status &lt;&gt; 3
+		SELECT p.person_id,p.person_name,p.emp_number,p.add_time,i.blob_image base_image from tbl_#{wid}_person p left join tbl_#{wid}_image i on p.image_id=i.image_id where p.person_id=#{person_id} and p.status &lt;&gt; 3
 	</select>
 
 	<select id="selectPersonList" parameterType="pd" resultType="pd">
@@ -35,5 +35,9 @@
 
 	<select id="selectImage" parameterType="pd" resultType="pd">
 		SELECT blob_image FROM tbl_#{wid}_image WHERE image_id=#{image_id}
+	</select>
+
+	<select id="selectGrantPersonListByDeviceSn" parameterType="pd" resultType="pd">
+		SELECT p.person_id,p.person_name,p.emp_number,p.status,p.lmt,g.grant_id,g.type,g.pass_number,g.pass_start_time,g.pass_end_time FROM tbl_#{wid}_person p RIGHT JOIN (SELECT grant_id,person_id,type,pass_number,pass_start_time,pass_end_time FROM tbl_#{wid}_grant WHERE device_id =  (SELECT  device_id FROM tbl_#{wid}_device  WHERE device_sn = #{device_sn})) g ON p.person_id=g.person_id
 	</select>
 </mapper>

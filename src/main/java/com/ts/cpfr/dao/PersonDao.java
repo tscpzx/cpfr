@@ -22,4 +22,6 @@ public interface PersonDao {
     ParamData selectImage(ParamData pd);
 
     List<ParamData> selectPersonListWithBlob(ParamData pd);
+
+    List<ParamData> selectGrantPersonListByDeviceSn(ParamData pd);
 }

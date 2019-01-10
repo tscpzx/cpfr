@@ -28,6 +28,10 @@
         .el-main {
             padding: 0;
         }
+
+        .el-form-item {
+            margin-bottom: 18px;
+        }
     </style>
 </head>
 <body style="margin:0;padding:0;overflow:hidden" scroll="no">

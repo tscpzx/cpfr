@@ -17,7 +17,7 @@
     <div id="record_tbl">
         <template>
             <el-table :data="tableData" style="width: 100%" stripe>
-                <el-table-column prop="id" label="ID" width="100">
+                <el-table-column prop="record_id" label="ID" width="100">
                 </el-table-column>
                 <el-table-column prop="person_name" label="姓名" width="100">
                 </el-table-column>

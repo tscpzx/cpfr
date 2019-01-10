@@ -129,13 +129,12 @@
         },
         methods: {
             onClickRegister(formName) {
-                this.$refs[formName].validate((isValid) = > {
+                this.$refs[formName].validate((isValid) => {
                     var model = this.$refs[formName].model;
                 if (isValid) {
                     ajaxRegister(model.name, model.password)
                 }
-            })
-                ;
+            });
             }
         }
     });
