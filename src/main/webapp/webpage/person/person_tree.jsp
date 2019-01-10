@@ -28,7 +28,7 @@
 
 <script type="text/javascript">
     ajaxPersonList();
-    var vmList = new Vue({
+    var vmPersonTree = new Vue({
         el: "#person",
         data: {
             items: [{
@@ -61,8 +61,8 @@
             url: "${pageContext.request.contextPath}/person/list",
             data: {},
             success: function (result) {
-                vmList.items[0].children = result.data.list;
-                vmList.length = result.data.total;
+                vmPersonTree.items[0].children = result.data.list;
+                vmPersonTree.length = result.data.total;
             }
         });
     }
