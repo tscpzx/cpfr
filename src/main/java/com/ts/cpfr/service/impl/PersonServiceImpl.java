@@ -81,8 +81,19 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public ResultData<ParamData> updatePerson(HttpServletRequest request) {
-        return new ResultData<>(HandleEnum.SUCCESS);
+    public ResultData<ParamData> updatePerson(ParamData pd) {
+        pd.put("wid", memory.getLoginUser().getWId());
+        if (mPersonDao.updatePersonInfo(pd)) {
+            return new ResultData<>(HandleEnum.SUCCESS);
+        } else return new ResultData<>(HandleEnum.FAIL);
+    }
+
+    @Override
+    public ResultData<ParamData> deletePerson(ParamData pd) {
+        pd.put("wid", memory.getLoginUser().getWId());
+        if (mPersonDao.deletePerson(pd)) {
+            return new ResultData<>(HandleEnum.SUCCESS);
+        } else return new ResultData<>(HandleEnum.FAIL);
     }
 
     @Override

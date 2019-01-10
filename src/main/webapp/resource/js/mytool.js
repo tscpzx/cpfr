@@ -15,14 +15,6 @@ function layAlert1(msg) {
         , time: 3000
     });
 }
-function  layAlterSuccess(msg) {
-    top.layer.$notify({
-        title: '提示',
-        message:msg,
-        type: 'success'
-    });
-}
-
 
 
 function layAlert2(msg) {

@@ -59,24 +59,45 @@
                     person_name:data.person_name ,
                     emp_number:data.emp_number
                 },
+                dialogVisible: false,
             }
         },
         methods: {
             updatePerson(formName) {
                 var model = this.$refs[formName].model;
                 ajaxPost({
-                    url: "${pageContext.request.contextPath}/person/updatePerson",
+                    url: "${pageContext.request.contextPath}/person/update_info",
                     data: {
+                        person_id: data.person_id,
                         person_name: model.person_name,
                         emp_number:model.emp_number
                     },
                     success: function (data) {
-                        layAlertSuccess(data.message);
+                        layAlert1(data.message);
                     }
                 });
 
             },
 
+            handleClose(done) {
+                this.$confirm('确认关闭？')
+                    .then(_ => {
+                        done();
+                    })
+                    .catch(_ => {});
+            },
+            deletePerson(){
+                data.dialogVisible = false;
+                ajaxPost({
+                    url: "${pageContext.request.contextPath}/person/delete",
+                    data: {
+                        person_id: data.person_id
+                    },
+                    success: function (data) {
+                        layTip(data.message);
+                    }
+                });
+            }
         },
         filters: {
             formatDate: function (time) {

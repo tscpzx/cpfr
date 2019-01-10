@@ -24,4 +24,7 @@ public interface PersonDao {
     List<ParamData> selectPersonListWithBlob(ParamData pd);
 
     List<ParamData> selectGrantPersonListByDeviceSn(ParamData pd);
+    boolean updatePersonInfo(ParamData pd);
+    boolean deletePerson(ParamData pd);
+
 }

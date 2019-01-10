@@ -24,7 +24,10 @@ public interface PersonService {
 
     ResultData<ParamData> addPerson(CommonsMultipartFile file, HttpServletRequest request);
 
-    ResultData<ParamData> updatePerson(HttpServletRequest request);
+    ResultData<ParamData> updatePerson(ParamData pd);
+
+    ResultData<ParamData> deletePerson(ParamData pd);
+
     ParamData queryPerson(ParamData pd);
 
     boolean uploadImageFile(CommonsMultipartFile file, ParamData pd) throws Exception;

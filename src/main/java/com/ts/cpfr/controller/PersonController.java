@@ -79,13 +79,33 @@ public class PersonController extends BaseController {
         return "person/person_detail";
     }
 
+    /**
+     * 修改人员信息
+     * @param request
+     * @return
+     */
     @ResponseBody
-    @RequestMapping("/updatePerson")
+    @RequestMapping("/update_info")
     public ResultData<ParamData> updatePersonInfo(HttpServletRequest request){
-        System.out.println(request.getParameter("person_name"));
-        System.out.println(request.getParameter("emp_number"));
         try {
-            return mPersonService.updatePerson(request);
+            return mPersonService.updatePerson(paramDataInit());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
+    /**
+     * 删除人员
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/delete")
+    public ResultData<ParamData> deletePerson(HttpServletRequest request){
+        System.out.println(request.getParameter("person_id"));
+        try {
+            return mPersonService.deletePerson(paramDataInit());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
