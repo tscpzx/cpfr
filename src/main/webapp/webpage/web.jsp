@@ -50,7 +50,7 @@
                 </el-col>
                 <el-col :span="2">
                     <div style="float: right">
-                        <a href="#">${sessionScope.user.name},您好!</a></div>
+                        <a href="#">${sessionScope.user.name} , 您好!</a></div>
                 </el-col>
                 <el-col :span="2">
                     <div style="float: right"><a href="register.jsp">修改密码</a>
