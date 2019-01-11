@@ -19,6 +19,7 @@
 <div id="device">
     <el-tree :data="items"
              accordion="true"
+             highlight-current="true"
              :props="defaultProps"
              @node-click="onNodeClick"
              @node-expand="onHandleExpand"

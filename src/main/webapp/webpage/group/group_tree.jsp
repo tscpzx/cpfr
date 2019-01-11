@@ -17,7 +17,7 @@
 
 </style>
 <div id="group">
-    <el-tree :data="items" :props="defaultProps" @node-click="onNodeClick" @node-expand="onHandleExpand" node-key="group_id" :default-expanded-keys="[-1]" ref="tree"></el-tree>
+    <el-tree :data="items" :props="defaultProps" @node-click="onNodeClick" @node-expand="onHandleExpand" node-key="group_id" :default-expanded-keys="[-1]" highlight-current="true" ref="tree"></el-tree>
 </div>
 
 <script type="text/javascript">
