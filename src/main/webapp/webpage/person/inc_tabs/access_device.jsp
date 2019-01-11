@@ -13,15 +13,44 @@
 
 <template>
     <el-table :data="tableData" style="width: 100%" stripe>
-        <el-table-column prop="device" label="设备" >
+        <el-table-column prop="device_id" label="设备ID" >
         </el-table-column>
-        <el-table-column prop="access_time" label="通行时间" >
+        <el-table-column prop="device_name" label="设备名称" >
         </el-table-column>
-        <el-table-column prop="access_num" label="通行次数">
+        <el-table-column prop="pass_number" label="通行次数">
+            <template slot-scope="scope">
+                <span v-if="scope.row.pass_number===9999999999">无限次数</span>
+                <span v-else>{{scope.row.pass_number}}</span>
+            </template>
         </el-table-column>
-        <el-table-column prop="time_name" label="时段名称" >
+        <el-table-column prop="pass_start_time" label="通行时段" width="300">
+            <template slot-scope="scope">
+                <span v-if="scope.row.pass_start_time==='2286-11-21 01:46:39'||scope.row.pass_end_time==='2286-11-21 01:46:39'">无限时段</span>
+                <span v-if="scope.row.pass_start_time!=='2286-11-21 01:46:39'">{{scope.row.pass_start_time}} 至 {{scope.row.pass_start_time}}</span>
+            </template>
         </el-table-column>
-        <el-table-column prop="time_name" label="操作">
+
+        <el-table-column label="操作" width="150">
+            <template slot-scope="scope">
+                <el-button type="success" size="small" @click="openDialogChangeGrant(scope.row)">修改</el-button>
+                <el-button type="danger" size="small" @click="banGrantPerson(scope)">禁止</el-button>
+            </template>
         </el-table-column>
     </el-table>
+</template>
+
+<template>
+    <div class="block">
+        <el-pagination ref="pagination"
+                       @size-change="handleChange"
+                       @current-change="handleChange"
+                       :current-page.sync="currentPage"
+                       :page-size.sync="pageSize"
+                       :page-sizes="pageSizes"
+                       prev-text="上一页"
+                       next-text="下一页"
+                       layout="total, sizes, prev, pager, next, jumper"
+                       :total="tableTotal">
+        </el-pagination>
+    </div>
 </template>
