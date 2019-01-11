@@ -65,17 +65,20 @@
             pageSize1: 10,
             tableTotal: ''
             ,
-            model: {
+            deviceModel: {
                 device_name: device.device_name,
                 open_door_type: device.open_door_type,
                 success_msg: device.success_msg,
                 fail_msg: device.fail_msg
             },
             visible: false,
-            radio1: '2',
-            radio2: '4',
-            pass_number: '',
-            dateValue: ''
+            dialogModel: {
+                radio1: '',
+                radio2: '',
+                pass_number: '',
+                dateValue: '',
+            },
+            grant: ''
         },
         methods: {
             handleChange1(val) {
@@ -84,17 +87,17 @@
             changeDeviceInfo() {
                 ajaxChangeDeviceInfo({
                     device_sn: device.device_sn,
-                    device_name: this.model.device_name,
-                    open_door_type: this.model.open_door_type,
-                    success_msg: this.model.success_msg,
-                    fail_msg: this.model.fail_msg
+                    device_name: this.deviceModel.device_name,
+                    open_door_type: this.deviceModel.open_door_type,
+                    success_msg: this.deviceModel.success_msg,
+                    fail_msg: this.deviceModel.fail_msg
                 })
             },
             restoreDeviceInfo() {
-                this.model.device_name = device.device_name;
-                this.model.open_door_type = device.open_door_type;
-                this.model.success_msg = device.success_msg;
-                this.model.fail_msg = device.fail_msg;
+                this.deviceModel.device_name = device.device_name;
+                this.deviceModel.open_door_type = device.open_door_type;
+                this.deviceModel.success_msg = device.success_msg;
+                this.deviceModel.fail_msg = device.fail_msg;
             },
             banGrantPerson(scope) {
                 ajaxBanGrantPerson(scope);
@@ -104,25 +107,72 @@
                 var $datePicker = $('.date_picker_pass_number');
                 switch (index) {
                     case '1':
+                        if (this.grant.pass_number === 9999999999)
+                            this.dialogModel.pass_number = '';
+                        else
+                            this.dialogModel.pass_number = this.grant.pass_number;
                         $input.show();
                         break;
                     case '2':
+                        this.dialogModel.pass_number = 9999999999;
                         $input.hide();
                         break;
                     case '3':
+                        if (dateToStamp(this.grant.pass_start_time) === 9999999999 || dateToStamp(this.grant.pass_end_time) === 9999999999) {
+                            this.dialogModel.dateValue = '';
+                        } else {
+                            this.dialogModel.dateValue = [this.grant.pass_start_time, this.grant.pass_end_time];
+                        }
                         $datePicker.show();
                         break;
                     case '4':
+                        this.dialogModel.dateValue = [stampToDate(9999999999), stampToDate(9999999999)];
                         $datePicker.hide();
                         break;
                 }
             },
-            openDialogChangeGrant(item) {
-                this.visible=true;
-                l(item)
+            openDialogChangeGrant(data) {
+                this.visible = true;
+                this.grant = data;
+                this.dialogModel.pass_number = data.pass_number;
+                this.dialogModel.dateValue = [data.pass_start_time, data.pass_end_time];
+                if (data.pass_number === 9999999999) {
+                    this.dialogModel.radio1 = '2';
+                } else {
+                    this.dialogModel.radio1 = '1';
+                }
+                if (dateToStamp(data.pass_start_time) === 9999999999 || dateToStamp(data.pass_end_time) === 9999999999) {
+                    this.dialogModel.radio2 = '4';
+                } else {
+                    this.dialogModel.radio2 = '3';
+                }
             },
             opened() {
+                var $input = $('.input_pass_number');
+                var $datePicker = $('.date_picker_pass_number');
 
+                if (this.dialogModel.radio1 === '2') $input.hide();
+                else $input.show();
+                if (this.dialogModel.radio2 === '4') $datePicker.hide();
+                else $datePicker.show();
+            },
+            changePersonGrant() {
+                if (!this.dialogModel.pass_number) {
+                    elmMessage1("请填写可通行次数");
+                    return;
+                } else if (!this.dialogModel.dateValue) {
+                    elmMessage1("请填写可通行时段");
+                    return;
+                }
+
+                ajaxChangePersonGrant({
+                    person_ids: this.grant.person_id,
+                    device_ids: this.device.device_id,
+                    pass_number: this.dialogModel.pass_number,
+                    pass_start_time: this.dialogModel.dateValue[0],
+                    pass_end_time: this.dialogModel.dateValue[1],
+                    grant_id:this.grant.grant_id
+                });
             }
         },
         filters: {
@@ -179,5 +229,25 @@
                 vm.tableTotal--;
             }
         });
+    }
+
+    function ajaxChangePersonGrant(data) {
+        ajaxPost({
+            url: "${pageContext.request.contextPath}/grant/add",
+            data: data,
+            success: function (result) {
+                layTip(result.message);
+                vm.visible = false;
+
+                var personList = vm.tableData1;
+                for (var index in personList) {
+                    if (data.grant_id === personList[index].grant_id) {
+                        personList[index].pass_number = data.pass_number;
+                        personList[index].pass_start_time = data.pass_start_time;
+                        personList[index].pass_end_time = data.pass_end_time;
+                    }
+                }
+            }
+        })
     }
 </script>
