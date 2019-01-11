@@ -18,6 +18,7 @@
 <div id="person">
     <el-tree
             :data="items"
+            highlight-current="true"
             :props="defaultProps"
             @node-click="onNodeClick"
             @node-expand="onHandleExpand"
