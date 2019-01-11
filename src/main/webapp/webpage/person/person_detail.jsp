@@ -114,7 +114,7 @@
 
     function ajaxAccessDeviceList(pageNum, pageSize) {
         ajaxGet({
-            url: "${pageContext.request.contextPath}/device/access_device_list",
+            url: "${pageContext.request.contextPath}/person/access_device_list",
             data: {
                 pageNum: pageNum,
                 pageSize: pageSize,

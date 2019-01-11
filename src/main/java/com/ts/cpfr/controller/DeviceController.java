@@ -110,15 +110,4 @@ public class DeviceController extends BaseController {
         }
     }
 
-
-    @ResponseBody
-    @RequestMapping("/access_device_list")
-    public ResultData<PageData<ParamData>> accessDeviceList(HttpServletRequest request) {
-        try {
-            return mDeviceService.getAccessDeviceList(paramDataInit());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
-        }
-    }
 }

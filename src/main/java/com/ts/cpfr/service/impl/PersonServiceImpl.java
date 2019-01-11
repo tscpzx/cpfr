@@ -1,6 +1,7 @@
 package com.ts.cpfr.service.impl;
 
 import com.github.pagehelper.PageHelper;
+import com.ts.cpfr.dao.DeviceDao;
 import com.ts.cpfr.dao.PersonDao;
 import com.ts.cpfr.ehcache.Memory;
 import com.ts.cpfr.service.PersonService;
@@ -39,6 +40,8 @@ import javax.transaction.Transactional;
 @Service
 @Transactional
 public class PersonServiceImpl implements PersonService {
+    @Resource
+    private DeviceDao mDeviceDao;
     @Resource
     private PersonDao mPersonDao;
     @Autowired
@@ -203,5 +206,16 @@ public class PersonServiceImpl implements PersonService {
             pd.put("base_image", paramData.get("blob_image"));
         }
         pd.remove("wid");
+    }
+
+    @Override
+    public ResultData<PageData<ParamData>> getAccessDeviceList(ParamData pd) {
+        int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
+        int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
+        pd.put("wid", memory.getLoginUser().getWId());
+
+        if (pageSize != 0) PageHelper.startPage(pageNum, pageSize);
+        List<ParamData> deviceList = mDeviceDao.selectAccessDeviceListByPersonId(pd);
+        return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(deviceList));
     }
 }

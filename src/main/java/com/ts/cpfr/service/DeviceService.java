@@ -29,5 +29,5 @@ public interface DeviceService {
 
     ResultData<ParamData> changeDeviceInfo(ParamData pd) throws IOException;
 
-    ResultData<PageData<ParamData>> getAccessDeviceList(ParamData pd);
+
 }

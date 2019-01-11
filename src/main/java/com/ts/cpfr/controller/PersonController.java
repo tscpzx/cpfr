@@ -112,6 +112,22 @@ public class PersonController extends BaseController {
         }
     }
 
+    /**
+     * 可通行设备
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/access_device_list")
+    public ResultData<PageData<ParamData>> accessDeviceList(HttpServletRequest request) {
+        try {
+            return mPersonService.getAccessDeviceList(paramDataInit());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
     @ResponseBody
     @RequestMapping("/image")
     public ResultData<ParamData> image(HttpServletRequest request, HttpServletResponse response) {
