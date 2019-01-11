@@ -5,8 +5,12 @@
         padding: 20px;
     }
 
-    .el-input {
+    .el-form-item .el-input {
         width: 400px;
+    }
+
+    .el-date-editor--datetimerange.el-input__inner {
+        width: 350px;
     }
 </style>
 <div class="device_detail_box">
@@ -27,6 +31,7 @@
                 </el-tab-pane>
             </el-tabs>
         </template>
+        <%@include file="inc_dialog/dialog_change_grant.jsp" %>
     </div>
 </div>
 
@@ -65,7 +70,12 @@
                 open_door_type: device.open_door_type,
                 success_msg: device.success_msg,
                 fail_msg: device.fail_msg
-            }
+            },
+            visible: false,
+            radio1: '2',
+            radio2: '4',
+            pass_number: '',
+            dateValue: ''
         },
         methods: {
             handleChange1(val) {
@@ -88,6 +98,31 @@
             },
             banGrantPerson(scope) {
                 ajaxBanGrantPerson(scope);
+            },
+            onChangeRadio(index) {
+                var $input = $('.input_pass_number');
+                var $datePicker = $('.date_picker_pass_number');
+                switch (index) {
+                    case '1':
+                        $input.show();
+                        break;
+                    case '2':
+                        $input.hide();
+                        break;
+                    case '3':
+                        $datePicker.show();
+                        break;
+                    case '4':
+                        $datePicker.hide();
+                        break;
+                }
+            },
+            openDialogChangeGrant(item) {
+                this.visible=true;
+                l(item)
+            },
+            opened() {
+
             }
         },
         filters: {

@@ -43,7 +43,7 @@
 
 
 	<update id="updatePersonInfo" parameterType="pd">
-		UPDATE tbl_#{wid}_person SET person_name = #{person_name},emp_number = #{emp_number} where person_id=#{person_id};
+		UPDATE tbl_#{wid}_person SET person_name = #{person_name},emp_number = #{emp_number},status = 2 where person_id=#{person_id};
 	</update>
 	<delete id="deletePerson" parameterType="pd">
 		update tbl_#{wid}_person set status=3 where person_id = #{person_id};
