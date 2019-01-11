@@ -54,7 +54,6 @@
             return {
                 data: data,
                 activeName: 'first',
-                tableData:[],
                 personModel: {
                     person_name:data.person_name ,
                     emp_number:data.emp_number
@@ -64,7 +63,8 @@
                 currentPage: 1,
                 pageSizes: [5, 10, 20],
                 pageSize: 10,
-                tableTotal:0
+                tableTotal:'',
+                pass_number: ''
             }
         },
 
@@ -97,7 +97,7 @@
                 });
             },
             handleChange(val) {
-                ajaxPersonList(this.currentPage, this.pageSize);
+              ajaxAccessDeviceList(this.currentPage, this.pageSize);
             }
         },
 
@@ -122,7 +122,7 @@
             },
             success: function (result) {
                 vue.tableTotal = result.data.total;
-                vue.tableData1 = result.data.list;
+                vue.tableData = result.data.list;
             }
         });
     }

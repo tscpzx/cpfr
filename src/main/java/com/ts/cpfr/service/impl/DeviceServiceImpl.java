@@ -142,6 +142,7 @@ public class DeviceServiceImpl implements DeviceService {
         int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
         int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
         pd.put("wid", memory.getLoginUser().getWId());
+
         if (pageSize != 0) PageHelper.startPage(pageNum, pageSize);
         List<ParamData> deviceList = mDeviceDao.selectAccessDeviceListByPersonId(pd);
         return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(deviceList));
