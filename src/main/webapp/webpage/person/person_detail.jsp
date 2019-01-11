@@ -60,37 +60,47 @@
                     emp_number:data.emp_number
                 },
                 dialogVisible:false,
+                tableData: [],
+                currentPage: 1,
+                pageSizes: [5, 10, 20],
+                pageSize: 10,
+                tableTotal:0
             }
         },
+
         methods: {
             updatePerson(formName) {
                 var model = this.$refs[formName].model;
-                ajaxPost({
-                    url: "${pageContext.request.contextPath}/person/update_info",
-                    data: {
-                        person_id: data.person_id,
-                        person_name: model.person_name,
-                        emp_number:model.emp_number
-                    },
-                    success: function (data) {
-                       layAlert1(data.message);
-                    }
+                ajaxUpdatePersonInfo({
+                    person_id: data.person_id,
+                    person_name: model.person_name,
+                    emp_number:model.emp_number
                 });
-
             },
             deletePerson(){
-                ajaxPost({
+                ajaxGet({
                     url: "${pageContext.request.contextPath}/person/delete",
                     data: {
                         person_id: data.person_id
                     },
-                    success: function (data) {
+                    success: function (result) {
                         vue.dialogVisible = false;
-                        layTip(data.message);
+                        layTip(result.message);
+                        var personList = vmPersonTree.items[0].children ;
+                        for (var index in personList) {
+                            if (data.person_id === personList[index].person_id) {
+                               personList.splice(index);
+                               $("#person_content").load("person/person_tbl");
+                            }
+                        }
                     }
                 });
+            },
+            handleChange(val) {
+                ajaxPersonList(this.currentPage, this.pageSize);
             }
         },
+
         filters: {
             formatDate: function (time) {
                 var data = new Date(time);
@@ -98,4 +108,40 @@
             }
         }
     });
+
+
+    ajaxAccessDeviceList(vue.currentPage, vue.pageSize);
+
+    function ajaxAccessDeviceList(pageNum, pageSize) {
+        ajaxGet({
+            url: "${pageContext.request.contextPath}/device/access_device_list",
+            data: {
+                pageNum: pageNum,
+                pageSize: pageSize,
+                person_id: data.person_id
+            },
+            success: function (result) {
+                vue.tableTotal = result.data.total;
+                vue.tableData1 = result.data.list;
+            }
+        });
+    }
+
+
+
+    function ajaxUpdatePersonInfo(data) {
+        ajaxGet({
+            url: "${pageContext.request.contextPath}/person/update_info",
+            data: data,
+            success: function (result) {
+                layAlert1(result.message);
+                var personList = vmPersonTree.items[0].children ;
+                for (var index in personList) {
+                    if (data.person_id === personList[index].person_id) {
+                        personList[index].person_name = data.person_name;
+                    }
+                }
+            }
+        });
+    }
 </script>

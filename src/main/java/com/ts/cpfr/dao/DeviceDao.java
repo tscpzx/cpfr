@@ -30,4 +30,5 @@ public interface DeviceDao {
     List<ParamData> selectDeviceSnList(ParamData pd);
 
     boolean updateDeviceInfo(ParamData pd);
+    List<ParamData> selectAccessDeviceListByPersonId(ParamData pd);
 }

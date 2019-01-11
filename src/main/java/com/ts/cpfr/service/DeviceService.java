@@ -28,4 +28,6 @@ public interface DeviceService {
     ResultData<PageData<ParamData>> getGrantPersonList(ParamData pd);
 
     ResultData<ParamData> changeDeviceInfo(ParamData pd) throws IOException;
+
+    ResultData<PageData<ParamData>> getAccessDeviceList(ParamData pd);
 }
