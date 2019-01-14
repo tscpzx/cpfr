@@ -9,7 +9,7 @@ function layTip(msg) {
 
 //icon 0 警告 1 打钩 2 打叉 3 问号 4 锁头
 function layAlert1(msg) {
-    if(msg=="操作成功")
+    if(msg==="操作成功")
     return top.layer.msg(msg, {
          icon: 1
         , shade: 0.01
@@ -72,6 +72,15 @@ function elmMessage1(msg) {
     new Vue().$message.error(msg);
 }
 
+function elmDialog(msg,fun) {
+    return new Vue().$confirm(msg, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+    }).then(fun).catch(() => {
+    });
+}
+
 /* ajax请求 */
 function ajax(type, jsonObj) {
     // var loading = layLoading1();
@@ -120,26 +129,9 @@ var elm;
 
 function checkSession(data) {
     if (102 === data.code) {
-        // top.layer.confirm(data.message + ',是否重新登录?', {
-        //     icon: 0,
-        //     title: '提示',
-        //     btn: ['确定', '取消'],
-        //     btn1: function (index) {
-        //         top.window.location.href = "/webpage/login";
-        //         layer.close(index);
-        //     },
-        //     btn2: function (index) {
-        //         layer.close(index);
-        //     }
-        // });
         if (elm) return false;
-        elm = new Vue().$confirm(data.message + ',是否重新登录?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-        }).then(() => {
+        elm = elmDialog(data.message + ',是否重新登录?',function () {
             top.window.location.href = "/cpfr/";
-        }).catch(() => {
         });
 
         return false;

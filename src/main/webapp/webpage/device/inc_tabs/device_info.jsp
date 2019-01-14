@@ -23,6 +23,6 @@
         <span>{{device.last_offine_time|formatDate}}</span>
     </el-form-item>
     <el-form-item label="设备操作:">
-        <el-button size="small" type="danger">删除</el-button>
+        <el-button size="small" type="danger" @click="deleteDevice">删除</el-button>
     </el-form-item>
 </el-form>

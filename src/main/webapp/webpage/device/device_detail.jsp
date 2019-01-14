@@ -173,6 +173,11 @@
                     pass_end_time: this.dialogModel.dateValue[1],
                     grant_id:this.grant.grant_id
                 });
+            },
+            deleteDevice(){
+                elmDialog("注意: 删除设备会删除该设备相关的人员以及权限数据,确定要删除该设备吗",function(){
+                   l(11)
+                });
             }
         },
         filters: {
