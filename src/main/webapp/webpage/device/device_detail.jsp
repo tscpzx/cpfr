@@ -176,6 +176,9 @@
             },
             deleteDevice() {
                 elmDialog("注意: 删除设备会删除该设备相关的人员以及权限数据,确定要删除该设备吗", function () {
+                    ajaxDeleteDevice({
+                        device_id: this.device.device_id
+                    })
                 });
             }
         },
@@ -251,6 +254,18 @@
                         personList[index].pass_end_time = data.pass_end_time;
                     }
                 }
+            }
+        })
+    }
+
+    function ajaxDeleteDevice(data) {
+        ajaxPost({
+            url: "${pageContext.request.contextPath}/device/delete",
+            data: data,
+            success: function (result) {
+                layTip(result.message);
+                $("#device_tree").load("device/device_tree");
+                $("#device_content").load("device/device_tbl");
             }
         })
     }

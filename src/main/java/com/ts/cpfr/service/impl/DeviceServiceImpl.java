@@ -137,4 +137,12 @@ public class DeviceServiceImpl implements DeviceService {
         } else return new ResultData<>(HandleEnum.FAIL);
     }
 
+    @Override
+    public ResultData<ParamData> deleteDevice(ParamData pd) {
+        pd.put("wid", memory.getLoginUser().getWId());
+        if (mDeviceDao.deleteDeviceByDeviceID(pd)) {
+            return new ResultData<>(HandleEnum.SUCCESS);
+        } else return new ResultData<>(HandleEnum.FAIL);
+    }
+
 }

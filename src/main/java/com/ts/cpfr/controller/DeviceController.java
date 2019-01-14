@@ -110,4 +110,14 @@ public class DeviceController extends BaseController {
         }
     }
 
+    @ResponseBody
+    @RequestMapping("/delete")
+    public ResultData<ParamData> delete(HttpServletRequest request) {
+        try {
+            return mDeviceService.deleteDevice(paramDataInit());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
 }
