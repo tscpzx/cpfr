@@ -17,10 +17,10 @@
     <div id="device_detail">
         <el-form label-width="150px">
             <el-form-item label="设备序列号:">
-                <el-input value="${data.device_sn}" :disabled="true" type="text" autocomplete="off"></el-input>
+                <el-input value="${data.device_sn}" :disabled="true" type="text" autocomplete="off" size="small"></el-input>
             </el-form-item>
             <el-form-item label="授权码:">
-                <el-input id="input_grant_key" value="${data.mac_grant_key}" type="text" autocomplete="off"></el-input>
+                <el-input id="input_grant_key" value="${data.mac_grant_key}" type="text" autocomplete="off" size="small"></el-input>
             </el-form-item>
             <el-form-item label="注册时间:">
                 <span>${data.register_time}</span>
