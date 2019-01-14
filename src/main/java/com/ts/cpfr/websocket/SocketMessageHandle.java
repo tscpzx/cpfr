@@ -115,7 +115,14 @@ public class SocketMessageHandle implements WebSocketHandler {
         Map<String, Object> attributes = webSocketSession.getAttributes();
         if (attributes != null) {
             String deviceSn = (String) attributes.get(CommConst.DEVICE_SN);
+            String adminId = (String) attributes.get(CommConst.ADMIN_ID);
             userMap.remove(deviceSn);
+            System.out.println(deviceSn + "断开连接");
+            ParamData pd = new ParamData();
+            pd.put(CommConst.DEVICE_SN, deviceSn);
+            pd.put(CommConst.ADMIN_ID, adminId);
+            pd.put("online", 0);
+            mDeviceService.updateDeviceOnline(pd);
         }
     }
 
