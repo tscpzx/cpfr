@@ -175,6 +175,13 @@
                 });
             },
             deleteDevice() {
+                if (this.device.online === 0)
+                    elmDialog("设备处于离线状态,是否要继续删除该设备?", function () {
+                        vm.dialog();
+                    });
+                else this.dialog();
+            },
+            dialog() {
                 elmDialog("注意: 删除设备会删除该设备相关的人员以及权限数据,确定要删除该设备吗", function () {
                     ajaxDeleteDevice({
                         device_id: this.device.device_id
