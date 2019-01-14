@@ -20,10 +20,11 @@ public class CommConst {
     public static final String ADMIN_ID = "admin_id";
 
     /////websocket 状态码//////
-    public static final int CODE_1000 = 1000;//操作成功
     public static final int CODE_999 = 999;//操作失败
+    public static final int CODE_1000 = 1000;//操作成功
     public static final int CODE_1001 = 1001;//激活成功
     public static final int CODE_1002 = 1002;//设备更新
     public static final int CODE_1003 = 1003;//人员更新
     public static final int CODE_1004 = 1004;//权限更新
+    public static final int CODE_1005 = 1005;//设备删除
 }

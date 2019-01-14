@@ -29,5 +29,5 @@ public interface DeviceService {
 
     ResultData<ParamData> changeDeviceInfo(ParamData pd) throws IOException;
 
-    ResultData<ParamData> deleteDevice(ParamData pd);
+    ResultData<ParamData> deleteDevice(ParamData pd) throws IOException;
 }

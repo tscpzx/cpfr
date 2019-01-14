@@ -34,4 +34,6 @@ public interface DeviceDao {
     List<ParamData> selectAccessDeviceListByPersonId(ParamData pd);
 
     boolean deleteDeviceByDeviceID(ParamData pd);
+
+    String selectDeviceSnByDeviceID(ParamData pd);
 }
