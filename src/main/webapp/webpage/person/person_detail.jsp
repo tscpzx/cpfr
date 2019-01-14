@@ -39,6 +39,7 @@
                 </el-tab-pane>
             </el-tabs>
         </template>
+        <%@ include file="../device/inc_dialog/dialog_change_grant.jsp"%>
     </div>
 </div>
 
@@ -58,13 +59,19 @@
                     person_name:data.person_name ,
                     emp_number:data.emp_number
                 },
-                dialogVisible:false,
                 tableData: [],
                 currentPage: 1,
                 pageSizes: [5, 10, 20],
                 pageSize: 10,
                 tableTotal:'',
-                pass_number: ''
+                pass_number: '',
+                visible: false,
+                dialogModel: {
+                    radio1: '',
+                    radio2: '',
+                    pass_number: '',
+                    dateValue: '',
+                }
             }
         },
 
@@ -77,28 +84,103 @@
                     emp_number:model.emp_number
                 });
             },
-            deletePerson(){
-                ajaxGet({
-                    url: "${pageContext.request.contextPath}/person/delete",
-                    data: {
-                        person_id: data.person_id
-                    },
-                    success: function (result) {
-                        vue.dialogVisible = false;
-                        layTip(result.message);
-                        var personList = vmPersonTree.items[0].children ;
-                        for (var index in personList) {
-                            if (data.person_id === personList[index].person_id) {
-                               personList.splice(index);
-                               $("#person_content").load("person/person_tbl");
-                            }
+            onChangeRadio(index) {
+                var $input = $('.input_pass_number');
+                var $datePicker = $('.date_picker_pass_number');
+                switch (index) {
+                    case '1':
+                        if (this.grant.pass_number === 9999999999)
+                            this.dialogModel.pass_number = '';
+                        else
+                            this.dialogModel.pass_number = this.grant.pass_number;
+                        $input.show();
+                        break;
+                    case '2':
+                        this.dialogModel.pass_number = 9999999999;
+                        $input.hide();
+                        break;
+                    case '3':
+                        if (dateToStamp(this.grant.pass_start_time) === 9999999999 || dateToStamp(this.grant.pass_end_time) === 9999999999) {
+                            this.dialogModel.dateValue = '';
+                        } else {
+                            this.dialogModel.dateValue = [this.grant.pass_start_time, this.grant.pass_end_time];
                         }
-                    }
+                        $datePicker.show();
+                        break;
+                    case '4':
+                        this.dialogModel.dateValue = [stampToDate(9999999999), stampToDate(9999999999)];
+                        $datePicker.hide();
+                        break;
+                }
+            },
+            changePersonGrant() {
+                if (!this.dialogModel.pass_number) {
+                    elmMessage1("请填写可通行次数");
+                    return;
+                } else if (!this.dialogModel.dateValue) {
+                    elmMessage1("请填写可通行时段");
+                    return;
+                }
+                ajaxChangePersonGrant({
+                    person_ids: this.grant.person_id,
+                    device_ids: this.grant.device_id,
+                    pass_number: this.dialogModel.pass_number,
+                    pass_start_time: this.dialogModel.dateValue[0],
+                    pass_end_time: this.dialogModel.dateValue[1],
+                    grant_id:this.grant.grant_id
                 });
             },
+
+            deletePerson() {
+                elmDialog("确定要删除该员工吗", function () {
+                    ajaxGet({
+                        url: "${pageContext.request.contextPath}/person/delete",
+                        data: {
+                            person_id: data.person_id
+                        },
+                        success: function (result) {
+                            vue.dialogVisible = false;
+                            layTip(result.message);
+                            var personList = vmPersonTree.items[0].children ;
+                            for (var index in personList) {
+                                if (data.person_id === personList[index].person_id) {
+                                    personList.splice(index);
+                                    $("#person_content").load("person/person_tbl");
+                                }
+                            }
+                        }
+                    });
+                });
+            },
+
             handleChange(val) {
               ajaxAccessDeviceList(this.currentPage, this.pageSize);
-            }
+            },
+            openDialogUpdateGrant(data) {
+                this.visible = true;
+                this.grant = data;
+                this.dialogModel.pass_number = data.pass_number;
+                this.dialogModel.dateValue = [data.pass_start_time, data.pass_end_time];
+                if (data.pass_number === 9999999999) {
+                    this.dialogModel.radio1 = '2';
+                } else {
+                    this.dialogModel.radio1 = '1';
+                }
+                if (dateToStamp(data.pass_start_time) === 9999999999 || dateToStamp(data.pass_end_time) === 9999999999) {
+                    this.dialogModel.radio2 = '4';
+                } else {
+                    this.dialogModel.radio2 = '3';
+                }
+            },
+            opened() {
+                var $input = $('.input_pass_number');
+                var $datePicker = $('.date_picker_pass_number');
+
+                if (this.dialogModel.radio1 === '2') $input.hide();
+                else $input.show();
+                if (this.dialogModel.radio2 === '4') $datePicker.hide();
+                else $datePicker.show();
+            },
         },
 
         filters: {
@@ -111,6 +193,7 @@
 
 
     ajaxAccessDeviceList(vue.currentPage, vue.pageSize);
+
 
     function ajaxAccessDeviceList(pageNum, pageSize) {
         ajaxGet({
@@ -141,6 +224,19 @@
                         personList[index].person_name = data.person_name;
                     }
                 }
+            }
+        });
+    }
+
+    function ajaxChangePersonGrant(data) {
+        ajaxPost({
+            url: "${pageContext.request.contextPath}/grant/add",
+            data: data,
+            success: function (result) {
+                vue.visible = false;
+               // layTip(result.message);
+
+
             }
         });
     }

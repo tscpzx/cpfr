@@ -32,7 +32,7 @@
 
         <el-table-column label="操作" width="150">
             <template slot-scope="scope">
-                <el-button type="success" size="small" @click="openDialogChangeGrant(scope.row)">修改</el-button>
+                <el-button type="success" size="small" @click="openDialogUpdateGrant(scope.row)">修改</el-button>
                 <el-button type="danger" size="small" @click="banGrantPerson(scope)">禁止</el-button>
             </template>
         </el-table-column>
