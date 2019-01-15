@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <style type="text/css">
     .group_tbl_box {
-        padding: 30px;
+        padding: 20px;
         text-align: center;
     }
 
@@ -15,6 +15,11 @@
 </style>
 <div class="group_tbl_box">
     <div id="group_tbl">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 15px;">
+            <el-breadcrumb-item>分组管理</el-breadcrumb-item>
+            <el-breadcrumb-item>分组列表</el-breadcrumb-item>
+        </el-breadcrumb>
+
         <el-form label-width="20px">
             <el-form-item>
                 <el-button type="primary" icon="el-icon-plus" @click="addGroup">添加</el-button>

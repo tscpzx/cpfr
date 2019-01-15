@@ -27,6 +27,12 @@
 </style>
 <div class="person_detail_box">
     <div id="person_detail">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 15px;">
+            <el-breadcrumb-item>人员管理</el-breadcrumb-item>
+            <el-breadcrumb-item>人员列表</el-breadcrumb-item>
+            <el-breadcrumb-item>{{data.person_name}}</el-breadcrumb-item>
+        </el-breadcrumb>
+
         <template>
             <el-tabs type="card" v-model="activeName">
                 <%--基本信息--%>

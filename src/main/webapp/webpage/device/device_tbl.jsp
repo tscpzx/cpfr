@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <style type="text/css">
     .device_tbl_box {
-        padding: 30px;
+        padding: 20px;
         text-align: center;
     }
 
@@ -11,6 +11,11 @@
 </style>
 <div class="device_tbl_box">
     <div id="device_tbl">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 15px;">
+            <el-breadcrumb-item>设备管理</el-breadcrumb-item>
+            <el-breadcrumb-item>已激活设备</el-breadcrumb-item>
+        </el-breadcrumb>
+
         <template>
             <el-table :data="tableData" style="width: 100%" stripe>
                 <el-table-column prop="device_id" label="设备ID">
