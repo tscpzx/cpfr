@@ -36,4 +36,6 @@ public interface DeviceDao {
     boolean deleteDeviceByDeviceID(ParamData pd);
 
     String selectDeviceSnByDeviceID(ParamData pd);
+
+    List<ParamData> searchDeviceByDeviceName(ParamData pd);
 }

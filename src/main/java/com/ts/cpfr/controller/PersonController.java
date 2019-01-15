@@ -128,6 +128,26 @@ public class PersonController extends BaseController {
         }
     }
 
+    /**
+     * 通过设备名称搜索可通行设备
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/search_device")
+    public ResultData<PageData<ParamData>> searchDevice(HttpServletRequest request) {
+            try {
+                if (request.getParameter("device_name").equals("")){
+                    return mPersonService.getAccessDeviceList(paramDataInit());
+                }else{
+                    return mPersonService.searchDevice(paramDataInit());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+            }
+    }
+
     @ResponseBody
     @RequestMapping("/image")
     public ResultData<ParamData> image(HttpServletRequest request, HttpServletResponse response) {

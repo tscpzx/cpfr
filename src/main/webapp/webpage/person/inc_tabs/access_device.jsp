@@ -4,8 +4,8 @@
         <el-row>
             <el-button type="primary" icon="el-icon-plus" size="small">添加</el-button>
             <div style="float: right">
-                <el-input style="width: 200px;" size="medium" placeholder="请输入搜索内容"></el-input>
-                <el-button type="primary" size="small">查找</el-button>
+                <el-input style="width: 200px;" size="medium" placeholder="请输入搜索内容" v-model="searchVal">></el-input>
+                <el-button type="primary" size="small" @click="searchDevice(searchVal)">查找</el-button>
             </div>
         </el-row>
     </el-form-item>
@@ -13,6 +13,8 @@
 
 <template>
     <el-table :data="tableData" style="width: 100%" stripe>
+        <el-table-column prop="grant_id" label="权限ID" v-if="show" >
+        </el-table-column>
         <el-table-column prop="device_id" label="设备ID" >
         </el-table-column>
         <el-table-column prop="device_name" label="设备名称" >
@@ -33,7 +35,7 @@
         <el-table-column label="操作" width="150">
             <template slot-scope="scope">
                 <el-button type="success" size="small" @click="openDialogUpdateGrant(scope.row)">修改</el-button>
-                <el-button type="danger" size="small" @click="banGrantPerson(scope)">禁止</el-button>
+                <el-button type="danger" size="small" @click="banGrantDevice(scope)">禁止</el-button>
             </template>
         </el-table-column>
     </el-table>

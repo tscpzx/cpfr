@@ -218,4 +218,12 @@ public class PersonServiceImpl implements PersonService {
         List<ParamData> deviceList = mDeviceDao.selectAccessDeviceListByPersonId(pd);
         return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(deviceList));
     }
+
+    @Override
+    public ResultData<PageData<ParamData>> searchDevice(ParamData pd) {
+        pd.put("wid", memory.getLoginUser().getWId());
+
+        List<ParamData> deviceList = mDeviceDao.searchDeviceByDeviceName(pd);
+        return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(deviceList));
+    }
 }

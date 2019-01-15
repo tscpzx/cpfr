@@ -59,19 +59,22 @@
                     person_name:data.person_name ,
                     emp_number:data.emp_number
                 },
+                show:false,
                 tableData: [],
                 currentPage: 1,
                 pageSizes: [5, 10, 20],
                 pageSize: 10,
                 tableTotal:'',
                 pass_number: '',
-                visible: false,
+                visible:false,
                 dialogModel: {
                     radio1: '',
                     radio2: '',
                     pass_number: '',
                     dateValue: '',
-                }
+                },
+                grant:'',
+                searchVal:''
             }
         },
 
@@ -83,6 +86,75 @@
                     person_name: model.person_name,
                     emp_number:model.emp_number
                 });
+            },
+            deletePerson() {
+                elmDialog("确定要删除该员工吗", function () {
+                    ajaxGet({
+                        url: "${pageContext.request.contextPath}/person/delete",
+                        data: {
+                            person_id: data.person_id
+                        },
+                        success: function (result) {
+                            vue.dialogVisible = false;
+                            layTip(result.message);
+                            var personList = vmPersonTree.items[0].children ;
+                            for (var index in personList) {
+                                if (data.person_id === personList[index].person_id) {
+                                    personList.splice(index);
+                                    $("#person_content").load("person/person_tbl");
+                                }
+                            }
+                        }
+                    });
+                });
+            },
+
+            handleChange(val) {
+              ajaxAccessDeviceList(this.currentPage, this.pageSize);
+            },
+
+            banGrantDevice(scope){
+                elmDialog("确定这台设备禁止该员工通行吗？", function () {
+                ajaxGet({
+                    url: "${pageContext.request.contextPath}/grant/ban",
+                    data: {
+                        device_ids: scope.row.device_id,
+                        person_ids: data.person_id
+                    },
+                    success: function (result) {
+                        layAlert1(result.message);
+                        arrayRemoveObj(vue.tableData, scope.row);
+                        vue.tableTotal--;
+                    }
+                });
+                });
+            },
+
+            openDialogUpdateGrant(data) {
+                this.visible = true;
+                this.grant = data;
+                this.dialogModel.pass_number = data.pass_number;
+                this.dialogModel.dateValue = [data.pass_start_time, data.pass_end_time];
+                if (data.pass_number === 9999999999) {
+                    this.dialogModel.radio1 = '2';
+                } else {
+                    this.dialogModel.radio1 = '1';
+                }
+                if (dateToStamp(data.pass_start_time) === 9999999999 || dateToStamp(data.pass_end_time) === 9999999999) {
+                    this.dialogModel.radio2 = '4';
+                } else {
+                    this.dialogModel.radio2 = '3';
+                }
+            },
+
+
+            opened() {
+                var $input = $('.input_pass_number');
+                var $datePicker = $('.date_picker_pass_number');
+                if (this.dialogModel.radio1 === '2') $input.hide();
+                else $input.show();
+                if (this.dialogModel.radio2 === '4') $datePicker.hide();
+                else $datePicker.show();
             },
             onChangeRadio(index) {
                 var $input = $('.input_pass_number');
@@ -121,66 +193,31 @@
                     elmMessage1("请填写可通行时段");
                     return;
                 }
+
                 ajaxChangePersonGrant({
-                    person_ids: this.grant.person_id,
+                    person_ids: data.person_id,
                     device_ids: this.grant.device_id,
                     pass_number: this.dialogModel.pass_number,
                     pass_start_time: this.dialogModel.dateValue[0],
                     pass_end_time: this.dialogModel.dateValue[1],
-                    grant_id:this.grant.grant_id
+                    grant_id: this.grant.grant_id
                 });
             },
 
-            deletePerson() {
-                elmDialog("确定要删除该员工吗", function () {
-                    ajaxGet({
-                        url: "${pageContext.request.contextPath}/person/delete",
-                        data: {
-                            person_id: data.person_id
-                        },
-                        success: function (result) {
-                            vue.dialogVisible = false;
-                            layTip(result.message);
-                            var personList = vmPersonTree.items[0].children ;
-                            for (var index in personList) {
-                                if (data.person_id === personList[index].person_id) {
-                                    personList.splice(index);
-                                    $("#person_content").load("person/person_tbl");
-                                }
-                            }
-                        }
-                    });
+            searchDevice(searchVal){
+                ajaxGet({
+                    url: "${pageContext.request.contextPath}/person/search_device",
+                    data: {
+                        device_name: searchVal,
+                        person_id: data.person_id
+                    },
+                    success: function (result) {
+                        vue.tableTotal = result.data.total;
+                        vue.tableData = result.data.list;
+                    }
                 });
             },
 
-            handleChange(val) {
-              ajaxAccessDeviceList(this.currentPage, this.pageSize);
-            },
-            openDialogUpdateGrant(data) {
-                this.visible = true;
-                this.grant = data;
-                this.dialogModel.pass_number = data.pass_number;
-                this.dialogModel.dateValue = [data.pass_start_time, data.pass_end_time];
-                if (data.pass_number === 9999999999) {
-                    this.dialogModel.radio1 = '2';
-                } else {
-                    this.dialogModel.radio1 = '1';
-                }
-                if (dateToStamp(data.pass_start_time) === 9999999999 || dateToStamp(data.pass_end_time) === 9999999999) {
-                    this.dialogModel.radio2 = '4';
-                } else {
-                    this.dialogModel.radio2 = '3';
-                }
-            },
-            opened() {
-                var $input = $('.input_pass_number');
-                var $datePicker = $('.date_picker_pass_number');
-
-                if (this.dialogModel.radio1 === '2') $input.hide();
-                else $input.show();
-                if (this.dialogModel.radio2 === '4') $datePicker.hide();
-                else $datePicker.show();
-            },
         },
 
         filters: {
@@ -234,8 +271,15 @@
             data: data,
             success: function (result) {
                 vue.visible = false;
-               // layTip(result.message);
-
+                layTip(result.message);
+                var  deviceList = vue.tableData;
+                for (var index in deviceList) {
+                    if (data.grant_id === deviceList[index].grant_id) {
+                        deviceList[index].pass_number = data.pass_number;
+                        deviceList[index].pass_start_time = data.pass_start_time;
+                        deviceList[index].pass_end_time = data.pass_end_time;
+                    }
+                }
 
             }
         });

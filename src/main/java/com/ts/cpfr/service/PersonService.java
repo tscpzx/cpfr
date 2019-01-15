@@ -43,5 +43,6 @@ public interface PersonService {
     void blob2base64(ParamData pd) throws Exception;
 
     ResultData<PageData<ParamData>> getAccessDeviceList(ParamData pd);
+    ResultData<PageData<ParamData>> searchDevice(ParamData pd);
 
 }
