@@ -49,6 +49,11 @@
 </style>
 <div class="person_add_box">
     <div id="person_add">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 15px;">
+            <el-breadcrumb-item>人员管理</el-breadcrumb-item>
+            <el-breadcrumb-item>人员添加</el-breadcrumb-item>
+        </el-breadcrumb>
+
         <el-form label-width="150px" :model="model" :rules="rules" ref="uploadForm">
             <el-form-item label="姓名:" prop="person_name">
                 <el-input v-model="model.person_name" type="text" autocomplete="off" placeholder="请输入姓名"></el-input>

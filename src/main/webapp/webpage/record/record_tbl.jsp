@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <style type="text/css">
     .record_tbl_box {
-        padding: 30px;
+        padding: 20px;
         text-align: center;
     }
 
@@ -15,6 +15,11 @@
 </style>
 <div class="record_tbl_box">
     <div id="record_tbl">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 15px;">
+            <el-breadcrumb-item>记录管理</el-breadcrumb-item>
+            <el-breadcrumb-item>记录列表</el-breadcrumb-item>
+        </el-breadcrumb>
+
         <template>
             <el-table :data="tableData" style="width: 100%" stripe>
                 <el-table-column prop="record_id" label="ID" width="100">

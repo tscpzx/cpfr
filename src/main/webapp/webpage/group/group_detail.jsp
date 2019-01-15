@@ -34,6 +34,12 @@
 </style>
 <div class="group_detail_box">
     <div id="group_detail">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 15px;">
+            <el-breadcrumb-item>分组管理</el-breadcrumb-item>
+            <el-breadcrumb-item>分组列表</el-breadcrumb-item>
+            <el-breadcrumb-item>{{data.group.group_name}}</el-breadcrumb-item>
+        </el-breadcrumb>
+
         <template>
             <el-tabs v-model="activeName">
                 <%--基本信息--%>

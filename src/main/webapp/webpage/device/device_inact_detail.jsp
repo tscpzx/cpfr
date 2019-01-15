@@ -10,14 +10,20 @@
     }
 
     #btn_active {
-        margin-left: 50px;
+        margin-left: 20px;
     }
 </style>
 <div class="device_detail_box">
     <div id="device_detail">
-        <el-form label-width="150px">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 15px;">
+            <el-breadcrumb-item>设备管理</el-breadcrumb-item>
+            <el-breadcrumb-item>未激活设备</el-breadcrumb-item>
+            <el-breadcrumb-item>${data.device_sn}</el-breadcrumb-item>
+        </el-breadcrumb>
+
+        <el-form label-width="120px">
             <el-form-item label="设备序列号:">
-                <el-input value="${data.device_sn}" :disabled="true" type="text" autocomplete="off" size="small"></el-input>
+                <span>${data.device_sn}</span>
             </el-form-item>
             <el-form-item label="授权码:">
                 <el-input id="input_grant_key" value="${data.mac_grant_key}" type="text" autocomplete="off" size="small"></el-input>

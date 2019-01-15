@@ -15,6 +15,12 @@
 </style>
 <div class="device_detail_box">
     <div id="device_detail">
+        <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 15px;">
+            <el-breadcrumb-item>设备管理</el-breadcrumb-item>
+            <el-breadcrumb-item>已激活设备</el-breadcrumb-item>
+            <el-breadcrumb-item>{{device.device_name}}</el-breadcrumb-item>
+        </el-breadcrumb>
+
         <template>
             <el-tabs v-model="activeName">
                 <%--基本信息--%>
