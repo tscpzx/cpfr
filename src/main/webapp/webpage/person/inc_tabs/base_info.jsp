@@ -7,10 +7,10 @@
         <span>{{data.add_time|formatDate}}</span>
     </el-form-item>
     <el-form-item label="姓名:">
-        <el-input v-bind:value="data.person_name"  v-model="personModel.person_name" type="text" autocomplete="off"></el-input>
+        <el-input v-bind:value="data.person_name"  v-model="personModel.person_name" type="text" autocomplete="off" size="small"></el-input>
     </el-form-item>
     <el-form-item label="工号:">
-        <el-input :value="data.emp_number"  v-model="personModel.emp_number" type="text" autocomplete="off"></el-input>
+        <el-input :value="data.emp_number"  v-model="personModel.emp_number" type="text" autocomplete="off" size="small"></el-input>
     </el-form-item>
     <el-form-item label="底库图片:">
         <img class="image" :src="'data:image/jpeg;base64,'+data.base_image">

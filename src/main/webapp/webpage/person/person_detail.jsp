@@ -5,7 +5,7 @@
         padding: 20px;
     }
 
-    .el-input {
+    .el-form-item .el-input {
         width: 400px;
     }
 
