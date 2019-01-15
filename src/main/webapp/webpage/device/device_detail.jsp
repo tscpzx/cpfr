@@ -188,7 +188,7 @@
                 else this.dialog();
             },
             dialog() {
-                elmDialog("注意: 删除设备会删除该设备相关的人员以及权限数据,确定要删除该设备吗", function () {
+                elmDialog("注意: 删除设备会删除该设备信息以及相关权限数据,确定要删除该设备吗", function () {
                     ajaxDeleteDevice({
                         device_id: this.device.device_id
                     })

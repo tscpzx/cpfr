@@ -74,7 +74,7 @@
 	<delete id="deleteDeviceByDeviceID" parameterType="pd">
 		DELETE d,c FROM tbl_#{wid}_device d LEFT JOIN tbl_#{wid}_device_config c ON d.device_id=c.device_id WHERE d.device_id=#{device_id};
 
-		DELETE g,p,i FROM tbl_#{wid}_grant g LEFT JOIN tbl_#{wid}_person p ON g.person_id=p.person_id LEFT JOIN tbl_#{wid}_image i ON p.image_id=i.image_id WHERE g.device_id=#{device_id};
+		DELETE g FROM tbl_#{wid}_grant g WHERE g.device_id=#{device_id};
 
 		UPDATE tbl_inact_device SET status=0,mac_grant_key=NULL,admin_id=NULL,activate_time=NULL WHERE device_sn=(SELECT device_sn FROM tbl_#{wid}_device WHERE device_id = #{device_id})
 	</delete>

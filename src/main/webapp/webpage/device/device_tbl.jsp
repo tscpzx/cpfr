@@ -2,7 +2,6 @@
 <style type="text/css">
     .device_tbl_box {
         padding: 20px;
-        text-align: center;
     }
 
     .device_tbl_box .el-table {
@@ -15,6 +14,17 @@
             <el-breadcrumb-item>设备管理</el-breadcrumb-item>
             <el-breadcrumb-item>已激活设备</el-breadcrumb-item>
         </el-breadcrumb>
+
+        <el-form>
+            <el-form-item>
+                <el-row>
+                    <div style="float: right">
+                        <el-input style="width: 200px;" size="small" placeholder="请输入搜索内容"></el-input>
+                        <el-button type="primary" size="small" @click="">查找</el-button>
+                    </div>
+                </el-row>
+            </el-form-item>
+        </el-form>
 
         <template>
             <el-table :data="tableData" style="width: 100%" stripe>
