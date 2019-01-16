@@ -20,8 +20,8 @@
             <el-form-item>
                 <el-row>
                     <div style="float: right">
-                        <el-input style="width: 200px;" size="small" placeholder="请输入搜索内容"></el-input>
-                        <el-button type="primary" size="small" @click="">查找</el-button>
+                        <el-input style="width: 200px;" size="small" v-model="keyword" placeholder="请输入搜索内容"></el-input>
+                        <el-button type="primary" size="small" @click="searchInActDeviceList">查找</el-button>
                     </div>
                 </el-row>
             </el-form-item>
@@ -80,11 +80,22 @@
             currentPage: 1,
             pageSizes: [5, 10, 20],
             pageSize: 10,
-            total:''
+            total:'',
+            keyword:''
         },
         methods: {
             handleChange(val) {
-                ajaxInActDeviceList(this.currentPage, this.pageSize);
+                ajaxInActDeviceList({
+                    pageNum: this.currentPage,
+                    pageSize: this.pageSize
+                });
+            },
+            searchInActDeviceList(){
+                ajaxInActDeviceList({
+                    pageNum: 1,
+                    pageSize: this.pageSize,
+                    keyword: this.keyword
+                });
             }
         },
         filters: {
@@ -95,15 +106,15 @@
         }
     });
 
-    ajaxInActDeviceList(vm.currentPage, vm.pageSize);
+    ajaxInActDeviceList({
+        pageNum: vm.currentPage,
+        pageSize: vm.pageSize
+    });
 
-    function ajaxInActDeviceList(pageNum, pageSize) {
+    function ajaxInActDeviceList(data) {
         ajaxGet({
             url: "${pageContext.request.contextPath}/device/inact_list",
-            data: {
-                pageNum: pageNum,
-                pageSize: pageSize
-            },
+            data: data,
             success: function (result) {
                 vm.tableData = result.data.list;
                 vm.total = result.data.total;

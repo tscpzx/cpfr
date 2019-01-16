@@ -84,11 +84,16 @@
                 pass_number: '',
                 dateValue: '',
             },
-            grant: ''
+            grant: '',
+            keyword: ''
         },
         methods: {
             handleChange1(val) {
-                ajaxGrantPersonList(this.currentPage1, this.pageSize1);
+                ajaxGrantPersonList({
+                    pageNum: this.currentPage1,
+                    pageSize: this.pageSize1,
+                    device_sn: device.device_sn
+                });
             },
             changeDeviceInfo() {
                 ajaxChangeDeviceInfo({
@@ -193,6 +198,14 @@
                         device_id: this.device.device_id
                     })
                 });
+            },
+            selectGrantPersonList() {
+                ajaxGrantPersonList({
+                    pageNum: 1,
+                    pageSize: this.pageSize1,
+                    device_sn: device.device_sn,
+                    keyword: this.keyword
+                });
             }
         },
         filters: {
@@ -203,16 +216,16 @@
         }
     });
 
-    ajaxGrantPersonList(vm.currentPage1, vm.pageSize1);
+    ajaxGrantPersonList({
+        pageNum: vm.currentPage1,
+        pageSize: vm.pageSize1,
+        device_sn: device.device_sn
+    });
 
-    function ajaxGrantPersonList(pageNum, pageSize) {
+    function ajaxGrantPersonList(data) {
         ajaxGet({
             url: "${pageContext.request.contextPath}/device/grant_person_list",
-            data: {
-                pageNum: pageNum,
-                pageSize: pageSize,
-                device_sn: device.device_sn
-            },
+            data: data,
             success: function (result) {
                 vm.tableTotal = result.data.total;
                 vm.tableData1 = result.data.list;

@@ -11,7 +11,10 @@
 		select device_id,device_name,device_sn,online,status,register_time,activate_time,last_online_time,last_offine_time from tbl_#{wid}_device
 		<where>
 			<if test="group_id!=null and group_id!=''">
-				group_id=#{group_id}
+				and group_id=#{group_id}
+			</if>
+			<if test="keyword!=null and keyword!=''">
+				and POSITION(#{keyword} IN device_name) OR POSITION(#{keyword} IN device_sn)
 			</if>
 		</where>
 	</select>
@@ -22,6 +25,9 @@
 
 	<select id="selectInActDeviceList" parameterType="pd" resultType="pd">
 		select id,device_sn device_name,status,online,register_time from tbl_inact_device where status=0
+		<if test="keyword!=null and keyword!=''">
+			and POSITION(#{keyword} IN device_sn)
+		</if>
 	</select>
 
 	<update id="updateInActDeviceOnline" parameterType="pd">

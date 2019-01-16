@@ -19,8 +19,9 @@
             <el-form-item>
                 <el-row>
                     <div style="float: right">
-                        <el-input style="width: 200px;" size="small" placeholder="请输入搜索内容"></el-input>
-                        <el-button type="primary" size="small" @click="">查找</el-button>
+                        <el-input style="width: 200px;" v-model="keyword" size="small" placeholder="请输入搜索内容"></el-input>
+                        <el-button type="primary" size="small" @click="searchDeviceList">查找
+                        </el-button>
                     </div>
                 </el-row>
             </el-form-item>
@@ -82,24 +83,35 @@
             currentPage: 1,
             pageSizes: [5, 10, 20],
             pageSize: 10,
-            total:''
+            total: '',
+            keyword: ''
         },
         methods: {
             handleChange(val) {
-                ajaxDeviceList(this.currentPage, this.pageSize);
+                ajaxDeviceList({
+                    pageNum: this.currentPage,
+                    pageSize: this.pageSize
+                });
+            },
+            searchDeviceList() {
+                ajaxDeviceList({
+                    pageNum: 1,
+                    pageSize: this.pageSize,
+                    keyword: this.keyword
+                });
             }
         }
     });
 
-    ajaxDeviceList(vm.currentPage, vm.pageSize);
+    ajaxDeviceList({
+        pageNum: vm.currentPage,
+        pageSize: vm.pageSize
+    });
 
-    function ajaxDeviceList(pageNum, pageSize) {
+    function ajaxDeviceList(data) {
         ajaxGet({
             url: "${pageContext.request.contextPath}/device/list",
-            data: {
-                pageNum: pageNum,
-                pageSize: pageSize
-            },
+            data: data,
             success: function (result) {
                 vm.tableData = result.data.list;
                 vm.total = result.data.total;

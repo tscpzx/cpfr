@@ -1,4 +1,14 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<el-form>
+    <el-form-item>
+        <el-row>
+            <div style="float: right">
+                <el-input style="width: 200px;" size="small" v-model="keyword" placeholder="请输入搜索内容"></el-input>
+                <el-button type="primary" size="small" @click="selectGrantPersonList">查找</el-button>
+            </div>
+        </el-row>
+    </el-form-item>
+</el-form>
 <template>
     <el-table :data="tableData1" style="width: 100%" stripe>
         <el-table-column prop="grant_id" label="授权ID">
