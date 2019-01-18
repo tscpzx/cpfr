@@ -191,6 +191,12 @@
                         break;
                 }
             }
+        },
+        filters: {
+            formatDate: function (time) {
+                var data = new Date(time);
+                return formatDate(data, 'yyyy-MM-dd hh:mm:ss');
+            }
         }
     });
 
