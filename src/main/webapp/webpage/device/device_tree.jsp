@@ -35,7 +35,7 @@
 
 <script type="text/javascript">
     ajaxInActDeviceList();
-    ajaxDeviceList();
+    ajaxAllDeviceList();
 
     var vmDeviceTree = new Vue({
         el: "#device",
@@ -87,7 +87,7 @@
         });
     }
 
-    function ajaxDeviceList() {
+    function ajaxAllDeviceList() {
         ajaxGet({
             url: "${pageContext.request.contextPath}/device/list",
             data: {},
