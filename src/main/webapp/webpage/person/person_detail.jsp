@@ -80,7 +80,7 @@
                     dateValue: '',
                 },
                 grant:'',
-                searchVal:''
+                keyword:''
             }
         },
 
@@ -116,7 +116,11 @@
             },
 
             handleChange(val) {
-              ajaxAccessDeviceList(this.currentPage, this.pageSize);
+              ajaxAccessDeviceList({
+                  pageNum: this.currentPage,
+                  pageSize: this.pageSize,
+                  person_id: data.person_id
+              });
             },
 
             banGrantDevice(scope){
@@ -210,19 +214,14 @@
                 });
             },
 
-            searchDevice(searchVal){
-                ajaxGet({
-                    url: "${pageContext.request.contextPath}/person/search_device",
-                    data: {
-                        device_name: searchVal,
-                        person_id: data.person_id
-                    },
-                    success: function (result) {
-                        vue.tableTotal = result.data.total;
-                        vue.tableData = result.data.list;
-                    }
+            searchDeviceLists(){
+                ajaxAccessDeviceList({
+                    pageNum: 1,
+                    pageSize: this.pageSize,
+                    person_id: data.person_id,
+                    keyword: this.keyword
                 });
-            },
+            }
 
         },
 
@@ -235,17 +234,17 @@
     });
 
 
-    ajaxAccessDeviceList(vue.currentPage, vue.pageSize);
+    ajaxAccessDeviceList({
+        pageNum: vue.currentPage,
+        pageSize: vue.pageSize,
+        person_id: data.person_id
+    });
 
 
-    function ajaxAccessDeviceList(pageNum, pageSize) {
+    function ajaxAccessDeviceList(data) {
         ajaxGet({
             url: "${pageContext.request.contextPath}/person/access_device_list",
-            data: {
-                pageNum: pageNum,
-                pageSize: pageSize,
-                person_id: data.person_id
-            },
+            data: data,
             success: function (result) {
                 vue.tableTotal = result.data.total;
                 vue.tableData = result.data.list;

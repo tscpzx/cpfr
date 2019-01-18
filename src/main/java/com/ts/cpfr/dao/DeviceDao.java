@@ -37,5 +37,4 @@ public interface DeviceDao {
 
     String selectDeviceSnByDeviceID(ParamData pd);
 
-    List<ParamData> searchDeviceByDeviceName(ParamData pd);
 }
