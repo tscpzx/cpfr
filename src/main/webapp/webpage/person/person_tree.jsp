@@ -14,8 +14,28 @@
     .el-tree {
         background: #EBEFF2;
     }
+
+    .tree-header-item {
+        height: 36px;
+        line-height: 36px;
+        padding-left: 6px;
+        cursor: pointer;
+    }
+
+    .tree-header-item:hover {
+        background-color: #F5F7FA;
+    }
+
+    .tree-header-item i, .tree-header-item span {
+        color: #606266;
+        font-size: 14px;
+    }
 </style>
 <div id="person">
+    <div class="tree-header-item" v-on:click="addPerson()">
+        <i class="el-icon-circle-plus-outline"></i>
+        <span>添加人员</span>
+    </div>
     <el-tree
             :data="items"
             highlight-current="true"
@@ -53,6 +73,9 @@
                 if (data.person_id === -1) {
                     $("#person_content").load("person/person_tbl");
                 }
+            },
+            addPerson(){
+                $("#person_content").load("person/person_add");
             }
         }
     });

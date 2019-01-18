@@ -20,27 +20,37 @@
             <el-breadcrumb-item>人员列表</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <el-form label-width="20px">
+        <el-form>
             <el-form-item>
-                <el-button type="primary" icon="el-icon-plus" id="btn_add_person">添加</el-button>
+                <el-row>
+                    <div style="float: right">
+                        <el-input style="width: 200px;" v-model="keyword" size="small" placeholder="请输入搜索内容"></el-input>
+                        <el-button type="primary" size="small" @click="">查找
+                        </el-button>
+                    </div>
+                </el-row>
             </el-form-item>
         </el-form>
 
         <template>
             <el-table :data="tableData" style="width: 100%" stripe>
-                <el-table-column prop="person_id" label="人员ID" width="150">
+                <el-table-column prop="person_id" label="人员ID">
                 </el-table-column>
-                <el-table-column prop="person_name" label="姓名" width="200">
+                <el-table-column prop="person_name" label="姓名">
                 </el-table-column>
-                <el-table-column prop="emp_number" label="工号" width="150">
+                <el-table-column prop="emp_number" label="工号">
                 </el-table-column>
-                <el-table-column label="底库图片" width="150">
+                <el-table-column label="底库图片">
                     <template slot-scope="scope">
                         <img class="image_tbl" v-bind:src="'data:image/jpeg;base64,'+scope.row.base_image">
                         <%--<img class="image_tbl" v-bind:src="'${pageContext.request.contextPath}/person/image?image_path='+scope.row.image_path">--%>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作">
+                <el-table-column label="注册时间">
+                    <template slot-scope="scope">
+                        <i class="el-icon-time"></i>
+                        <span style="margin-left: 10px">{{ scope.row.add_time}}</span>
+                    </template>
                 </el-table-column>
             </el-table>
         </template>
@@ -72,7 +82,8 @@
             currentPage: 1,
             pageSizes: [5, 10, 20],
             pageSize: 5,
-            total:''
+            total: '',
+            keyword: ''
         },
         methods: {
             handleChange(val) {
@@ -96,9 +107,5 @@
             }
         });
     }
-
-    $("#btn_add_person").click(function () {
-        $("#person_content").load("person/person_add");
-    });
 
 </script>

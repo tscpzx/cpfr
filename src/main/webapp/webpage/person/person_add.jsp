@@ -54,12 +54,12 @@
             <el-breadcrumb-item>人员添加</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <el-form label-width="150px" :model="model" :rules="rules" ref="uploadForm">
+        <el-form label-width="120px" :model="model" :rules="rules" ref="uploadForm">
             <el-form-item label="姓名:" prop="person_name">
-                <el-input v-model="model.person_name" type="text" autocomplete="off" placeholder="请输入姓名"></el-input>
+                <el-input v-model="model.person_name" type="text" autocomplete="off" placeholder="请输入姓名" size="small"></el-input>
             </el-form-item>
             <el-form-item label="工号:" prop="emp_number">
-                <el-input v-model="model.emp_number" type="text" autocomplete="off" placeholder="请输入工号"></el-input>
+                <el-input v-model="model.emp_number" type="text" autocomplete="off" placeholder="请输入工号" size="small"></el-input>
             </el-form-item>
             <el-form-item label="选择图片:">
                 <el-upload class="avatar-uploader"
@@ -75,7 +75,7 @@
                 </el-upload>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" v-on:click="onClickUpload()">添加</el-button>
+                <el-button type="primary" v-on:click="onClickUpload()" size="medium">添加</el-button>
             </el-form-item>
         </el-form>
         <%@include file="inc_dialog/dialog_cropper.jsp" %>
