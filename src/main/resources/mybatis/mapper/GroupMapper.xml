@@ -4,6 +4,11 @@
 <mapper namespace="com.ts.cpfr.dao.GroupDao">
 	<select id="selectGroupList" parameterType="pd" resultType="pd">
 		select group_id,group_name,super_id,type,create_time,lmt from tbl_#{wid}_group
+		<where>
+			<if test="keyword!=null and keyword!=''">
+				and POSITION(#{keyword} IN group_name)
+			</if>
+		</where>
 	</select>
 
 	<select id="selectGroup" parameterType="pd" resultType="pd">

@@ -20,6 +20,18 @@
             <el-breadcrumb-item>分组列表</el-breadcrumb-item>
         </el-breadcrumb>
 
+        <el-form>
+            <el-form-item>
+                <el-row>
+                    <div style="float: right">
+                        <el-input style="width: 200px;" v-model="keyword" size="small" placeholder="请输入搜索内容"></el-input>
+                        <el-button type="primary" size="small" @click="searchGroupList">查找
+                        </el-button>
+                    </div>
+                </el-row>
+            </el-form-item>
+        </el-form>
+
         <template>
             <el-table :data="tableData" style="width: 100%" stripe>
                 <el-table-column prop="group_id" label="组ID">
@@ -62,24 +74,35 @@
             currentPage: 1,
             pageSizes: [5, 10, 20],
             pageSize: 10,
-            total:''
+            total: '',
+            keyword: ''
         },
         methods: {
             handleChange(val) {
-                ajaxGroupList(this.currentPage, this.pageSize);
+                ajaxGroupList({
+                    pageNum: this.currentPage,
+                    pageSize: this.pageSize
+                });
+            },
+            searchGroupList(){
+                ajaxGroupList({
+                    pageNum: 1,
+                    pageSize: this.pageSize,
+                    keyword: this.keyword
+                });
             }
         }
     });
 
-    ajaxGroupList(vm.currentPage, vm.pageSize);
+    ajaxGroupList({
+        pageNum: vm.currentPage,
+        pageSize: vm.pageSize
+    });
 
-    function ajaxGroupList(pageNum, pageSize) {
+    function ajaxGroupList(data) {
         ajaxGet({
             url: "${pageContext.request.contextPath}/group/list",
-            data: {
-                pageNum: pageNum,
-                pageSize: pageSize
-            },
+            data: data,
             success: function (result) {
                 vm.total = result.data.total;
                 vm.tableData = result.data.list;
