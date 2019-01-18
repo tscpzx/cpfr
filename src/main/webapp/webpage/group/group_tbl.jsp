@@ -20,19 +20,17 @@
             <el-breadcrumb-item>分组列表</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <el-form label-width="20px">
-            <el-form-item>
-                <el-button type="primary" icon="el-icon-plus" @click="addGroup">添加</el-button>
-            </el-form-item>
-        </el-form>
-
         <template>
             <el-table :data="tableData" style="width: 100%" stripe>
-                <el-table-column prop="group_id" label="组ID" width="150">
+                <el-table-column prop="group_id" label="组ID">
                 </el-table-column>
-                <el-table-column prop="group_name" label="组名" width="200">
+                <el-table-column prop="group_name" label="组名">
                 </el-table-column>
-                <el-table-column label="操作">
+                <el-table-column label="创建时间">
+                    <template slot-scope="scope">
+                        <i class="el-icon-time"></i>
+                        <span style="margin-left: 10px">{{ scope.row.create_time}}</span>
+                    </template>
                 </el-table-column>
             </el-table>
         </template>
@@ -69,17 +67,6 @@
         methods: {
             handleChange(val) {
                 ajaxGroupList(this.currentPage, this.pageSize);
-            },
-            addGroup() {
-                this.$prompt('请输入组名', '添加', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消'
-                }).then(({value}) => {
-                    if (value.trim()) {
-                        ajaxAddGroup(value.trim());
-                    }
-                }).catch(() => {
-                });
             }
         }
     });
@@ -100,15 +87,4 @@
         });
     }
 
-    function ajaxAddGroup(groupName) {
-        ajaxPost({
-            url: "${pageContext.request.contextPath}/group/add",
-            data: {
-                group_name: groupName
-            },
-            success: function (result) {
-                $("#content-container").load("group/group");
-            }
-        });
-    }
 </script>

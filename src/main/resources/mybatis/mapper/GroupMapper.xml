@@ -3,14 +3,14 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ts.cpfr.dao.GroupDao">
 	<select id="selectGroupList" parameterType="pd" resultType="pd">
-		select group_id,group_name,super_id,type,lmt from tbl_#{wid}_group
+		select group_id,group_name,super_id,type,create_time,lmt from tbl_#{wid}_group
 	</select>
 
 	<select id="selectGroup" parameterType="pd" resultType="pd">
-		select group_id,group_name,super_id,type,lmt from tbl_#{wid}_group where group_id=#{group_id}
+		select group_id,group_name,super_id,type,create_time,lmt from tbl_#{wid}_group where group_id=#{group_id}
 	</select>
 
 	<insert id="insertGroup" parameterType="pd">
-		INSERT INTO tbl_#{wid}_group(group_name,super_id,type) values(#{group_name},0,1)
+		INSERT INTO tbl_#{wid}_group(group_name,super_id,type,create_time) values(#{group_name},0,1,now())
 	</insert>
 </mapper>
