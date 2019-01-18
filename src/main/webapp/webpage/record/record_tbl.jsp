@@ -20,15 +20,27 @@
             <el-breadcrumb-item>记录列表</el-breadcrumb-item>
         </el-breadcrumb>
 
+        <el-form>
+            <el-form-item>
+                <el-row>
+                    <div style="float: right">
+                        <el-input style="width: 200px;" v-model="keyword" size="small" placeholder="请输入搜索内容"></el-input>
+                        <el-button type="primary" size="small" @click="">查找
+                        </el-button>
+                    </div>
+                </el-row>
+            </el-form-item>
+        </el-form>
+
         <template>
             <el-table :data="tableData" style="width: 100%" stripe>
-                <el-table-column prop="record_id" label="ID" width="100">
+                <el-table-column prop="record_id" label="ID">
                 </el-table-column>
-                <el-table-column prop="person_name" label="姓名" width="100">
+                <el-table-column prop="person_name" label="姓名">
                 </el-table-column>
-                <el-table-column prop="device_name" label="设备" width="150">
+                <el-table-column prop="device_name" label="设备">
                 </el-table-column>
-                <el-table-column label="识别模式" width="100">
+                <el-table-column label="识别模式">
                     <template slot-scope="scope">
                         <span v-if="scope.row.recog_type==0">人脸</span>
                         <span v-if="scope.row.recog_type==1">身份证</span>
@@ -43,12 +55,15 @@
                         <span style="margin-left: 10px">{{ scope.row.record_time|formatDate }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="识别图片" width="120">
+                <el-table-column label="识别图片">
                     <template slot-scope="scope">
                         <img class="image_tbl" v-bind:src="'data:image/jpeg;base64,'+scope.row.base_image">
                     </template>
                 </el-table-column>
                 <el-table-column label="操作">
+                    <template slot-scope="scope">
+                        <el-button type="danger" size="medium" @click="">删除</el-button>
+                    </template>
                 </el-table-column>
             </el-table>
         </template>
@@ -80,7 +95,8 @@
             currentPage: 1,
             pageSizes: [5, 10, 20],
             pageSize: 5,
-            total: ''
+            total: '',
+            keyword: ''
         },
         methods: {
             handleChange(val) {
