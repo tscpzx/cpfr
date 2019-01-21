@@ -19,6 +19,10 @@
 		<if test="group_id!=null and group_id!=''">
 			and p.group_id=#{group_id}
 		</if>
+        <if test="keyword!=null and keyword!=''">
+            and POSITION(#{keyword} IN p.person_name) OR POSITION(#{keyword} IN p.emp_number)
+        </if>
+
 	</select>
 
 	<insert id="insertPerson" parameterType="pd">
