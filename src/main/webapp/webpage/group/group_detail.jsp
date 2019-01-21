@@ -71,7 +71,7 @@
     for (var i = 0; i < data.device_list.length; i++) {
         value2[i] = data.device_list[i].device_id;
     }
-    var vm = new Vue({
+    var vmGroupDetail = new Vue({
         el: '#group_detail',
         data: {
             group: data.group,
@@ -91,12 +91,15 @@
             tableData1: [],
             currentPage1: 1,
             pageSizes1: [5, 10, 20],
-            pageSize1: 5
+            pageSize1: 5,
+            total1:''
             ,
             tableData2: [],
             currentPage2: 1,
             pageSizes2: [5, 10, 20],
             pageSize2: 10,
+            total2:''
+            ,
             radio1: '2',
             radio2: '4',
             pass_number: '',
@@ -206,7 +209,7 @@
                         var groupList = vmGroupTree.items[0].children;
                         for (var index in groupList) {
                             if (data.group.group_id === groupList[index].group_id) {
-                                groupList[index].group_name = vm.groupModel.group_name;
+                                groupList[index].group_name = vmGroupDetail.groupModel.group_name;
                             }
                         }
                     }
@@ -240,8 +243,8 @@
                         person_id: person.person_id
                     },
                     success: function (result) {
-                        arrayRemoveObj(vm.tableData1, person);
-                        vm.tableData1--;
+                        arrayRemoveObj(vmGroupDetail.tableData1, person);
+                        vmGroupDetail.total1--;
                     }
                 })
             },
@@ -253,8 +256,8 @@
                         device_id: device.device_id
                     },
                     success: function (result) {
-                        arrayRemoveObj(vm.tableData2, device);
-                        vm.tableData2--;
+                        arrayRemoveObj(vmGroupDetail.tableData2, device);
+                        vmGroupDetail.total2--;
                     }
                 })
             },
@@ -287,7 +290,7 @@
         })
     }
 
-    ajaxPersonList(vm.currentPage1, vm.pageSize1);
+    ajaxPersonList(vmGroupDetail.currentPage1, vmGroupDetail.pageSize1);
 
     function ajaxPersonList(pageNum, pageSize) {
         ajaxGet({
@@ -298,12 +301,13 @@
                 group_id: data.group.group_id
             },
             success: function (result) {
-                vm.tableData1 = result.data.list;
+                vmGroupDetail.tableData1 = result.data.list;
+                vmGroupDetail.total1 = result.data.total;
             }
         });
     }
 
-    ajaxDeviceList(vm.currentPage2, vm.pageSize2);
+    ajaxDeviceList(vmGroupDetail.currentPage2, vmGroupDetail.pageSize2);
 
     function ajaxDeviceList(pageNum, pageSize) {
         ajaxGet({
@@ -314,7 +318,8 @@
                 group_id: data.group.group_id
             },
             success: function (result) {
-                vm.tableData2 = result.data.list;
+                vmGroupDetail.tableData2 = result.data.list;
+                vmGroupDetail.total2 = result.data.total;
             }
         });
     }
@@ -345,7 +350,7 @@
                     success: function (result) {
                         layTip(result.message);
                         vmDialogPersonList.visible = false;
-                        $("#group_content").load("${pageContext.request.contextPath}/group/detail?group_id=" + data.group.group_id);
+                        ajaxPersonList(vmGroupDetail.currentPage1, vmGroupDetail.pageSize1);
                     }
                 });
             }
@@ -378,7 +383,7 @@
                     success: function (result) {
                         layTip(result.message);
                         vmDialogDeviceList.visible = false;
-                        $("#group_content").load("${pageContext.request.contextPath}/group/detail?group_id=" + data.group.group_id);
+                        ajaxDeviceList(vmGroupDetail.currentPage2, vmGroupDetail.pageSize2);
                     }
                 });
             }

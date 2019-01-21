@@ -37,7 +37,7 @@
                        prev-text="上一页"
                        next-text="下一页"
                        layout="total, sizes, prev, pager, next, jumper"
-                       :total="data.person_list.length">
+                       :total="total1">
         </el-pagination>
     </div>
 </template>
