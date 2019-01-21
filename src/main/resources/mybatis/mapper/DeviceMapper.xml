@@ -94,6 +94,10 @@
 		select device_sn from tbl_#{wid}_device where device_id=#{device_id}
 	</select>
 
+	<select id="selectDeviceSnByPersonId" parameterType="pd" resultType="string">
+		SELECT d.device_sn FROM tbl_#{wid}_grant g RIGHT JOIN(SELECT device_sn,device_id FROM tbl_#{wid}_device)d  ON d.device_id = g.device_id WHERE g.person_id = #{person_id} ;
+	</select>
+
 	<update id="deleteDeviceGroupID" parameterType="pd">
 		update tbl_#{wid}_device set group_id=0 where device_id = #{device_id};
 	</update>

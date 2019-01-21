@@ -5,24 +5,15 @@ import com.ts.cpfr.dao.DeviceDao;
 import com.ts.cpfr.dao.PersonDao;
 import com.ts.cpfr.ehcache.Memory;
 import com.ts.cpfr.service.PersonService;
-import com.ts.cpfr.utils.CommUtil;
-import com.ts.cpfr.utils.HandleEnum;
-import com.ts.cpfr.utils.PageData;
-import com.ts.cpfr.utils.ParamData;
-import com.ts.cpfr.utils.ResultData;
-import com.ts.cpfr.utils.SystemConfig;
+import com.ts.cpfr.utils.*;
 
+import com.ts.cpfr.websocket.SocketMessageHandle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
+import org.springframework.web.socket.TextMessage;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.InputStream;
+import java.io.*;
 import java.sql.Blob;
 import java.util.List;
 
@@ -46,6 +37,8 @@ public class PersonServiceImpl implements PersonService {
     private PersonDao mPersonDao;
     @Autowired
     private Memory memory;
+    @Autowired
+    private SocketMessageHandle mSocketMessageHandle;
 
     @Override
     public ResultData<PageData<ParamData>> getPersonList(ParamData pd) {
@@ -84,17 +77,27 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public ResultData<ParamData> updatePerson(ParamData pd) {
+    public ResultData<ParamData> updatePerson(ParamData pd) throws IOException {
         pd.put("wid", memory.getLoginUser().getWId());
         if (mPersonDao.updatePersonInfo(pd)) {
+            List<String> deviceSnLists = mDeviceDao.selectDeviceSnByPersonId(pd);
+            TextMessage message = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1003_PERSON_UPDATE, null);
+            for (String deviceSn : deviceSnLists) {
+                mSocketMessageHandle.sendMessageToDevice(deviceSn, message);
+            }
             return new ResultData<>(HandleEnum.SUCCESS);
         } else return new ResultData<>(HandleEnum.FAIL);
     }
 
     @Override
-    public ResultData<ParamData> deletePerson(ParamData pd) {
+    public ResultData<ParamData> deletePerson(ParamData pd) throws IOException {
         pd.put("wid", memory.getLoginUser().getWId());
         if (mPersonDao.deletePerson(pd)) {
+            List<String> deviceSnLists = mDeviceDao.selectDeviceSnByPersonId(pd);
+            TextMessage message = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1003_PERSON_UPDATE, null);
+            for (String deviceSn : deviceSnLists) {
+                mSocketMessageHandle.sendMessageToDevice(deviceSn, message);
+            }
             return new ResultData<>(HandleEnum.SUCCESS);
         } else return new ResultData<>(HandleEnum.FAIL);
     }

@@ -6,6 +6,7 @@ import com.ts.cpfr.utils.ResultData;
 
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,9 +25,9 @@ public interface PersonService {
 
     ResultData<ParamData> addPerson(CommonsMultipartFile file, HttpServletRequest request);
 
-    ResultData<ParamData> updatePerson(ParamData pd);
+    ResultData<ParamData> updatePerson(ParamData pd) throws IOException;
 
-    ResultData<ParamData> deletePerson(ParamData pd);
+    ResultData<ParamData> deletePerson(ParamData pd) throws IOException;
 
     ParamData queryPerson(ParamData pd);
 
