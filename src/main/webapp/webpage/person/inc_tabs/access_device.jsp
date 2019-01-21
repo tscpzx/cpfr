@@ -2,7 +2,7 @@
 <el-form>
     <el-form-item>
         <el-row>
-            <el-button type="primary" icon="el-icon-plus" size="small">添加</el-button>
+       <%--     <el-button type="primary" icon="el-icon-plus" size="small">添加</el-button>--%>
             <div style="float: right">
                 <el-input style="width: 200px;" size="small" placeholder="请输入搜索内容" v-model="keyword"></el-input>
                 <el-button type="primary" size="small" @click="searchDeviceLists">查找</el-button>
