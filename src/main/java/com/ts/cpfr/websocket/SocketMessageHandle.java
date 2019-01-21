@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.ts.cpfr.service.DeviceService;
 import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.ParamData;
+import com.ts.cpfr.utils.SocketEnum;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -203,6 +204,16 @@ public class SocketMessageHandle implements WebSocketHandler {
         if (data == null) jsonMap.put(CommConst.DATA, "");
         else jsonMap.put(CommConst.DATA, data);
         jsonMap.put(CommConst.MESSAGE, message);
+        return new TextMessage(JSONObject.toJSONString(jsonMap));
+    }
+
+
+    public TextMessage obtainMessage(SocketEnum socketEnum, ParamData data) {
+        Map<String, Object> jsonMap = new HashMap<>();
+        jsonMap.put(CommConst.CODE, socketEnum.getCode());
+        if (data == null) jsonMap.put(CommConst.DATA, "");
+        else jsonMap.put(CommConst.DATA, data);
+        jsonMap.put(CommConst.MESSAGE, socketEnum.getMessage());
         return new TextMessage(JSONObject.toJSONString(jsonMap));
     }
 }

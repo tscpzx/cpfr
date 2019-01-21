@@ -13,6 +13,7 @@ import com.ts.cpfr.utils.HandleEnum;
 import com.ts.cpfr.utils.PageData;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
+import com.ts.cpfr.utils.SocketEnum;
 import com.ts.cpfr.websocket.SocketMessageHandle;
 
 import org.apache.http.util.TextUtils;
@@ -84,7 +85,7 @@ public class DeviceServiceImpl implements DeviceService {
                 //通知设备激活成功
                 ParamData data = new ParamData();
                 data.put(CommConst.ADMIN_ID, user.getAdminId());
-                TextMessage message = mSocketMessageHandle.obtainMessage(CommConst.CODE_1001, "激活成功", data);
+                TextMessage message = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1001_DEVICE_ACTIVATE, data);
                 mSocketMessageHandle.sendMessageToDevice(device_sn, message);
                 return new ResultData<>(HandleEnum.SUCCESS);
             }
@@ -131,7 +132,7 @@ public class DeviceServiceImpl implements DeviceService {
     public ResultData<ParamData> changeDeviceInfo(ParamData pd) throws IOException {
         pd.put("wid", memory.getLoginUser().getWId());
         if (mDeviceDao.updateDeviceInfo(pd)) {
-            TextMessage message = mSocketMessageHandle.obtainMessage(CommConst.CODE_1002, "设备更新", null);
+            TextMessage message = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1002_DEVICE_UPDATE, null);
             mSocketMessageHandle.sendMessageToDevice(pd.getString(CommConst.DEVICE_SN), message);
             return new ResultData<>(HandleEnum.SUCCESS);
         } else return new ResultData<>(HandleEnum.FAIL);
@@ -141,7 +142,7 @@ public class DeviceServiceImpl implements DeviceService {
     public ResultData<ParamData> deleteDevice(ParamData pd) throws IOException {
         pd.put("wid", memory.getLoginUser().getWId());
         if (mDeviceDao.deleteDeviceByDeviceID(pd)) {
-            TextMessage message = mSocketMessageHandle.obtainMessage(CommConst.CODE_1005, "设备删除", null);
+            TextMessage message = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1005_DEVICE_DELETE, null);
             mSocketMessageHandle.sendMessageToDevice(mDeviceDao.selectDeviceSnByDeviceID(pd), message);
             return new ResultData<>(HandleEnum.SUCCESS);
         } else return new ResultData<>(HandleEnum.FAIL);

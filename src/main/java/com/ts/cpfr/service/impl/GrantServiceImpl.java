@@ -8,6 +8,7 @@ import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.HandleEnum;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
+import com.ts.cpfr.utils.SocketEnum;
 import com.ts.cpfr.websocket.SocketMessageHandle;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,7 +70,7 @@ public class GrantServiceImpl implements GrantService {
         paramData.put("list", list);
         if (mGrantDao.insertGrant(paramData)) {
             //通知设备权限更新
-            TextMessage message = mSocketMessageHandle.obtainMessage(CommConst.CODE_1004, "权限更新", null);
+            TextMessage message = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1004_GRANT_UPDATE, null);
             List<ParamData> deviceSnList = mDeviceDao.selectDeviceSnList(paramData);
             for (ParamData p : deviceSnList) {
                 mSocketMessageHandle.sendMessageToDevice(p.getString(CommConst.DEVICE_SN), message);
@@ -103,7 +104,7 @@ public class GrantServiceImpl implements GrantService {
         paramData.put("list", list);
         if (mGrantDao.updateGrantBan(paramData)) {
             //通知设备权限更新
-            TextMessage message = mSocketMessageHandle.obtainMessage(CommConst.CODE_1004, "权限更新", null);
+            TextMessage message = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1004_GRANT_UPDATE, null);
             List<ParamData> deviceSnList = mDeviceDao.selectDeviceSnList(paramData);
             for (ParamData p : deviceSnList) {
                 mSocketMessageHandle.sendMessageToDevice(p.getString(CommConst.DEVICE_SN), message);
