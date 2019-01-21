@@ -22,4 +22,10 @@
 	<update id="updateGroupInfo" parameterType="pd">
 		update tbl_#{wid}_group set group_name=#{group_name} where group_id=#{group_id}
 	</update>
+
+	<update id="deleteGroup" parameterType="pd">
+		DELETE FROM tbl_#{wid}_group WHERE group_id=#{group_id};
+		update tbl_#{wid}_device set group_id=0 where group_id=#{group_id};
+		update tbl_#{wid}_person set group_id=0 where group_id=#{group_id};
+	</update>
 </mapper>

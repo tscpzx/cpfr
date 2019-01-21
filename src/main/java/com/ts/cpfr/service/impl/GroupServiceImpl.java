@@ -119,4 +119,12 @@ public class GroupServiceImpl implements GroupService {
             return new ResultData<>(HandleEnum.SUCCESS);
         return new ResultData<>(HandleEnum.FAIL);
     }
+
+    @Override
+    public ResultData<ParamData> deleteGroup(ParamData pd) {
+        pd.put("wid", memory.getLoginUser().getWId());
+        if(mGroupDao.deleteGroup(pd))
+            return new ResultData<>(HandleEnum.SUCCESS);
+        return new ResultData<>(HandleEnum.FAIL);
+    }
 }

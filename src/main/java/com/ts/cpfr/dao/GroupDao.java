@@ -18,4 +18,6 @@ public interface GroupDao {
     boolean insertGroup(ParamData pd);
 
     boolean updateGroupInfo(ParamData pd);
+
+    boolean deleteGroup(ParamData pd);
 }

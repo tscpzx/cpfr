@@ -22,4 +22,6 @@ public interface GroupService {
     ResultData<ParamData> addGroupDevice(ParamData pd);
 
     ResultData<ParamData> updateGroupInfo(ParamData pd);
+
+    ResultData<ParamData> deleteGroup(ParamData pd);
 }

@@ -195,7 +195,6 @@
                 }
             },
             updateGroupInfo() {
-                l(this.groupModel.group_name)
                 ajaxPost({
                     url: "${pageContext.request.contextPath}/group/update_info",
                     data: {
@@ -214,7 +213,24 @@
                 })
             },
             deleteGroup() {
-
+                elmDialog("确定要删除该组别吗", function () {
+                    ajaxPost({
+                        url: "${pageContext.request.contextPath}/group/delete",
+                        data: {
+                            group_id: data.group.group_id
+                        },
+                        success: function (result) {
+                            layAlert1(result.message);
+                            var groupList = vmGroupTree.items[0].children ;
+                            for (var index in groupList) {
+                                if ( data.group.group_id === groupList[index].group_id) {
+                                    groupList.splice(index);
+                                    $("#group_content").load("group/group_tbl");
+                                }
+                            }
+                        }
+                    })
+                });
             }
         },
         filters: {
