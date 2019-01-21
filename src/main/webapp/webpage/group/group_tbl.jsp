@@ -79,13 +79,13 @@
         },
         methods: {
             handleChange(val) {
-                ajaxGroupList({
+                ajaxGroupListPage({
                     pageNum: this.currentPage,
                     pageSize: this.pageSize
                 });
             },
             searchGroupList(){
-                ajaxGroupList({
+                ajaxGroupListPage({
                     pageNum: 1,
                     pageSize: this.pageSize,
                     keyword: this.keyword
@@ -94,12 +94,12 @@
         }
     });
 
-    ajaxGroupList({
+    ajaxGroupListPage({
         pageNum: vm.currentPage,
         pageSize: vm.pageSize
     });
 
-    function ajaxGroupList(data) {
+    function ajaxGroupListPage(data) {
         ajaxGet({
             url: "${pageContext.request.contextPath}/group/list",
             data: data,
