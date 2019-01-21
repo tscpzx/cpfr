@@ -86,4 +86,26 @@ public class GroupController extends BaseController {
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
         }
     }
+
+    @ResponseBody
+    @RequestMapping("/update_info")
+    public ResultData<ParamData> updateInfo(HttpServletRequest request) {
+        try {
+            return mGroupService.updateGroupInfo(paramDataInit());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("/delete")
+    public ResultData<ParamData> delete(HttpServletRequest request) {
+        try {
+            return mGroupService.deleteGroup(paramDataInit());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
 }
