@@ -58,4 +58,5 @@
 	<delete id="deletePerson" parameterType="pd">
 		update tbl_#{wid}_person set status=3 where person_id = #{person_id};
 	</delete>
+
 </mapper>

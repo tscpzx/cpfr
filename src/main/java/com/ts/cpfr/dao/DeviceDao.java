@@ -37,4 +37,6 @@ public interface DeviceDao {
 
     String selectDeviceSnByDeviceID(ParamData pd);
 
+    List<String> selectDeviceSnByPersonId(ParamData pd);
+
 }
