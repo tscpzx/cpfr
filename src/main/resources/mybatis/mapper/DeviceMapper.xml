@@ -94,4 +94,7 @@
 		select device_sn from tbl_#{wid}_device where device_id=#{device_id}
 	</select>
 
+	<update id="deleteDeviceGroupID" parameterType="pd">
+		update tbl_#{wid}_device set group_id=0 where device_id = #{device_id};
+	</update>
 </mapper>

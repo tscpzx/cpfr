@@ -37,4 +37,5 @@ public interface DeviceDao {
 
     String selectDeviceSnByDeviceID(ParamData pd);
 
+    boolean deleteDeviceGroupID(ParamData pd);
 }

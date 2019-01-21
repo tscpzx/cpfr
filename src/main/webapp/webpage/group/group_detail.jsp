@@ -221,17 +221,43 @@
                         },
                         success: function (result) {
                             layAlert1(result.message);
-                            var groupList = vmGroupTree.items[0].children ;
+                            var groupList = vmGroupTree.items[0].children;
                             for (var index in groupList) {
-                                if ( data.group.group_id === groupList[index].group_id) {
-                                    groupList.splice(index);
+                                if (data.group.group_id === groupList[index].group_id) {
+                                    groupList.splice(index, 1);
                                     $("#group_content").load("group/group_tbl");
                                 }
                             }
                         }
                     })
                 });
-            }
+            },
+            deleteGroupPerson(person) {
+                ajaxPost({
+                    url: "${pageContext.request.contextPath}/group/delete_person",
+                    data: {
+                        group_id: data.group.group_id,
+                        person_id: person.person_id
+                    },
+                    success: function (result) {
+                        arrayRemoveObj(vm.tableData1, person);
+                        vm.tableData1--;
+                    }
+                })
+            },
+            deleteGroupDevice(device) {
+                ajaxPost({
+                    url: "${pageContext.request.contextPath}/group/delete_device",
+                    data: {
+                        group_id: data.group.group_id,
+                        device_id: device.device_id
+                    },
+                    success: function (result) {
+                        arrayRemoveObj(vm.tableData2, device);
+                        vm.tableData2--;
+                    }
+                })
+            },
         },
         filters: {
             formatDate: function (time) {

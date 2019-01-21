@@ -28,4 +28,6 @@ public interface PersonDao {
     boolean updatePersonInfo(ParamData pd);
 
     boolean deletePerson(ParamData pd);
+
+    boolean deletePersonGroupID(ParamData pd);
 }

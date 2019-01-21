@@ -115,16 +115,28 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public ResultData<ParamData> updateGroupInfo(ParamData pd) {
         pd.put("wid", memory.getLoginUser().getWId());
-        if(mGroupDao.updateGroupInfo(pd))
-            return new ResultData<>(HandleEnum.SUCCESS);
+        if (mGroupDao.updateGroupInfo(pd)) return new ResultData<>(HandleEnum.SUCCESS);
         return new ResultData<>(HandleEnum.FAIL);
     }
 
     @Override
     public ResultData<ParamData> deleteGroup(ParamData pd) {
         pd.put("wid", memory.getLoginUser().getWId());
-        if(mGroupDao.deleteGroup(pd))
-            return new ResultData<>(HandleEnum.SUCCESS);
+        if (mGroupDao.deleteGroup(pd)) return new ResultData<>(HandleEnum.SUCCESS);
+        return new ResultData<>(HandleEnum.FAIL);
+    }
+
+    @Override
+    public ResultData<ParamData> deleteGroupPerson(ParamData pd) {
+        pd.put("wid", memory.getLoginUser().getWId());
+        if (mPersonDao.deletePersonGroupID(pd)) return new ResultData<>(HandleEnum.SUCCESS);
+        return new ResultData<>(HandleEnum.FAIL);
+    }
+
+    @Override
+    public ResultData<ParamData> deleteGroupDevice(ParamData pd) {
+        pd.put("wid", memory.getLoginUser().getWId());
+        if (mDeviceDao.deleteDeviceGroupID(pd)) return new ResultData<>(HandleEnum.SUCCESS);
         return new ResultData<>(HandleEnum.FAIL);
     }
 }

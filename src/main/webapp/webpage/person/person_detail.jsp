@@ -45,7 +45,7 @@
                 </el-tab-pane>
             </el-tabs>
         </template>
-        <%@ include file="../device/inc_dialog/dialog_change_grant.jsp"%>
+        <%@ include file="../device/inc_dialog/dialog_change_grant.jsp" %>
     </div>
 </div>
 
@@ -55,32 +55,32 @@
     data = data.replace(/<\/?.+?>/g, "");
     data = data.replace(/[\r\n]/g, "");
     data = $.parseJSON(data);
-    var vue =  new Vue({
+    var vue = new Vue({
         el: "#person_detail",
         data: function () {
             return {
                 data: data,
                 activeName: 'first',
                 personModel: {
-                    person_name:data.person_name ,
-                    emp_number:data.emp_number
+                    person_name: data.person_name,
+                    emp_number: data.emp_number
                 },
-                show:false,
+                show: false,
                 tableData: [],
                 currentPage: 1,
                 pageSizes: [5, 10, 20],
                 pageSize: 10,
-                tableTotal:'',
+                tableTotal: '',
                 pass_number: '',
-                visible:false,
+                visible: false,
                 dialogModel: {
                     radio1: '',
                     radio2: '',
                     pass_number: '',
                     dateValue: '',
                 },
-                grant:'',
-                keyword:''
+                grant: '',
+                keyword: ''
             }
         },
 
@@ -90,7 +90,7 @@
                 ajaxUpdatePersonInfo({
                     person_id: data.person_id,
                     person_name: model.person_name,
-                    emp_number:model.emp_number
+                    emp_number: model.emp_number
                 });
             },
             deletePerson() {
@@ -103,10 +103,10 @@
                         success: function (result) {
                             vue.dialogVisible = false;
                             layTip(result.message);
-                            var personList = vmPersonTree.items[0].children ;
+                            var personList = vmPersonTree.items[0].children;
                             for (var index in personList) {
                                 if (data.person_id === personList[index].person_id) {
-                                    personList.splice(index);
+                                    personList.splice(index, 1);
                                     $("#person_content").load("person/person_tbl");
                                 }
                             }
@@ -116,27 +116,27 @@
             },
 
             handleChange(val) {
-              ajaxAccessDeviceList({
-                  pageNum: this.currentPage,
-                  pageSize: this.pageSize,
-                  person_id: data.person_id
-              });
+                ajaxAccessDeviceList({
+                    pageNum: this.currentPage,
+                    pageSize: this.pageSize,
+                    person_id: data.person_id
+                });
             },
 
-            banGrantDevice(scope){
+            banGrantDevice(scope) {
                 elmDialog("确定这台设备禁止该员工通行吗？", function () {
-                ajaxGet({
-                    url: "${pageContext.request.contextPath}/grant/ban",
-                    data: {
-                        device_ids: scope.row.device_id,
-                        person_ids: data.person_id
-                    },
-                    success: function (result) {
-                        layAlert1(result.message);
-                        arrayRemoveObj(vue.tableData, scope.row);
-                        vue.tableTotal--;
-                    }
-                });
+                    ajaxGet({
+                        url: "${pageContext.request.contextPath}/grant/ban",
+                        data: {
+                            device_ids: scope.row.device_id,
+                            person_ids: data.person_id
+                        },
+                        success: function (result) {
+                            layAlert1(result.message);
+                            arrayRemoveObj(vue.tableData, scope.row);
+                            vue.tableTotal--;
+                        }
+                    });
                 });
             },
 
@@ -214,7 +214,7 @@
                 });
             },
 
-            searchDeviceLists(){
+            searchDeviceLists() {
                 ajaxAccessDeviceList({
                     pageNum: 1,
                     pageSize: this.pageSize,
@@ -253,14 +253,13 @@
     }
 
 
-
     function ajaxUpdatePersonInfo(data) {
         ajaxGet({
             url: "${pageContext.request.contextPath}/person/update_info",
             data: data,
             success: function (result) {
                 layAlert1(result.message);
-                var personList = vmPersonTree.items[0].children ;
+                var personList = vmPersonTree.items[0].children;
                 for (var index in personList) {
                     if (data.person_id === personList[index].person_id) {
                         personList[index].person_name = data.person_name;
@@ -277,7 +276,7 @@
             success: function (result) {
                 vue.visible = false;
                 layTip(result.message);
-                var  deviceList = vue.tableData;
+                var deviceList = vue.tableData;
                 for (var index in deviceList) {
                     if (data.grant_id === deviceList[index].grant_id) {
                         deviceList[index].pass_number = data.pass_number;
