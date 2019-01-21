@@ -111,4 +111,12 @@ public class GroupServiceImpl implements GroupService {
         if (mDeviceDao.updateDeviceGroupID(paramData)) return new ResultData<>(HandleEnum.SUCCESS);
         else return new ResultData<>(HandleEnum.FAIL);
     }
+
+    @Override
+    public ResultData<ParamData> updateGroupInfo(ParamData pd) {
+        pd.put("wid", memory.getLoginUser().getWId());
+        if(mGroupDao.updateGroupInfo(pd))
+            return new ResultData<>(HandleEnum.SUCCESS);
+        return new ResultData<>(HandleEnum.FAIL);
+    }
 }

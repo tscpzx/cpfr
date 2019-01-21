@@ -100,7 +100,10 @@
             radio1: '2',
             radio2: '4',
             pass_number: '',
-            dateValue: ''
+            dateValue: '',
+            groupModel: {
+                group_name: data.group.group_name
+            }
         },
         methods: {
             grantPass() {
@@ -190,6 +193,28 @@
                         $datePicker.hide();
                         break;
                 }
+            },
+            updateGroupInfo() {
+                l(this.groupModel.group_name)
+                ajaxPost({
+                    url: "${pageContext.request.contextPath}/group/update_info",
+                    data: {
+                        group_id: data.group.group_id,
+                        group_name: this.groupModel.group_name
+                    },
+                    success: function (result) {
+                        layAlert1(result.message);
+                        var groupList = vmGroupTree.items[0].children;
+                        for (var index in groupList) {
+                            if (data.group.group_id === groupList[index].group_id) {
+                                groupList[index].group_name = vm.groupModel.group_name;
+                            }
+                        }
+                    }
+                })
+            },
+            deleteGroup() {
+
             }
         },
         filters: {
@@ -210,7 +235,7 @@
         })
     }
 
-    function ajaxBanPass(data){
+    function ajaxBanPass(data) {
         ajaxPost({
             url: "${pageContext.request.contextPath}/grant/ban",
             data: data,

@@ -20,4 +20,6 @@ public interface GroupService {
     ResultData<ParamData> addGroupPerson(ParamData pd);
 
     ResultData<ParamData> addGroupDevice(ParamData pd);
+
+    ResultData<ParamData> updateGroupInfo(ParamData pd);
 }

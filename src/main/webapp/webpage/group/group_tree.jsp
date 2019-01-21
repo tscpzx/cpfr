@@ -48,7 +48,7 @@
 
 <script type="text/javascript">
     ajaxGroupList();
-    var vmList = new Vue({
+    var vmGroupTree = new Vue({
         el: "#group",
         data: {
             items: [{
@@ -92,8 +92,8 @@
             url: "${pageContext.request.contextPath}/group/list",
             data: {},
             success: function (result) {
-                vmList.items[0].children = result.data.list;
-                vmList.length = result.data.total;
+                vmGroupTree.items[0].children = result.data.list;
+                vmGroupTree.length = result.data.total;
             }
         });
     }
