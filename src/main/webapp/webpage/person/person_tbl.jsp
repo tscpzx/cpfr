@@ -25,7 +25,7 @@
                 <el-row>
                     <div style="float: right">
                         <el-input style="width: 200px;" v-model="keyword" size="small" placeholder="请输入搜索内容"></el-input>
-                        <el-button type="primary" size="small" @click="">查找
+                        <el-button type="primary" size="small" @click="selectPerson">查找
                         </el-button>
                     </div>
                 </el-row>
@@ -87,20 +87,30 @@
         },
         methods: {
             handleChange(val) {
-                ajaxPersonPage(this.currentPage, this.pageSize);
+                ajaxPersonPage({
+                    pageNum:this.currentPage,
+                    pageSize:this.pageSize
+                });
+            },
+            selectPerson(){
+                ajaxPersonPage({
+                    pageNum: 1,
+                    pageSize: this.pageSize,
+                    keyword: this.keyword
+                    });
             }
         }
     });
 
-    ajaxPersonPage(vm.currentPage, vm.pageSize);
+    ajaxPersonPage({
+        pageNum:vm.currentPage,
+        pageSize:vm.pageSize
+    });
 
-    function ajaxPersonPage(pageNum, pageSize) {
+    function ajaxPersonPage(data) {
         ajaxGet({
             url: "${pageContext.request.contextPath}/person/list_base64",
-            data: {
-                pageNum: pageNum,
-                pageSize: pageSize
-            },
+            data: data,
             success: function (result) {
                 vm.total = result.data.total;
                 vm.tableData = result.data.list;
