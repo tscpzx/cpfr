@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * @Classname RecordController
@@ -36,5 +37,35 @@ public class RecordController extends BaseController {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
         }
+    }
+
+
+    /**
+     * 删除记录
+     *
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/delete")
+    public ResultData<ParamData> deleteRecord(HttpServletRequest request) {
+        try {
+            return mRecordService.deleteRecord(paramDataInit());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
+    /**
+     * 批量删除
+     *
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/deleteLists")
+    public ResultData<ParamData> deleteRecordLists(HttpServletRequest request) {
+        return null;
     }
 }

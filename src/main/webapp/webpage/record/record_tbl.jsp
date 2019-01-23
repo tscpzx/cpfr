@@ -23,9 +23,11 @@
         <el-form>
             <el-form-item>
                 <el-row>
+                    <el-button type="primary" size="small" @click="deleteRecordLists">批量删除
+                    </el-button>
                     <div style="float: right">
                         <el-input style="width: 200px;" v-model="keyword" size="small" placeholder="请输入搜索内容"></el-input>
-                        <el-button type="primary" size="small" @click="">查找
+                        <el-button type="primary" size="small" @click="selectRecord">查找
                         </el-button>
                     </div>
                 </el-row>
@@ -33,7 +35,10 @@
         </el-form>
 
         <template>
-            <el-table :data="tableData" style="width: 100%" stripe>
+            <el-table ref="multipleTable" :data="tableData" style="width: 100%"
+                      @selection-change="handleSelectionChange" stripe>
+                <el-table-column type="selection">全选/全不选
+                </el-table-column>
                 <el-table-column prop="record_id" label="ID">
                 </el-table-column>
                 <el-table-column prop="person_name" label="姓名">
@@ -62,7 +67,7 @@
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
-                        <el-button type="danger" size="medium" @click="">删除</el-button>
+                        <el-button type="danger" size="small" @click="deleteRecordById(scope)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -96,11 +101,67 @@
             pageSizes: [5, 10, 20],
             pageSize: 5,
             total: '',
-            keyword: ''
+            keyword: '',
+            multipleSelection: [],
+            recordIds: [],
+            i: 0
         },
         methods: {
             handleChange(val) {
-                ajaxRecordList(this.currentPage, this.pageSize);
+                ajaxRecordList({
+                    pageNum: this.currentPage,
+                    pageSize: this.pageSize
+                });
+            },
+            selectRecord() {
+                ajaxRecordList({
+                    pageNum: 1,
+                    pageSize: this.pageSize,
+                    keyword: this.keyword
+                });
+            },
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            },
+            deleteRecordLists() {
+                let record_ids = [];
+                if (this.multipleSelection.length == 0) {
+                    layAlert1("请勾选待删除记录");
+                } else {
+                    this.multipleSelection.forEach(function (item) {
+                        record_ids.push(item.record_id);
+                    });
+                    l(record_ids);
+                    ajaxGet({
+                        url: "${pageContext.request.contextPath}/record/deleteLists",
+                        data: {
+                            record_ids: record_ids
+                        },
+                        success: function (result) {
+                            layAlert1(result.message);
+                            arrayRemoveObj(vm.tableData, this.multipleSelection);
+                            vm.total--;
+                        }
+                    });
+                }
+
+
+            },
+
+            deleteRecordById(scope) {
+                elmDialog("确定删除该条记录吗？", function () {
+                    ajaxGet({
+                        url: "${pageContext.request.contextPath}/record/delete",
+                        data: {
+                            record_id: scope.row.record_id
+                        },
+                        success: function (result) {
+                            layAlert1(result.message);
+                            arrayRemoveObj(vm.tableData, scope.row);
+                            vm.total--;
+                        }
+                    });
+                });
             }
         },
         filters: {
@@ -111,15 +172,15 @@
         }
     });
 
-    ajaxRecordList(vm.currentPage, vm.pageSize);
+    ajaxRecordList({
+        pageNum: vm.currentPage,
+        pageSize: vm.pageSize
+    });
 
-    function ajaxRecordList(pageNum, pageSize) {
+    function ajaxRecordList(data) {
         ajaxGet({
             url: "${pageContext.request.contextPath}/record/list_base64",
-            data: {
-                pageNum: pageNum,
-                pageSize: pageSize
-            },
+            data: data,
             success: function (result) {
                 vm.total = result.data.total;
                 vm.tableData = result.data.list;

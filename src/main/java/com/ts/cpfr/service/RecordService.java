@@ -4,6 +4,8 @@ import com.ts.cpfr.utils.PageData;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
 
+import java.util.List;
+
 /**
  * @Classname RecordService
  * @Description
@@ -12,4 +14,5 @@ import com.ts.cpfr.utils.ResultData;
  */
 public interface RecordService {
     ResultData<PageData<ParamData>> getRecordBase64List(ParamData pd);
+    ResultData<ParamData> deleteRecord(ParamData pd);
 }

@@ -42,4 +42,13 @@ public class RecordServiceImpl implements RecordService {
         List<ParamData> recordList = mRecordDao.selectRecordListWithBlob(pd);
         return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(recordList));
     }
+
+    @Override
+    public ResultData<ParamData> deleteRecord(ParamData pd) {
+        pd.put("wid", memory.getLoginUser().getWId());
+        if (mRecordDao.deleteRecord(pd)) {
+            return new ResultData<>(HandleEnum.SUCCESS);
+        } else return new ResultData<>(HandleEnum.FAIL);
+    }
+
 }
