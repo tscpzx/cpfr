@@ -25,6 +25,8 @@ public interface PersonService {
 
     ResultData<ParamData> addPerson(CommonsMultipartFile file, HttpServletRequest request);
 
+    ResultData<ParamData> updatePerson(CommonsMultipartFile file, HttpServletRequest request) throws IOException;
+
     ResultData<ParamData> updatePerson(ParamData pd) throws IOException;
 
     ResultData<ParamData> deletePerson(ParamData pd) throws IOException;

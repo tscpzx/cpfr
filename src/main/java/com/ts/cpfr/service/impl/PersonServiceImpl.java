@@ -8,6 +8,7 @@ import com.ts.cpfr.service.PersonService;
 import com.ts.cpfr.utils.*;
 
 import com.ts.cpfr.websocket.SocketMessageHandle;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
@@ -74,6 +75,24 @@ public class PersonServiceImpl implements PersonService {
         pd.put("wid", memory.getLoginUser().getWId());
         if (mPersonDao.insertPerson(pd)) return new ResultData<>(HandleEnum.SUCCESS);
         return new ResultData<>(HandleEnum.FAIL);
+    }
+
+    @Override
+    public ResultData<ParamData> updatePerson(CommonsMultipartFile file, HttpServletRequest request) throws IOException {
+        ParamData pd = new ParamData();
+        pd.put("person_id", request.getParameter("person_id"));
+        pd.put("person_name", request.getParameter("person_name"));
+        pd.put("emp_number", request.getParameter("emp_number"));
+        pd.put("blob_image", file.getBytes());
+        pd.put("wid", memory.getLoginUser().getWId());
+        if (mPersonDao.updatePersonInfo(pd)) {
+            List<String> deviceSnLists = mDeviceDao.selectDeviceSnByPersonId(pd);
+            TextMessage message = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1003_PERSON_UPDATE, null);
+            for (String deviceSn : deviceSnLists) {
+                mSocketMessageHandle.sendMessageToDevice(deviceSn, message);
+            }
+            return new ResultData<>(HandleEnum.SUCCESS);
+        } else return new ResultData<>(HandleEnum.FAIL);
     }
 
     @Override

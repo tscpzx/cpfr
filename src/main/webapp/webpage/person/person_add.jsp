@@ -8,44 +8,6 @@
         width: 400px;
     }
 
-    .avatar-uploader .el-upload {
-        border: 1px dashed #d9d9d9;
-        border-radius: 6px;
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
-    }
-
-    .avatar-uploader .el-upload:hover {
-        border-color: #409EFF;
-    }
-
-    .avatar-uploader-icon {
-        font-size: 28px;
-        color: #8c939d;
-        width: 178px;
-        height: 178px;
-        line-height: 178px;
-        text-align: center;
-    }
-
-    .avatar {
-        width: 178px;
-        height: 178px;
-        display: block;
-    }
-
-    .cropper-container {
-        width: 100%;
-    }
-
-    .cropper-preview {
-        margin-left: 5px;
-        width: 100%;
-        height: 200px;
-        background-color: black;
-        overflow: hidden;
-    }
 </style>
 <div class="person_add_box">
     <div id="person_add">
@@ -98,7 +60,7 @@
                 },
                 imageUrl: '',
                 action: "${pageContext.request.contextPath}/person/add",
-                visible: false,
+                cropperVisible: false,
                 file: '',
                 replace: false,
                 uploadBlob: ''
@@ -122,7 +84,7 @@
                 // this.$refs.upload.uploadFiles[0] = file;
                 // this.imageUrl = URL.createObjectURL(file.raw);
                 this.file = file;
-                this.visible = true;
+                this.cropperVisible = true;
             },
             beforeUpload(file) {
                 const isLt = this.uploadBlob.size / 1024 < 65;
@@ -211,10 +173,10 @@
                 var base64url = canvas.toDataURL('image/jpeg', quality);
                 this.$refs.upload.uploadFiles[0] = this.file;
                 this.uploadBlob = dataURLtoBlob(base64url);//生成base64格式的blob
-                this.visible = false;
+                this.cropperVisible = false;
                 this.imageUrl = base64url;
             },
-            opened() {
+            open() {
                 if (this.replace) {
                     $('.cropper-container>img').cropper('replace', URL.createObjectURL(this.file.raw));
                 } else {
@@ -231,15 +193,4 @@
             }
         }
     });
-
-
-    //将base64格式图片转换为文件形式
-    function dataURLtoBlob(dataurl) {
-        var arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
-            bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
-        while (n--) {
-            u8arr[n] = bstr.charCodeAt(n);
-        }
-        return new Blob([u8arr], {type: mime});
-    }
 </script>

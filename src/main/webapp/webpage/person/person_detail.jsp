@@ -13,6 +13,10 @@
         margin: 10px 0 10px 0;
     }
 
+    .el-date-editor--datetimerange.el-input__inner {
+        width: 350px;
+    }
+
     .div_group label {
         width: 150px;
         text-align: right;
@@ -60,6 +64,11 @@
         data: function () {
             return {
                 data: data,
+                rules: {
+                    person_name: [
+                        {required: true, message: '请输入姓名', trigger: 'blur'}
+                    ]
+                },
                 activeName: 'first',
                 personModel: {
                     person_name: data.person_name,
@@ -80,19 +89,17 @@
                     dateValue: '',
                 },
                 grant: '',
-                keyword: ''
+                keyword: '',
+                imageUrl: 'data:image/jpeg;base64,' + data.base_image,
+                action: "${pageContext.request.contextPath}/person/update_info",
+                cropperVisible: false,
+                file: '',
+                replace: false,
+                uploadBlob: ''
             }
         },
 
         methods: {
-            updatePerson(formName) {
-                var model = this.$refs[formName].model;
-                ajaxUpdatePersonInfo({
-                    person_id: data.person_id,
-                    person_name: model.person_name,
-                    emp_number: model.emp_number
-                });
-            },
             deletePerson() {
                 elmDialog("确定要删除该员工吗", function () {
                     ajaxGet({
@@ -101,7 +108,6 @@
                             person_id: data.person_id
                         },
                         success: function (result) {
-                            vue.dialogVisible = false;
                             layTip(result.message);
                             var personList = vmPersonTree.items[0].children;
                             for (var index in personList) {
@@ -114,7 +120,6 @@
                     });
                 });
             },
-
             handleChange(val) {
                 ajaxAccessDeviceList({
                     pageNum: this.currentPage,
@@ -122,7 +127,6 @@
                     person_id: data.person_id
                 });
             },
-
             banGrantDevice(scope) {
                 elmDialog("确定这台设备禁止该员工通行吗？", function () {
                     ajaxGet({
@@ -139,7 +143,6 @@
                     });
                 });
             },
-
             openDialogUpdateGrant(data) {
                 this.visible = true;
                 this.grant = data;
@@ -156,8 +159,6 @@
                     this.dialogModel.radio2 = '3';
                 }
             },
-
-
             opened() {
                 var $input = $('.input_pass_number');
                 var $datePicker = $('.date_picker_pass_number');
@@ -213,7 +214,6 @@
                     grant_id: this.grant.grant_id
                 });
             },
-
             searchDeviceLists() {
                 ajaxAccessDeviceList({
                     pageNum: 1,
@@ -221,8 +221,138 @@
                     person_id: data.person_id,
                     keyword: this.keyword
                 });
-            }
+            },
 
+            onChange(file, fileList) {
+                this.$refs.upload.clearFiles();
+                const isSuppType = file.raw.type.indexOf("image") !== -1;
+                const isLt3M = file.raw.size / 1024 / 1024 < 3;
+
+                if (!isSuppType) {
+                    this.$message.error('不支持该类型的文件!');
+                    return;
+                }
+                if (!isLt3M) {
+                    this.$message.error('上传图片大小不能超过 3MB!');
+                    return;
+                }
+
+                this.file = file;
+                this.cropperVisible = true;
+            },
+            beforeUpload(file) {
+                var isLt = true;
+                if (this.uploadBlob) {
+                    isLt = this.uploadBlob.size / 1024 < 65;
+                    if (!isLt) this.$message.error('上传图片过大,请重新选择图片');
+                }
+
+                return isLt;
+            },
+            onClickUpload() {
+                this.$refs.perBaseInfoForm.validate((isValid) => {
+                    if (isValid) {
+                        if (this.$refs.upload.uploadFiles.length < 1) {
+                            var model = this.$refs.perBaseInfoForm.model;
+                            ajaxUpdatePersonInfo({
+                                person_id: data.person_id,
+                                person_name: model.person_name,
+                                emp_number: model.emp_number
+                            });
+                        } else if (this.$refs.upload.uploadFiles.length > 1) {
+                            this.$message.error('只能选择一张图片!');
+                        } else
+                            this.$refs.upload.submit();
+                    }
+                });
+            },
+            myUpload() {
+                var model = this.$refs.perBaseInfoForm.model;
+                var file = this.uploadBlob;
+
+                var loading = layLoading3("上传中...");
+                var formData = new FormData();
+                formData.append("person_id", data.person_id);
+                formData.append("person_name", model.person_name);
+                formData.append("emp_number", model.emp_number);
+                formData.append("file", file);
+
+                $.ajax({
+                    type: "POST",
+                    url: "${pageContext.request.contextPath}/person/update_img_info",
+                    contentType: false,//必须false才会自动加上正确的Content-Type
+                    processData: false,//必须false才会避开jQuery对 formdata 的默认处理
+                    data: formData,
+                    beforeSend: function (xhr) {//setRequestHeader
+                    },
+                    xhr: function () { //获取ajaxSettings中的xhr对象，为它的upload属性绑定progress事件的处理函数
+                        xhr = $.ajaxSettings.xhr();
+                        if (xhr.upload) { //检查upload属性是否存在
+                            //绑定progress事件的回调函数7
+                            xhr.upload.addEventListener('progress', function (e) {
+                                l(Math.round(((e.loaded / e.total) || 0) * 100));
+                            }, false);
+                        }
+                        return xhr; //xhr对象返回给jQuery使用
+                    },
+                    success: function (result) {
+                        layTip(result.message);
+                        var personList = vmPersonTree.items[0].children;
+                        for (var index in personList) {
+                            if (data.person_id === personList[index].person_id) {
+                                personList[index].person_name = model.person_name;
+                            }
+                        }
+                    },
+                    error: function (error) {
+                        layAlert1(error.statusText);
+                    },
+                    complete: function (xhr, textStatus) {
+                        top.layer.close(loading);
+                    }
+                });
+            },
+            onClickCropper() {
+                var canvas = $('.cropper-container>img').cropper('getCroppedCanvas', {
+                    width: 480,
+                    height: 480,
+                    minWidth: 240,
+                    minHeight: 240,
+                    maxWidth: 480,
+                    maxHeight: 480,
+                    fillColor: '#000',
+                    imageSmoothingEnabled: false,//如果图像被设置为平滑(true，默认)
+                    imageSmoothingQuality: 'high'//设置图像的质量
+                });
+
+                var fileSize = this.file.raw.size / 1024;
+                var quality;
+                if (fileSize > 2048) quality = 0.6;
+                else if (fileSize > 1024 && fileSize < 2048) quality = 0.7;
+                else if (fileSize > 65 && fileSize < 1024) quality = 0.75;
+                else quality = 0.9;
+
+                var base64url = canvas.toDataURL('image/jpeg', quality);
+                this.$refs.upload.uploadFiles[0] = this.file;
+                this.uploadBlob = dataURLtoBlob(base64url);//生成base64格式的blob
+                this.cropperVisible = false;
+                this.imageUrl = base64url;
+            },
+            open() {
+                if (this.replace) {
+                    $('.cropper-container>img').cropper('replace', URL.createObjectURL(this.file.raw));
+                } else {
+                    $('.cropper-container>img').attr('src', URL.createObjectURL(this.file.raw)).cropper({
+                        aspectRatio: 1,
+                        viewMode: 0,
+                        preview: ".cropper-preview"
+                    });
+                    this.replace = true;
+                }
+            },
+            closed() {
+                this.file = '';
+            }
         },
 
         filters: {
@@ -254,7 +384,7 @@
 
 
     function ajaxUpdatePersonInfo(data) {
-        ajaxGet({
+        ajaxPost({
             url: "${pageContext.request.contextPath}/person/update_info",
             data: data,
             success: function (result) {

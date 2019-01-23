@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
-import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -81,12 +79,30 @@ public class PersonController extends BaseController {
 
     /**
      * 修改人员信息
+     *
+     * @param request
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/update_img_info")
+    public ResultData<ParamData> updatePersonInfoWithFile(@RequestParam("file") CommonsMultipartFile file, HttpServletRequest request) {
+        try {
+            return mPersonService.updatePerson(file, request);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
+    /**
+     * 修改人员信息
+     *
      * @param request
      * @return
      */
     @ResponseBody
     @RequestMapping("/update_info")
-    public ResultData<ParamData> updatePersonInfo(HttpServletRequest request){
+    public ResultData<ParamData> updatePersonInfo(HttpServletRequest request) {
         try {
             return mPersonService.updatePerson(paramDataInit());
         } catch (Exception e) {
@@ -97,13 +113,13 @@ public class PersonController extends BaseController {
 
     /**
      * 删除人员
+     *
      * @param request
      * @return
      */
     @ResponseBody
     @RequestMapping("/delete")
-    public ResultData<ParamData> deletePerson(HttpServletRequest request){
-        System.out.println(request.getParameter("person_id"));
+    public ResultData<ParamData> deletePerson(HttpServletRequest request) {
         try {
             return mPersonService.deletePerson(paramDataInit());
         } catch (Exception e) {
@@ -114,6 +130,7 @@ public class PersonController extends BaseController {
 
     /**
      * 可通行设备
+     *
      * @param request
      * @return
      */
@@ -127,7 +144,6 @@ public class PersonController extends BaseController {
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
         }
     }
-
 
 
     @ResponseBody

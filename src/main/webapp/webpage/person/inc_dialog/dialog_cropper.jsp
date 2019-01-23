@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <el-dialog title="请将头像位于框中"
-           :visible.sync="visible"
-           @opened="opened"
+           :visible.sync="cropperVisible"
+           @opened="open"
            @closed="closed"
            width="650px">
     <el-row>
