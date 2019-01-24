@@ -13,6 +13,7 @@ import com.ts.cpfr.utils.ResultData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -49,6 +50,29 @@ public class RecordServiceImpl implements RecordService {
         if (mRecordDao.deleteRecord(pd)) {
             return new ResultData<>(HandleEnum.SUCCESS);
         } else return new ResultData<>(HandleEnum.FAIL);
+    }
+
+    @Override
+    public ResultData<ParamData> deleteRecordLists(ParamData pd) {
+        String record_ids = pd.getString("record_ids");
+        System.out.println("test::::::"+record_ids);
+        List<ParamData> list = new ArrayList<>();
+        String[] recordIdArr = record_ids.split(",");
+        for (String recordId : recordIdArr) {
+                ParamData paramData = new ParamData();
+                int record_id = Integer.parseInt(recordId);
+                paramData.put("record_id", record_id);
+                list.add(paramData);
+        }
+
+        ParamData paramData = new ParamData();
+        paramData.put("wid", memory.getLoginUser().getWId());
+        paramData.put("list", list);
+        if (mRecordDao.deleteRecordLists(paramData)) {
+            return new ResultData<>(HandleEnum.SUCCESS);
+        }
+        return new ResultData<>(HandleEnum.FAIL);
+
     }
 
 }

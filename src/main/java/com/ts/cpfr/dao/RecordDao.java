@@ -12,5 +12,8 @@ import java.util.List;
  */
 public interface RecordDao {
     List<ParamData> selectRecordListWithBlob(ParamData pd);
+
     boolean deleteRecord(ParamData pd);
+
+    boolean deleteRecordLists(ParamData pd);
 }

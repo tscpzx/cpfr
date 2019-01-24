@@ -10,6 +10,7 @@ import com.ts.cpfr.utils.ResultData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,7 +49,7 @@ public class RecordController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/delete")
-    public ResultData<ParamData> deleteRecord(HttpServletRequest request) {
+    public ResultData<ParamData> delete(HttpServletRequest request) {
         try {
             return mRecordService.deleteRecord(paramDataInit());
         } catch (Exception e) {
@@ -65,7 +66,12 @@ public class RecordController extends BaseController {
      */
     @ResponseBody
     @RequestMapping("/deleteLists")
-    public ResultData<ParamData> deleteRecordLists(HttpServletRequest request) {
-        return null;
+    public ResultData<ParamData> deleteLists(HttpServletRequest request) {
+        try {
+            return mRecordService.deleteRecordLists(paramDataInit());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
     }
 }

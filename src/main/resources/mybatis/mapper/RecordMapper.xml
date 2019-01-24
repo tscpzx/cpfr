@@ -13,6 +13,13 @@
         </where>
     </select>
     <delete id="deleteRecord" parameterType="pd">
-           delete  from tbl_#{wid}_record where  record_id=#{record_id}
+        delete from tbl_#{wid}_record where record_id=#{record_id}
+    </delete>
+
+    <delete id="deleteRecordLists" parameterType="pd">
+        delete from tbl_#{wid}_record where record_id in
+        <foreach collection="list" item="data" open="(" separator="," close=")">
+            #{data.record_id}
+        </foreach>
     </delete>
 </mapper>

@@ -124,28 +124,27 @@
                 this.multipleSelection = val;
             },
             deleteRecordLists() {
-                let record_ids = [];
+                l(this.multipleSelection);
+                var arr = new Array();
                 if (this.multipleSelection.length == 0) {
                     layAlert1("请勾选待删除记录");
                 } else {
                     this.multipleSelection.forEach(function (item) {
-                        record_ids.push(item.record_id);
+                        arr.push(item.record_id);
                     });
-                    l(record_ids);
-                    ajaxGet({
-                        url: "${pageContext.request.contextPath}/record/deleteLists",
-                        data: {
-                            record_ids: record_ids
-                        },
-                        success: function (result) {
-                            layAlert1(result.message);
-                            arrayRemoveObj(vm.tableData, this.multipleSelection);
-                            vm.total--;
-                        }
+                    var record_ids = arr.join(',');
+                    elmDialog("确定删除选中记录吗？", function () {
+                        ajaxGet({
+                            url: "${pageContext.request.contextPath}/record/deleteLists",
+                            data: {
+                                record_ids: record_ids
+                            },
+                            success: function (result) {
+                                layAlert1(result.message);
+                            }
+                        });
                     });
                 }
-
-
             },
 
             deleteRecordById(scope) {

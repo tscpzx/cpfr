@@ -15,4 +15,5 @@ import java.util.List;
 public interface RecordService {
     ResultData<PageData<ParamData>> getRecordBase64List(ParamData pd);
     ResultData<ParamData> deleteRecord(ParamData pd);
+    ResultData<ParamData> deleteRecordLists(ParamData pd);
 }
