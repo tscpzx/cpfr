@@ -90,10 +90,10 @@
                         <i class="el-icon-document"></i>
                         <span slot="title">记录管理</span>
                     </el-menu-item>
-                    <el-menu-item index="5">
+                 <%--   <el-menu-item index="5">
                         <i class="el-icon-edit-outline"></i>
                         <span slot="title">账号管理</span>
-                    </el-menu-item>
+                    </el-menu-item>--%>
                 </el-menu>
             </el-aside>
 

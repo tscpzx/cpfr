@@ -11,6 +11,7 @@
                 and POSITION(#{keyword} IN p.person_name) OR POSITION(#{keyword} IN d.device_name)
             </if>
         </where>
+        order by r.record_time desc
     </select>
     <delete id="deleteRecord" parameterType="pd">
         delete from tbl_#{wid}_record where record_id=#{record_id}

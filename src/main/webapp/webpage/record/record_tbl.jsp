@@ -125,8 +125,8 @@
             },
             deleteRecordLists() {
                 l(this.multipleSelection);
-                var arr = new Array();
-                if (this.multipleSelection.length == 0) {
+                var arr = [];
+                if (this.multipleSelection.length === 0) {
                     layAlert1("请勾选待删除记录");
                 } else {
                     this.multipleSelection.forEach(function (item) {
