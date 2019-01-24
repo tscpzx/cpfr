@@ -37,8 +37,7 @@
         <template>
             <el-table ref="multipleTable" :data="tableData" style="width: 100%"
                       @selection-change="handleSelectionChange" stripe>
-                <el-table-column type="selection">全选/全不选
-                </el-table-column>
+                <el-table-column type="selection"></el-table-column>
                 <el-table-column prop="record_id" label="ID">
                 </el-table-column>
                 <el-table-column prop="person_name" label="姓名">
@@ -102,9 +101,7 @@
             pageSize: 5,
             total: '',
             keyword: '',
-            multipleSelection: [],
-            recordIds: [],
-            i: 0
+            multipleSelection: []
         },
         methods: {
             handleChange(val) {
@@ -124,7 +121,6 @@
                 this.multipleSelection = val;
             },
             deleteRecordLists() {
-                l(this.multipleSelection);
                 var arr = [];
                 if (this.multipleSelection.length === 0) {
                     layAlert1("请勾选待删除记录");
@@ -141,6 +137,10 @@
                             },
                             success: function (result) {
                                 layAlert1(result.message);
+                                ajaxRecordList({
+                                    pageNum: vm.currentPage,
+                                    pageSize: vm.pageSize
+                                });
                             }
                         });
                     });
