@@ -53,11 +53,11 @@
                         <a href="#">${sessionScope.user.name} , 您好!</a></div>
                 </el-col>
                 <el-col :span="2">
-                    <div style="float: right"><a href="register.jsp">修改密码</a>
+                    <div style="float: right" v-on:click="visible=true;"><a href="#">修改密码</a>
                     </div>
                 </el-col>
                 <el-col :span="2">
-                    <div style="float: right" onclick="ajaxLogout()"><a href="#">退出登录</a>
+                    <div style="float: right" v-on:click="ajaxLogout"><a href="#">退出登录</a>
                     </div>
                 </el-col>
             </el-row>
@@ -102,30 +102,70 @@
             </el-main>
         </el-container>
     </el-container>
+
+    <el-dialog title="修改密码"
+               :visible.sync="visible"
+               width="600px">
+        <el-form :model="model" label-width="100px" :rules="rules" ref="ref">
+            <el-form-item label="原密码:" prop="old_password">
+                <el-input v-model="model.old_password" type="text" autocomplete="off" placeholder="请输入原密码" size="small" style="width: 400px;"></el-input>
+            </el-form-item>
+            <el-form-item label="新密码:" prop="new_password">
+                <el-input v-model="model.new_password" type="text" autocomplete="off" placeholder="请输入新密码" size="small" style="width: 400px;"></el-input>
+            </el-form-item>
+        </el-form>
+
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="visible = false" size="small">取 消</el-button>
+            <el-button type="primary" @click="changePassword" size="small">确 定</el-button>
+        </div>
+    </el-dialog>
 </div>
 
 <script type="text/javascript">
     new Vue({
         el: '#web',
+        data:{
+            visible:false,
+            model:{
+                old_password:'',
+                new_password:''
+            },
+            rules: {
+                old_password: [
+                    {required: true, message: '请输入原密码', trigger: 'blur'}
+                ],
+                new_password: [
+                    {required: true, message: '请输入新密码', trigger: 'blur'}
+                ]
+            },
+        },
         methods: {
             onClick(event) {
                 $("#content-container").load($(event)[0].index);
+            },
+            ajaxLogout() {
+                ajaxPost({
+                    url: "${pageContext.request.contextPath}/user/logout",
+                    data: {},
+                    success: function (data) {
+                        layTip(data.message);
+                        window.location.href = "/cpfr/";
+                    }
+                });
+            },
+            changePassword(){
+                l(1)
+                this.$refs.ref.validate((valid) => {
+                    if (valid) {
+                        alert('submit!');
+                    }
+                });
             }
         }
     });
 
     $("#content-container").load("device/device");
-
-    function ajaxLogout() {
-        ajaxPost({
-            url: "${pageContext.request.contextPath}/user/logout",
-            data: {},
-            success: function (data) {
-                layTip(data.message);
-                window.location.href = "/cpfr/";
-            }
-        });
-    }
 </script>
 </body>
 </html>

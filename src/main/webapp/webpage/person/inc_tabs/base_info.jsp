@@ -6,7 +6,7 @@
     <el-form-item label="注册时间:">
         <span>{{data.add_time|formatDate}}</span>
     </el-form-item>
-    <el-form-item label="姓名:">
+    <el-form-item label="姓名:" prop="person_name">
         <el-input v-bind:value="data.person_name" v-model="personModel.person_name" type="text" autocomplete="off" size="small"></el-input>
     </el-form-item>
     <el-form-item label="工号:">
