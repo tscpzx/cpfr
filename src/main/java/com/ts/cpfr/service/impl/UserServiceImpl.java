@@ -88,4 +88,15 @@ public class UserServiceImpl implements UserService {
     public void logout() {
         memory.clearLoginUser();
     }
+
+    @Override
+    public ResultData<ParamData> changePassword(ParamData pd) {
+        pd.put("name", memory.getLoginUser().getName());
+        pd.put("admin_id", memory.getLoginUser().getAdminId());
+        LoginUser user = mUserDao.selectUserByName(pd);
+        if (user.getPassword().equals(pd.getString("old_password"))) {
+            if (mUserDao.updateUserPassword(pd)) return new ResultData<>(HandleEnum.SUCCESS);
+            else return new ResultData<>(HandleEnum.FAIL);
+        } else return new ResultData<>(HandleEnum.FAIL, "原密码输入有误");
+    }
 }

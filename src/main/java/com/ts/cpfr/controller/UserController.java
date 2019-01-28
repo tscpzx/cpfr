@@ -71,4 +71,15 @@ public class UserController extends BaseController {
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
         }
     }
+
+    @ResponseBody
+    @RequestMapping("/change_password")
+    public ResultData<ParamData> changePassword(HttpServletRequest request) {
+        try {
+            return mUserService.changePassword(paramDataInit());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
 }

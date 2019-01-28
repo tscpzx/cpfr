@@ -18,4 +18,8 @@
 	<update id="updateUserLoginTime" parameterType="pd">
 		update tbl_user set last_login_time=now() where admin_id=#{admin_id}
 	</update>
+
+	<update id="updateUserPassword" parameterType="pd">
+		update tbl_user set password=#{new_password} where admin_id=#{admin_id}
+	</update>
 </mapper>

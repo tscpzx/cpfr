@@ -90,10 +90,10 @@
                         <i class="el-icon-document"></i>
                         <span slot="title">记录管理</span>
                     </el-menu-item>
-                 <%--   <el-menu-item index="5">
-                        <i class="el-icon-edit-outline"></i>
-                        <span slot="title">账号管理</span>
-                    </el-menu-item>--%>
+                    <%--   <el-menu-item index="5">
+                           <i class="el-icon-edit-outline"></i>
+                           <span slot="title">账号管理</span>
+                       </el-menu-item>--%>
                 </el-menu>
             </el-aside>
 
@@ -108,10 +108,10 @@
                width="600px">
         <el-form :model="model" label-width="100px" :rules="rules" ref="ref">
             <el-form-item label="原密码:" prop="old_password">
-                <el-input v-model="model.old_password" type="text" autocomplete="off" placeholder="请输入原密码" size="small" style="width: 400px;"></el-input>
+                <el-input v-model="model.old_password" type="password" autocomplete="off" placeholder="请输入原密码" size="small" style="width: 400px;"></el-input>
             </el-form-item>
             <el-form-item label="新密码:" prop="new_password">
-                <el-input v-model="model.new_password" type="text" autocomplete="off" placeholder="请输入新密码" size="small" style="width: 400px;"></el-input>
+                <el-input v-model="model.new_password" type="password" autocomplete="off" placeholder="请输入新密码" size="small" style="width: 400px;"></el-input>
             </el-form-item>
         </el-form>
 
@@ -123,13 +123,13 @@
 </div>
 
 <script type="text/javascript">
-    new Vue({
+    var vmWeb=new Vue({
         el: '#web',
-        data:{
-            visible:false,
-            model:{
-                old_password:'',
-                new_password:''
+        data: {
+            visible: false,
+            model: {
+                old_password: '',
+                new_password: ''
             },
             rules: {
                 old_password: [
@@ -154,11 +154,20 @@
                     }
                 });
             },
-            changePassword(){
-                l(1)
+            changePassword() {
                 this.$refs.ref.validate((valid) => {
                     if (valid) {
-                        alert('submit!');
+                        ajaxPost({
+                            url: "${pageContext.request.contextPath}/user/change_password",
+                            data: {
+                                old_password: this.model.old_password,
+                                new_password: this.model.new_password
+                            },
+                            success: function (data) {
+                                layTip(data.message);
+                                vmWeb.visible = false;
+                            }
+                        });
                     }
                 });
             }

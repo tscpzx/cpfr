@@ -18,4 +18,6 @@ public interface UserService {
     ResultData<ParamData> register(ParamData pd);
 
     void logout();
+
+    ResultData<ParamData> changePassword(ParamData pd);
 }
