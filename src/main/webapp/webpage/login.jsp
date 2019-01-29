@@ -17,12 +17,12 @@
             border-radius: 5px;
             -moz-border-radius: 5px;
             background-clip: padding-box;
-            margin:auto;
+            margin: auto;
             width: 350px;
             padding: 25px 35px 15px;
             background: white;
-            filter:alpha(opacity:90);
-            opacity:0.9;
+            filter: alpha(opacity:90);
+            opacity: 0.9;
             border: 1px solid #eaeaea;
             box-shadow: 0 0 25px #cac6c6;
         }
@@ -31,26 +31,32 @@
             margin: 0 auto 25px;
             text-align: center;
             color: #222222;
-            font-size:17px;
+            font-size: 17px;
         }
 
         .el-button {
             width: 100%;
         }
 
-a{
-    color:#222222;
-}
+        a {
+            color: #222222;
+        }
+
         body {
             background: url("${pageContext.request.contextPath}/resource/images/img.jpg") no-repeat;
             background-size: 100% 100%;
             -moz-background-size: 100% 100%;
             overflow-y: hidden;
         }
+
+        .el-dropdown-link {
+            cursor: pointer;
+            color: #409EFF;
+        }
     </style>
 </head>
 
-<body >
+<body>
 <div id="app">
     <div class="container">
         <el-container>
@@ -70,13 +76,24 @@ a{
                 <el-form class="demo-ruleForm login-container" :model="loginModel" :rules="loginRules" ref="loginForm">
                     <p class="title">管理员登录</p>
                     <el-form-item prop="name">
-                        <el-input  v-model="loginModel.name" type="text" autocomplete="off" placeholder="请输入账号" clearable></el-input>
+                        <el-input v-model="loginModel.name" type="text" autocomplete="off" placeholder="请输入账号" clearable></el-input>
                     </el-form-item>
                     <el-form-item prop="password">
-                        <el-input  v-model="loginModel.password" type="password" autocomplete="off" placeholder="请输入密码" clearable></el-input>
+                        <el-input v-model="loginModel.password" type="password" autocomplete="off" placeholder="请输入密码" clearable></el-input>
                     </el-form-item>
+                    <%--   <el-form-item>
+                           <el-checkbox style="float: left;color: #222222">记住密码</el-checkbox>
+                       </el-form-item>--%>
                     <el-form-item>
-                        <el-checkbox style="float: left;color: #222222">记住密码</el-checkbox>
+                        <el-dropdown trigger="click" style="float: right;" @command="handleCommand">
+                          <span class="el-dropdown-link" style="cursor:default;">
+                            {{dropdownTitle}}<i class="el-icon-sort el-icon--right"></i>
+                          </span>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item command="中文">中文</el-dropdown-item>
+                                <el-dropdown-item command="英文">英文</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
                     </el-form-item>
                     <el-form-item>
                         <el-button type="primary" v-on:click="onClickLogin('loginForm')">登录
@@ -113,7 +130,8 @@ a{
                         {required: true, message: '请输入密码', trigger: 'blur'},
                         {validator: checkInput, trigger: 'blur'}
                     ]
-                }
+                },
+                dropdownTitle:'中文'
             }
         },
         methods: {
@@ -124,6 +142,9 @@ a{
                         ajaxLogin(model.name, model.password)
                     }
                 });
+            },
+            handleCommand(command) {
+                this.dropdownTitle=command;
             }
         }
     });
