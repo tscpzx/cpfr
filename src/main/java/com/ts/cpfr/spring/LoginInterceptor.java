@@ -4,13 +4,10 @@ import com.ts.cpfr.ehcache.Memory;
 import com.ts.cpfr.ehcache.ThreadToken;
 import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.SysLog;
-import com.ts.cpfr.utils.SystemConfig;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.util.AntPathMatcher;
-import org.springframework.util.PathMatcher;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.Cookie;
@@ -24,42 +21,22 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private Memory memory;
 
-    private static final PathMatcher PATH_MATCHER = new AntPathMatcher();
-
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //如果是登录页面则放行
-        if (!checkAllowAccess(request.getServletPath())) {
-            // 检查请求的token值是否为空
-            String token = getTokenFromRequest(request);
-            if (StringUtils.isEmpty(token) || !memory.checkLoginUser(token)) {
-                request.getRequestDispatcher("/user/nologin").forward(request, response);
-                return false;
-            } else {
-                // 保存当前token，用于Controller层获取登录用户信息
-                ThreadToken.setToken(token);
-                response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-                response.setCharacterEncoding("UTF-8");
-                response.setHeader("Cache-Control", "no-cache, must-revalidate");
-                return true;
-            }
+        // 检查请求的token值是否为空
+        String token = getTokenFromRequest(request);
+        if (StringUtils.isEmpty(token) || !memory.checkLoginUser(token)) {
+            request.getRequestDispatcher("/user/nologin").forward(request, response);
+            return false;
+        } else {
+            // 保存当前token，用于Controller层获取登录用户信息
+            ThreadToken.setToken(token);
+            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+            response.setCharacterEncoding("UTF-8");
+            response.setHeader("Cache-Control", "no-cache, must-revalidate");
+            return true;
         }
-        return true;
-    }
-
-
-    /**
-     * 检查URI是否放行
-     *
-     * @return 返回检查结果
-     */
-    private boolean checkAllowAccess(String URI) {
-        for (String allow : SystemConfig.allowUrlList) {
-            if (PATH_MATCHER.match(allow, URI)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**

@@ -1,7 +1,5 @@
 package com.ts.cpfr.utils;
 
-import java.util.concurrent.CopyOnWriteArrayList;
-
 /**
  * @Classname SystemConfig
  * @Description
@@ -33,16 +31,5 @@ public class SystemConfig {
             UPLOAD_IMAGE_DIR = "/home/cpfr_upload/image/";
             UPLOAD_RECORD_IMAGE_DIR = "/home/cpfr_upload/record_image/";
         }
-    }
-
-    public static CopyOnWriteArrayList<String> allowUrlList = new CopyOnWriteArrayList<>();
-
-    static {
-        allowUrlList.add("/app/device_register");
-        allowUrlList.add("/app/device_info");
-        allowUrlList.add("/app/person_list");
-        allowUrlList.add("/app/grant_list");
-        allowUrlList.add("/app/upload_record");
-        allowUrlList.add("/app/current_date");
     }
 }
