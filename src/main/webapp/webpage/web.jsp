@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -41,7 +42,7 @@
             <el-row>
                 <el-col :span="8">
                     <div>
-                        <p class="nav_title"><%=CommConst.WEB_TITLE%>
+                        <p class="nav_title"><spring:message code="face_recognition_management_system"/>
                         </p>
                     </div>
                 </el-col>

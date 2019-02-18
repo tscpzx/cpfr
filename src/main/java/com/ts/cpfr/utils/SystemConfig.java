@@ -38,9 +38,6 @@ public class SystemConfig {
     public static CopyOnWriteArrayList<String> allowUrlList = new CopyOnWriteArrayList<>();
 
     static {
-        allowUrlList.add("/user/login");//用户登录
-        allowUrlList.add("/user/nologin");//用户未登录
-        allowUrlList.add("/user/register");//用户注册
         allowUrlList.add("/app/device_register");
         allowUrlList.add("/app/device_info");
         allowUrlList.add("/app/person_list");

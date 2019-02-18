@@ -1,30 +1,21 @@
-<%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html>
 <head>
-    <%@include file="../resource/inc/incCss.jsp" %>
-    <%@include file="../resource/inc/incJs.jsp" %>
-
+    <title>SpringMVC<spring:message code="internationalisation" /></title>
 </head>
 <body>
-<div id="app">
 
-    <el-radio v-model="radio" label="1">备选项</el-radio>
-    <el-radio v-model="radio" label="2">备选项</el-radio>
 
-</div>
-
-<script type="text/javascript">
-    var Main = {
-        data() {
-            return {
-                radio: '2'
-            };
-        }
-    }
-    var Ctor = Vue.extend(Main)
-    new Ctor().$mount('#app')
-</script>
-
+Language:
+<a href="?lang=zh_CN"><spring:message code="language.cn" /></a>
+&nbsp;&nbsp;&nbsp;
+<a href="?lang=en_US"><spring:message code="language.en" /></a>
+<h1>
+    <!-- 将配置文件中的内容读取 -->
+    <spring:message code="welcome" />
+</h1>
+当前语言: ${pageContext.response.locale }
 </body>
 </html>

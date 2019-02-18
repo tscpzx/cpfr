@@ -1,5 +1,5 @@
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -61,7 +61,7 @@
     <div class="container">
         <el-container>
             <el-header>
-                <p style="font-size:26px;font-weight: 500 "><%=CommConst.WEB_TITLE%>
+                <p style="font-size:26px;font-weight: 500 "><spring:message code="face_recognition_management_system"/>
                 </p>
             </el-header>
             <%--
@@ -74,7 +74,7 @@
              --%>
             <el-main>
                 <el-form class="demo-ruleForm login-container" :model="loginModel" :rules="loginRules" ref="loginForm">
-                    <p class="title">管理员登录</p>
+                    <p class="title"><spring:message code="admin_login"/></p>
                     <el-form-item prop="name">
                         <el-input v-model="loginModel.name" type="text" autocomplete="off" placeholder="请输入账号" clearable></el-input>
                     </el-form-item>
@@ -90,8 +90,10 @@
                             {{dropdownTitle}}<i class="el-icon-sort el-icon--right"></i>
                           </span>
                             <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item command="中文">中文</el-dropdown-item>
-                                <el-dropdown-item command="英文">英文</el-dropdown-item>
+                                <el-dropdown-item command="zh_CN">
+                                    <spring:message code="language.cn"/></el-dropdown-item>
+                                <el-dropdown-item command="en_US">
+                                    <spring:message code="language.en"/></el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
                     </el-form-item>
@@ -115,6 +117,15 @@
                     callback(new Error("需要4个字符以上，并且只能是数字或者字母组成"));
                 } else callback()
             };
+            var dropdownTitle = '中文';
+            switch ('${pageContext.response.locale}') {
+                case 'zh_CN':
+                    dropdownTitle = '中文';
+                    break;
+                case 'en_US':
+                    dropdownTitle = 'English';
+                    break;
+            }
 
             return {
                 loginModel: {
@@ -131,7 +142,7 @@
                         {validator: checkInput, trigger: 'blur'}
                     ]
                 },
-                dropdownTitle:'中文'
+                dropdownTitle: dropdownTitle
             }
         },
         methods: {
@@ -144,7 +155,7 @@
                 });
             },
             handleCommand(command) {
-                this.dropdownTitle=command;
+                window.location.href = "${pageContext.request.contextPath}/login?lang=" + command;
             }
         }
     });
@@ -159,7 +170,7 @@
             success: function (data) {
                 layTip(data.message);
                 if (0 === data.code) {
-                    window.location.href = "/cpfr/webpage/web";
+                    window.location.href = "${pageContext.request.contextPath}/web?lang=" + '${pageContext.response.locale}';
                 }
             }
         });
