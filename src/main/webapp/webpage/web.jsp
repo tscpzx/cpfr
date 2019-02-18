@@ -125,6 +125,7 @@
 </div>
 
 <script type="text/javascript">
+    /* elementui中英文切换 */
     if ('${pageContext.response.locale}' === 'en_US')
         ELEMENT.locale(ELEMENT.lang.en);
     else
