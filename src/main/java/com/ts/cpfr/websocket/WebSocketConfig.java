@@ -26,7 +26,6 @@ public class WebSocketConfig extends WebMvcConfigurerAdapter implements WebSocke
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        System.out.println("==========================socket配置==========================");
         //注册websocket server实现类，"/webSocketServer"访问websocket的地址
         registry.addHandler(handle, SystemConfig.WEB_SOCKET_URL)
           .addInterceptors(new WsHandshakeInterceptor());

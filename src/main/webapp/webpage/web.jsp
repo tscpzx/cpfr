@@ -42,7 +42,8 @@
             <el-row>
                 <el-col :span="8">
                     <div>
-                        <p class="nav_title"><spring:message code="face_recognition_management_system"/>
+                        <p class="nav_title">
+                            <spring:message code="face_recognition_management_system"/>
                         </p>
                     </div>
                 </el-col>
@@ -124,7 +125,12 @@
 </div>
 
 <script type="text/javascript">
-    var vmWeb=new Vue({
+    if ('${pageContext.response.locale}' === 'en_US')
+        ELEMENT.locale(ELEMENT.lang.en);
+    else
+        ELEMENT.locale(ELEMENT.lang.zhCN);
+
+    var vmWeb = new Vue({
         el: '#web',
         data: {
             visible: false,
