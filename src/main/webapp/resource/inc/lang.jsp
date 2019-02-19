@@ -67,3 +67,4 @@
 <spring:message code="next_page" var="next_page_lang"/>
 <spring:message code="previous_page" var="previous_page_lang"/>
 <spring:message code="add_people" var="add_people"/>
+<spring:message code="recognition_picture" var="reg_picture"/>

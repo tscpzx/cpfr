@@ -58,24 +58,20 @@
                         <span v-if="scope.row.recog_type==4">${face_and_num}</span>
                     </template>
                 </el-table-column>
-                <spring:message code="registration_time" var="reg_time"/>
-                <el-table-column label="${reg_time}">
+                <el-table-column label="${registration_time}">
                     <template slot-scope="scope">
                         <i class="el-icon-time"></i>
                         <span style="margin-left: 10px">{{ scope.row.record_time|formatDate }}</span>
                     </template>
                 </el-table-column>
-                <spring:message code="recognition_picture" var="reg_picture"/>
                 <el-table-column label="${reg_picture}">
                     <template slot-scope="scope">
                         <img class="image_tbl" v-bind:src="'data:image/jpeg;base64,'+scope.row.base_image">
                     </template>
                 </el-table-column>
-                <spring:message code="operation" var="operate"/>
-                <el-table-column label="${operate}">
+                <el-table-column label="${operation}">
                     <template slot-scope="scope">
-                        <el-button type="danger" size="small" @click="deleteRecordById(scope)"><spring:message
-                                code="delete"/></el-button>
+                        <el-button type="danger" size="small" @click="deleteRecordById(scope)">${delete}</el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -83,8 +79,6 @@
 
         <template>
             <div class="block">
-                <spring:message code="next_page" var="next_page_lang"/>
-                <spring:message code="previous_page" var="previous_page_lang"/>
                 <el-pagination ref="pagination"
                                @size-change="handleChange"
                                @current-change="handleChange"
