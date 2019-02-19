@@ -4,7 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.ts.cpfr.dao.DeviceDao;
 import com.ts.cpfr.dao.GroupDao;
 import com.ts.cpfr.dao.PersonDao;
-import com.ts.cpfr.ehcache.Memory;
+import com.ts.cpfr.ehcache.WebMemory;
 import com.ts.cpfr.service.GroupService;
 import com.ts.cpfr.utils.CommUtil;
 import com.ts.cpfr.utils.HandleEnum;
@@ -37,13 +37,13 @@ public class GroupServiceImpl implements GroupService {
     @Resource
     private DeviceDao mDeviceDao;
     @Autowired
-    private Memory memory;
+    private WebMemory memory;
 
     @Override
     public ResultData<PageData<ParamData>> getGroupList(ParamData pd) {
         int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
         int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
-        pd.put("wid", memory.getLoginUser().getWId());
+        pd.put("wid", memory.getCache().getWid());
 
         if (pageSize != 0) PageHelper.startPage(pageNum, pageSize);
         List<ParamData> groupList = mGroupDao.selectGroupList(pd);
@@ -52,7 +52,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public ParamData queryGroup(ParamData pd) {
-        pd.put("wid", memory.getLoginUser().getWId());
+        pd.put("wid", memory.getCache().getWid());
         ParamData group = mGroupDao.selectGroup(pd);
         List<ParamData> personList = mPersonDao.selectPersonList(pd);
         List<ParamData> deviceList = mDeviceDao.selectDeviceList(pd);
@@ -65,7 +65,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public ResultData<ParamData> addGroup(ParamData pd) {
-        pd.put("wid", memory.getLoginUser().getWId());
+        pd.put("wid", memory.getCache().getWid());
         if (mGroupDao.insertGroup(pd)) return new ResultData<>(HandleEnum.SUCCESS);
         else return new ResultData<>(HandleEnum.FAIL);
     }
@@ -84,7 +84,7 @@ public class GroupServiceImpl implements GroupService {
         }
 
         ParamData paramData = new ParamData();
-        paramData.put("wid", memory.getLoginUser().getWId());
+        paramData.put("wid", memory.getCache().getWid());
         paramData.put("group_id", pd.getString("group_id"));
         paramData.put("list", list);
         if (mPersonDao.updatePersonGroupID(paramData)) return new ResultData<>(HandleEnum.SUCCESS);
@@ -105,7 +105,7 @@ public class GroupServiceImpl implements GroupService {
         }
 
         ParamData paramData = new ParamData();
-        paramData.put("wid", memory.getLoginUser().getWId());
+        paramData.put("wid", memory.getCache().getWid());
         paramData.put("group_id", pd.getString("group_id"));
         paramData.put("list", list);
         if (mDeviceDao.updateDeviceGroupID(paramData)) return new ResultData<>(HandleEnum.SUCCESS);
@@ -114,28 +114,28 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public ResultData<ParamData> updateGroupInfo(ParamData pd) {
-        pd.put("wid", memory.getLoginUser().getWId());
+        pd.put("wid", memory.getCache().getWid());
         if (mGroupDao.updateGroupInfo(pd)) return new ResultData<>(HandleEnum.SUCCESS);
         return new ResultData<>(HandleEnum.FAIL);
     }
 
     @Override
     public ResultData<ParamData> deleteGroup(ParamData pd) {
-        pd.put("wid", memory.getLoginUser().getWId());
+        pd.put("wid", memory.getCache().getWid());
         if (mGroupDao.deleteGroup(pd)) return new ResultData<>(HandleEnum.SUCCESS);
         return new ResultData<>(HandleEnum.FAIL);
     }
 
     @Override
     public ResultData<ParamData> deleteGroupPerson(ParamData pd) {
-        pd.put("wid", memory.getLoginUser().getWId());
+        pd.put("wid", memory.getCache().getWid());
         if (mPersonDao.deletePersonGroupID(pd)) return new ResultData<>(HandleEnum.SUCCESS);
         return new ResultData<>(HandleEnum.FAIL);
     }
 
     @Override
     public ResultData<ParamData> deleteGroupDevice(ParamData pd) {
-        pd.put("wid", memory.getLoginUser().getWId());
+        pd.put("wid", memory.getCache().getWid());
         if (mDeviceDao.deleteDeviceGroupID(pd)) return new ResultData<>(HandleEnum.SUCCESS);
         return new ResultData<>(HandleEnum.FAIL);
     }

@@ -3,8 +3,8 @@
 	<diskStore path="java.io.tmpdir"/>
 
 	<!-- 配置一个默认缓存，必须的 -->
-	<defaultCache maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="7200"
-	              timeToLiveSeconds="43200" overflowToDisk="false"/>
+	<defaultCache maxElementsInMemory="10000" eternal="false" timeToIdleSeconds="0"
+	              timeToLiveSeconds="0" overflowToDisk="false"/>
 
 	<!-- 配置自定义缓存 maxElementsInMemory：缓存中允许创建的最大对象数 eternal：缓存中对象是否为永久的，如果是，超时设置将被忽略，对象从不过期。
 		timeToIdleSeconds：缓存数据的钝化时间，也就是在一个元素消亡之前， 两次访问时间的最大时间间隔值，这只能在元素不是永久驻留时有效，

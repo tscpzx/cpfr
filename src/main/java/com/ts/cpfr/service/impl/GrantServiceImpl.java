@@ -2,7 +2,7 @@ package com.ts.cpfr.service.impl;
 
 import com.ts.cpfr.dao.DeviceDao;
 import com.ts.cpfr.dao.GrantDao;
-import com.ts.cpfr.ehcache.Memory;
+import com.ts.cpfr.ehcache.WebMemory;
 import com.ts.cpfr.service.GrantService;
 import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.HandleEnum;
@@ -36,7 +36,7 @@ public class GrantServiceImpl implements GrantService {
     @Resource
     private DeviceDao mDeviceDao;
     @Autowired
-    private Memory memory;
+    private WebMemory memory;
     @Autowired
     private SocketMessageHandle mSocketMessageHandle;
 
@@ -66,7 +66,7 @@ public class GrantServiceImpl implements GrantService {
         }
 
         ParamData paramData = new ParamData();
-        paramData.put("wid", memory.getLoginUser().getWId());
+        paramData.put("wid", memory.getCache().getWid());
         paramData.put("list", list);
         if (mGrantDao.insertGrant(paramData)) {
             //通知设备权限更新
@@ -100,7 +100,7 @@ public class GrantServiceImpl implements GrantService {
         }
 
         ParamData paramData = new ParamData();
-        paramData.put("wid", memory.getLoginUser().getWId());
+        paramData.put("wid", memory.getCache().getWid());
         paramData.put("list", list);
         if (mGrantDao.updateGrantBan(paramData)) {
             //通知设备权限更新

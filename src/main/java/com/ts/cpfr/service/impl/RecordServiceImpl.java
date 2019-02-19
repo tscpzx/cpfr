@@ -2,7 +2,7 @@ package com.ts.cpfr.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.ts.cpfr.dao.RecordDao;
-import com.ts.cpfr.ehcache.Memory;
+import com.ts.cpfr.ehcache.WebMemory;
 import com.ts.cpfr.service.RecordService;
 import com.ts.cpfr.utils.CommUtil;
 import com.ts.cpfr.utils.HandleEnum;
@@ -31,13 +31,13 @@ public class RecordServiceImpl implements RecordService {
     @Resource
     RecordDao mRecordDao;
     @Autowired
-    private Memory memory;
+    private WebMemory memory;
 
     @Override
     public ResultData<PageData<ParamData>> getRecordBase64List(ParamData pd) {
         int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
         int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
-        pd.put("wid", memory.getLoginUser().getWId());
+        pd.put("wid", memory.getCache().getWid());
 
         if (pageSize != 0) PageHelper.startPage(pageNum, pageSize);
         List<ParamData> recordList = mRecordDao.selectRecordListWithBlob(pd);
@@ -46,7 +46,7 @@ public class RecordServiceImpl implements RecordService {
 
     @Override
     public ResultData<ParamData> deleteRecord(ParamData pd) {
-        pd.put("wid", memory.getLoginUser().getWId());
+        pd.put("wid", memory.getCache().getWid());
         if (mRecordDao.deleteRecord(pd)) {
             return new ResultData<>(HandleEnum.SUCCESS);
         } else return new ResultData<>(HandleEnum.FAIL);
@@ -66,7 +66,7 @@ public class RecordServiceImpl implements RecordService {
         }
 
         ParamData paramData = new ParamData();
-        paramData.put("wid", memory.getLoginUser().getWId());
+        paramData.put("wid", memory.getCache().getWid());
         paramData.put("list", list);
         if (mRecordDao.deleteRecordLists(paramData)) {
             return new ResultData<>(HandleEnum.SUCCESS);

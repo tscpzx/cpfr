@@ -1,6 +1,6 @@
 package com.ts.cpfr.spring;
 
-import com.ts.cpfr.ehcache.Memory;
+import com.ts.cpfr.ehcache.WebMemory;
 import com.ts.cpfr.ehcache.ThreadToken;
 import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.SysLog;
@@ -19,14 +19,14 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class LoginInterceptor extends HandlerInterceptorAdapter {
     @Autowired
-    private Memory memory;
+    private WebMemory memory;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         //如果是登录页面则放行
         // 检查请求的token值是否为空
         String token = getTokenFromRequest(request);
-        if (StringUtils.isEmpty(token) || !memory.checkLoginUser(token)) {
+        if (StringUtils.isEmpty(token) || !memory.checkCache(token)) {
             request.getRequestDispatcher("/user/nologin").forward(request, response);
             return false;
         } else {

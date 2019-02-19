@@ -44,7 +44,7 @@ public class LoginUser implements Serializable {
         this.password = password;
     }
 
-    public int getWId() {
+    public int getWid() {
         return wid;
     }
 

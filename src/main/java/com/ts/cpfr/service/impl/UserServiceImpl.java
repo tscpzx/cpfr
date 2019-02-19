@@ -2,7 +2,7 @@ package com.ts.cpfr.service.impl;
 
 import com.ts.cpfr.dao.TableDao;
 import com.ts.cpfr.dao.UserDao;
-import com.ts.cpfr.ehcache.Memory;
+import com.ts.cpfr.ehcache.WebMemory;
 import com.ts.cpfr.ehcache.ThreadToken;
 import com.ts.cpfr.entity.LoginUser;
 import com.ts.cpfr.service.UserService;
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     @Resource
     private TableDao mTableDao;
     @Autowired
-    private Memory memory;
+    private WebMemory memory;
 
     @Override
     public ResultData<ParamData> login(ParamData pd, HttpServletRequest request, HttpServletResponse response) {
@@ -44,7 +44,7 @@ public class UserServiceImpl implements UserService {
         if (user != null) {
             ////todo 解密对比
             if (user.getPassword().equals(pd.getString("password"))) {
-                memory.saveLoginUser(user);
+                memory.putCache(user);
 
                 HttpSession session = request.getSession();
                 session.setMaxInactiveInterval(SystemConfig.SESSION_TIME_LIVE_MAX);
@@ -86,13 +86,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void logout() {
-        memory.clearLoginUser();
+        memory.clearCache();
     }
 
     @Override
     public ResultData<ParamData> changePassword(ParamData pd) {
-        pd.put("name", memory.getLoginUser().getName());
-        pd.put("admin_id", memory.getLoginUser().getAdminId());
+        pd.put("name", memory.getCache().getName());
+        pd.put("admin_id", memory.getCache().getAdminId());
         LoginUser user = mUserDao.selectUserByName(pd);
         if (user.getPassword().equals(pd.getString("old_password"))) {
             if (mUserDao.updateUserPassword(pd)) return new ResultData<>(HandleEnum.SUCCESS);

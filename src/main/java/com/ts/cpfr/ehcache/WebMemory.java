@@ -16,7 +16,7 @@ import javax.annotation.PreDestroy;
  * Created by Administrator on 2018/1/4.
  */
 @Component
-public class Memory {
+public class WebMemory {
 
     @Autowired
     private Cache ehcache;
@@ -39,18 +39,18 @@ public class Memory {
      * timeToIdleSeconds -->  当对象自从最近一次被访问后，如果处于空闲状态的时间超过了timeToIdleSeconds属性值，这个对象就会过期，
      * EHCache将把它从缓存中清空；即缓存被创建后，最后一次访问时间到缓存失效之时，两者之间的间隔，单位为秒(s)
      */
-    public void saveLoginUser(LoginUser loginUser) {
+    public void putCache(LoginUser loginUser) {
         // 生成seed和token值
-        String seed = TokenProcessor.getInstance().generateSeed(loginUser.getAdminId());
+        String seed = TokenProcessor.getInstance().generateSeed(loginUser.getAdminId() + "");
         String token = TokenProcessor.getInstance()
-          .generateToken(loginUser.getName(), loginUser.getPassword());
+          .generateToken(loginUser.getName() + loginUser.getPassword());
 
         // 保存token到登录用户中
         loginUser.setToken(token);
         // 保存当前token，用于Controller层获取登录用户信息
         ThreadToken.setToken(token);
         // 清空之前的登录信息
-        clearLoginToken(seed);
+        clearCache(seed);
         // 保存新的token和登录信息
         ehcache.put(new Element(seed, token, SystemConfig.SESSION_TIME_TO_IDLE, SystemConfig.SESSION_TIME_LIVE_MAX));
         ehcache.put(new Element(token, loginUser, SystemConfig.SESSION_TIME_TO_IDLE, SystemConfig.SESSION_TIME_LIVE_MAX));
@@ -59,7 +59,7 @@ public class Memory {
     /**
      * 获取当前线程中的用户信息
      */
-    public LoginUser getLoginUser() {
+    public LoginUser getCache() {
         Element element = ehcache.get(ThreadToken.getToken());
         return element == null ? null : (LoginUser) element.getObjectValue();
     }
@@ -67,7 +67,7 @@ public class Memory {
     /**
      * 根据token检查用户是否登录
      */
-    public boolean checkLoginUser(String token) {
+    public boolean checkCache(String token) {
         Element element = ehcache.get(token);
         return element != null && element.getObjectValue() != null;
     }
@@ -75,19 +75,19 @@ public class Memory {
     /**
      * 清空登录信息
      */
-    public void clearLoginUser() {
-        LoginUser loginUser = getLoginUser();
+    public void clearCache() {
+        LoginUser loginUser = getCache();
         if (loginUser != null) {
             // 根据登录的用户名生成seed，然后清除登录信息
             String seed = MD5Util.md5(loginUser.getAdminId() + "");
-            clearLoginToken(seed);
+            clearCache(seed);
         }
     }
 
     /**
      * 根据seed清空登录信息
      */
-    private void clearLoginToken(String seed) {
+    private void clearCache(String seed) {
         // 根据seed找到对应的token
         Element element = ehcache.get(seed);
         if (element != null) {
