@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <style type="text/css">
     .record_tbl_box {
         padding: 20px;
@@ -13,21 +14,24 @@
         text-align: left;
     }
 </style>
+
 <div class="record_tbl_box">
     <div id="record_tbl">
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 15px;">
-            <el-breadcrumb-item>记录管理</el-breadcrumb-item>
-            <el-breadcrumb-item>记录列表</el-breadcrumb-item>
+            <el-breadcrumb-item><spring:message code="record_management"/></el-breadcrumb-item>
+            <el-breadcrumb-item><spring:message code="record_list"/></el-breadcrumb-item>
         </el-breadcrumb>
 
         <el-form>
             <el-form-item>
                 <el-row>
-                    <el-button type="primary" size="small" @click="deleteRecordLists">批量删除
+                    <el-button type="primary" size="small" @click="deleteRecordLists"><spring:message code="delete_in_batches"/>
                     </el-button>
                     <div style="float: right">
-                        <el-input style="width: 200px;" v-model="keyword" size="small" placeholder="请输入搜索内容"></el-input>
-                        <el-button type="primary" size="small" @click="selectRecord">查找
+                        <spring:message code="please_enter_the_search_content" var="search_content"/>
+
+                        <el-input style="width: 200px;" v-model="keyword" size="small" placeholder="${search_content}"></el-input>
+                        <el-button type="primary" size="small" @click="selectRecord"><spring:message code="search"/>
                         </el-button>
                     </div>
                 </el-row>
@@ -38,35 +42,42 @@
             <el-table ref="multipleTable" :data="tableData" style="width: 100%"
                       @selection-change="handleSelectionChange" stripe>
                 <el-table-column type="selection"></el-table-column>
-                <el-table-column prop="record_id" label="ID">
+                <spring:message code="id" var="id"/>
+                <el-table-column prop="record_id" label="${id}">
                 </el-table-column>
-                <el-table-column prop="person_name" label="姓名">
+                <spring:message code="name" var="name"/>
+                <el-table-column prop="person_name" label="${name}">
                 </el-table-column>
-                <el-table-column prop="device_name" label="设备">
+                <spring:message code="device" var="device"/>
+                <el-table-column prop="device_name" label="${device}">
                 </el-table-column>
-                <el-table-column label="识别模式">
+                <spring:message code="recognition_mode" var="mode"/>
+                <el-table-column label="${mode}">
                     <template slot-scope="scope">
-                        <span v-if="scope.row.recog_type==0">人脸</span>
-                        <span v-if="scope.row.recog_type==1">身份证</span>
-                        <span v-if="scope.row.recog_type==2">工号</span>
-                        <span v-if="scope.row.recog_type==3">人脸+身份证</span>
-                        <span v-if="scope.row.recog_type==4">人脸+工号</span>
+                        <span v-if="scope.row.recog_type==0"><spring:message code="human_face"/></span>
+                        <span v-if="scope.row.recog_type==1"><spring:message code="id_card"/></span>
+                        <span v-if="scope.row.recog_type==2"><spring:message code="job_number"/></span>
+                        <span v-if="scope.row.recog_type==3"><spring:message code="face_and_card"/></span>
+                        <span v-if="scope.row.recog_type==4"><spring:message code="face_and_num"/></span>
                     </template>
                 </el-table-column>
-                <el-table-column label="识别时间">
+                <spring:message code="registration_time" var="reg_time"/>
+                <el-table-column label="${reg_time}">
                     <template slot-scope="scope">
                         <i class="el-icon-time"></i>
                         <span style="margin-left: 10px">{{ scope.row.record_time|formatDate }}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="识别图片">
+                <spring:message code="recognition_picture" var="reg_picture"/>
+                <el-table-column label="${reg_picture}">
                     <template slot-scope="scope">
                         <img class="image_tbl" v-bind:src="'data:image/jpeg;base64,'+scope.row.base_image">
                     </template>
                 </el-table-column>
-                <el-table-column label="操作">
+                <spring:message code="operation" var="operate"/>
+                <el-table-column label="${operate}">
                     <template slot-scope="scope">
-                        <el-button type="danger" size="small" @click="deleteRecordById(scope)">删除</el-button>
+                        <el-button type="danger" size="small" @click="deleteRecordById(scope)"><spring:message code="delete"/></el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -74,14 +85,16 @@
 
         <template>
             <div class="block">
+                <spring:message code="next_page" var="next_page_lang"/>
+                <spring:message code="previous_page" var="previous_page_lang"/>
                 <el-pagination ref="pagination"
                                @size-change="handleChange"
                                @current-change="handleChange"
                                :current-page.sync="currentPage"
                                :page-size.sync="pageSize"
                                :page-sizes="pageSizes"
-                               prev-text="上一页"
-                               next-text="下一页"
+                               prev-text="${previous_page_lang}"
+                               next-text="${next_page_lang}"
                                layout="total, sizes, prev, pager, next, jumper"
                                :total="total">
                 </el-pagination>
@@ -89,6 +102,9 @@
         </template>
     </div>
 </div>
+<spring:message code="delete_record" var="delete_record"/>
+<spring:message code="tick_record" var="tick_record"/>
+<spring:message code="delete_selected_record" var="delete_selected_record"/>
 
 <script type="text/javascript">
     var vm = new Vue({
@@ -121,15 +137,16 @@
                 this.multipleSelection = val;
             },
             deleteRecordLists() {
+
                 var arr = [];
                 if (this.multipleSelection.length === 0) {
-                    layAlert1("请勾选待删除记录");
+                    layAlert1("${tick_record}");
                 } else {
                     this.multipleSelection.forEach(function (item) {
                         arr.push(item.record_id);
                     });
                     var record_ids = arr.join(',');
-                    elmDialog("确定删除选中记录吗？", function () {
+                    elmDialog("${delete_selected_record}", function () {
                         ajaxGet({
                             url: "${pageContext.request.contextPath}/record/deleteLists",
                             data: {
@@ -148,7 +165,7 @@
             },
 
             deleteRecordById(scope) {
-                elmDialog("确定删除该条记录吗？", function () {
+                elmDialog("${delete_record}", function () {
                     ajaxGet({
                         url: "${pageContext.request.contextPath}/record/delete",
                         data: {

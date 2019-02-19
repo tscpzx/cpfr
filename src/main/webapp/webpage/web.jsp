@@ -47,19 +47,21 @@
                         </p>
                     </div>
                 </el-col>
-                <el-col :span="10">
+                <el-col :span="9">
                     <div style="height: 60px;"></div>
                 </el-col>
                 <el-col :span="2">
                     <div style="float: right">
-                        <a href="#">${sessionScope.user.name} , 您好!</a></div>
+                        <spring:message code="hello" var="hello"/>
+                        <a href="#">${sessionScope.user.name},${hello}</a></div>
                 </el-col>
-                <el-col :span="2">
-                    <div style="float: right" v-on:click="visible=true;"><a href="#">修改密码</a>
+                <el-col :span="3">
+                    <spring:message code="change_password" var="change_password" />
+                    <div style="float: right" v-on:click="visible=true;"><a href="#">${change_password}</a>
                     </div>
                 </el-col>
                 <el-col :span="2">
-                    <div style="float: right" v-on:click="ajaxLogout"><a href="#">退出登录</a>
+                    <div style="float: right" v-on:click="ajaxLogout"><a href="#"><spring:message code="sign_out"/></a>
                     </div>
                 </el-col>
             </el-row>
@@ -76,10 +78,10 @@
                     <el-submenu index="person">
                         <template slot="title">
                             <i class="el-icon-service"></i>
-                            <span>人员管理</span>
+                            <span><spring:message code="people_management"/></span>
                         </template>
                         <el-menu-item-group>
-                            <el-menu-item index="person/person" @click="onClick($event)">人员列表
+                            <el-menu-item index="person/person" @click="onClick($event)"><spring:message code="people_list"/>
                             </el-menu-item>
                             <%--<el-menu-item index="1-2">批量上传</el-menu-item>--%>
                         </el-menu-item-group>
@@ -90,7 +92,7 @@
                     </el-menu-item>
                     <el-menu-item index="record/record_tbl" @click="onClick($event)">
                         <i class="el-icon-document"></i>
-                        <span slot="title">记录管理</span>
+                        <span slot="title"><spring:message code="record_management"/></span>
                     </el-menu-item>
                     <%--   <el-menu-item index="5">
                            <i class="el-icon-edit-outline"></i>

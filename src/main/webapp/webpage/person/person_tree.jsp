@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <style type="text/css">
     .el-tree-node__content {
         height: 36px;
@@ -34,7 +35,7 @@
 <div id="person">
     <div class="tree-header-item" v-on:click="addPerson()">
         <i class="el-icon-circle-plus-outline"></i>
-        <span>添加人员</span>
+        <span><spring:message code="add_people"/></span>
     </div>
     <el-tree
             :data="items"
@@ -46,15 +47,17 @@
             :default-expanded-keys="[-1]"
             ref="tree"></el-tree>
 </div>
-
+<spring:message code="people_list" var="people_list_lang"/>
 <script type="text/javascript">
+
     ajaxPersonList();
     var vmPersonTree = new Vue({
+
         el: "#person",
         data: {
             items: [{
                 person_id: -1,
-                person_name: '人员列表',
+                person_name:  '${people_list_lang}',
                 children: []
             }],
             defaultProps: {

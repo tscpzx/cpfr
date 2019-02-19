@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <style type="text/css">
     .person_add_box {
         padding: 20px;
@@ -12,18 +13,23 @@
 <div class="person_add_box">
     <div id="person_add">
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 15px;">
-            <el-breadcrumb-item>人员管理</el-breadcrumb-item>
-            <el-breadcrumb-item>人员添加</el-breadcrumb-item>
+            <el-breadcrumb-item><spring:message code="people_management"/></el-breadcrumb-item>
+            <el-breadcrumb-item><spring:message code="people_list"/></el-breadcrumb-item>
         </el-breadcrumb>
 
         <el-form label-width="120px" :model="model" :rules="rules" ref="uploadForm">
-            <el-form-item label="姓名:" prop="person_name">
-                <el-input v-model="model.person_name" type="text" autocomplete="off" placeholder="请输入姓名" size="small"></el-input>
+
+            <el-form-item label=<spring:message code="name"/> prop="person_name">
+                <spring:message code="please_enter_the_name" var="input_name_lang"/>
+                <el-input v-model="model.person_name" type="text" autocomplete="off" placeholder="${input_name_lang}" size="small"></el-input>
             </el-form-item>
-            <el-form-item label="工号:" prop="emp_number">
-                <el-input v-model="model.emp_number" type="text" autocomplete="off" placeholder="请输入工号" size="small"></el-input>
+            <spring:message code="job_number" var="job_number_lang"/>
+            <el-form-item label="${job_number_lang}" prop="emp_number">
+                <spring:message code="please_enter_the_number" var="input_job_number_lang"/>
+                <el-input v-model="model.emp_number" type="text" autocomplete="off" placeholder="${input_job_number_lang}" size="small"></el-input>
             </el-form-item>
-            <el-form-item label="选择图片:">
+            <spring:message code="choose_picture" var="choose_picture_lang"/>
+            <el-form-item label="${choose_picture_lang}">
                 <el-upload class="avatar-uploader"
                            :action="action"
                            :show-file-list="true"
@@ -37,14 +43,19 @@
                 </el-upload>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" v-on:click="onClickUpload()" size="medium">添加</el-button>
+                <el-button type="primary" v-on:click="onClickUpload()" size="medium"><spring:message code="add"/></el-button>
             </el-form-item>
         </el-form>
         <%@include file="inc_dialog/dialog_cropper.jsp" %>
     </div>
 </div>
-
+<spring:message code="this_type_of_file_is_not_supported" var="dont_supported"/>
+<spring:message code="upload_image_is_too_large" var="image_large"/>
+<spring:message code="only_one_picture_can_be_selected" var="picture_selected"/>
+<spring:message code="uploading" var="uploading"/>
+<spring:message code="select_picture" var="select_picture"/>
 <script type="text/javascript">
+
     new Vue({
         el: "#person_add",
         data: function () {
@@ -55,7 +66,7 @@
                 },
                 rules: {
                     person_name: [
-                        {required: true, message: '请输入姓名', trigger: 'blur'}
+                        {required: true, message: '${input_name_lang}', trigger: 'blur'}
                     ]
                 },
                 imageUrl: '',
@@ -73,11 +84,11 @@
                 const isLt3M = file.raw.size / 1024 / 1024 < 3;
 
                 if (!isSuppType) {
-                    this.$message.error('不支持该类型的文件!');
+                    this.$message.error('${dont_supported}');
                     return;
                 }
                 if (!isLt3M) {
-                    this.$message.error('上传图片大小不能超过 3MB!');
+                    this.$message.error('');
                     return;
                 }
 
@@ -88,7 +99,7 @@
             },
             beforeUpload(file) {
                 const isLt = this.uploadBlob.size / 1024 < 65;
-                if (!isLt) this.$message.error('上传图片过大,请重新选择图片');
+                if (!isLt) this.$message.error('${image_large}');
 
                 return isLt;
             },
@@ -96,10 +107,10 @@
                 this.$refs.uploadForm.validate((isValid) => {
                     if (isValid) {
                         if (this.$refs.upload.uploadFiles.length <= 0) {
-                            this.$message.error('请选择图片!');
+                            this.$message.error('${select_picture}');
                             return;
                         } else if (this.$refs.upload.uploadFiles.length > 1) {
-                            this.$message.error('只能选择一张图片!');
+                            this.$message.error('${picture_selected}');
                             return;
                         }
                         this.$refs.upload.submit();
@@ -111,7 +122,7 @@
                 // var file = this.$refs.upload.uploadFiles[0].raw;
                 var file = this.uploadBlob;
 
-                var loading = layLoading3("上传中...");
+                var loading = layLoading3("${uploading}");
                 var formData = new FormData();
                 formData.append("person_name", model.person_name);
                 formData.append("emp_number", model.emp_number);

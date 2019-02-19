@@ -76,10 +76,12 @@
                 <el-form class="demo-ruleForm login-container" :model="loginModel" :rules="loginRules" ref="loginForm">
                     <p class="title"><spring:message code="admin_login"/></p>
                     <el-form-item prop="name">
-                        <el-input v-model="loginModel.name" type="text" autocomplete="off" placeholder="请输入账号" clearable></el-input>
+                        <el-input v-model="loginModel.name" type="text" autocomplete="off" placeholder="请输入账号"
+                                  clearable></el-input>
                     </el-form-item>
                     <el-form-item prop="password">
-                        <el-input v-model="loginModel.password" type="password" autocomplete="off" placeholder="请输入密码" clearable></el-input>
+                        <el-input v-model="loginModel.password" type="password" autocomplete="off" placeholder="请输入密码"
+                                  clearable></el-input>
                     </el-form-item>
                     <%--   <el-form-item>
                            <el-checkbox style="float: left;color: #222222">记住密码</el-checkbox>
@@ -98,7 +100,7 @@
                         </el-dropdown>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" v-on:click="onClickLogin('loginForm')">登录
+                        <el-button type="primary" v-on:click="onClickLogin('loginForm')"><spring:message code="login"/>
                         </el-button>
                     </el-form-item>
                 </el-form>

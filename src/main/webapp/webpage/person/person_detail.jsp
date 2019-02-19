@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <style type="text/css">
     .person_detail_box {
         padding: 20px;
@@ -32,19 +33,22 @@
 <div class="person_detail_box">
     <div id="person_detail">
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 15px;">
-            <el-breadcrumb-item>人员管理</el-breadcrumb-item>
-            <el-breadcrumb-item>人员列表</el-breadcrumb-item>
+
+            <el-breadcrumb-item><spring:message code="people_management"/></el-breadcrumb-item>
+            <el-breadcrumb-item><spring:message code="people_list"/></el-breadcrumb-item>
             <el-breadcrumb-item>{{data.person_name}}</el-breadcrumb-item>
         </el-breadcrumb>
 
         <template>
             <el-tabs type="card" v-model="activeName">
                 <%--基本信息--%>
-                <el-tab-pane label="基本信息" name="first">
+                <spring:message code="basic_Information" var="basic_info"/>
+                <el-tab-pane label="${basic_info}" name="first">
                     <%@include file="inc_tabs/base_info.jsp" %>
                 </el-tab-pane>
                 <%--可通行设备--%>
-                <el-tab-pane label="可通行设备" name="second">
+                <spring:message code="accessible_device" var="accessible_device"/>
+                <el-tab-pane label="${accessible_device}" name="second">
                     <%@include file="inc_tabs/access_device.jsp" %>
                 </el-tab-pane>
             </el-tabs>
@@ -54,6 +58,15 @@
 </div>
 
 <script type="text/javascript">
+    <spring:message code="please_enter_the_name" var="enter_name"/>
+    <spring:message code="are_you_sure_you_want_to_delete_this_employee" var="sure_delete"/>
+    <spring:message code="is_this_device_prohibited_from_passing_the_employee" var="sure_ban"/>
+    <spring:message code="please_fill_in_the_number_of_passes" var="fill_number_passes"/>
+    <spring:message code="please_fill_in_the_passable_time" var="fill_passable_time"/>
+    <spring:message code="this_type_of_file_is_not_supported" var="dont_supported"/>
+    <spring:message code="upload_image_is_too_large" var="image_large"/>
+    <spring:message code="only_one_picture_can_be_selected" var="picture_selected"/>
+    <spring:message code="uploading" var="uploading"/>
     var data = '${data}';
     //base64去换行
     data = data.replace(/<\/?.+?>/g, "");
@@ -66,7 +79,7 @@
                 data: data,
                 rules: {
                     person_name: [
-                        {required: true, message: '请输入姓名', trigger: 'blur'}
+                        {required: true, message: '${enter_name}', trigger: 'blur'}
                     ]
                 },
                 activeName: 'first',
@@ -101,7 +114,7 @@
 
         methods: {
             deletePerson() {
-                elmDialog("确定要删除该员工吗", function () {
+                elmDialog("${sure_delete}", function () {
                     ajaxGet({
                         url: "${pageContext.request.contextPath}/person/delete",
                         data: {
@@ -128,7 +141,7 @@
                 });
             },
             banGrantDevice(scope) {
-                elmDialog("确定这台设备禁止该员工通行吗？", function () {
+                elmDialog("${sure_ban}", function () {
                     ajaxGet({
                         url: "${pageContext.request.contextPath}/grant/ban",
                         data: {
@@ -198,10 +211,10 @@
             },
             changePersonGrant() {
                 if (!this.dialogModel.pass_number) {
-                    elmMessage1("请填写可通行次数");
+                    elmMessage1("${fill_number_passes}");
                     return;
                 } else if (!this.dialogModel.dateValue) {
-                    elmMessage1("请填写可通行时段");
+                    elmMessage1("${fill_passable_time}");
                     return;
                 }
 
@@ -229,11 +242,11 @@
                 const isLt3M = file.raw.size / 1024 / 1024 < 3;
 
                 if (!isSuppType) {
-                    this.$message.error('不支持该类型的文件!');
+                    this.$message.error('${dont_supported}');
                     return;
                 }
                 if (!isLt3M) {
-                    this.$message.error('上传图片大小不能超过 3MB!');
+                    this.$message.error('');
                     return;
                 }
 
@@ -244,7 +257,7 @@
                 var isLt = true;
                 if (this.uploadBlob) {
                     isLt = this.uploadBlob.size / 1024 < 65;
-                    if (!isLt) this.$message.error('上传图片过大,请重新选择图片');
+                    if (!isLt) this.$message.error('${image_large}');
                 }
 
                 return isLt;
@@ -260,7 +273,7 @@
                                 emp_number: model.emp_number
                             });
                         } else if (this.$refs.upload.uploadFiles.length > 1) {
-                            this.$message.error('只能选择一张图片!');
+                            this.$message.error('${picture_selected}');
                         } else
                             this.$refs.upload.submit();
                     }
@@ -270,7 +283,7 @@
                 var model = this.$refs.perBaseInfoForm.model;
                 var file = this.uploadBlob;
 
-                var loading = layLoading3("上传中...");
+                var loading = layLoading3("${uploading}");
                 var formData = new FormData();
                 formData.append("person_id", data.person_id);
                 formData.append("person_name", model.person_name);
