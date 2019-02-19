@@ -109,14 +109,14 @@
     <el-dialog title="${change_password}"
                :visible.sync="visible"
                width="600px">
-        <el-form :model="model" label-width="100px" :rules="rules" ref="ref">
+        <el-form :model="model" label-width="25%" :rules="rules" ref="ref">
             <el-form-item label="${old_password}" prop="old_password">
                 <el-input v-model="model.old_password" type="password" autocomplete="off"
-                          placeholder="${enter_old_password}" size="small" style="width: 400px;"></el-input>
+                          placeholder="${enter_old_password}" size="small" style="width: 75%;"></el-input>
             </el-form-item>
             <el-form-item label="${new_password}" prop="new_password" >
                 <el-input v-model="model.new_password" type="password" autocomplete="off"
-                          placeholder="${enter_new_password}" size="small" style="width: 400px;"></el-input>
+                          placeholder="${enter_new_password}" size="small" style="width: 75%;"></el-input>
             </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
