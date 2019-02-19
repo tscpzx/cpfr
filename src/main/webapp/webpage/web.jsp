@@ -114,7 +114,7 @@
                 <el-input v-model="model.old_password" type="password" autocomplete="off"
                           placeholder="${enter_old_password}" size="small" style="width: 400px;"></el-input>
             </el-form-item>
-            <el-form-item label="${new_password}" prop="new_password">
+            <el-form-item label="${new_password}" prop="new_password" >
                 <el-input v-model="model.new_password" type="password" autocomplete="off"
                           placeholder="${enter_new_password}" size="small" style="width: 400px;"></el-input>
             </el-form-item>
@@ -183,7 +183,6 @@
             }
         }
     });
-
     $("#content-container").load("device/device");
 </script>
 </body>

@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <spring:message code="face_recognition_management_system" var="face_recognition_management_system"/>
+<spring:message code="language.cn" var="language.cn"/>
 <spring:message code="login" var="login"/>
 <spring:message code="hello" var="hello"/>
 <spring:message code="change_password" var="change_password"/>
@@ -68,3 +69,5 @@
 <spring:message code="previous_page" var="previous_page_lang"/>
 <spring:message code="add_people" var="add_people"/>
 <spring:message code="recognition_picture" var="reg_picture"/>
+<spring:message code="admin_login" var="admin_login"/>
+<spring:message code="language.en" var="language.en"/>

@@ -75,7 +75,7 @@
              --%>
             <el-main>
                 <el-form class="demo-ruleForm login-container" :model="loginModel" :rules="loginRules" ref="loginForm">
-                    <p class="title"><spring:message code="admin_login"/></p>
+                    <p class="title">${admin_login}</p>
                     <el-form-item prop="name">
                         <el-input v-model="loginModel.name" type="text" autocomplete="off" placeholder="请输入账号"
                                   clearable></el-input>
@@ -94,9 +94,9 @@
                           </span>
                             <el-dropdown-menu slot="dropdown">
                                 <el-dropdown-item command="zh_CN">
-                                    <spring:message code="language.cn"/></el-dropdown-item>
+                                    ${language.cn}</el-dropdown-item>
                                 <el-dropdown-item command="en_US">
-                                    <spring:message code="language.en"/></el-dropdown-item>
+                                    ${language.en}</el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
                     </el-form-item>
