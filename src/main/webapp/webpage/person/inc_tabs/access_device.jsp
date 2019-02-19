@@ -16,25 +16,25 @@
 
 <template>
     <el-table :data="tableData" style="width: 100%" stripe>
-        <el-table-column prop="grant_id" label="权限ID" v-if="show">
+        <el-table-column prop="grant_id" label="权限ID" v-if="show" >
         </el-table-column>
-        <el-table-column prop="device_id" label="${device_id}">
+        <el-table-column prop="device_id" label="${device_id}" min-width="15%">
         </el-table-column>
-        <el-table-column prop="device_name" label="${device_name}">
+        <el-table-column prop="device_name" label="${device_name}" min-width="15%">
         </el-table-column>
-        <el-table-column prop="pass_number" label="${pass_time}">
+        <el-table-column prop="pass_number" label="${pass_time}" min-width="20%">
             <template slot-scope="scope">
                 <span v-if="scope.row.pass_number===9999999999">${unlimited_number_time}</span>
                 <span v-else>{{scope.row.pass_number}}</span>
             </template>
         </el-table-column>
-        <el-table-column prop="pass_start_time" label="${passage_period}" width="320">
+        <el-table-column prop="pass_start_time" label="${passage_period}" min-width="30%">
             <template slot-scope="scope">
                 <span v-if="scope.row.pass_start_time==='2286-11-21 01:46:39'||scope.row.pass_end_time==='2286-11-21 01:46:39'"> ${infinite_time}</span>
                 <span v-if="scope.row.pass_start_time!=='2286-11-21 01:46:39'">{{scope.row.pass_start_time}} 至 {{scope.row.pass_start_time}}</span>
             </template>
         </el-table-column>
-        <el-table-column label="${operation}" width="160">
+        <el-table-column label="${operation}" min-width="20%">
             <template slot-scope="scope">
                 <el-button type="success" size="small" @click="openDialogUpdateGrant(scope.row)"> ${modify}</el-button>
                 <el-button type="danger" size="small" @click="banGrantDevice(scope)"> ${ban}</el-button>
