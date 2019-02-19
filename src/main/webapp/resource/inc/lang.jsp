@@ -1,7 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <spring:message code="face_recognition_management_system" var="face_recognition_management_system"/>
-<spring:message code="language.cn" var="language.cn"/>
 <spring:message code="login" var="login"/>
 <spring:message code="hello" var="hello"/>
 <spring:message code="change_password" var="change_password"/>
@@ -37,7 +36,7 @@
 <spring:message code="pass_time" var="pass_time"/>
 <spring:message code="unlimited_number_of_times" var="unlimited_number_time"/>
 <spring:message code="passage_period" var="passage_period"/>
-<spring:message code="infinite_time"  var="infinite_time"/>
+<spring:message code="infinite_time" var="infinite_time"/>
 <spring:message code="operation" var="operation"/>
 <spring:message code="modify" var="modify"/>
 <spring:message code="ban" var="ban"/>
@@ -70,4 +69,3 @@
 <spring:message code="add_people" var="add_people"/>
 <spring:message code="recognition_picture" var="reg_picture"/>
 <spring:message code="admin_login" var="admin_login"/>
-<spring:message code="language.en" var="language.en"/>

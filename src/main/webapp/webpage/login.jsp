@@ -94,9 +94,9 @@
                           </span>
                             <el-dropdown-menu slot="dropdown">
                                 <el-dropdown-item command="zh_CN">
-                                    ${language.cn}</el-dropdown-item>
+                                    <spring:message code="language.cn"/></el-dropdown-item>
                                 <el-dropdown-item command="en_US">
-                                    ${language.en}</el-dropdown-item>
+                                    <spring:message code="language.en"/></el-dropdown-item>
                             </el-dropdown-menu>
                         </el-dropdown>
                     </el-form-item>
