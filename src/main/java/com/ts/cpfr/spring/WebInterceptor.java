@@ -17,13 +17,12 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Created by Administrator on 2017/12/27.
  */
-public class LoginInterceptor extends HandlerInterceptorAdapter {
+public class WebInterceptor extends HandlerInterceptorAdapter {
     @Autowired
     private WebMemory memory;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        //如果是登录页面则放行
         // 检查请求的token值是否为空
         String token = getTokenFromRequest(request);
         if (StringUtils.isEmpty(token) || !memory.checkCache(token)) {

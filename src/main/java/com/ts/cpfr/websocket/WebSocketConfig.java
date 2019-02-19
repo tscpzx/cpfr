@@ -1,6 +1,6 @@
 package com.ts.cpfr.websocket;
 
-import com.ts.cpfr.spring.WsHandshakeInterceptor;
+import com.ts.cpfr.spring.WebSocketInterceptor;
 import com.ts.cpfr.utils.SystemConfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +26,10 @@ public class WebSocketConfig extends WebMvcConfigurerAdapter implements WebSocke
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+        System.out.println("==========================socket配置==========================");
         //注册websocket server实现类，"/webSocketServer"访问websocket的地址
         registry.addHandler(handle, SystemConfig.WEB_SOCKET_URL)
-          .addInterceptors(new WsHandshakeInterceptor());
+          .addInterceptors(new WebSocketInterceptor());
         //使用socketjs的注册方法 兼容低端浏览器,不加还不行？
 //        registry.addHandler(handle, SystemConfig.WEB_SOCKET_URL + "/sockjs")
 //          .addInterceptors(new WsHandshakeInterceptor())

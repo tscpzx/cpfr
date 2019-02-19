@@ -50,7 +50,7 @@ public class AppMemory {
         // 保存当前token，用于Controller层获取登录用户信息
         ThreadToken.setToken(token);
         // 清空之前的登录信息
-        clearCache(seed);
+        removeCache(seed);
         // 保存新的token和登录信息
         ehcache.put(new Element(seed, token));
         ehcache.put(new Element(token, device));
@@ -75,18 +75,18 @@ public class AppMemory {
     /**
      * 清空登录信息
      */
-    public void clearCache() {
+    public void removeCache() {
         AppDevice device = getCache();
         if (device != null) {
             // 根据登录的用户名生成seed，然后清除登录信息
-            clearCache(TokenProcessor.getInstance().generateSeed(device.getDeviceSn()));
+            removeCache(TokenProcessor.getInstance().generateSeed(device.getDeviceSn()));
         }
     }
 
     /**
      * 根据seed清空登录信息
      */
-    private void clearCache(String seed) {
+    private void removeCache(String seed) {
         // 根据seed找到对应的token
         Element element = ehcache.get(seed);
         if (element != null) {

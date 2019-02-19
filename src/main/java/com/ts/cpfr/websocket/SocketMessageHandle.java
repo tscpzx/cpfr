@@ -1,6 +1,8 @@
 package com.ts.cpfr.websocket;
 
 import com.alibaba.fastjson.JSONObject;
+import com.ts.cpfr.ehcache.AppMemory;
+import com.ts.cpfr.entity.AppDevice;
 import com.ts.cpfr.service.DeviceService;
 import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.ParamData;
@@ -18,7 +20,6 @@ import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -34,6 +35,8 @@ public class SocketMessageHandle implements WebSocketHandler {
 
     @Autowired
     DeviceService mDeviceService;
+    @Autowired
+    AppMemory mAppMemory;
     /**
      * 已经连接的用户map
      */
@@ -64,6 +67,8 @@ public class SocketMessageHandle implements WebSocketHandler {
             pd.put(CommConst.DEVICE_SN, deviceSn);
             pd.put(CommConst.ADMIN_ID, adminId);
             pd.put("online", 1);
+
+            mAppMemory.putCache(new AppDevice(deviceSn, Integer.parseInt(adminId), (MyWebSocketSession) webSocketSession));
             mDeviceService.updateDeviceOnline(pd);
         }
     }
@@ -118,11 +123,12 @@ public class SocketMessageHandle implements WebSocketHandler {
             String deviceSn = (String) attributes.get(CommConst.DEVICE_SN);
             String adminId = (String) attributes.get(CommConst.ADMIN_ID);
             userMap.remove(deviceSn);
-            System.out.println(deviceSn + "断开连接");
+            System.out.println(deviceSn + "断开连接error");
             ParamData pd = new ParamData();
             pd.put(CommConst.DEVICE_SN, deviceSn);
             pd.put(CommConst.ADMIN_ID, adminId);
             pd.put("online", 0);
+            mAppMemory.removeCache();
             mDeviceService.updateDeviceOnline(pd);
         }
     }
@@ -142,11 +148,12 @@ public class SocketMessageHandle implements WebSocketHandler {
             String deviceSn = (String) attributes.get(CommConst.DEVICE_SN);
             String adminId = (String) attributes.get(CommConst.ADMIN_ID);
             userMap.remove(deviceSn);
-            System.out.println(deviceSn + "断开连接");
+            System.out.println(deviceSn + "断开连接Closed");
             ParamData pd = new ParamData();
             pd.put(CommConst.DEVICE_SN, deviceSn);
             pd.put(CommConst.ADMIN_ID, adminId);
             pd.put("online", 0);
+            mAppMemory.removeCache();
             mDeviceService.updateDeviceOnline(pd);
         }
 
@@ -161,17 +168,18 @@ public class SocketMessageHandle implements WebSocketHandler {
      * 发送消息给指定的用户
      */
     public void sendMessageToDevice(String toDeviceSn, TextMessage messageInfo) throws IOException {
-        Iterator<Map.Entry<String, WebSocketSession>> it = userMap.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry<String, WebSocketSession> next = it.next();
-            if (next.getKey().equals(toDeviceSn)) {
-                WebSocketSession socketSession = next.getValue();
-                if (socketSession.isOpen()) {
-                    socketSession.sendMessage(messageInfo);
-                    System.out.println("发送消息给：" + toDeviceSn + "内容：" + messageInfo);
-                }
-            }
+        //        Iterator<Map.Entry<String, WebSocketSession>> it = userMap.entrySet().iterator();
+        //        while (it.hasNext()) {
+        //            Map.Entry<String, WebSocketSession> next = it.next();
+        //            if (next.getKey().equals(toDeviceSn)) {
+        //                WebSocketSession socketSession = next.getValue();
+        WebSocketSession socketSession = mAppMemory.getCache().getSession();
+        if (socketSession.isOpen()) {
+            socketSession.sendMessage(messageInfo);
+            System.out.println("发送消息给：" + toDeviceSn + "内容：" + messageInfo);
         }
+        //            }
+        //        }
     }
 
     /**
@@ -181,15 +189,16 @@ public class SocketMessageHandle implements WebSocketHandler {
      * @param adminId
      */
     public void saveAdminIdToSession(String deviceSn, int adminId) {
-        Iterator<Map.Entry<String, WebSocketSession>> it = userMap.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry<String, WebSocketSession> next = it.next();
-            if (next.getKey().equals(deviceSn)) {
-                WebSocketSession socketSession = next.getValue();
-                socketSession.getAttributes().put(CommConst.ADMIN_ID, adminId + "");
-                userMap.put(deviceSn, socketSession);
-            }
-        }
+        //        Iterator<Map.Entry<String, WebSocketSession>> it = userMap.entrySet().iterator();
+        //        while (it.hasNext()) {
+        //            Map.Entry<String, WebSocketSession> next = it.next();
+        //            if (next.getKey().equals(deviceSn)) {
+        //                WebSocketSession socketSession = next.getValue();
+        WebSocketSession socketSession = mAppMemory.getCache().getSession();
+        socketSession.getAttributes().put(CommConst.ADMIN_ID, adminId + "");
+        userMap.put(deviceSn, socketSession);
+        //            }
+        //        }
     }
 
     /**

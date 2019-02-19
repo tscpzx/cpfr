@@ -4,7 +4,6 @@ import com.ts.cpfr.controller.base.BaseController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ModelAndView;
@@ -25,18 +24,18 @@ public class PageController extends BaseController {
     @Autowired
     private LocaleResolver localeResolver;
 
-    @RequestMapping("/{page}")
-    public ModelAndView page(HttpServletRequest request, HttpServletResponse response, @PathVariable String page, String lang) {
+    @RequestMapping(value={"/login","/web","/register"})
+    public ModelAndView page(HttpServletRequest request, HttpServletResponse response, String lang) {
         if ("en_US".equals(lang)) {
             localeResolver.setLocale(request, response, Locale.US);
         } else if ("zh_CN".equals(lang)) {
             localeResolver.setLocale(request, response, Locale.CHINA);
         }
-        return new ModelAndView(page);
+        return new ModelAndView(request.getServletPath());
     }
 
     @RequestMapping(value = {"/device/*", "/person/*", "/group/*", "/record/*"})
-    public ModelAndView device(HttpServletRequest request, HttpServletResponse response) {
+    public ModelAndView page2(HttpServletRequest request, HttpServletResponse response) {
         return new ModelAndView(request.getServletPath());
     }
 }

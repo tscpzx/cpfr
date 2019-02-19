@@ -1,5 +1,11 @@
 package com.ts.cpfr.spring;
 
+import com.ts.cpfr.ehcache.AppMemory;
+import com.ts.cpfr.ehcache.ThreadToken;
+import com.ts.cpfr.utils.CommConst;
+
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,8 +19,33 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class AppInterceptor extends HandlerInterceptorAdapter {
 
+    @Autowired
+    private AppMemory memory;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        return true;
+        // 检查请求的token值是否为空
+        String token = getTokenFromRequest(request);
+        if (StringUtils.isEmpty(token) || !memory.checkCache(token)) {
+            request.getRequestDispatcher("/app/disconnect").forward(request, response);
+            return false;
+        } else {
+            // 保存当前token，用于Controller层获取登录用户信息
+            ThreadToken.setToken(token);
+            return true;
+        }
+    }
+
+    /**
+     * 从请求信息中获取token值
+     */
+    private String getTokenFromRequest(HttpServletRequest request) {
+        String token = request.getHeader(CommConst.ACCESS_APP_TOKEN);
+        if (StringUtils.isEmpty(token)) {
+            // 从请求信息中获取token值
+            token = request.getParameter(CommConst.ACCESS_APP_TOKEN);
+        }
+
+        return token;
     }
 }

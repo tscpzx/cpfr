@@ -51,12 +51,14 @@
 			<mvc:exclude-mapping path="/user/nologin"/>
 			<mvc:exclude-mapping path="/user/register"/>
 			<mvc:exclude-mapping path="/app/**"/>
-			<bean class="com.ts.cpfr.spring.LoginInterceptor"/>
+			<mvc:exclude-mapping path="/ws"/>
+			<bean class="com.ts.cpfr.spring.WebInterceptor"/>
 		</mvc:interceptor>
 
 		<mvc:interceptor>
 			<mvc:mapping path="/app/**"/>
-			<mvc:exclude-mapping path="/user/device_register"/>
+			<mvc:exclude-mapping path="/app/device_register"/>
+			<mvc:exclude-mapping path="/app/disconnect"/>
 			<bean class="com.ts.cpfr.spring.AppInterceptor"/>
 		</mvc:interceptor>
 	</mvc:interceptors>

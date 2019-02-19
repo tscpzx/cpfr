@@ -5,6 +5,7 @@
 <head>
     <%@include file="../resource/inc/incCss.jsp" %>
     <%@include file="../resource/inc/incJs.jsp" %>
+    <%@include file="../resource/inc/lang.jsp" %>
     <style scoped>
         .el-header {
             margin-top: 100px;
@@ -61,7 +62,7 @@
     <div class="container">
         <el-container>
             <el-header>
-                <p style="font-size:26px;font-weight: 500 "><spring:message code="face_recognition_management_system"/>
+                <p style="font-size:26px;font-weight: 500 ">${face_recognition_management_system}
                 </p>
             </el-header>
             <%--
@@ -100,7 +101,7 @@
                         </el-dropdown>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" v-on:click="onClickLogin('loginForm')"><spring:message code="login"/>
+                        <el-button type="primary" v-on:click="onClickLogin('loginForm')">${login}
                         </el-button>
                     </el-form-item>
                 </el-form>

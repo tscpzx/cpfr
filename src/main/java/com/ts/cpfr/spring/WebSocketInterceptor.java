@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
  * @Date 2018/10/23 10:05
  * @Created by cjw
  */
-public class WsHandshakeInterceptor implements HandshakeInterceptor {
+public class WebSocketInterceptor implements HandshakeInterceptor {
 
     /**
      * 握手前
@@ -39,8 +39,7 @@ public class WsHandshakeInterceptor implements HandshakeInterceptor {
 
                 if (TextUtils.isEmpty(deviceSn)) return false;
                 attributes.put(CommConst.DEVICE_SN, deviceSn);
-                if (!TextUtils.isEmpty(adminId))
-                    attributes.put(CommConst.ADMIN_ID, adminId);
+                if (!TextUtils.isEmpty(adminId)) attributes.put(CommConst.ADMIN_ID, adminId);
             }
             return true;
         } catch (Exception e) {

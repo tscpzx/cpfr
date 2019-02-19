@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void logout() {
-        memory.clearCache();
+        memory.removeCache();
     }
 
     @Override

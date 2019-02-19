@@ -96,4 +96,10 @@ public class AppController extends BaseController {
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
         }
     }
+
+    @ResponseBody
+    @RequestMapping("/disconnect")
+    public ResultData<ParamData> disconnect(HttpServletRequest request) {
+        return new ResultData<>(HandleEnum.FAIL, "未与服务器建立连接!");
+    }
 }
