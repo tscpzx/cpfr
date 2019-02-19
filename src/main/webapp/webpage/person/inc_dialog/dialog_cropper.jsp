@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
-<spring:message code="please_put_the_avatar_in_the_box" var="avatar_box_lang"/>
+<%@include file="/resource/inc/lang.jsp" %>
 <el-dialog title="${avatar_box_lang}"
            :visible.sync="cropperVisible"
            @opened="open"
@@ -18,7 +18,7 @@
     </el-row>
 
     <div slot="footer" class="dialog-footer">
-        <el-button @click="visible = false"><spring:message code="cancel_lang"/></el-button>
-        <el-button type="primary" @click="onClickCropper"><spring:message code="determine"/></el-button>
+        <el-button @click="visible = false">${cancel_lang}</el-button>
+        <el-button type="primary" @click="onClickCropper">${determine}</el-button>
     </div>
 </el-dialog>

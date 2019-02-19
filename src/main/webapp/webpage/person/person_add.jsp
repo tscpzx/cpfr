@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@include file="/resource/inc/lang.jsp" %>
 <style type="text/css">
     .person_add_box {
         padding: 20px;
@@ -13,22 +14,18 @@
 <div class="person_add_box">
     <div id="person_add">
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 15px;">
-            <el-breadcrumb-item><spring:message code="people_management"/></el-breadcrumb-item>
-            <el-breadcrumb-item><spring:message code="people_list"/></el-breadcrumb-item>
+            <el-breadcrumb-item>${people_management}</el-breadcrumb-item>
+            <el-breadcrumb-item>${people_list}</el-breadcrumb-item>
         </el-breadcrumb>
 
         <el-form label-width="120px" :model="model" :rules="rules" ref="uploadForm">
 
-            <el-form-item label=<spring:message code="name"/> prop="person_name">
-                <spring:message code="please_enter_the_name" var="input_name_lang"/>
+            <el-form-item label=${name} prop="person_name">
                 <el-input v-model="model.person_name" type="text" autocomplete="off" placeholder="${input_name_lang}" size="small"></el-input>
             </el-form-item>
-            <spring:message code="job_number" var="job_number_lang"/>
-            <el-form-item label="${job_number_lang}" prop="emp_number">
-                <spring:message code="please_enter_the_number" var="input_job_number_lang"/>
+            <el-form-item label="${job_number}" prop="emp_number">
                 <el-input v-model="model.emp_number" type="text" autocomplete="off" placeholder="${input_job_number_lang}" size="small"></el-input>
             </el-form-item>
-            <spring:message code="choose_picture" var="choose_picture_lang"/>
             <el-form-item label="${choose_picture_lang}">
                 <el-upload class="avatar-uploader"
                            :action="action"
@@ -43,19 +40,13 @@
                 </el-upload>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" v-on:click="onClickUpload()" size="medium"><spring:message code="add"/></el-button>
+                <el-button type="primary" v-on:click="onClickUpload()" size="medium">${add}</el-button>
             </el-form-item>
         </el-form>
         <%@include file="inc_dialog/dialog_cropper.jsp" %>
     </div>
 </div>
-<spring:message code="this_type_of_file_is_not_supported" var="dont_supported"/>
-<spring:message code="upload_image_is_too_large" var="image_large"/>
-<spring:message code="only_one_picture_can_be_selected" var="picture_selected"/>
-<spring:message code="uploading" var="uploading"/>
-<spring:message code="select_picture" var="select_picture"/>
 <script type="text/javascript">
-
     new Vue({
         el: "#person_add",
         data: function () {
@@ -88,7 +79,7 @@
                     return;
                 }
                 if (!isLt3M) {
-                    this.$message.error('');
+                    this.$message.error('${image_exceed}');
                     return;
                 }
 

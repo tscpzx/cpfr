@@ -5,6 +5,7 @@
 <head>
     <%@include file="../resource/inc/incCss.jsp" %>
     <%@include file="../resource/inc/incJs.jsp" %>
+    <%@include file="../resource/inc/lang.jsp"%>
     <style type="text/css">
         .el-container {
             height: 100%;
@@ -43,7 +44,7 @@
                 <el-col :span="8">
                     <div>
                         <p class="nav_title">
-                            <spring:message code="face_recognition_management_system"/>
+                            ${face_recognition_management_system}
                         </p>
                     </div>
                 </el-col>
@@ -52,16 +53,14 @@
                 </el-col>
                 <el-col :span="2">
                     <div style="float: right">
-                        <spring:message code="hello" var="hello"/>
                         <a href="#">${sessionScope.user.name},${hello}</a></div>
                 </el-col>
                 <el-col :span="3">
-                    <spring:message code="change_password" var="change_password" />
                     <div style="float: right" v-on:click="visible=true;"><a href="#">${change_password}</a>
                     </div>
                 </el-col>
                 <el-col :span="2">
-                    <div style="float: right" v-on:click="ajaxLogout"><a href="#"><spring:message code="sign_out"/></a>
+                    <div style="float: right" v-on:click="ajaxLogout"><a href="#">${sign_out}</a>
                     </div>
                 </el-col>
             </el-row>
@@ -78,10 +77,10 @@
                     <el-submenu index="person">
                         <template slot="title">
                             <i class="el-icon-service"></i>
-                            <span><spring:message code="people_management"/></span>
+                            <span>${people_management}</span>
                         </template>
                         <el-menu-item-group>
-                            <el-menu-item index="person/person" @click="onClick($event)"><spring:message code="people_list"/>
+                            <el-menu-item index="person/person" @click="onClick($event)">${people_list}
                             </el-menu-item>
                             <%--<el-menu-item index="1-2">批量上传</el-menu-item>--%>
                         </el-menu-item-group>
@@ -92,7 +91,7 @@
                     </el-menu-item>
                     <el-menu-item index="record/record_tbl" @click="onClick($event)">
                         <i class="el-icon-document"></i>
-                        <span slot="title"><spring:message code="record_management"/></span>
+                        <span slot="title">${record_management}</span>
                     </el-menu-item>
                     <%--   <el-menu-item index="5">
                            <i class="el-icon-edit-outline"></i>
@@ -107,21 +106,22 @@
         </el-container>
     </el-container>
 
-    <el-dialog title="修改密码"
+    <el-dialog title="${change_password}"
                :visible.sync="visible"
                width="600px">
         <el-form :model="model" label-width="100px" :rules="rules" ref="ref">
-            <el-form-item label="原密码:" prop="old_password">
-                <el-input v-model="model.old_password" type="password" autocomplete="off" placeholder="请输入原密码" size="small" style="width: 400px;"></el-input>
+            <el-form-item label="${old_password}" prop="old_password">
+                <el-input v-model="model.old_password" type="password" autocomplete="off"
+                          placeholder="${enter_old_password}" size="small" style="width: 400px;"></el-input>
             </el-form-item>
-            <el-form-item label="新密码:" prop="new_password">
-                <el-input v-model="model.new_password" type="password" autocomplete="off" placeholder="请输入新密码" size="small" style="width: 400px;"></el-input>
+            <el-form-item label="${new_password}" prop="new_password">
+                <el-input v-model="model.new_password" type="password" autocomplete="off"
+                          placeholder="${enter_new_password}" size="small" style="width: 400px;"></el-input>
             </el-form-item>
         </el-form>
-
         <div slot="footer" class="dialog-footer">
-            <el-button @click="visible = false" size="small">取 消</el-button>
-            <el-button type="primary" @click="changePassword" size="small">确 定</el-button>
+            <el-button @click="visible = false" size="small">${cancel_lang}</el-button>
+            <el-button type="primary" @click="changePassword" size="small">${determine}</el-button>
         </div>
     </el-dialog>
 </div>
@@ -143,10 +143,10 @@
             },
             rules: {
                 old_password: [
-                    {required: true, message: '请输入原密码', trigger: 'blur'}
+                    {required: true, message: '${enter_old_password}', trigger: 'blur'}
                 ],
                 new_password: [
-                    {required: true, message: '请输入新密码', trigger: 'blur'}
+                    {required: true, message: '${enter_new_password}', trigger: 'blur'}
                 ]
             },
         },

@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@include file="/resource/inc/lang.jsp" %>
 <style type="text/css">
     .person_detail_box {
         padding: 20px;
@@ -34,20 +35,18 @@
     <div id="person_detail">
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 15px;">
 
-            <el-breadcrumb-item><spring:message code="people_management"/></el-breadcrumb-item>
-            <el-breadcrumb-item><spring:message code="people_list"/></el-breadcrumb-item>
+            <el-breadcrumb-item>${people_management}</el-breadcrumb-item>
+            <el-breadcrumb-item>${people_list}</el-breadcrumb-item>
             <el-breadcrumb-item>{{data.person_name}}</el-breadcrumb-item>
         </el-breadcrumb>
 
         <template>
             <el-tabs type="card" v-model="activeName">
                 <%--基本信息--%>
-                <spring:message code="basic_Information" var="basic_info"/>
                 <el-tab-pane label="${basic_info}" name="first">
                     <%@include file="inc_tabs/base_info.jsp" %>
                 </el-tab-pane>
                 <%--可通行设备--%>
-                <spring:message code="accessible_device" var="accessible_device"/>
                 <el-tab-pane label="${accessible_device}" name="second">
                     <%@include file="inc_tabs/access_device.jsp" %>
                 </el-tab-pane>
@@ -58,15 +57,6 @@
 </div>
 
 <script type="text/javascript">
-    <spring:message code="please_enter_the_name" var="enter_name"/>
-    <spring:message code="are_you_sure_you_want_to_delete_this_employee" var="sure_delete"/>
-    <spring:message code="is_this_device_prohibited_from_passing_the_employee" var="sure_ban"/>
-    <spring:message code="please_fill_in_the_number_of_passes" var="fill_number_passes"/>
-    <spring:message code="please_fill_in_the_passable_time" var="fill_passable_time"/>
-    <spring:message code="this_type_of_file_is_not_supported" var="dont_supported"/>
-    <spring:message code="upload_image_is_too_large" var="image_large"/>
-    <spring:message code="only_one_picture_can_be_selected" var="picture_selected"/>
-    <spring:message code="uploading" var="uploading"/>
     var data = '${data}';
     //base64去换行
     data = data.replace(/<\/?.+?>/g, "");
@@ -246,7 +236,7 @@
                     return;
                 }
                 if (!isLt3M) {
-                    this.$message.error('');
+                    this.$message.error('${image_exceed}');
                     return;
                 }
 

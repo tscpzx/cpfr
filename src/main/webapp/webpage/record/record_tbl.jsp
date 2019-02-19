@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@include file="/resource/inc/lang.jsp" %>
 <style type="text/css">
     .record_tbl_box {
         padding: 20px;
@@ -15,23 +16,23 @@
     }
 </style>
 
+
 <div class="record_tbl_box">
     <div id="record_tbl">
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 15px;">
-            <el-breadcrumb-item><spring:message code="record_management"/></el-breadcrumb-item>
-            <el-breadcrumb-item><spring:message code="record_list"/></el-breadcrumb-item>
+            <el-breadcrumb-item>${record_management}</el-breadcrumb-item>
+            <el-breadcrumb-item>${record_list}</el-breadcrumb-item>
         </el-breadcrumb>
 
         <el-form>
             <el-form-item>
                 <el-row>
-                    <el-button type="primary" size="small" @click="deleteRecordLists"><spring:message code="delete_in_batches"/>
+                    <el-button type="primary" size="small" @click="deleteRecordLists">${delete_in_batches}
                     </el-button>
                     <div style="float: right">
-                        <spring:message code="please_enter_the_search_content" var="search_content"/>
-
-                        <el-input style="width: 200px;" v-model="keyword" size="small" placeholder="${search_content}"></el-input>
-                        <el-button type="primary" size="small" @click="selectRecord"><spring:message code="search"/>
+                        <el-input style="width: 200px;" v-model="keyword" size="small"
+                                  placeholder="${search_content}"></el-input>
+                        <el-button type="primary" size="small" @click="selectRecord">${search}
                         </el-button>
                     </div>
                 </el-row>
@@ -42,23 +43,19 @@
             <el-table ref="multipleTable" :data="tableData" style="width: 100%"
                       @selection-change="handleSelectionChange" stripe>
                 <el-table-column type="selection"></el-table-column>
-                <spring:message code="id" var="id"/>
                 <el-table-column prop="record_id" label="${id}">
                 </el-table-column>
-                <spring:message code="name" var="name"/>
                 <el-table-column prop="person_name" label="${name}">
                 </el-table-column>
-                <spring:message code="device" var="device"/>
                 <el-table-column prop="device_name" label="${device}">
                 </el-table-column>
-                <spring:message code="recognition_mode" var="mode"/>
                 <el-table-column label="${mode}">
                     <template slot-scope="scope">
-                        <span v-if="scope.row.recog_type==0"><spring:message code="human_face"/></span>
-                        <span v-if="scope.row.recog_type==1"><spring:message code="id_card"/></span>
-                        <span v-if="scope.row.recog_type==2"><spring:message code="job_number"/></span>
-                        <span v-if="scope.row.recog_type==3"><spring:message code="face_and_card"/></span>
-                        <span v-if="scope.row.recog_type==4"><spring:message code="face_and_num"/></span>
+                        <span v-if="scope.row.recog_type==0">${human_face}</span>
+                        <span v-if="scope.row.recog_type==1">${id_card}</span>
+                        <span v-if="scope.row.recog_type==2">${job_number}</span>
+                        <span v-if="scope.row.recog_type==3">${face_and_card}</span>
+                        <span v-if="scope.row.recog_type==4">${face_and_num}</span>
                     </template>
                 </el-table-column>
                 <spring:message code="registration_time" var="reg_time"/>
@@ -77,7 +74,8 @@
                 <spring:message code="operation" var="operate"/>
                 <el-table-column label="${operate}">
                     <template slot-scope="scope">
-                        <el-button type="danger" size="small" @click="deleteRecordById(scope)"><spring:message code="delete"/></el-button>
+                        <el-button type="danger" size="small" @click="deleteRecordById(scope)"><spring:message
+                                code="delete"/></el-button>
                     </template>
                 </el-table-column>
             </el-table>
@@ -102,9 +100,7 @@
         </template>
     </div>
 </div>
-<spring:message code="delete_record" var="delete_record"/>
-<spring:message code="tick_record" var="tick_record"/>
-<spring:message code="delete_selected_record" var="delete_selected_record"/>
+
 
 <script type="text/javascript">
     var vm = new Vue({
