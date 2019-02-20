@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@include file="/resource/inc/lang.jsp" %>
 <style type="text/css">
     .device_detail_box {
         padding: 20px;
@@ -16,23 +17,23 @@
 <div class="device_detail_box">
     <div id="device_detail">
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 15px;">
-            <el-breadcrumb-item>设备管理</el-breadcrumb-item>
-            <el-breadcrumb-item>已激活设备</el-breadcrumb-item>
+            <el-breadcrumb-item>${equ_management}</el-breadcrumb-item>
+            <el-breadcrumb-item>${authorize_device}</el-breadcrumb-item>
             <el-breadcrumb-item>{{device.device_name}}</el-breadcrumb-item>
         </el-breadcrumb>
 
         <template>
             <el-tabs v-model="activeName">
                 <%--基本信息--%>
-                <el-tab-pane label="基本信息" name="first">
+                <el-tab-pane label="${basic_info}" name="first">
                     <%@include file="inc_tabs/device_info.jsp" %>
                 </el-tab-pane>
                 <%--功能配置--%>
-                <el-tab-pane label="功能配置" name="second">
+                <el-tab-pane label="${function_config}" name="second">
                     <%@include file="inc_tabs/device_config.jsp" %>
                 </el-tab-pane>
                 <%--已授权人员--%>
-                <el-tab-pane label="已授权人员" name="third">
+                <el-tab-pane label="${author_person}" name="third">
                     <%@include file="inc_tabs/grant_person.jsp" %>
                 </el-tab-pane>
             </el-tabs>
@@ -51,19 +52,19 @@
             activeName: 'first',
             options: [{
                 value: 0,
-                label: '人脸'
+                label: '${human_face}'
             }, {
                 value: 1,
-                label: '身份证'
+                label: '${id_card}'
             }, {
                 value: 2,
-                label: '工号'
+                label: '${job_number}'
             }, {
                 value: 3,
-                label: '人脸+身份征'
+                label: '${face_and_card}'
             }, {
                 value: 4,
-                label: '人脸+工号'
+                label: '${face_and_num}'
             }],
             tableData1: [],
             currentPage1: 1,
@@ -169,10 +170,10 @@
             },
             changePersonGrant() {
                 if (!this.dialogModel.pass_number) {
-                    elmMessage1("请填写可通行次数");
+                    elmMessage1("${fill_number_passes}");
                     return;
                 } else if (!this.dialogModel.dateValue) {
-                    elmMessage1("请填写可通行时段");
+                    elmMessage1("${fill_passable_time}");
                     return;
                 }
 
@@ -187,13 +188,13 @@
             },
             deleteDevice() {
                 if (this.device.online === 0)
-                    elmDialog("设备处于离线状态,是否要继续删除该设备?", function () {
+                    elmDialog("${offline_delete_device}", function () {
                         vm.dialog();
                     });
                 else this.dialog();
             },
             dialog() {
-                elmDialog("注意: 删除设备会删除该设备信息以及相关权限数据,确定要删除该设备吗", function () {
+                elmDialog("${note_delete_device}", function () {
                     ajaxDeleteDevice({
                         device_id: this.device.device_id
                     })

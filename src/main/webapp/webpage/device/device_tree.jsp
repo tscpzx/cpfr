@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@include file="/resource/inc/lang.jsp" %>
 <style type="text/css">
     .el-tree-node__content {
         height: 36px;
@@ -42,11 +43,11 @@
         data: {
             items: [{
                 id: -1,
-                device_name: '未激活设备',
+                device_name: '${device_not_activated}',
                 children: []
             }, {
                 id: -2,
-                device_name: '已激活设备',
+                device_name: '${activated_device}',
                 children: []
             }],
             defaultProps: {

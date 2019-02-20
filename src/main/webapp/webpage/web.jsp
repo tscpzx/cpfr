@@ -5,7 +5,7 @@
 <head>
     <%@include file="../resource/inc/incCss.jsp" %>
     <%@include file="../resource/inc/incJs.jsp" %>
-    <%@include file="../resource/inc/lang.jsp"%>
+    <%@include file="../resource/inc/lang.jsp" %>
     <style type="text/css">
         .el-container {
             height: 100%;
@@ -72,7 +72,7 @@
                          text-color="#fff" active-text-color="#ffd04b">
                     <el-menu-item index="device/device" @click="onClick($event)">
                         <i class="el-icon-mobile-phone"></i>
-                        <span slot="title">设备管理</span>
+                        <span slot="title">${equ_management}</span>
                     </el-menu-item>
                     <el-submenu index="person">
                         <template slot="title">
@@ -87,7 +87,7 @@
                     </el-submenu>
                     <el-menu-item index="group/group" @click="onClick($event)">
                         <i class="el-icon-menu"></i>
-                        <span slot="title">分组管理</span>
+                        <span slot="title">${group_management}</span>
                     </el-menu-item>
                     <el-menu-item index="record/record_tbl" @click="onClick($event)">
                         <i class="el-icon-document"></i>
@@ -114,7 +114,7 @@
                 <el-input v-model="model.old_password" type="password" autocomplete="off"
                           placeholder="${enter_old_password}" size="small" style="width: 75%;"></el-input>
             </el-form-item>
-            <el-form-item label="${new_password}" prop="new_password" >
+            <el-form-item label="${new_password}" prop="new_password">
                 <el-input v-model="model.new_password" type="password" autocomplete="off"
                           placeholder="${enter_new_password}" size="small" style="width: 75%;"></el-input>
             </el-form-item>

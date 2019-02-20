@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@include file="/resource/inc/lang.jsp" %>
 <style type="text/css">
     .el-col {
         font-size: 14px;
@@ -35,27 +36,27 @@
 <div class="group_detail_box">
     <div id="group_detail">
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 15px;">
-            <el-breadcrumb-item>分组管理</el-breadcrumb-item>
-            <el-breadcrumb-item>分组列表</el-breadcrumb-item>
+            <el-breadcrumb-item>${group_management}</el-breadcrumb-item>
+            <el-breadcrumb-item>${group_list}</el-breadcrumb-item>
             <el-breadcrumb-item>{{data.group.group_name}}</el-breadcrumb-item>
         </el-breadcrumb>
 
         <template>
             <el-tabs v-model="activeName">
                 <%--基本信息--%>
-                <el-tab-pane label="基本信息" name="first">
+                <el-tab-pane label="${basic_info}" name="first">
                     <%@include file="inc_tabs/base_info.jsp" %>
                 </el-tab-pane>
                 <%--人员列表--%>
-                <el-tab-pane label="人员列表" name="second">
+                <el-tab-pane label="${people_list}" name="second">
                     <%@include file="inc_tabs/person_list.jsp" %>
                 </el-tab-pane>
                 <%--设备列表--%>
-                <el-tab-pane label="设备列表" name="third">
+                <el-tab-pane label="${device_list}" name="third">
                     <%@include file="inc_tabs/device_list.jsp" %>
                 </el-tab-pane>
                 <%--分配权限--%>
-                <el-tab-pane label="分配权限" name="fourth">
+                <el-tab-pane label="${assign_permission}" name="fourth">
                     <%@include file="inc_tabs/grant.jsp" %>
                 </el-tab-pane>
             </el-tabs>
@@ -117,24 +118,24 @@
                 var pass_end_time = stampToDate(9999999999);
 
                 if (!person_ids) {
-                    elmMessage1("请添加授权人员");
+                    elmMessage1("${add_authorized_person}");
                     return;
                 }
                 if (!device_ids) {
-                    elmMessage1("请添加授权设备");
+                    elmMessage1("${add_authorized_device}");
                     return;
                 }
 
                 if (this.radio1 === '1') {
                     if (!this.pass_number.trim()) {
-                        elmMessage1("请填写可通行次数");
+                        elmMessage1("${fill_number_passes}");
                         return;
                     }
                     pass_number = this.pass_number;
                 }
                 if (this.radio2 === '3') {
                     if (!this.dateValue) {
-                        elmMessage1("请填写可通行时间");
+                        elmMessage1("${fill_passable_time}");
                         return;
                     }
                     pass_start_time = this.dateValue[0];
@@ -153,11 +154,11 @@
                 var person_ids = this.value1.join(',');
                 var device_ids = $.arrayIntersect(value2, this.value2).join(',');
                 if (!person_ids) {
-                    elmMessage1("请添加授权人员");
+                    elmMessage1("${add_authorized_person}");
                     return;
                 }
                 if (!device_ids) {
-                    elmMessage1("请添加授权设备");
+                    elmMessage1("${add_authorized_device}");
                     return;
                 }
 
@@ -216,7 +217,7 @@
                 })
             },
             deleteGroup() {
-                elmDialog("确定要删除该组别吗", function () {
+                elmDialog("${delete_group}", function () {
                     ajaxPost({
                         url: "${pageContext.request.contextPath}/group/delete",
                         data: {
@@ -329,7 +330,7 @@
         data: {
             items: [{
                 person_id: -1,
-                person_name: '人员列表',
+                person_name: '${people_list}',
                 children: []
             }],
             defaultProps: {
@@ -362,7 +363,7 @@
         data: {
             items: [{
                 device_id: -1,
-                device_name: '设备列表',
+                device_name: '${device_list}',
                 children: []
             }],
             defaultProps: {

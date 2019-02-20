@@ -1,4 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@include file="/resource/inc/lang.jsp" %>
+
 <style type="text/css">
     .el-tree-node__content {
         height: 36px;
@@ -34,7 +36,7 @@
 <div id="group">
     <div class="tree-header-item" v-on:click="addGroup()">
         <i class="el-icon-circle-plus-outline"></i>
-        <span>添加组别</span>
+        <span>${add_group}</span>
     </div>
     <el-tree :data="items"
              :props="defaultProps"
@@ -53,7 +55,7 @@
         data: {
             items: [{
                 group_id: -1,
-                group_name: '分组列表',
+                group_name: '${group_list}',
                 children: []
             }],
             defaultProps: {
@@ -74,9 +76,9 @@
                 }
             },
             addGroup() {
-                this.$prompt('请输入组名', '添加', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消'
+                this.$prompt('${enter_group}', '${add}', {
+                    confirmButtonText: '${determine}',
+                    cancelButtonText: '${cancel_lang}'
                 }).then(({value}) => {
                     if (value.trim()) {
                         ajaxAddGroup(value.trim());

@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@include file="/resource/inc/lang.jsp" %>
 <style type="text/css">
     .group_tbl_box {
         padding: 20px;
@@ -16,16 +17,16 @@
 <div class="group_tbl_box">
     <div id="group_tbl">
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 15px;">
-            <el-breadcrumb-item>分组管理</el-breadcrumb-item>
-            <el-breadcrumb-item>分组列表</el-breadcrumb-item>
+            <el-breadcrumb-item>${group_management}</el-breadcrumb-item>
+            <el-breadcrumb-item>${group_list}</el-breadcrumb-item>
         </el-breadcrumb>
 
         <el-form>
             <el-form-item>
                 <el-row>
                     <div style="float: right">
-                        <el-input style="width: 200px;" v-model="keyword" size="small" placeholder="请输入搜索内容"></el-input>
-                        <el-button type="primary" size="small" @click="searchGroupList">查找
+                        <el-input style="width: 200px;" v-model="keyword" size="small" placeholder="${search_content}"></el-input>
+                        <el-button type="primary" size="small" @click="searchGroupList">${search}
                         </el-button>
                     </div>
                 </el-row>
@@ -34,11 +35,11 @@
 
         <template>
             <el-table :data="tableData" style="width: 100%" stripe>
-                <el-table-column prop="group_id" label="组ID">
+                <el-table-column prop="group_id" label="${group_id_lang}">
                 </el-table-column>
-                <el-table-column prop="group_name" label="组名">
+                <el-table-column prop="group_name" label="${group_name}">
                 </el-table-column>
-                <el-table-column label="创建时间">
+                <el-table-column label="${create_time}">
                     <template slot-scope="scope">
                         <i class="el-icon-time"></i>
                         <span style="margin-left: 10px">{{ scope.row.create_time}}</span>
@@ -55,8 +56,8 @@
                                :current-page.sync="currentPage"
                                :page-size.sync="pageSize"
                                :page-sizes="pageSizes"
-                               prev-text="上一页"
-                               next-text="下一页"
+                               prev-text="${previous_page_lang}"
+                               next-text="${next_page_lang}"
                                layout="total, sizes, prev, pager, next, jumper"
                                :total="total">
                 </el-pagination>

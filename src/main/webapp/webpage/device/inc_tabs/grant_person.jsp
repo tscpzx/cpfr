@@ -3,36 +3,37 @@
     <el-form-item>
         <el-row>
             <div style="float: right">
-                <el-input style="width: 200px;" size="small" v-model="keyword" placeholder="请输入搜索内容"></el-input>
-                <el-button type="primary" size="small" @click="selectGrantPersonList">查找</el-button>
+                <el-input style="width: 200px;" size="small" v-model="keyword"
+                          placeholder="${search_content}"></el-input>
+                <el-button type="primary" size="small" @click="selectGrantPersonList">${search}</el-button>
             </div>
         </el-row>
     </el-form-item>
 </el-form>
 <template>
     <el-table :data="tableData1" style="width: 100%" stripe>
-        <el-table-column prop="grant_id" label="授权ID">
+        <el-table-column prop="grant_id" label="${author_id}" min-width="15%">
         </el-table-column>
-        <el-table-column prop="person_name" label="姓名">
+        <el-table-column prop="person_name" label="${name}" min-width="10%">
         </el-table-column>
-        <el-table-column prop="emp_number" label="工号">
+        <el-table-column prop="emp_number" label="${job_number}" min-width="15%" >
         </el-table-column>
-        <el-table-column prop="pass_number" label="通行次数">
+        <el-table-column prop="pass_number" label="${pass_time}" min-width="25%">
             <template slot-scope="scope">
-                <span v-if="scope.row.pass_number===9999999999">无限次数</span>
+                <span v-if="scope.row.pass_number===9999999999">${unlimited_number_time}</span>
                 <span v-else>{{scope.row.pass_number}}</span>
             </template>
         </el-table-column>
-        <el-table-column prop="pass_start_time" label="通行时段" width="320">
+        <el-table-column prop="pass_start_time" label="${passage_period}" min-width="15%">
             <template slot-scope="scope">
-                <span v-if="scope.row.pass_start_time==='2286-11-21 01:46:39'||scope.row.pass_end_time==='2286-11-21 01:46:39'">无限时段</span>
-                <span v-if="scope.row.pass_start_time!=='2286-11-21 01:46:39'">{{scope.row.pass_start_time}} 至 {{scope.row.pass_end_time}}</span>
+                <span v-if="scope.row.pass_start_time==='2286-11-21 01:46:39'||scope.row.pass_end_time==='2286-11-21 01:46:39'">${infinite_time}</span>
+                <span v-if="scope.row.pass_start_time!=='2286-11-21 01:46:39'">{{scope.row.pass_start_time}} ${to_lang} {{scope.row.pass_end_time}}</span>
             </template>
         </el-table-column>
-        <el-table-column label="操作" width="150">
+        <el-table-column label="${operation}" min-width="20%">
             <template slot-scope="scope">
-                <el-button type="success" size="small" @click="openDialogChangeGrant(scope.row)">修改</el-button>
-                <el-button type="danger" size="small" @click="banGrantPerson(scope)">禁止</el-button>
+                <el-button type="success" size="small" @click="openDialogChangeGrant(scope.row)">${modify}</el-button>
+                <el-button type="danger" size="small" @click="banGrantPerson(scope)">${ban}</el-button>
             </template>
         </el-table-column>
     </el-table>
@@ -46,8 +47,8 @@
                        :current-page.sync="currentPage1"
                        :page-size.sync="pageSize1"
                        :page-sizes="pageSizes1"
-                       prev-text="上一页"
-                       next-text="下一页"
+                       prev-text="${previous_page_lang}"
+                       next-text="${next_page_lang}"
                        layout="total, sizes, prev, pager, next, jumper"
                        :total="tableTotal">
         </el-pagination>

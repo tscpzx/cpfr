@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@include file="/resource/inc/lang.jsp" %>
 <style type="text/css">
     .device_inact_tbl_box {
         padding: 20px;
@@ -12,16 +13,16 @@
 <div class="device_inact_tbl_box">
     <div id="device_inact_tbl">
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 15px;">
-            <el-breadcrumb-item>设备管理</el-breadcrumb-item>
-            <el-breadcrumb-item>未激活设备</el-breadcrumb-item>
+            <el-breadcrumb-item>${equ_management}</el-breadcrumb-item>
+            <el-breadcrumb-item>${device_not_activated}</el-breadcrumb-item>
         </el-breadcrumb>
 
         <el-form>
             <el-form-item>
                 <el-row>
                     <div style="float: right">
-                        <el-input style="width: 200px;" size="small" v-model="keyword" placeholder="请输入搜索内容"></el-input>
-                        <el-button type="primary" size="small" @click="searchInActDeviceList">查找</el-button>
+                        <el-input style="width: 200px;" size="small" v-model="keyword" placeholder="${search_content}"></el-input>
+                        <el-button type="primary" size="small" @click="searchInActDeviceList">${search}</el-button>
                     </div>
                 </el-row>
             </el-form-item>
@@ -31,20 +32,20 @@
             <el-table :data="tableData" style="width: 100%" stripe>
                 <el-table-column prop="id" label="ID">
                 </el-table-column>
-                <el-table-column prop="device_name" label="设备序列号">
+                <el-table-column prop="device_name" label="${devise_serial_number}">
                 </el-table-column>
-                <el-table-column prop="status" label="激活状态">
+                <el-table-column prop="status" label="${active_state}">
                     <template slot-scope="scope">
-                        <span v-if="scope.row.status===0">未激活</span>
+                        <span v-if="scope.row.status===0">${inactivated}</span>
                     </template>
                 </el-table-column>
-                <el-table-column prop="online" label="在线状态">
+                <el-table-column prop="online" label="${online_status}">
                     <template slot-scope="scope">
-                        <span v-if="scope.row.online===1">在线</span>
-                        <span v-if="scope.row.online===0">离线</span>
+                        <span v-if="scope.row.online===1">${online}</span>
+                        <span v-if="scope.row.online===0">${offline}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="注册时间">
+                <el-table-column label="${registration_time}">
                     <template slot-scope="scope">
                         <i class="el-icon-time"></i>
                         <span style="margin-left: 10px">{{ scope.row.register_time|formatDate }}</span>
@@ -61,8 +62,8 @@
                                :current-page.sync="currentPage"
                                :page-size.sync="pageSize"
                                :page-sizes="pageSizes"
-                               prev-text="上一页"
-                               next-text="下一页"
+                               prev-text="${previous_page_lang}"
+                               next-text="${next_page_lang}"
                                layout="total, sizes, prev, pager, next, jumper"
                                :total="total">
                 </el-pagination>
