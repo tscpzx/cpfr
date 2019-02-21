@@ -1,7 +1,7 @@
 package com.ts.cpfr.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.ts.cpfr.controller.base.BaseController;
+import com.ts.cpfr.controller.base.WebBaseController;
 import com.ts.cpfr.service.DeviceService;
 import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.HandleEnum;
@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/device")
 @SuppressWarnings({"rawtypes", "unchecked"})
-public class DeviceController extends BaseController {
+public class DeviceController extends WebBaseController {
 
     @Autowired
     private DeviceService mDeviceService;

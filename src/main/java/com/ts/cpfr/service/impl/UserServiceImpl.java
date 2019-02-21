@@ -3,7 +3,6 @@ package com.ts.cpfr.service.impl;
 import com.ts.cpfr.dao.TableDao;
 import com.ts.cpfr.dao.UserDao;
 import com.ts.cpfr.ehcache.WebMemory;
-import com.ts.cpfr.ehcache.ThreadToken;
 import com.ts.cpfr.entity.LoginUser;
 import com.ts.cpfr.service.UserService;
 import com.ts.cpfr.utils.CommConst;
@@ -42,7 +41,6 @@ public class UserServiceImpl implements UserService {
     public ResultData<ParamData> login(ParamData pd, HttpServletRequest request, HttpServletResponse response) {
         LoginUser user = mUserDao.selectUserByName(pd);
         if (user != null) {
-            ////todo 解密对比
             if (user.getPassword().equals(pd.getString("password"))) {
                 memory.putCache(user);
 
@@ -51,15 +49,15 @@ public class UserServiceImpl implements UserService {
                 session.setAttribute("user", user);
 
                 //存入cookie中
-                Cookie cookie = new Cookie(CommConst.ACCESS_CPFR_TOKEN, ThreadToken.getToken());
+                Cookie cookie = new Cookie(CommConst.ACCESS_CPFR_TOKEN, user.getToken());
                 cookie.setMaxAge(SystemConfig.COOKIE_LIVE_TIME);
                 cookie.setPath(request.getContextPath() + "/");
                 //写回浏览器
                 response.addCookie(cookie);
 
                 ParamData paramData = new ParamData();
-                paramData.put("admin_id", user.getAdminId());
-                paramData.put("token", user.getToken());
+                paramData.put(CommConst.ADMIN_ID, user.getAdminId());
+                paramData.put(CommConst.ACCESS_CPFR_TOKEN, user.getToken());
 
                 mUserDao.updateUserLoginTime(paramData);
 
@@ -85,14 +83,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void logout() {
-        memory.removeCache();
+    public void logout(HttpServletRequest request, HttpServletResponse response, ParamData pd) {
+        memory.removeCache(pd.getString(CommConst.ACCESS_CPFR_TOKEN));
+        Cookie[] cookies = request.getCookies();
+        for (Cookie cookie : cookies) {
+            if (CommConst.ACCESS_CPFR_TOKEN.equals(cookie.getName())) {
+                cookie.setMaxAge(0); //清空cookie
+                cookie.setPath(request.getContextPath() + "/");
+                response.addCookie(cookie);
+                break;
+            }
+        }
     }
 
     @Override
     public ResultData<ParamData> changePassword(ParamData pd) {
-        pd.put("name", memory.getCache().getName());
-        pd.put("admin_id", memory.getCache().getAdminId());
+        pd.put("name", memory.getCache(pd.getString(CommConst.ACCESS_CPFR_TOKEN)).getName());
+        pd.put("admin_id", memory.getCache(pd.getString(CommConst.ACCESS_CPFR_TOKEN)).getAdminId());
         LoginUser user = mUserDao.selectUserByName(pd);
         if (user.getPassword().equals(pd.getString("old_password"))) {
             if (mUserDao.updateUserPassword(pd)) return new ResultData<>(HandleEnum.SUCCESS);

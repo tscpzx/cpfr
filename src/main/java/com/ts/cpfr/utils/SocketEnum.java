@@ -14,6 +14,7 @@ public enum SocketEnum {
     CODE_1003_PERSON_UPDATE(1003,"人员更新"),
     CODE_1004_GRANT_UPDATE(1004,"权限更新"),
     CODE_1005_DEVICE_DELETE(1005,"设备删除"),
+    CODE_1006_ACCESS_APP_TOKEN(1006,"连接成功"),
     ;
 
     private int code;

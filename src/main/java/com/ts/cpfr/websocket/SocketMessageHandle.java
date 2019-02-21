@@ -8,6 +8,7 @@ import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.SocketEnum;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.BinaryMessage;
@@ -68,8 +69,17 @@ public class SocketMessageHandle implements WebSocketHandler {
             pd.put(CommConst.ADMIN_ID, adminId);
             pd.put("online", 1);
 
-            mAppMemory.putCache(new AppDevice(deviceSn, Integer.parseInt(adminId), (MyWebSocketSession) webSocketSession));
             mDeviceService.updateDeviceOnline(pd);
+
+            //已激活才保存缓存
+            if(!StringUtils.isEmpty(adminId)){
+                AppDevice device = new AppDevice(deviceSn, Integer.parseInt(adminId));
+                mAppMemory.putCache(device);
+                //返回token给app端
+                ParamData data = new ParamData();
+                data.put(CommConst.ACCESS_APP_TOKEN, device.getToken());
+                sendMessageToDevice(deviceSn, obtainMessage(SocketEnum.CODE_1006_ACCESS_APP_TOKEN, data));
+            }
         }
     }
 
@@ -110,6 +120,7 @@ public class SocketMessageHandle implements WebSocketHandler {
      */
     @Override
     public void handleTransportError(WebSocketSession webSocketSession, Throwable throwable) {
+        throwable.printStackTrace();
         if (webSocketSession.isOpen()) {
             //关闭session
             try {
@@ -128,7 +139,7 @@ public class SocketMessageHandle implements WebSocketHandler {
             pd.put(CommConst.DEVICE_SN, deviceSn);
             pd.put(CommConst.ADMIN_ID, adminId);
             pd.put("online", 0);
-            mAppMemory.removeCache();
+            mAppMemory.removeCache(deviceSn);
             mDeviceService.updateDeviceOnline(pd);
         }
     }
@@ -153,10 +164,9 @@ public class SocketMessageHandle implements WebSocketHandler {
             pd.put(CommConst.DEVICE_SN, deviceSn);
             pd.put(CommConst.ADMIN_ID, adminId);
             pd.put("online", 0);
-            mAppMemory.removeCache();
+            mAppMemory.removeCache(deviceSn);
             mDeviceService.updateDeviceOnline(pd);
         }
-
     }
 
     @Override
@@ -168,18 +178,11 @@ public class SocketMessageHandle implements WebSocketHandler {
      * 发送消息给指定的用户
      */
     public void sendMessageToDevice(String toDeviceSn, TextMessage messageInfo) throws IOException {
-        //        Iterator<Map.Entry<String, WebSocketSession>> it = userMap.entrySet().iterator();
-        //        while (it.hasNext()) {
-        //            Map.Entry<String, WebSocketSession> next = it.next();
-        //            if (next.getKey().equals(toDeviceSn)) {
-        //                WebSocketSession socketSession = next.getValue();
-        WebSocketSession socketSession = mAppMemory.getCache().getSession();
+        WebSocketSession socketSession = userMap.get(toDeviceSn);
         if (socketSession.isOpen()) {
             socketSession.sendMessage(messageInfo);
             System.out.println("发送消息给：" + toDeviceSn + "内容：" + messageInfo);
         }
-        //            }
-        //        }
     }
 
     /**
@@ -189,16 +192,9 @@ public class SocketMessageHandle implements WebSocketHandler {
      * @param adminId
      */
     public void saveAdminIdToSession(String deviceSn, int adminId) {
-        //        Iterator<Map.Entry<String, WebSocketSession>> it = userMap.entrySet().iterator();
-        //        while (it.hasNext()) {
-        //            Map.Entry<String, WebSocketSession> next = it.next();
-        //            if (next.getKey().equals(deviceSn)) {
-        //                WebSocketSession socketSession = next.getValue();
-        WebSocketSession socketSession = mAppMemory.getCache().getSession();
+        WebSocketSession socketSession = userMap.get(deviceSn);
         socketSession.getAttributes().put(CommConst.ADMIN_ID, adminId + "");
         userMap.put(deviceSn, socketSession);
-        //            }
-        //        }
     }
 
     /**

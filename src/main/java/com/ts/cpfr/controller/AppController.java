@@ -1,6 +1,6 @@
 package com.ts.cpfr.controller;
 
-import com.ts.cpfr.controller.base.BaseController;
+import com.ts.cpfr.controller.base.AppBaseController;
 import com.ts.cpfr.service.AppService;
 import com.ts.cpfr.utils.HandleEnum;
 import com.ts.cpfr.utils.ParamData;
@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("/app")
 @SuppressWarnings({"rawtypes", "unchecked"})
-public class AppController extends BaseController {
+public class AppController extends AppBaseController {
     @Autowired
     AppService mAppService;
 

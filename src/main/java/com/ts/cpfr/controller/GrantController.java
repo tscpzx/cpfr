@@ -1,6 +1,6 @@
 package com.ts.cpfr.controller;
 
-import com.ts.cpfr.controller.base.BaseController;
+import com.ts.cpfr.controller.base.WebBaseController;
 import com.ts.cpfr.service.GrantService;
 import com.ts.cpfr.utils.HandleEnum;
 import com.ts.cpfr.utils.ParamData;
@@ -22,7 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/grant")
 @SuppressWarnings({"rawtypes", "unchecked"})
-public class GrantController extends BaseController {
+public class GrantController extends WebBaseController {
 
     @Autowired
     private GrantService mGrantService;

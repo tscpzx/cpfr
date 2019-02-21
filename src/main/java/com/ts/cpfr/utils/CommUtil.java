@@ -1,5 +1,6 @@
 package com.ts.cpfr.utils;
 
+import org.apache.commons.lang.StringUtils;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
@@ -14,6 +15,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 public class CommUtil {
@@ -301,5 +303,32 @@ public class CommUtil {
         File file = new File(filePath);
         if (!file.exists()) return file.mkdirs();
         return true;
+    }
+
+    /**
+     * 从请求信息中获取token值
+     */
+    public static String getTokenFromRequest(HttpServletRequest request) {
+        // 默认从Cookie里获取token值
+        Cookie[] cookies = request.getCookies();
+        String token = null;
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                String cookieName = cookie.getName();
+                if (CommConst.ACCESS_CPFR_TOKEN.equals(cookieName)) {
+                    token = cookie.getValue();
+                    break;
+                }
+            }
+        }
+        if (StringUtils.isEmpty(token)) {
+            token = request.getHeader(CommConst.ACCESS_CPFR_TOKEN);
+            if (StringUtils.isEmpty(token)) {
+                // 从请求信息中获取token值
+                token = request.getParameter(CommConst.ACCESS_CPFR_TOKEN);
+            }
+        }
+
+        return token;
     }
 }

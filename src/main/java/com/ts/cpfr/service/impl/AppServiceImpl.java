@@ -2,13 +2,17 @@ package com.ts.cpfr.service.impl;
 
 import com.ts.cpfr.dao.AppDao;
 import com.ts.cpfr.dao.DeviceDao;
+import com.ts.cpfr.ehcache.AppMemory;
 import com.ts.cpfr.service.AppService;
+import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.CommUtil;
 import com.ts.cpfr.utils.HandleEnum;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
 import com.ts.cpfr.utils.SystemConfig;
 
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
@@ -34,6 +38,8 @@ public class AppServiceImpl implements AppService {
     private AppDao mAppDao;
     @Resource
     private DeviceDao mDeviceDao;
+    @Autowired
+    private AppMemory memory;
 
     @Override
     public ResultData<ParamData> register(ParamData pd) {
@@ -48,21 +54,18 @@ public class AppServiceImpl implements AppService {
 
     @Override
     public ResultData<ParamData> getDeviceInfo(ParamData pd) {
-        pd.put("wid", mAppDao.selectUserWid(pd));
         ParamData paramData = mAppDao.selectDevice(pd);
         return new ResultData<>(HandleEnum.SUCCESS, paramData);
     }
 
     @Override
     public ResultData<List<ParamData>> getPersonBase64List(ParamData pd) {
-        pd.put("wid", mAppDao.selectUserWid(pd));
         List<ParamData> list = mAppDao.selectPersonListWithBlob(pd);
         return new ResultData<>(HandleEnum.SUCCESS, list);
     }
 
     @Override
     public ResultData<List<ParamData>> getGrantList(ParamData pd) {
-        pd.put("wid", mAppDao.selectUserWid(pd));
         List<ParamData> list = mAppDao.selectGrantList(pd);
         return new ResultData<>(HandleEnum.SUCCESS, list);
     }
@@ -73,8 +76,8 @@ public class AppServiceImpl implements AppService {
         if (!file.getContentType().contains("image"))
             return new ResultData<>(HandleEnum.FAIL, "文件类型有误!");
         ParamData pd = new ParamData();
-        pd.put("device_sn", request.getParameter("device_sn"));
-        pd.put("admin_id", request.getParameter("admin_id"));
+        pd.put(CommConst.DEVICE_SN, memory.getCache(getTokenFromRequest(request)).getDeviceSn());
+        pd.put(CommConst.ADMIN_ID, memory.getCache(getTokenFromRequest(request)).getAdminId());
         pd.put("person_id", request.getParameter("person_id"));
         pd.put("recog_type", request.getParameter("recog_type"));
         pd.put("record_image", file.getBytes());
@@ -112,5 +115,15 @@ public class AppServiceImpl implements AppService {
     @Override
     public ResultData<ParamData> getCurrentDate() {
         return new ResultData<>(HandleEnum.SUCCESS, mAppDao.selectNow());
+    }
+
+    private String getTokenFromRequest(HttpServletRequest request) {
+        String token = request.getHeader(CommConst.ACCESS_APP_TOKEN);
+        if (StringUtils.isEmpty(token)) {
+            // 从请求信息中获取token值
+            token = request.getParameter(CommConst.ACCESS_APP_TOKEN);
+        }
+
+        return token;
     }
 }

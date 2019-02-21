@@ -10,25 +10,32 @@ import javax.servlet.http.HttpServletRequest;
 
 
 public class BaseController {
-	/** 初始化参数
-	 * @return
-	 */
-	public ParamData paramDataInit(){
-		return new ParamData(this.getRequest());
-	}
-	
-	/**得到ModelAndView
-	 * @return
-	 */
-	public ModelAndView getModelAndView(){
-		return new ModelAndView();
-	}
-	
-	/**得到request对象
-	 * @return
-	 */
-	public HttpServletRequest getRequest() {
-		HttpServletRequest request = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest();
-		return request;
-	}
+    /**
+     * 初始化参数
+     *
+     * @return
+     */
+    public ParamData paramDataInit() {
+        return new ParamData(this.getRequest());
+    }
+
+    /**
+     * 得到ModelAndView
+     *
+     * @return
+     */
+    public ModelAndView getModelAndView() {
+        return new ModelAndView();
+    }
+
+    /**
+     * 得到request对象
+     *
+     * @return
+     */
+    public HttpServletRequest getRequest() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+          .getRequest();
+        return request;
+    }
 }

@@ -1,9 +1,5 @@
 package com.ts.cpfr.ehcache.listener;
 
-import com.ts.cpfr.ehcache.ThreadToken;
-import com.ts.cpfr.entity.LoginUser;
-import com.ts.cpfr.utils.SysLog;
-
 import net.sf.ehcache.CacheException;
 import net.sf.ehcache.Ehcache;
 import net.sf.ehcache.Element;
@@ -20,11 +16,11 @@ public class MyCacheEventListener implements CacheEventListener {
     //方法会在往Cache中移除单个元素时被调用，即在调用Cache的remove方法之后被调用。
     @Override
     public void notifyElementRemoved(Ehcache cache, Element element) throws CacheException {
-        if (element.getObjectKey().equals(ThreadToken.getToken())) {
-            LoginUser user = (LoginUser) element.getObjectValue();
-            SysLog.info(user.getName() + " removed");
-            ThreadToken.clearToken();
-        }
+//        if (element.getObjectKey().equals(ThreadToken.getToken())) {
+//            LoginUser user = (LoginUser) element.getObjectValue();
+//            SysLog.info(user.getName() + " removed");
+//            ThreadToken.clearToken();
+//        }
     }
 
     //方法会在往Cache中添加元素时被调用。调用Cache的put方法添加元素时会被阻塞，直到对应的notifyElementPut方法返回之后。
@@ -40,11 +36,11 @@ public class MyCacheEventListener implements CacheEventListener {
     //方法，当Ehcache检测到Cache中有元素已经过期的时候将调用notifyElementExpired方法。
     @Override
     public void notifyElementExpired(Ehcache cache, Element element) {
-        if (element.getObjectKey().equals(ThreadToken.getToken())) {
-            LoginUser user = (LoginUser) element.getObjectValue();
-            SysLog.info(user.getName() + " expired");
-            ThreadToken.clearToken();
-        }
+//        if (element.getObjectKey().equals(ThreadToken.getToken())) {
+//            LoginUser user = (LoginUser) element.getObjectValue();
+//            SysLog.info(user.getName() + " expired");
+//            ThreadToken.clearToken();
+//        }
     }
 
     //方法将会在元素被驱除的时候调用。

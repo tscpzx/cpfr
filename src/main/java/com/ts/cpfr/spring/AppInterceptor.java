@@ -1,7 +1,6 @@
 package com.ts.cpfr.spring;
 
 import com.ts.cpfr.ehcache.AppMemory;
-import com.ts.cpfr.ehcache.ThreadToken;
 import com.ts.cpfr.utils.CommConst;
 
 import org.apache.commons.lang.StringUtils;
@@ -29,11 +28,8 @@ public class AppInterceptor extends HandlerInterceptorAdapter {
         if (StringUtils.isEmpty(token) || !memory.checkCache(token)) {
             request.getRequestDispatcher("/app/disconnect").forward(request, response);
             return false;
-        } else {
-            // 保存当前token，用于Controller层获取登录用户信息
-            ThreadToken.setToken(token);
-            return true;
         }
+        return true;
     }
 
     /**

@@ -103,7 +103,8 @@
                 var password = $("#password").val().trim();
                 if (password !== value)
                     callback(new Error("两次输入的密码不一致"));
-            }
+                else callback()
+            };
 
             return {
                 registerModel: {
