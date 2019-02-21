@@ -24,7 +24,7 @@
          FULLTEXT KEY `fulltext` (`device_sn`,`device_name`)
 		) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8;
 
-		CREATE TABLE `tbl_33_${value}_config` (
+		CREATE TABLE `tbl_${value}_device_config` (
         `device_id` int(8) NOT NULL COMMENT '设备ID',
         `defend_time` int(4) NOT NULL DEFAULT '0' COMMENT '设备维护时间 单位:小时 (0-24)',
         `face_feature_pair_number` int(4) NOT NULL DEFAULT '0' COMMENT '阀值',
