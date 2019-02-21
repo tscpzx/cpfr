@@ -21,7 +21,7 @@
     }
 
     .el-transfer-panel {
-        width: 35%;
+        width: 38%;
         height: 400px;
     }
 
@@ -31,6 +31,12 @@
 
     .el-date-editor--datetimerange.el-input__inner {
         width: 350px;
+    }
+    .el-transfer-panel .el-transfer-panel__header .el-checkbox .el-checkbox__label {
+        font-size: 14px;
+    }
+    .el-transfer-panel .el-transfer-panel__header{
+        padding-left: 5px;
     }
 </style>
 <div class="group_detail_box">
