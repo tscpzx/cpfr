@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.ts.cpfr.dao.DeviceDao;
 import com.ts.cpfr.dao.PersonDao;
 import com.ts.cpfr.dao.UserDao;
+import com.ts.cpfr.ehcache.AppMemory;
 import com.ts.cpfr.ehcache.WebMemory;
 import com.ts.cpfr.entity.LoginUser;
 import com.ts.cpfr.service.DeviceService;
@@ -45,6 +46,8 @@ public class DeviceServiceImpl implements DeviceService {
     @Autowired
     private WebMemory memory;
     @Autowired
+    private AppMemory appMemory;
+    @Autowired
     private SocketMessageHandle mSocketMessageHandle;
 
     @Override
@@ -84,6 +87,7 @@ public class DeviceServiceImpl implements DeviceService {
                 //通知设备激活成功
                 ParamData data = new ParamData();
                 data.put(CommConst.ADMIN_ID, user.getAdminId());
+                data.put(CommConst.ACCESS_APP_TOKEN, appMemory.getToken(device_sn));
                 TextMessage message = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1001_DEVICE_ACTIVATE, data);
                 mSocketMessageHandle.sendMessageToDevice(device_sn, message);
                 return new ResultData<>(HandleEnum.SUCCESS);

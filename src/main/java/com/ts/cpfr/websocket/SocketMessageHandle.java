@@ -195,6 +195,8 @@ public class SocketMessageHandle implements WebSocketHandler {
         WebSocketSession socketSession = userMap.get(deviceSn);
         socketSession.getAttributes().put(CommConst.ADMIN_ID, adminId + "");
         userMap.put(deviceSn, socketSession);
+        AppDevice device = new AppDevice(deviceSn, adminId);
+        mAppMemory.putCache(device);
     }
 
     /**

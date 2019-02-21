@@ -87,4 +87,14 @@ public class AppMemory {
             }
         }
     }
+
+    public String getToken(String deviceSn) {
+        if (!StringUtils.isEmpty(deviceSn)) {
+            // 根据登录的用户名生成seed，然后清除登录信息
+            // 根据seed找到对应的token
+            String seed = TokenProcessor.getInstance().generateSeed(deviceSn + "");
+            return (String) ehcache.get(seed).getObjectValue();
+        }
+        return null;
+    }
 }
