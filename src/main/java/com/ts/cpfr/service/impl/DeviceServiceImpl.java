@@ -51,7 +51,6 @@ public class DeviceServiceImpl implements DeviceService {
     public ResultData<PageData<ParamData>> getDeviceList(ParamData pd) {
         int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
         int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
-        pd.put("wid", memory.getCache().getWid());
 
         if (pageSize != 0) PageHelper.startPage(pageNum, pageSize);
         List<ParamData> deviceList = mDeviceDao.selectDeviceList(pd);
@@ -70,7 +69,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultData<ParamData> activateDevice(ParamData pd) throws Exception {
-        LoginUser user = memory.getCache();
+        LoginUser user = memory.getCache(pd.getString(CommConst.ACCESS_CPFR_TOKEN));
         ParamData paramData = mDeviceDao.selectInActDevice(pd);
         if (paramData == null) return new ResultData<>(HandleEnum.FAIL, "设备不存在");
         pd.put("admin_id", user.getAdminId());
@@ -102,7 +101,6 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ParamData queryDevice(ParamData pd) {
-        pd.put("wid", memory.getCache().getWid());
         return mDeviceDao.selectDevice(pd);
     }
 
@@ -121,7 +119,6 @@ public class DeviceServiceImpl implements DeviceService {
     public ResultData<PageData<ParamData>> getGrantPersonList(ParamData pd) {
         int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
         int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
-        pd.put("wid", memory.getCache().getWid());
 
         if (pageSize != 0) PageHelper.startPage(pageNum, pageSize);
         List<ParamData> personList = mPersonDao.selectGrantPersonListByDeviceSn(pd);
@@ -130,7 +127,6 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultData<ParamData> changeDeviceInfo(ParamData pd) throws IOException {
-        pd.put("wid", memory.getCache().getWid());
         if (mDeviceDao.updateDeviceInfo(pd)) {
             TextMessage message = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1002_DEVICE_UPDATE, null);
             mSocketMessageHandle.sendMessageToDevice(pd.getString(CommConst.DEVICE_SN), message);
@@ -140,7 +136,6 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultData<ParamData> deleteDevice(ParamData pd) throws IOException {
-        pd.put("wid", memory.getCache().getWid());
         if (mDeviceDao.deleteDeviceByDeviceID(pd)) {
             TextMessage message = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1005_DEVICE_DELETE, null);
             mSocketMessageHandle.sendMessageToDevice(mDeviceDao.selectDeviceSnByDeviceID(pd), message);

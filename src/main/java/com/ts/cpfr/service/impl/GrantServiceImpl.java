@@ -66,7 +66,7 @@ public class GrantServiceImpl implements GrantService {
         }
 
         ParamData paramData = new ParamData();
-        paramData.put("wid", memory.getCache().getWid());
+        paramData.put("wid", memory.getCache(pd.getString(CommConst.ACCESS_CPFR_TOKEN)).getWid());
         paramData.put("list", list);
         if (mGrantDao.insertGrant(paramData)) {
             //通知设备权限更新
@@ -100,7 +100,7 @@ public class GrantServiceImpl implements GrantService {
         }
 
         ParamData paramData = new ParamData();
-        paramData.put("wid", memory.getCache().getWid());
+        paramData.put("wid", memory.getCache(pd.getString(CommConst.ACCESS_CPFR_TOKEN)).getWid());
         paramData.put("list", list);
         if (mGrantDao.updateGrantBan(paramData)) {
             //通知设备权限更新

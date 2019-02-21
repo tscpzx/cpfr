@@ -1,7 +1,7 @@
 package com.ts.cpfr.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.ts.cpfr.controller.base.BaseController;
+import com.ts.cpfr.controller.base.WebBaseController;
 import com.ts.cpfr.service.PersonService;
 import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.HandleEnum;
@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @Controller
 @RequestMapping("/person")
-public class PersonController extends BaseController {
+public class PersonController extends WebBaseController {
 
     @Autowired
     private PersonService mPersonService;

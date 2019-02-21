@@ -1,7 +1,7 @@
 package com.ts.cpfr.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.ts.cpfr.controller.base.BaseController;
+import com.ts.cpfr.controller.base.WebBaseController;
 import com.ts.cpfr.service.GroupService;
 import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.HandleEnum;
@@ -26,7 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/group")
 @SuppressWarnings({"rawtypes", "unchecked"})
-public class GroupController extends BaseController {
+public class GroupController extends WebBaseController {
 
     @Autowired
     private GroupService mGroupService;

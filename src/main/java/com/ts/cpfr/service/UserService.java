@@ -17,7 +17,7 @@ public interface UserService {
 
     ResultData<ParamData> register(ParamData pd);
 
-    void logout();
+    void logout(HttpServletRequest request, HttpServletResponse response, ParamData pd);
 
     ResultData<ParamData> changePassword(ParamData pd);
 }

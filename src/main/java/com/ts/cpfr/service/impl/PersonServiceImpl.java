@@ -45,7 +45,6 @@ public class PersonServiceImpl implements PersonService {
     public ResultData<PageData<ParamData>> getPersonList(ParamData pd) {
         int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
         int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
-        pd.put("wid", memory.getCache().getWid());
 
         if (pageSize != 0) PageHelper.startPage(pageNum, pageSize);
         List<ParamData> personList = mPersonDao.selectPersonList(pd);
@@ -56,7 +55,6 @@ public class PersonServiceImpl implements PersonService {
     public ResultData<PageData<ParamData>> getPersonBase64List(ParamData pd) {
         int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
         int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
-        pd.put("wid", memory.getCache().getWid());
 
         if (pageSize != 0) PageHelper.startPage(pageNum, pageSize);
         List<ParamData> personList = mPersonDao.selectPersonListWithBlob(pd);
@@ -72,7 +70,7 @@ public class PersonServiceImpl implements PersonService {
         pd.put("person_name", request.getParameter("person_name"));
         pd.put("emp_number", request.getParameter("emp_number"));
         pd.put("blob_image", file.getBytes());
-        pd.put("wid", memory.getCache().getWid());
+        pd.put("wid", memory.getCache(CommUtil.getTokenFromRequest(request)).getWid());
         if (mPersonDao.insertPerson(pd)) return new ResultData<>(HandleEnum.SUCCESS);
         return new ResultData<>(HandleEnum.FAIL);
     }
@@ -84,7 +82,7 @@ public class PersonServiceImpl implements PersonService {
         pd.put("person_name", request.getParameter("person_name"));
         pd.put("emp_number", request.getParameter("emp_number"));
         pd.put("blob_image", file.getBytes());
-        pd.put("wid", memory.getCache().getWid());
+        pd.put("wid", memory.getCache(CommUtil.getTokenFromRequest(request)).getWid());
         if (mPersonDao.updatePersonInfo(pd)) {
             List<String> deviceSnLists = mDeviceDao.selectDeviceSnByPersonId(pd);
             TextMessage message = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1003_PERSON_UPDATE, null);
@@ -97,7 +95,6 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public ResultData<ParamData> updatePerson(ParamData pd) throws IOException {
-        pd.put("wid", memory.getCache().getWid());
         if (mPersonDao.updatePersonInfo(pd)) {
             List<String> deviceSnLists = mDeviceDao.selectDeviceSnByPersonId(pd);
             TextMessage message = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1003_PERSON_UPDATE, null);
@@ -110,7 +107,6 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public ResultData<ParamData> deletePerson(ParamData pd) throws IOException {
-        pd.put("wid", memory.getCache().getWid());
         if (mPersonDao.deletePerson(pd)) {
             List<String> deviceSnLists = mDeviceDao.selectDeviceSnByPersonId(pd);
             TextMessage message = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1003_PERSON_UPDATE, null);
@@ -123,7 +119,6 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public ParamData queryPerson(ParamData pd) {
-        pd.put("wid", memory.getCache().getWid());
         return mPersonDao.selectPerson(pd);
     }
 
@@ -222,7 +217,6 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public void blob2base64(ParamData pd) throws Exception {
-        pd.put("wid", memory.getCache().getWid());
         ParamData paramData = mPersonDao.selectImage(pd);
         if (paramData != null) {
             pd.put("base_image", paramData.get("blob_image"));
@@ -234,7 +228,6 @@ public class PersonServiceImpl implements PersonService {
     public ResultData<PageData<ParamData>> getAccessDeviceList(ParamData pd) {
         int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
         int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
-        pd.put("wid", memory.getCache().getWid());
 
         if (pageSize != 0) PageHelper.startPage(pageNum, pageSize);
         List<ParamData> deviceList = mDeviceDao.selectAccessDeviceListByPersonId(pd);

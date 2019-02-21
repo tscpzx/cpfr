@@ -1,6 +1,6 @@
 package com.ts.cpfr.controller;
 
-import com.ts.cpfr.controller.base.BaseController;
+import com.ts.cpfr.controller.base.WebBaseController;
 import com.ts.cpfr.service.RecordService;
 import com.ts.cpfr.utils.HandleEnum;
 import com.ts.cpfr.utils.PageData;
@@ -10,11 +10,9 @@ import com.ts.cpfr.utils.ResultData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * @Classname RecordController
@@ -24,7 +22,7 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/record")
-public class RecordController extends BaseController {
+public class RecordController extends WebBaseController {
 
     @Autowired
     private RecordService mRecordService;

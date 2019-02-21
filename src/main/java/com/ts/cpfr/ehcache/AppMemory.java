@@ -5,6 +5,7 @@ import com.ts.cpfr.entity.AppDevice;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.Element;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -47,10 +48,8 @@ public class AppMemory {
 
         // 保存token到登录用户中
         device.setToken(token);
-        // 保存当前token，用于Controller层获取登录用户信息
-        ThreadToken.setToken(token);
         // 清空之前的登录信息
-        removeCache(seed);
+        removeCache(token);
         // 保存新的token和登录信息
         ehcache.put(new Element(seed, token));
         ehcache.put(new Element(token, device));
@@ -59,8 +58,8 @@ public class AppMemory {
     /**
      * 获取当前线程中的用户信息
      */
-    public AppDevice getCache() {
-        Element element = ehcache.get(ThreadToken.getToken());
+    public AppDevice getCache(String token) {
+        Element element = ehcache.get(token);
         return element == null ? null : (AppDevice) element.getObjectValue();
     }
 
@@ -75,24 +74,17 @@ public class AppMemory {
     /**
      * 清空登录信息
      */
-    public void removeCache() {
-        AppDevice device = getCache();
-        if (device != null) {
+    public void removeCache(String deviceSn) {
+        if (!StringUtils.isEmpty(deviceSn)) {
             // 根据登录的用户名生成seed，然后清除登录信息
-            removeCache(TokenProcessor.getInstance().generateSeed(device.getDeviceSn()));
-        }
-    }
-
-    /**
-     * 根据seed清空登录信息
-     */
-    private void removeCache(String seed) {
-        // 根据seed找到对应的token
-        Element element = ehcache.get(seed);
-        if (element != null) {
-            // 根据token清空之前的登录信息
-            ehcache.remove(seed);
-            ehcache.remove(element.getObjectValue());
+            // 根据seed找到对应的token
+            String seed = TokenProcessor.getInstance().generateSeed(deviceSn + "");
+            Element element = ehcache.get(seed);
+            if (element != null) {
+                // 根据token清空之前的登录信息
+                ehcache.remove(seed);
+                ehcache.remove(element.getObjectValue());
+            }
         }
     }
 }

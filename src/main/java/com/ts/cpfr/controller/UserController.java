@@ -1,6 +1,6 @@
 package com.ts.cpfr.controller;
 
-import com.ts.cpfr.controller.base.BaseController;
+import com.ts.cpfr.controller.base.WebBaseController;
 import com.ts.cpfr.service.UserService;
 import com.ts.cpfr.utils.HandleEnum;
 import com.ts.cpfr.utils.ParamData;
@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("/user")
 @SuppressWarnings({"rawtypes", "unchecked"})
-public class UserController extends BaseController {
+public class UserController extends WebBaseController {
     @Autowired
     private UserService mUserService;
 
@@ -51,9 +51,9 @@ public class UserController extends BaseController {
 
     @ResponseBody
     @RequestMapping("/logout")
-    public ResultData<ParamData> logout(HttpServletRequest request) {
+    public ResultData<ParamData> logout(HttpServletRequest request, HttpServletResponse response) {
         try {
-            mUserService.logout();
+            mUserService.logout(request, response, paramDataInit());
             return new ResultData<>(HandleEnum.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();

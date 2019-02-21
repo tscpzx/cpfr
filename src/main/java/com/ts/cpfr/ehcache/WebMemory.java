@@ -1,7 +1,6 @@
 package com.ts.cpfr.ehcache;
 
 import com.ts.cpfr.entity.LoginUser;
-import com.ts.cpfr.utils.MD5Util;
 import com.ts.cpfr.utils.SystemConfig;
 
 import net.sf.ehcache.Cache;
@@ -47,10 +46,8 @@ public class WebMemory {
 
         // 保存token到登录用户中
         loginUser.setToken(token);
-        // 保存当前token，用于Controller层获取登录用户信息
-        ThreadToken.setToken(token);
         // 清空之前的登录信息
-        removeCache(seed);
+        removeCache(token);
         // 保存新的token和登录信息
         ehcache.put(new Element(seed, token, SystemConfig.SESSION_TIME_TO_IDLE, SystemConfig.SESSION_TIME_LIVE_MAX));
         ehcache.put(new Element(token, loginUser, SystemConfig.SESSION_TIME_TO_IDLE, SystemConfig.SESSION_TIME_LIVE_MAX));
@@ -59,8 +56,8 @@ public class WebMemory {
     /**
      * 获取当前线程中的用户信息
      */
-    public LoginUser getCache() {
-        Element element = ehcache.get(ThreadToken.getToken());
+    public LoginUser getCache(String token) {
+        Element element = ehcache.get(token);
         return element == null ? null : (LoginUser) element.getObjectValue();
     }
 
@@ -75,25 +72,17 @@ public class WebMemory {
     /**
      * 清空登录信息
      */
-    public void removeCache() {
-        LoginUser loginUser = getCache();
+    public void removeCache(String token) {
+        LoginUser loginUser = getCache(token);
         if (loginUser != null) {
             // 根据登录的用户名生成seed，然后清除登录信息
-            String seed = MD5Util.md5(loginUser.getAdminId() + "");
-            removeCache(seed);
-        }
-    }
-
-    /**
-     * 根据seed清空登录信息
-     */
-    private void removeCache(String seed) {
-        // 根据seed找到对应的token
-        Element element = ehcache.get(seed);
-        if (element != null) {
-            // 根据token清空之前的登录信息
-            ehcache.remove(seed);
-            ehcache.remove(element.getObjectValue());
+            String seed = TokenProcessor.getInstance().generateSeed(loginUser.getAdminId() + "");
+            Element element = ehcache.get(seed);
+            if (element != null) {
+                // 根据token清空之前的登录信息
+                ehcache.remove(seed);
+                ehcache.remove(element.getObjectValue());
+            }
         }
     }
 }

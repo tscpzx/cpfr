@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.ts.cpfr.dao.RecordDao;
 import com.ts.cpfr.ehcache.WebMemory;
 import com.ts.cpfr.service.RecordService;
+import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.CommUtil;
 import com.ts.cpfr.utils.HandleEnum;
 import com.ts.cpfr.utils.PageData;
@@ -37,7 +38,6 @@ public class RecordServiceImpl implements RecordService {
     public ResultData<PageData<ParamData>> getRecordBase64List(ParamData pd) {
         int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
         int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
-        pd.put("wid", memory.getCache().getWid());
 
         if (pageSize != 0) PageHelper.startPage(pageNum, pageSize);
         List<ParamData> recordList = mRecordDao.selectRecordListWithBlob(pd);
@@ -46,7 +46,6 @@ public class RecordServiceImpl implements RecordService {
 
     @Override
     public ResultData<ParamData> deleteRecord(ParamData pd) {
-        pd.put("wid", memory.getCache().getWid());
         if (mRecordDao.deleteRecord(pd)) {
             return new ResultData<>(HandleEnum.SUCCESS);
         } else return new ResultData<>(HandleEnum.FAIL);
@@ -55,7 +54,6 @@ public class RecordServiceImpl implements RecordService {
     @Override
     public ResultData<ParamData> deleteRecordLists(ParamData pd) {
         String record_ids = pd.getString("record_ids");
-        System.out.println("test::::::"+record_ids);
         List<ParamData> list = new ArrayList<>();
         String[] recordIdArr = record_ids.split(",");
         for (String recordId : recordIdArr) {
@@ -66,7 +64,7 @@ public class RecordServiceImpl implements RecordService {
         }
 
         ParamData paramData = new ParamData();
-        paramData.put("wid", memory.getCache().getWid());
+        paramData.put("wid", memory.getCache(pd.getString(CommConst.ACCESS_CPFR_TOKEN)).getWid());
         paramData.put("list", list);
         if (mRecordDao.deleteRecordLists(paramData)) {
             return new ResultData<>(HandleEnum.SUCCESS);

@@ -1,6 +1,6 @@
 package com.ts.cpfr.controller;
 
-import com.ts.cpfr.controller.base.BaseController;
+import com.ts.cpfr.controller.base.WebBaseController;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  * @Created by cjw
  */
 @Controller
-public class PageController extends BaseController {
+public class PageController extends WebBaseController {
     @Autowired
     private LocaleResolver localeResolver;
 
