@@ -90,7 +90,7 @@
 		UPDATE tbl_inact_device SET status=0,mac_grant_key=NULL,admin_id=NULL,activate_time=NULL WHERE device_sn=(SELECT device_sn FROM tbl_#{wid}_device WHERE device_id = #{device_id})
 	</delete>
 
-	<select id="selectDeviceSnByDeviceID" parameterType="pd">
+	<select id="selectDeviceSnByDeviceID" parameterType="pd" resultType="string">
 		select device_sn from tbl_#{wid}_device where device_id=#{device_id}
 	</select>
 
