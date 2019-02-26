@@ -17,6 +17,8 @@ public interface PersonDao {
 
     boolean insertPerson(ParamData pd);
 
+    boolean updatePersonListGroupID(ParamData pd);
+
     boolean updatePersonGroupID(ParamData pd);
 
     ParamData selectImage(ParamData pd);

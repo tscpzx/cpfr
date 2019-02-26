@@ -85,7 +85,7 @@ public class GroupServiceImpl implements GroupService {
         paramData.put("wid", memory.getCache(pd.getString(CommConst.ACCESS_CPFR_TOKEN)).getWid());
         paramData.put("group_id", pd.getString("group_id"));
         paramData.put("list", list);
-        if (mPersonDao.updatePersonGroupID(paramData)) return new ResultData<>(HandleEnum.SUCCESS);
+        if (mPersonDao.updatePersonListGroupID(paramData)) return new ResultData<>(HandleEnum.SUCCESS);
         else return new ResultData<>(HandleEnum.FAIL);
     }
 

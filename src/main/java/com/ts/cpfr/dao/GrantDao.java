@@ -12,4 +12,6 @@ public interface GrantDao {
     boolean insertGrant(ParamData pd);
 
     boolean updateGrantBan(ParamData pd);
+
+    boolean insertGrantDeviceSnPersonId(ParamData pd);
 }

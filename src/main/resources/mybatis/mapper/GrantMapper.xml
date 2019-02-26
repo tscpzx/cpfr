@@ -30,4 +30,8 @@
 			)
 		</foreach>
 	</update>
+
+	<insert id="insertGrantDeviceSnPersonId" parameterType="pd">
+		INSERT INTO tbl_#{wid}_grant(device_id,person_id) VALUES((select device_id from tbl_#{wid}_device where device_sn=#{device_sn}),#{person_id});
+	</insert>
 </mapper>

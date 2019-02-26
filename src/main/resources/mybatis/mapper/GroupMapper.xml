@@ -28,4 +28,8 @@
 		update tbl_#{wid}_device set group_id=0 where group_id=#{group_id};
 		update tbl_#{wid}_person set group_id=0 where group_id=#{group_id};
 	</update>
+
+	<select id="selectGroupByGroupName" parameterType="pd" resultType="pd">
+		select group_id,group_name,super_id,type,create_time,lmt from tbl_#{wid}_group where group_name=#{group_name}
+	</select>
 </mapper>

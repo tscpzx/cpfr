@@ -2,6 +2,9 @@ package com.ts.cpfr.service.impl;
 
 import com.ts.cpfr.dao.AppDao;
 import com.ts.cpfr.dao.DeviceDao;
+import com.ts.cpfr.dao.GrantDao;
+import com.ts.cpfr.dao.GroupDao;
+import com.ts.cpfr.dao.PersonDao;
 import com.ts.cpfr.ehcache.AppMemory;
 import com.ts.cpfr.service.AppService;
 import com.ts.cpfr.utils.CommConst;
@@ -38,6 +41,12 @@ public class AppServiceImpl implements AppService {
     private AppDao mAppDao;
     @Resource
     private DeviceDao mDeviceDao;
+    @Resource
+    private PersonDao mPersonDao;
+    @Resource
+    private GrantDao mGrantDao;
+    @Resource
+    private GroupDao mGroupDao;
     @Autowired
     private AppMemory memory;
 
@@ -48,7 +57,8 @@ public class AppServiceImpl implements AppService {
             if (mAppDao.insertInActDevice(pd)) {
                 return new ResultData<>(HandleEnum.SUCCESS, "已注册新设备");
             }
-        } else return new ResultData<>(HandleEnum.SUCCESS, "设备已注册");
+        } else
+            return new ResultData<>(HandleEnum.SUCCESS, "设备已注册");
         return new ResultData<>(HandleEnum.FAIL, "设备注册失败，请重新连接");
     }
 
@@ -72,7 +82,8 @@ public class AppServiceImpl implements AppService {
 
     @Override
     public ResultData<ParamData> addRecord(CommonsMultipartFile file, HttpServletRequest request) {
-        if (file.getSize() / 1024 > 65) return new ResultData<>(HandleEnum.FAIL, "上传失败，图片过大!");
+        if (file.getSize() / 1024 > 65)
+            return new ResultData<>(HandleEnum.FAIL, "上传失败，图片过大!");
         if (!file.getContentType().contains("image"))
             return new ResultData<>(HandleEnum.FAIL, "文件类型有误!");
         ParamData pd = new ParamData();
@@ -82,7 +93,8 @@ public class AppServiceImpl implements AppService {
         pd.put("recog_type", request.getParameter("recog_type"));
         pd.put("record_image", file.getBytes());
         pd.put("wid", mAppDao.selectUserWid(pd));
-        if (mAppDao.insertRecord(pd)) return new ResultData<>(HandleEnum.SUCCESS);
+        if (mAppDao.insertRecord(pd))
+            return new ResultData<>(HandleEnum.SUCCESS);
         return new ResultData<>(HandleEnum.FAIL);
     }
 
@@ -107,7 +119,8 @@ public class AppServiceImpl implements AppService {
                 return true;
             }
         } finally {
-            if (fos != null) fos.close();
+            if (fos != null)
+                fos.close();
         }
         return false;
     }
@@ -117,13 +130,47 @@ public class AppServiceImpl implements AppService {
         return new ResultData<>(HandleEnum.SUCCESS, mAppDao.selectNow());
     }
 
+    @Override
+    public ResultData<ParamData> addPersonWithGrant(CommonsMultipartFile file,
+      HttpServletRequest request) {
+        if (file.getSize() / 1024 > 65)
+            return new ResultData<>(HandleEnum.FAIL, "上传失败，图片过大!");
+        if (!file.getContentType().contains("image"))
+            return new ResultData<>(HandleEnum.FAIL, "文件类型有误!");
+
+        ParamData pd = new ParamData();
+        pd.put(CommConst.DEVICE_SN, memory.getCache(getTokenFromRequest(request)).getDeviceSn());
+        pd.put(CommConst.ADMIN_ID, memory.getCache(getTokenFromRequest(request)).getAdminId());
+        pd.put("person_name", request.getParameter("person_name"));
+        pd.put("emp_number", request.getParameter("emp_number"));
+
+        pd.put("blob_image", file.getBytes());
+        pd.put("wid", mAppDao.selectUserWid(pd));
+
+        boolean a = mPersonDao.insertPerson(pd);
+        boolean b = mGrantDao.insertGrantDeviceSnPersonId(pd);
+
+        String groupName = request.getParameter("group_name");
+        pd.put("group_name", groupName);
+        if (!StringUtils.isEmpty(groupName)) {
+            ParamData group = mGroupDao.selectGroupByGroupName(pd);
+            if (group != null) {
+                pd.put("group_id", group.get("group_id") + "");
+                mPersonDao.updatePersonGroupID(pd);
+            }
+        }
+
+        if (a && b)
+            return new ResultData<>(HandleEnum.SUCCESS);
+        return new ResultData<>(HandleEnum.FAIL);
+    }
+
     private String getTokenFromRequest(HttpServletRequest request) {
         String token = request.getHeader(CommConst.ACCESS_APP_TOKEN);
         if (StringUtils.isEmpty(token)) {
             // 从请求信息中获取token值
             token = request.getParameter(CommConst.ACCESS_APP_TOKEN);
         }
-
         return token;
     }
 }

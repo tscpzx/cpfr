@@ -102,4 +102,15 @@ public class AppController extends AppBaseController {
     public ResultData<ParamData> disconnect(HttpServletRequest request) {
         return new ResultData<>(HandleEnum.FAIL, "未与服务器建立连接!");
     }
+
+    @ResponseBody
+    @RequestMapping("/add_person")
+    public ResultData<ParamData> addPerson(@RequestParam("file") CommonsMultipartFile file,HttpServletRequest request) {
+        try {
+            return mAppService.addPersonWithGrant(file, request);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
 }

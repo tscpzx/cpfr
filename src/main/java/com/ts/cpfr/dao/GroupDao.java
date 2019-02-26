@@ -20,4 +20,6 @@ public interface GroupDao {
     boolean updateGroupInfo(ParamData pd);
 
     boolean deleteGroup(ParamData pd);
+
+    ParamData selectGroupByGroupName(ParamData pd);
 }

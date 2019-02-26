@@ -25,12 +25,12 @@
 
 	</select>
 
-	<insert id="insertPerson" parameterType="pd">
+	<insert id="insertPerson" parameterType="pd" useGeneratedKeys="true" keyProperty="person_id" >
 		insert into tbl_#{wid}_image (blob_image) values (#{blob_image});
 		INSERT INTO tbl_#{wid}_person(person_name,emp_number,status,add_time,image_id) VALUES(#{person_name},#{emp_number},1,now(),(select LAST_INSERT_ID()));
 	</insert>
 
-	<update id="updatePersonGroupID" parameterType="pd">
+	<update id="updatePersonListGroupID" parameterType="pd">
 		UPDATE tbl_#{wid}_person SET group_id = #{group_id}  WHERE
 		<foreach collection="list" item="data" separator=" or ">
 			person_id=#{data.person_id}
@@ -65,5 +65,9 @@
 
 	<update id="deletePersonGroupID" parameterType="pd">
 		update tbl_#{wid}_person set group_id=0 where person_id = #{person_id};
+	</update>
+
+	<update id="updatePersonGroupID" parameterType="pd">
+		UPDATE tbl_#{wid}_person SET group_id = #{group_id} WHERE person_id=#{person_id}
 	</update>
 </mapper>
