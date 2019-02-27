@@ -22,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -130,7 +129,7 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public ResultData<ParamData> changeDeviceInfo(ParamData pd) throws IOException {
+    public ResultData<ParamData> changeDeviceInfo(ParamData pd) throws Exception {
         if (mDeviceDao.updateDeviceInfo(pd)) {
             TextMessage message = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1002_DEVICE_UPDATE, null);
             mSocketMessageHandle.sendMessageToDevice(pd.getString(CommConst.DEVICE_SN), message);
@@ -139,10 +138,11 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public ResultData<ParamData> deleteDevice(ParamData pd) throws IOException {
+    public ResultData<ParamData> deleteDevice(ParamData pd) throws Exception {
+        String deviceSn = mDeviceDao.selectDeviceSnByDeviceID(pd);
         if (mDeviceDao.deleteDeviceByDeviceID(pd)) {
             TextMessage message = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1005_DEVICE_DELETE, null);
-            mSocketMessageHandle.sendMessageToDevice(mDeviceDao.selectDeviceSnByDeviceID(pd), message);
+            mSocketMessageHandle.sendMessageToDevice(deviceSn, message);
             return new ResultData<>(HandleEnum.SUCCESS);
         } else return new ResultData<>(HandleEnum.FAIL);
     }

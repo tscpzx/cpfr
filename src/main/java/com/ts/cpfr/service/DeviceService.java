@@ -4,8 +4,6 @@ import com.ts.cpfr.utils.PageData;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
 
-import java.io.IOException;
-
 /**
  * @Classname DeviceService
  * @Description
@@ -27,7 +25,7 @@ public interface DeviceService {
 
     ResultData<PageData<ParamData>> getGrantPersonList(ParamData pd);
 
-    ResultData<ParamData> changeDeviceInfo(ParamData pd) throws IOException;
+    ResultData<ParamData> changeDeviceInfo(ParamData pd) throws Exception;
 
-    ResultData<ParamData> deleteDevice(ParamData pd) throws IOException;
+    ResultData<ParamData> deleteDevice(ParamData pd) throws Exception;
 }

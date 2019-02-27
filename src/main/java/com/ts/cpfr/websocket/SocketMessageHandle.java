@@ -72,13 +72,14 @@ public class SocketMessageHandle implements WebSocketHandler {
             mDeviceService.updateDeviceOnline(pd);
 
             //已激活才保存缓存
-            if(!StringUtils.isEmpty(adminId)){
+            if (!StringUtils.isEmpty(adminId)) {
                 AppDevice device = new AppDevice(deviceSn, Integer.parseInt(adminId));
                 mAppMemory.putCache(device);
                 //返回token给app端
                 ParamData data = new ParamData();
                 data.put(CommConst.ACCESS_APP_TOKEN, device.getToken());
-                sendMessageToDevice(deviceSn, obtainMessage(SocketEnum.CODE_1006_ACCESS_APP_TOKEN, data));
+                sendMessageToDevice(deviceSn, obtainMessage(SocketEnum.CODE_1006_ACCESS_APP_TOKEN
+                  , data));
             }
         }
     }
@@ -178,10 +179,12 @@ public class SocketMessageHandle implements WebSocketHandler {
      * 发送消息给指定的用户
      */
     public void sendMessageToDevice(String toDeviceSn, TextMessage messageInfo) throws IOException {
-        WebSocketSession socketSession = userMap.get(toDeviceSn);
-        if (socketSession.isOpen()) {
-            socketSession.sendMessage(messageInfo);
-            System.out.println("发送消息给：" + toDeviceSn + "内容：" + messageInfo);
+        if (!StringUtils.isEmpty(toDeviceSn)) {
+            WebSocketSession socketSession = userMap.get(toDeviceSn);
+            if (socketSession != null && socketSession.isOpen()) {
+                socketSession.sendMessage(messageInfo);
+                System.out.println("发送消息给：" + toDeviceSn + "内容：" + messageInfo);
+            }
         }
     }
 
@@ -192,11 +195,15 @@ public class SocketMessageHandle implements WebSocketHandler {
      * @param adminId
      */
     public void saveAdminIdToSession(String deviceSn, int adminId) {
-        WebSocketSession socketSession = userMap.get(deviceSn);
-        socketSession.getAttributes().put(CommConst.ADMIN_ID, adminId + "");
-        userMap.put(deviceSn, socketSession);
-        AppDevice device = new AppDevice(deviceSn, adminId);
-        mAppMemory.putCache(device);
+        if (!StringUtils.isEmpty(deviceSn)) {
+            WebSocketSession socketSession = userMap.get(deviceSn);
+            if (socketSession != null && socketSession.isOpen()) {
+                socketSession.getAttributes().put(CommConst.ADMIN_ID, adminId + "");
+                userMap.put(deviceSn, socketSession);
+                AppDevice device = new AppDevice(deviceSn, adminId);
+                mAppMemory.putCache(device);
+            }
+        }
     }
 
     /**
@@ -208,8 +215,10 @@ public class SocketMessageHandle implements WebSocketHandler {
     public TextMessage obtainMessage(int code, String message, ParamData data) {
         Map<String, Object> jsonMap = new HashMap<>();
         jsonMap.put(CommConst.CODE, code);
-        if (data == null) jsonMap.put(CommConst.DATA, "");
-        else jsonMap.put(CommConst.DATA, data);
+        if (data == null)
+            jsonMap.put(CommConst.DATA, "");
+        else
+            jsonMap.put(CommConst.DATA, data);
         jsonMap.put(CommConst.MESSAGE, message);
         return new TextMessage(JSONObject.toJSONString(jsonMap));
     }
@@ -218,8 +227,10 @@ public class SocketMessageHandle implements WebSocketHandler {
     public TextMessage obtainMessage(SocketEnum socketEnum, ParamData data) {
         Map<String, Object> jsonMap = new HashMap<>();
         jsonMap.put(CommConst.CODE, socketEnum.getCode());
-        if (data == null) jsonMap.put(CommConst.DATA, "");
-        else jsonMap.put(CommConst.DATA, data);
+        if (data == null)
+            jsonMap.put(CommConst.DATA, "");
+        else
+            jsonMap.put(CommConst.DATA, data);
         jsonMap.put(CommConst.MESSAGE, socketEnum.getMessage());
         return new TextMessage(JSONObject.toJSONString(jsonMap));
     }

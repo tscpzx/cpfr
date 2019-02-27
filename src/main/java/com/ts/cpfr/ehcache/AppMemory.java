@@ -49,7 +49,7 @@ public class AppMemory {
         // 保存token到登录用户中
         device.setToken(token);
         // 清空之前的登录信息
-        removeCache(token);
+        removeCache(device.getDeviceSn());
         // 保存新的token和登录信息
         ehcache.put(new Element(seed, token));
         ehcache.put(new Element(token, device));
@@ -82,8 +82,9 @@ public class AppMemory {
             Element element = ehcache.get(seed);
             if (element != null) {
                 // 根据token清空之前的登录信息
+                Object token = element.getObjectValue();
                 ehcache.remove(seed);
-                ehcache.remove(element.getObjectValue());
+                ehcache.remove(token);
             }
         }
     }
