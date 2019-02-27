@@ -2,6 +2,7 @@ package com.ts.cpfr.service.impl;
 
 import com.ts.cpfr.dao.TableDao;
 import com.ts.cpfr.dao.UserDao;
+import com.ts.cpfr.ehcache.TokenProcessor;
 import com.ts.cpfr.ehcache.WebMemory;
 import com.ts.cpfr.entity.LoginUser;
 import com.ts.cpfr.service.UserService;
@@ -84,7 +85,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, ParamData pd) {
-        memory.removeCache(pd.getString(CommConst.ACCESS_CPFR_TOKEN));
+        String seed = TokenProcessor.getInstance().generateSeed(memory.getCache(pd.getString(CommConst.ACCESS_CPFR_TOKEN)).getAdminId() + "");
+        memory.removeCache(seed);
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
             if (CommConst.ACCESS_CPFR_TOKEN.equals(cookie.getName())) {

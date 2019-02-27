@@ -47,7 +47,7 @@ public class WebMemory {
         // 保存token到登录用户中
         loginUser.setToken(token);
         // 清空之前的登录信息
-        removeCache(token);
+        removeCache(seed);
         // 保存新的token和登录信息
         ehcache.put(new Element(seed, token, SystemConfig.SESSION_TIME_TO_IDLE, SystemConfig.SESSION_TIME_LIVE_MAX));
         ehcache.put(new Element(token, loginUser, SystemConfig.SESSION_TIME_TO_IDLE, SystemConfig.SESSION_TIME_LIVE_MAX));
@@ -72,17 +72,12 @@ public class WebMemory {
     /**
      * 清空登录信息
      */
-    public void removeCache(String token) {
-        LoginUser loginUser = getCache(token);
-        if (loginUser != null) {
-            // 根据登录的用户名生成seed，然后清除登录信息
-            String seed = TokenProcessor.getInstance().generateSeed(loginUser.getAdminId() + "");
-            Element element = ehcache.get(seed);
-            if (element != null) {
-                // 根据token清空之前的登录信息
-                ehcache.remove(seed);
-                ehcache.remove(element.getObjectValue());
-            }
+    public void removeCache(String seed) {
+        Element element = ehcache.get(seed);
+        if(element!=null){
+            String token = (String) element.getObjectValue();
+            ehcache.remove(seed);
+            ehcache.remove(token);
         }
     }
 }
