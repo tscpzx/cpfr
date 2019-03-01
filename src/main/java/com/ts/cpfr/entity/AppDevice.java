@@ -9,21 +9,21 @@ import java.io.Serializable;
  * @Created by cjw
  */
 public class AppDevice implements Serializable {
-    private int adminId;
+    private int wid;
     private String deviceSn;
     private String token;
 
-    public AppDevice(String deviceSn, int adminId) {
+    public AppDevice(String deviceSn, int wid) {
         this.deviceSn = deviceSn;
-        this.adminId = adminId;
+        this.wid = wid;
     }
 
-    public int getAdminId() {
-        return adminId;
+    public int getWid() {
+        return wid;
     }
 
-    public void setAdminId(int adminId) {
-        this.adminId = adminId;
+    public void setWid(int wid) {
+        this.wid = wid;
     }
 
     public String getToken() {

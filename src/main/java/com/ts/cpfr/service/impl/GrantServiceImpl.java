@@ -70,10 +70,12 @@ public class GrantServiceImpl implements GrantService {
         paramData.put("list", list);
         if (mGrantDao.insertGrant(paramData)) {
             //通知设备权限更新
-            TextMessage message = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1004_GRANT_UPDATE, null);
+            TextMessage personMessage = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1003_PERSON_UPDATE, null);
+            TextMessage grantMessage = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1004_GRANT_UPDATE, null);
             List<ParamData> deviceSnList = mDeviceDao.selectDeviceSnList(paramData);
             for (ParamData p : deviceSnList) {
-                mSocketMessageHandle.sendMessageToDevice(p.getString(CommConst.DEVICE_SN), message);
+                mSocketMessageHandle.sendMessageToDevice(p.getString(CommConst.DEVICE_SN), personMessage);
+                mSocketMessageHandle.sendMessageToDevice(p.getString(CommConst.DEVICE_SN), grantMessage);
             }
             return new ResultData<>(HandleEnum.SUCCESS);
         }

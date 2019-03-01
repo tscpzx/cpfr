@@ -40,4 +40,8 @@ public interface DeviceDao {
     List<String> selectDeviceSnByPersonId(ParamData pd);
 
     boolean deleteDeviceGroupID(ParamData pd);
+
+    int selectWidByDeviceSn(ParamData pd);
+
+    int selectDeviceStatusByDeviceSn(ParamData pd);
 }

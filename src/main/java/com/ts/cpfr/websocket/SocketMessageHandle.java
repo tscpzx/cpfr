@@ -34,6 +34,11 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 public class SocketMessageHandle implements WebSocketHandler {
 
+    private static final int STATUS_0_DEVICE_INACTIVAT = 0;
+    private static final int STATUS_1_DEVICE_ACTIVATED = 1;
+    private static final int STATUS_0_DEVICE_OFFLINE = 0;
+    private static final int STATUS_1_DEVICE_ONLINE = 1;
+
     @Autowired
     DeviceService mDeviceService;
     @Autowired
@@ -59,27 +64,26 @@ public class SocketMessageHandle implements WebSocketHandler {
         Map<String, Object> attributes = webSocketSession.getAttributes();
         if (attributes != null) {
             String deviceSn = (String) attributes.get(CommConst.DEVICE_SN);
-            String adminId = (String) attributes.get(CommConst.ADMIN_ID);
             userMap.put(deviceSn, webSocketSession);
             System.out.println("=====================建立连接成功==========================");
             System.out.println("当前连接设备======" + deviceSn);
             System.out.println("设备连接数量=====" + userMap.size());
+
+            //判断设备是否已激活
             ParamData pd = new ParamData();
             pd.put(CommConst.DEVICE_SN, deviceSn);
-            pd.put(CommConst.ADMIN_ID, adminId);
-            pd.put("online", 1);
-
+            pd.put("online", STATUS_1_DEVICE_ONLINE);
+            //更新设备在线状态
             mDeviceService.updateDeviceOnline(pd);
-
-            //已激活才保存缓存
-            if (!StringUtils.isEmpty(adminId)) {
-                AppDevice device = new AppDevice(deviceSn, Integer.parseInt(adminId));
+            //已激活
+            if (STATUS_1_DEVICE_ACTIVATED == mDeviceService.getDeviceActStatusByDeviceSn(pd)) {
+                //保存缓存
+                AppDevice device = new AppDevice(deviceSn, mDeviceService.getWidByDeviceSn(pd));
                 mAppMemory.putCache(device);
                 //返回token给app端
                 ParamData data = new ParamData();
                 data.put(CommConst.ACCESS_APP_TOKEN, device.getToken());
-                sendMessageToDevice(deviceSn, obtainMessage(SocketEnum.CODE_1006_ACCESS_APP_TOKEN
-                  , data));
+                sendMessageToDevice(deviceSn, obtainMessage(SocketEnum.CODE_1006_ACCESS_APP_TOKEN, data));
             }
         }
     }
@@ -121,7 +125,7 @@ public class SocketMessageHandle implements WebSocketHandler {
      */
     @Override
     public void handleTransportError(WebSocketSession webSocketSession, Throwable throwable) {
-        throwable.printStackTrace();
+//        throwable.printStackTrace();
         if (webSocketSession.isOpen()) {
             //关闭session
             try {
@@ -133,13 +137,12 @@ public class SocketMessageHandle implements WebSocketHandler {
         Map<String, Object> attributes = webSocketSession.getAttributes();
         if (attributes != null) {
             String deviceSn = (String) attributes.get(CommConst.DEVICE_SN);
-            String adminId = (String) attributes.get(CommConst.ADMIN_ID);
             userMap.remove(deviceSn);
             System.out.println(deviceSn + "断开连接error");
+
             ParamData pd = new ParamData();
             pd.put(CommConst.DEVICE_SN, deviceSn);
-            pd.put(CommConst.ADMIN_ID, adminId);
-            pd.put("online", 0);
+            pd.put("online", STATUS_0_DEVICE_OFFLINE);
             mAppMemory.removeCache(deviceSn);
             mDeviceService.updateDeviceOnline(pd);
         }
@@ -158,13 +161,11 @@ public class SocketMessageHandle implements WebSocketHandler {
         Map<String, Object> attributes = webSocketSession.getAttributes();
         if (attributes != null) {
             String deviceSn = (String) attributes.get(CommConst.DEVICE_SN);
-            String adminId = (String) attributes.get(CommConst.ADMIN_ID);
             userMap.remove(deviceSn);
             System.out.println(deviceSn + "断开连接Closed");
             ParamData pd = new ParamData();
             pd.put(CommConst.DEVICE_SN, deviceSn);
-            pd.put(CommConst.ADMIN_ID, adminId);
-            pd.put("online", 0);
+            pd.put("online", STATUS_0_DEVICE_OFFLINE);
             mAppMemory.removeCache(deviceSn);
             mDeviceService.updateDeviceOnline(pd);
         }
@@ -184,24 +185,6 @@ public class SocketMessageHandle implements WebSocketHandler {
             if (socketSession != null && socketSession.isOpen()) {
                 socketSession.sendMessage(messageInfo);
                 System.out.println("发送消息给：" + toDeviceSn + "内容：" + messageInfo);
-            }
-        }
-    }
-
-    /**
-     * 激活设备成功，应更新WebSocketSession的adminId
-     *
-     * @param deviceSn
-     * @param adminId
-     */
-    public void saveAdminIdToSession(String deviceSn, int adminId) {
-        if (!StringUtils.isEmpty(deviceSn)) {
-            WebSocketSession socketSession = userMap.get(deviceSn);
-            if (socketSession != null && socketSession.isOpen()) {
-                socketSession.getAttributes().put(CommConst.ADMIN_ID, adminId + "");
-                userMap.put(deviceSn, socketSession);
-                AppDevice device = new AppDevice(deviceSn, adminId);
-                mAppMemory.putCache(device);
             }
         }
     }

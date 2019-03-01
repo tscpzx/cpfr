@@ -6,13 +6,16 @@ import com.ts.cpfr.dao.GrantDao;
 import com.ts.cpfr.dao.GroupDao;
 import com.ts.cpfr.dao.PersonDao;
 import com.ts.cpfr.ehcache.AppMemory;
+import com.ts.cpfr.entity.AppDevice;
 import com.ts.cpfr.service.AppService;
 import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.CommUtil;
 import com.ts.cpfr.utils.HandleEnum;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
+import com.ts.cpfr.utils.SocketEnum;
 import com.ts.cpfr.utils.SystemConfig;
+import com.ts.cpfr.websocket.SocketMessageHandle;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +30,8 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+
+import sun.misc.BASE64Decoder;
 
 /**
  * @Classname AppServiceImpl
@@ -49,6 +54,8 @@ public class AppServiceImpl implements AppService {
     private GroupDao mGroupDao;
     @Autowired
     private AppMemory memory;
+    @Autowired
+    private SocketMessageHandle mSocketMessageHandle;
 
     @Override
     public ResultData<ParamData> register(ParamData pd) {
@@ -81,24 +88,43 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
+    @Deprecated
     public ResultData<ParamData> addRecord(CommonsMultipartFile file, HttpServletRequest request) {
         if (file.getSize() / 1024 > 65)
             return new ResultData<>(HandleEnum.FAIL, "上传失败，图片过大!");
         if (!file.getContentType().contains("image"))
             return new ResultData<>(HandleEnum.FAIL, "文件类型有误!");
         ParamData pd = new ParamData();
-        pd.put(CommConst.DEVICE_SN, memory.getCache(getTokenFromRequest(request)).getDeviceSn());
-        pd.put(CommConst.ADMIN_ID, memory.getCache(getTokenFromRequest(request)).getAdminId());
+        AppDevice cache = memory.getCache(getTokenFromRequest(request));
+        pd.put(CommConst.DEVICE_SN, cache.getDeviceSn());
         pd.put("person_id", request.getParameter("person_id"));
         pd.put("recog_type", request.getParameter("recog_type"));
         pd.put("record_image", file.getBytes());
-        pd.put("wid", mAppDao.selectUserWid(pd));
+        pd.put("wid", cache.getWid());
         if (mAppDao.insertRecord(pd))
             return new ResultData<>(HandleEnum.SUCCESS);
         return new ResultData<>(HandleEnum.FAIL);
     }
 
     @Override
+    public ResultData<ParamData> addRecord(ParamData pd) throws Exception {
+        String base64Image = pd.getString("file");
+        if (StringUtils.isEmpty(base64Image))
+            return new ResultData<>(HandleEnum.FAIL);
+        byte[] blobImage = new BASE64Decoder().decodeBuffer(base64Image);
+        if (blobImage != null) {
+            if (blobImage.length / 1024 > 65)
+                return new ResultData<>(HandleEnum.FAIL, "上传失败，图片过大!");
+
+            pd.put("record_image", blobImage);
+            if (mAppDao.insertRecord(pd))
+                return new ResultData<>(HandleEnum.SUCCESS);
+        }
+        return new ResultData<>(HandleEnum.FAIL);
+    }
+
+    @Override
+    @Deprecated
     public boolean uploadRecordImage(CommonsMultipartFile file, ParamData pd) throws Exception {
         BufferedOutputStream fos = null;
         try {
@@ -131,21 +157,20 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public ResultData<ParamData> addPersonWithGrant(CommonsMultipartFile file,
-      HttpServletRequest request) {
+    @Deprecated
+    public ResultData<ParamData> addPersonWithGrant(CommonsMultipartFile file, HttpServletRequest request) throws Exception {
         if (file.getSize() / 1024 > 65)
             return new ResultData<>(HandleEnum.FAIL, "上传失败，图片过大!");
         if (!file.getContentType().contains("image"))
             return new ResultData<>(HandleEnum.FAIL, "文件类型有误!");
 
         ParamData pd = new ParamData();
-        pd.put(CommConst.DEVICE_SN, memory.getCache(getTokenFromRequest(request)).getDeviceSn());
-        pd.put(CommConst.ADMIN_ID, memory.getCache(getTokenFromRequest(request)).getAdminId());
+        AppDevice cache = memory.getCache(getTokenFromRequest(request));
+        pd.put(CommConst.DEVICE_SN, cache.getDeviceSn());
         pd.put("person_name", request.getParameter("person_name"));
         pd.put("emp_number", request.getParameter("emp_number"));
-
         pd.put("blob_image", file.getBytes());
-        pd.put("wid", mAppDao.selectUserWid(pd));
+        pd.put("wid", cache.getWid());
 
         boolean a = mPersonDao.insertPerson(pd);
         boolean b = mGrantDao.insertGrantDeviceSnPersonId(pd);
@@ -160,8 +185,45 @@ public class AppServiceImpl implements AppService {
             }
         }
 
-        if (a && b)
+        if (a && b) {
+            mSocketMessageHandle.sendMessageToDevice(cache.getDeviceSn(), mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1003_PERSON_UPDATE, null));
+            mSocketMessageHandle.sendMessageToDevice(cache.getDeviceSn(), mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1004_GRANT_UPDATE, null));
             return new ResultData<>(HandleEnum.SUCCESS);
+        }
+
+        return new ResultData<>(HandleEnum.FAIL);
+    }
+
+    @Override
+    public ResultData<ParamData> addPersonWithGrant(ParamData pd) throws Exception {
+        String base64Image = pd.getString("file");
+        if (StringUtils.isEmpty(base64Image))
+            return new ResultData<>(HandleEnum.FAIL);
+        byte[] blobImage = new BASE64Decoder().decodeBuffer(base64Image);
+        if (blobImage != null) {
+            if (blobImage.length / 1024 > 65)
+                return new ResultData<>(HandleEnum.FAIL, "上传失败，图片过大!");
+
+            pd.put("blob_image", blobImage);
+            boolean a = mPersonDao.insertPerson(pd);
+            boolean b = mGrantDao.insertGrantDeviceSnPersonId(pd);
+
+            String groupName = pd.getString("group_name");
+            pd.put("group_name", groupName);
+            if (!StringUtils.isEmpty(groupName)) {
+                ParamData group = mGroupDao.selectGroupByGroupName(pd);
+                if (group != null) {
+                    pd.put("group_id", group.get("group_id") + "");
+                    mPersonDao.updatePersonGroupID(pd);
+                }
+            }
+
+            if (a && b) {
+                mSocketMessageHandle.sendMessageToDevice(pd.getString(CommConst.DEVICE_SN), mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1003_PERSON_UPDATE, null));
+                mSocketMessageHandle.sendMessageToDevice(pd.getString(CommConst.DEVICE_SN), mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1004_GRANT_UPDATE, null));
+                return new ResultData<>(HandleEnum.SUCCESS);
+            }
+        }
         return new ResultData<>(HandleEnum.FAIL);
     }
 

@@ -1,6 +1,5 @@
 package com.ts.cpfr.controller.base;
 
-import com.ts.cpfr.dao.AppDao;
 import com.ts.cpfr.ehcache.AppMemory;
 import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.ParamData;
@@ -8,7 +7,6 @@ import com.ts.cpfr.utils.ParamData;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -20,8 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 public class AppBaseController extends BaseController{
     @Autowired
     private AppMemory memory;
-    @Resource
-    private AppDao mAppDao;
 
     /**
      * 初始化参数
@@ -34,8 +30,7 @@ public class AppBaseController extends BaseController{
         if (!StringUtils.isEmpty(token) && memory.checkCache(token)) {
             pd.put(CommConst.ACCESS_APP_TOKEN, token);
             pd.put(CommConst.DEVICE_SN, memory.getCache(token).getDeviceSn());
-            pd.put(CommConst.ADMIN_ID, memory.getCache(token).getAdminId());
-            pd.put("wid", mAppDao.selectUserWid(pd));
+            pd.put("wid", memory.getCache(token).getWid());
         }
         return pd;
     }

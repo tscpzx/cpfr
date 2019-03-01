@@ -101,4 +101,12 @@
 	<update id="deleteDeviceGroupID" parameterType="pd">
 		update tbl_#{wid}_device set group_id=0 where device_id = #{device_id};
 	</update>
+
+	<select id="selectWidByDeviceSn" parameterType="pd" resultType="int">
+		SELECT wid FROM tbl_user  WHERE admin_id = (SELECT admin_id FROM tbl_inact_device  WHERE device_sn=#{device_sn})
+	</select>
+
+	<select id="selectDeviceStatusByDeviceSn" parameterType="pd" resultType="int">
+		select status from tbl_inact_device where device_sn=#{device_sn}
+	</select>
 </mapper>
