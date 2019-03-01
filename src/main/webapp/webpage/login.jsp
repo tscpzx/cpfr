@@ -81,12 +81,9 @@
                                   clearable></el-input>
                     </el-form-item>
                     <el-form-item prop="password">
-                        <el-input v-model="loginModel.password" type="password" autocomplete="off" placeholder="请输入密码"
+                        <el-input v-model="loginModel.password" type="password" autocomplete="off" placeholder="请输入密码" @keyup.enter.native="onClickLogin('loginForm')"
                                   clearable></el-input>
                     </el-form-item>
-                    <%--   <el-form-item>
-                           <el-checkbox style="float: left;color: #222222">记住密码</el-checkbox>
-                       </el-form-item>--%>
                     <el-form-item>
                         <el-dropdown trigger="click" style="float: right;" @command="handleCommand">
                           <span class="el-dropdown-link" style="cursor:default;">

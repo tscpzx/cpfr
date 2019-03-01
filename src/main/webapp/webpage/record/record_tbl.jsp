@@ -24,14 +24,14 @@
             <el-breadcrumb-item>${record_list}</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <el-form>
+        <el-form onsubmit="return false;">
             <el-form-item>
                 <el-row>
                     <el-button type="primary" size="small" @click="deleteRecordLists">${delete_in_batches}
                     </el-button>
                     <div style="float: right">
                         <el-input style="width: 200px;" v-model="keyword" size="small"
-                                  placeholder="${search_content}"></el-input>
+                                  placeholder="${search_content}" @keyup.enter.native="selectRecord"></el-input>
                         <el-button type="primary" size="small" @click="selectRecord">${search}
                         </el-button>
                     </div>

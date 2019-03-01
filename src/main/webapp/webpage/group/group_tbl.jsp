@@ -21,11 +21,11 @@
             <el-breadcrumb-item>${group_list}</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <el-form>
+        <el-form onsubmit="return false;">
             <el-form-item>
                 <el-row>
                     <div style="float: right">
-                        <el-input style="width: 200px;" v-model="keyword" size="small" placeholder="${search_content}"></el-input>
+                        <el-input style="width: 200px;" v-model="keyword" size="small" placeholder="${search_content}" @keyup.enter.native="searchGroupList"></el-input>
                         <el-button type="primary" size="small" @click="searchGroupList">${search}
                         </el-button>
                     </div>
