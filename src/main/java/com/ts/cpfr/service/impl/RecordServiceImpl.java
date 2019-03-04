@@ -75,7 +75,7 @@ public class RecordServiceImpl implements RecordService {
 
     @Override
     public ResultData<ParamData> clearRecord(ParamData pd) {
-        if (mRecordDao.clearRecode(pd)) return new ResultData<>(HandleEnum.SUCCESS,"删除成功");
+        if (mRecordDao.deleteRecodeAll(pd)) return new ResultData<>(HandleEnum.SUCCESS,"删除成功");
         else return new ResultData<>(HandleEnum.FAIL,"删除失败");
     }
 

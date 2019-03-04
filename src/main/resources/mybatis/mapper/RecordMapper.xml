@@ -13,6 +13,7 @@
         </where>
         order by r.record_time desc
     </select>
+
     <delete id="deleteRecord" parameterType="pd">
         delete from tbl_#{wid}_record where record_id=#{record_id}
     </delete>
@@ -23,7 +24,8 @@
             #{data.record_id}
         </foreach>
     </delete>
-    <delete id="clearRecode" parameterType="pd">
+
+    <delete id="deleteRecodeAll" parameterType="pd">
         delete from tbl_#{wid}_record
     </delete>
 </mapper>
