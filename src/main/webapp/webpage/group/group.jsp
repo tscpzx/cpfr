@@ -15,8 +15,8 @@
         overflow: auto;
     }
 </style>
-<div id="group_tree"></div>
-<div id="group_content"></div>
+<div id="group_tree" class="scrollbar"></div>
+<div id="group_content" class="scrollbar"></div>
 
 <script type="text/javascript">
     $("#group_tree").load("group/group_tree");
