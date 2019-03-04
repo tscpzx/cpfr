@@ -15,8 +15,8 @@
         overflow: auto;
     }
 </style>
-<div id="device_tree"></div>
-<div id="device_content"></div>
+<div id="device_tree" class="scrollbar"></div>
+<div id="device_content" class="scrollbar"></div>
 
 <script type="text/javascript">
     $("#device_tree").load("device/device_tree");

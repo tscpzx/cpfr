@@ -12,7 +12,7 @@
 	</update>
 
 	<select id="selectWidByAdminId" parameterType="String" resultType="int">
-		select wid from tbl_user where admin_id=#{adminId}
+		select wid from tbl_user where admin_id=#{wid}
 	</select>
 
 	<update id="updateUserLoginTime" parameterType="pd">

@@ -17,11 +17,11 @@
             <el-breadcrumb-item>${device_not_activated}</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <el-form>
+        <el-form onsubmit="return false;">
             <el-form-item>
                 <el-row>
                     <div style="float: right">
-                        <el-input style="width: 200px;" size="small" v-model="keyword" placeholder="${search_content}"></el-input>
+                        <el-input style="width: 200px;" size="small" v-model="keyword" autocomplete="off" placeholder="${search_content}" @keyup.enter.native="searchInActDeviceList"></el-input>
                         <el-button type="primary" size="small" @click="searchInActDeviceList">${search}</el-button>
                     </div>
                 </el-row>

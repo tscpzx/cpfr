@@ -31,15 +31,12 @@ public class WebSocketInterceptor implements HandshakeInterceptor {
             if (request instanceof ServletServerHttpRequest) {
                 HttpServletRequest servletRequest = ((ServletServerHttpRequest) request).getServletRequest();
                 String deviceSn = servletRequest.getHeader(CommConst.DEVICE_SN);
-                String adminId = servletRequest.getHeader(CommConst.ADMIN_ID);
                 if (TextUtils.isEmpty(deviceSn))
                     deviceSn = servletRequest.getParameter(CommConst.DEVICE_SN);
-                if (TextUtils.isEmpty(adminId))
-                    adminId = servletRequest.getParameter(CommConst.ADMIN_ID);
 
-                if (TextUtils.isEmpty(deviceSn)) return false;
+                if (TextUtils.isEmpty(deviceSn))
+                    return false;
                 attributes.put(CommConst.DEVICE_SN, deviceSn);
-                if (!TextUtils.isEmpty(adminId)) attributes.put(CommConst.ADMIN_ID, adminId);
             }
             return true;
         } catch (Exception e) {

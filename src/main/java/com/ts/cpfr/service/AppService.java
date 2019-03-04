@@ -26,9 +26,13 @@ public interface AppService {
 
     ResultData<ParamData> addRecord(CommonsMultipartFile file, HttpServletRequest request);
 
+    ResultData<ParamData> addRecord(ParamData pd) throws Exception;
+
     boolean uploadRecordImage(CommonsMultipartFile file, ParamData pd) throws Exception;
 
     ResultData<ParamData> getCurrentDate();
 
-    ResultData<ParamData> addPersonWithGrant(CommonsMultipartFile file, HttpServletRequest request);
+    ResultData<ParamData> addPersonWithGrant(CommonsMultipartFile file, HttpServletRequest request) throws Exception;
+
+    ResultData<ParamData> addPersonWithGrant(ParamData pd) throws Exception;
 }

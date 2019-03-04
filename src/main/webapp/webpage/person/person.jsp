@@ -53,8 +53,8 @@
         overflow: hidden;
     }
 </style>
-<div id="person_tree"></div>
-<div id="person_content"></div>
+<div id="person_tree" class="scrollbar"></div>
+<div id="person_content" class="scrollbar"></div>
 
 <script type="text/javascript">
     $("#person_tree").load("person/person_tree");

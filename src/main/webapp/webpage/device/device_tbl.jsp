@@ -16,12 +16,12 @@
             <el-breadcrumb-item>${activated_device}</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <el-form>
+        <el-form onsubmit="return false;">
             <el-form-item>
                 <el-row>
                     <div style="float: right">
-                        <el-input style="width: 200px;" v-model="keyword" size="small"
-                                  placeholder="${search_content}"></el-input>
+                        <el-input style="width: 200px;" v-model="keyword" size="small" autocomplete="off"
+                                  placeholder="${search_content}" @keyup.enter.native="searchDeviceList"></el-input>
                         <el-button type="primary" size="small" @click="searchDeviceList">${search}
                         </el-button>
                     </div>
@@ -33,7 +33,7 @@
             <el-table :data="tableData" style="width: 100%" stripe>
                 <el-table-column prop="device_id" label="${device_id}" min-width="10%">
                 </el-table-column>
-                <el-table-column prop="device_name" label="${device_name}" min-width="20%" >
+                <el-table-column prop="device_name" label="${device_name}" min-width="20%">
                 </el-table-column>
                 <el-table-column prop="device_sn" label="${devise_serial_number}" min-width="20%">
                 </el-table-column>

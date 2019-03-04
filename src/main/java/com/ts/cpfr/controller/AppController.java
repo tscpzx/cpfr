@@ -9,9 +9,7 @@ import com.ts.cpfr.utils.ResultData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.util.List;
 
@@ -77,9 +75,9 @@ public class AppController extends AppBaseController {
 
     @ResponseBody
     @RequestMapping("/upload_record")
-    public ResultData<ParamData> uploadRecord(@RequestParam("file") CommonsMultipartFile file, HttpServletRequest request) {
+    public ResultData<ParamData> uploadRecord(HttpServletRequest request) {
         try {
-            return mAppService.addRecord(file, request);
+            return mAppService.addRecord(paramDataInit());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
@@ -105,9 +103,9 @@ public class AppController extends AppBaseController {
 
     @ResponseBody
     @RequestMapping("/add_person")
-    public ResultData<ParamData> addPerson(@RequestParam("file") CommonsMultipartFile file,HttpServletRequest request) {
+    public ResultData<ParamData> addPerson(HttpServletRequest request) {
         try {
-            return mAppService.addPersonWithGrant(file, request);
+            return mAppService.addPersonWithGrant(paramDataInit());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());

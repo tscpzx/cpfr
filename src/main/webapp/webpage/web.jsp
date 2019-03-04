@@ -34,6 +34,20 @@
         .el-form-item {
             margin-bottom: 18px;
         }
+
+
+        .scrollbar::-webkit-scrollbar {/*滚动条整体样式*/
+            width: 15px;     /*高宽分别对应横竖滚动条的尺寸*/
+            height: 1px;
+        }
+        .scrollbar::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+            border-radius: 15px;
+            background: #CCCCCC;
+        }
+        .scrollbar::-webkit-scrollbar-track {/*滚动条里面轨道*/
+            border-radius: 15px;
+            background: #E1E1E1;
+        }
     </style>
 </head>
 <body style="margin:0;padding:0;overflow:hidden" scroll="no">
@@ -100,7 +114,7 @@
                 </el-menu>
             </el-aside>
 
-            <el-main id="content-container">
+            <el-main id="content-container" class="scrollbar">
 
             </el-main>
         </el-container>
