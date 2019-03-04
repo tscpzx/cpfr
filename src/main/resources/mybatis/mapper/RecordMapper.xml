@@ -23,4 +23,7 @@
             #{data.record_id}
         </foreach>
     </delete>
+    <delete id="clearRecode" parameterType="pd">
+        delete from tbl_#{wid}_record
+    </delete>
 </mapper>

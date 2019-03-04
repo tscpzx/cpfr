@@ -29,6 +29,7 @@
                 <el-row>
                     <el-button type="primary" size="small" @click="deleteRecordLists">${delete_in_batches}
                     </el-button>
+                    <el-button type="danger" size="small"  @click="clearRecord">${clear_record}</el-button>
                     <div style="float: right">
                         <el-input style="width: 200px;" v-model="keyword" size="small"
                                   placeholder="${search_content}"></el-input>
@@ -152,6 +153,22 @@
                         });
                     });
                 }
+            },
+            clearRecord(){
+                elmDialog("${sure_clear_records}",function () {
+                    ajaxGet({
+                       url:"${pageContext.request.contextPath}/record/clear" ,
+                        success:function (result) {
+                           layAlert1(result.message);
+                            ajaxRecordList({
+                                pageNum: vm.currentPage,
+                                pageSize: vm.pageSize
+                            });
+                        }
+                    });
+
+                });
+
             },
 
             deleteRecordById(scope) {

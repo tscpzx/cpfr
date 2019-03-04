@@ -16,4 +16,5 @@ public interface RecordService {
     ResultData<PageData<ParamData>> getRecordBase64List(ParamData pd);
     ResultData<ParamData> deleteRecord(ParamData pd);
     ResultData<ParamData> deleteRecordLists(ParamData pd);
+    ResultData<ParamData> clearRecord(ParamData pd);
 }

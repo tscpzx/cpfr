@@ -124,3 +124,5 @@
 <spring:message code="function_config" var="function_config"/>
 <spring:message code="author_person" var="author_person"/>
 <spring:message code="device_cannot_empty" var="device_cannot_empty"/>
+<spring:message code="clear_record" var="clear_record"/>
+<spring:message code="sure_clear_records" var="sure_clear_records"/>

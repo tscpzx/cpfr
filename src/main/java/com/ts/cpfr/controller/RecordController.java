@@ -72,4 +72,20 @@ public class RecordController extends WebBaseController {
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
         }
     }
+
+
+    /**
+     * 清空
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/clear")
+    public ResultData<ParamData> clear() {
+        try {
+            return mRecordService.clearRecord(paramDataInit());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
 }

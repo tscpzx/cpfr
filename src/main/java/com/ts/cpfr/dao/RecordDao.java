@@ -16,4 +16,5 @@ public interface RecordDao {
     boolean deleteRecord(ParamData pd);
 
     boolean deleteRecordLists(ParamData pd);
+    boolean clearRecode(ParamData pd);
 }
