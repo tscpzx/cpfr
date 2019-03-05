@@ -152,7 +152,7 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public ResultData<ParamData> getCurrentDate() {
+    public ResultData<String> getCurrentDate() {
         return new ResultData<>(HandleEnum.SUCCESS, mAppDao.selectNow());
     }
 

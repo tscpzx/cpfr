@@ -58,6 +58,7 @@
 		<mvc:interceptor>
 			<mvc:mapping path="/app/**"/>
 			<mvc:exclude-mapping path="/app/device_register"/>
+			<mvc:exclude-mapping path="/app/current_date"/>
 			<mvc:exclude-mapping path="/app/disconnect"/>
 			<bean class="com.ts.cpfr.spring.AppInterceptor"/>
 		</mvc:interceptor>

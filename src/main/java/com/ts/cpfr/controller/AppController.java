@@ -86,7 +86,7 @@ public class AppController extends AppBaseController {
 
     @ResponseBody
     @RequestMapping("/current_date")
-    public ResultData<ParamData> currentDate(HttpServletRequest request) {
+    public ResultData<String> currentDate(HttpServletRequest request) {
         try {
             return mAppService.getCurrentDate();
         } catch (Exception e) {

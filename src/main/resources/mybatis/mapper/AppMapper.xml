@@ -27,7 +27,7 @@
 		insert into tbl_#{wid}_record(person_id,device_id,record_time,record_image,recog_type) values(#{person_id},(select device_id from tbl_#{wid}_device where device_sn=#{device_sn}),#{record_time},#{record_image},#{recog_type})
 	</insert>
 
-	<select id="selectNow" resultType="pd">
+	<select id="selectNow" resultType="string">
 		select now()
 	</select>
 

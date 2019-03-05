@@ -30,7 +30,7 @@ public interface AppService {
 
     boolean uploadRecordImage(CommonsMultipartFile file, ParamData pd) throws Exception;
 
-    ResultData<ParamData> getCurrentDate();
+    ResultData<String> getCurrentDate();
 
     ResultData<ParamData> addPersonWithGrant(CommonsMultipartFile file, HttpServletRequest request) throws Exception;
 
