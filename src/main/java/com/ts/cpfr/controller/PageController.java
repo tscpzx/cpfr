@@ -24,13 +24,14 @@ public class PageController extends WebBaseController {
     @Autowired
     private LocaleResolver localeResolver;
 
-    @RequestMapping(value={"/login","/web","/register"})
+    @RequestMapping(value = {"/login", "/web", "/register"})
     public ModelAndView page(HttpServletRequest request, HttpServletResponse response, String lang) {
         if ("en_US".equals(lang)) {
             localeResolver.setLocale(request, response, Locale.US);
         } else if ("zh_CN".equals(lang)) {
             localeResolver.setLocale(request, response, Locale.CHINA);
-        }
+        } else
+            localeResolver.setLocale(request, response, Locale.CHINA);
         return new ModelAndView(request.getServletPath());
     }
 
