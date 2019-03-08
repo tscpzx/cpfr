@@ -59,6 +59,8 @@ public class AppServiceImpl implements AppService {
 
     @Override
     public ResultData<ParamData> register(ParamData pd) {
+        String deviceSn = pd.getString(CommConst.DEVICE_SN);
+        if(StringUtils.isEmpty(deviceSn))return new ResultData<>(HandleEnum.FAIL, "设备序列号不能为空");
         ParamData paramData = mDeviceDao.selectInActDevice(pd);
         if (paramData == null) {
             if (mAppDao.insertInActDevice(pd)) {

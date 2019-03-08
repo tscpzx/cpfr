@@ -47,4 +47,5 @@ public interface PersonService {
 
     ResultData<PageData<ParamData>> getAccessDeviceList(ParamData pd);
 
+    ResultData<ParamData> batchUpload(CommonsMultipartFile[] files, ParamData pd);
 }

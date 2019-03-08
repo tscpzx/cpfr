@@ -2,19 +2,33 @@ package com.ts.cpfr.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.ts.cpfr.dao.DeviceDao;
+import com.ts.cpfr.dao.GroupDao;
 import com.ts.cpfr.dao.PersonDao;
 import com.ts.cpfr.ehcache.WebMemory;
 import com.ts.cpfr.service.PersonService;
-import com.ts.cpfr.utils.*;
-
+import com.ts.cpfr.utils.CommUtil;
+import com.ts.cpfr.utils.HandleEnum;
+import com.ts.cpfr.utils.PageData;
+import com.ts.cpfr.utils.ParamData;
+import com.ts.cpfr.utils.ResultData;
+import com.ts.cpfr.utils.SocketEnum;
+import com.ts.cpfr.utils.SystemConfig;
 import com.ts.cpfr.websocket.SocketMessageHandle;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.socket.TextMessage;
 
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Blob;
 import java.util.List;
 
@@ -36,6 +50,8 @@ public class PersonServiceImpl implements PersonService {
     private DeviceDao mDeviceDao;
     @Resource
     private PersonDao mPersonDao;
+    @Resource
+    private GroupDao mGroupDao;
     @Autowired
     private WebMemory memory;
     @Autowired
@@ -232,6 +248,47 @@ public class PersonServiceImpl implements PersonService {
         if (pageSize != 0) PageHelper.startPage(pageNum, pageSize);
         List<ParamData> deviceList = mDeviceDao.selectAccessDeviceListByPersonId(pd);
         return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(deviceList));
+    }
+
+    @Override
+    public ResultData<ParamData> batchUpload(CommonsMultipartFile[] files, ParamData pd) {
+        for(int i=0;i<files.length;i++){
+            try {
+                CommonsMultipartFile file = files[i];
+                if ((file.getSize() / 1024) > 65) continue;
+
+                String fileName = file.getOriginalFilename();
+                String[] split = fileName.split("\\.")[0].split("-");
+                String groupName="";
+                String personName = "";
+                if(split.length<=1){
+                    personName=split[0];
+                }else if(split.length==2){
+                     groupName=split[0];
+                     personName=split[1];
+                }
+
+                ParamData data = new ParamData();
+                data.put("person_name",personName);
+                data.put("blob_image", file.getBytes());
+                data.put("wid", pd.get("wid"));
+                mPersonDao.insertPerson(data);
+
+                data.put("group_name", groupName);
+                if (!StringUtils.isEmpty(groupName)) {
+                    ParamData group = mGroupDao.selectGroupByGroupName(data);
+                    if (group != null) {
+                        data.put("group_id", group.get("group_id") + "");
+                        mPersonDao.updatePersonGroupID(data);
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return new ResultData<>(HandleEnum.FAIL);
+            }
+        }
+        return new ResultData<>(HandleEnum.SUCCESS);
     }
 
 }

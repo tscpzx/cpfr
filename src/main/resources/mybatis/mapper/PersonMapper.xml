@@ -58,10 +58,10 @@
 		</if>
 	</update>
 
-	<delete id="deletePerson" parameterType="pd">
-		DELETE g FROM tbl_#{wid}_grant g WHERE g.person_id=#{person_id};
+	<update id="deletePerson" parameterType="pd">
 		update tbl_#{wid}_person set status=3 where person_id = #{person_id};
-	</delete>
+		DELETE g FROM tbl_#{wid}_grant g WHERE g.person_id=#{person_id};
+	</update>
 
 	<update id="deletePersonGroupID" parameterType="pd">
 		update tbl_#{wid}_person set group_id=0 where person_id = #{person_id};

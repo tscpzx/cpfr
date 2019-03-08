@@ -157,4 +157,16 @@ public class PersonController extends WebBaseController {
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
         }
     }
+
+    @ResponseBody
+    @RequestMapping("/batch_upload")
+    public ResultData<ParamData> batchUpload(@RequestParam("file[]") CommonsMultipartFile[] files, HttpServletRequest request) {
+        try {
+            mPersonService.batchUpload(files, paramDataInit());
+            return new ResultData<>(HandleEnum.SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
 }
