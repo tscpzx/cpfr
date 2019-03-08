@@ -44,4 +44,6 @@ public interface DeviceDao {
     int selectWidByDeviceSn(ParamData pd);
 
     int selectDeviceStatusByDeviceSn(ParamData pd);
+
+    boolean updateDevicePersonDownlNum(ParamData pd);
 }

@@ -127,3 +127,4 @@
 <spring:message code="clear_record" var="clear_record"/>
 <spring:message code="sure_clear_records" var="sure_clear_records"/>
 <spring:message code="patch_upload" var="patch_upload"/>
+<spring:message code="person_downl_num" var="person_downl_num"/>

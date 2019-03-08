@@ -111,4 +111,15 @@ public class AppController extends AppBaseController {
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
         }
     }
+
+    @ResponseBody
+    @RequestMapping("/compare_downl_num")
+    public ResultData<List<ParamData>> compareDownlNum(HttpServletRequest request) {
+        try {
+            return mAppService.comparePersonDownlNum(paramDataInit());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
 }

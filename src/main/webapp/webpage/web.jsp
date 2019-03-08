@@ -96,7 +96,7 @@
                         <el-menu-item-group>
                             <el-menu-item index="person/person" @click="onClick($event)">${people_list}
                             </el-menu-item>
-                            <el-menu-item index="person/person_batch_upload" @click="onClick($event)">批量上传</el-menu-item>
+                            <el-menu-item index="person/person_batch_upload" @click="onClick($event)">${patch_upload}</el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
                     <el-menu-item index="group/group" @click="onClick($event)">

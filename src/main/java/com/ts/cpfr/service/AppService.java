@@ -35,4 +35,6 @@ public interface AppService {
     ResultData<ParamData> addPersonWithGrant(CommonsMultipartFile file, HttpServletRequest request) throws Exception;
 
     ResultData<ParamData> addPersonWithGrant(ParamData pd) throws Exception;
+
+    ResultData<List<ParamData>> comparePersonDownlNum(ParamData pd);
 }

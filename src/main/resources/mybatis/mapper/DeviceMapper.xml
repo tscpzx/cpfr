@@ -3,7 +3,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ts.cpfr.dao.DeviceDao">
 	<select id="selectDevice" parameterType="pd" resultType="pd">
-		select d.device_id,d.device_name,d.device_sn,d.mac_grant_key,d.online,d.register_time,d.activate_time,d.last_online_time,d.last_offine_time,c.open_door_type,c.success_msg,c.fail_msg
+		select d.device_id,d.device_name,d.device_sn,d.mac_grant_key,d.online,d.register_time,d.activate_time,d.last_online_time,d.last_offine_time,d.person_downl_num,c.open_door_type,c.success_msg,c.fail_msg
 		 from tbl_#{wid}_device d left join tbl_#{wid}_device_config c on d.device_id=c.device_id where d.device_sn=#{device_sn}
 	</select>
 
@@ -109,4 +109,8 @@
 	<select id="selectDeviceStatusByDeviceSn" parameterType="pd" resultType="int">
 		select status from tbl_inact_device where device_sn=#{device_sn}
 	</select>
+
+	<update id="updateDevicePersonDownlNum" parameterType="pd">
+		update tbl_#{wid}_device set person_downl_num=#{person_downl_num} where device_sn=#{device_sn}
+	</update>
 </mapper>

@@ -70,4 +70,8 @@
 	<update id="updatePersonGroupID" parameterType="pd">
 		UPDATE tbl_#{wid}_person SET group_id = #{group_id} WHERE person_id=#{person_id}
 	</update>
+
+	<select id="selectPersonListNoIn" parameterType="pd" resultType="pd">
+		SELECT p.* FROM tbl_#{wid}_grant g RIGHT JOIN tbl_#{wid}_person p ON g.person_id=p.person_id AND g.device_id=(SELECT device_id FROM tbl_#{wid}_device WHERE device_sn=#{device_sn}) AND p.status &lt;&gt; 3 WHERE p.person_id NOT IN(#{person_ids})
+	</select>
 </mapper>
