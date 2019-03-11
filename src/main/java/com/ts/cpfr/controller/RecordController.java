@@ -76,6 +76,7 @@ public class RecordController extends WebBaseController {
 
     /**
      * 清空
+     *
      * @return
      */
     @ResponseBody

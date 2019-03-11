@@ -107,6 +107,23 @@
                         <i class="el-icon-document"></i>
                         <span slot="title">${record_management}</span>
                     </el-menu-item>
+
+                    <el-submenu index="attendance">
+                        <template slot="title">
+                            <i class="el-icon-printer"></i>
+                            <span>${attendance_management}</span>
+                        </template>
+                        <el-menu-item-group>
+                            <el-menu-item index="attendance/attendance_detail" @click="onClick($event)">${attendance_details}
+                            </el-menu-item>
+                            <el-menu-item index="attendance/attendance_setting" @click="onClick($event)">${attendance_setting}
+                            </el-menu-item>
+                            <el-menu-item index="attendance/attendance_report" @click="onClick($event)">${attendance_report}
+                            </el-menu-item>
+                            <%--<el-menu-item index="1-2">批量上传</el-menu-item>--%>
+                        </el-menu-item-group>
+                    </el-submenu>
+
                     <%--   <el-menu-item index="5">
                            <i class="el-icon-edit-outline"></i>
                            <span slot="title">账号管理</span>
