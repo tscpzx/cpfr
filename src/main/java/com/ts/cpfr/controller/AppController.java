@@ -86,7 +86,7 @@ public class AppController extends AppBaseController {
 
     @ResponseBody
     @RequestMapping("/current_date")
-    public ResultData<ParamData> currentDate(HttpServletRequest request) {
+    public ResultData<String> currentDate(HttpServletRequest request) {
         try {
             return mAppService.getCurrentDate();
         } catch (Exception e) {
@@ -106,6 +106,17 @@ public class AppController extends AppBaseController {
     public ResultData<ParamData> addPerson(HttpServletRequest request) {
         try {
             return mAppService.addPersonWithGrant(paramDataInit());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("/compare_downl_num")
+    public ResultData<List<ParamData>> compareDownlNum(HttpServletRequest request) {
+        try {
+            return mAppService.comparePersonDownlNum(paramDataInit());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());

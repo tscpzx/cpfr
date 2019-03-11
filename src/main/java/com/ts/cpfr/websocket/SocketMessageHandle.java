@@ -84,6 +84,8 @@ public class SocketMessageHandle implements WebSocketHandler {
                 ParamData data = new ParamData();
                 data.put(CommConst.ACCESS_APP_TOKEN, device.getToken());
                 sendMessageToDevice(deviceSn, obtainMessage(SocketEnum.CODE_1006_ACCESS_APP_TOKEN, data));
+            } else {
+                sendMessageToDevice(deviceSn, obtainMessage(SocketEnum.CODE_1007_DEVICE_INACT, null));
             }
         }
     }
@@ -125,7 +127,7 @@ public class SocketMessageHandle implements WebSocketHandler {
      */
     @Override
     public void handleTransportError(WebSocketSession webSocketSession, Throwable throwable) {
-//        throwable.printStackTrace();
+        //        throwable.printStackTrace();
         if (webSocketSession.isOpen()) {
             //关闭session
             try {

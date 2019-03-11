@@ -24,10 +24,14 @@
 	</select>
 
 	<insert id="insertRecord" parameterType="pd">
-		insert into tbl_#{wid}_record(person_id,device_id,record_time,record_image,recog_type) values(#{person_id},(select device_id from tbl_#{wid}_device where device_sn=#{device_sn}),now(),#{record_image},#{recog_type})
+		insert into tbl_#{wid}_record(person_id,device_id,record_time,record_image,recog_type) values(#{person_id},(select device_id from tbl_#{wid}_device where device_sn=#{device_sn}),#{record_time},#{record_image},#{recog_type})
 	</insert>
 
-	<select id="selectNow" resultType="pd">
+	<select id="selectNow" resultType="string">
 		select now()
 	</select>
+
+	<update id="updateGrantPassNumber" parameterType="pd">
+		update tbl_#{wid}_grant set pass_number=#{pass_number} where device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn}) and person_id=#{person_id}
+	</update>
 </mapper>

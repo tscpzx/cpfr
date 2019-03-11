@@ -22,6 +22,9 @@
     <el-form-item label="${last_offline}">
         <span>{{device.last_offine_time|formatDate}}</span>
     </el-form-item>
+    <el-form-item label="${person_downl_num}">
+        <span>{{device.person_downl_num}}</span>
+    </el-form-item>
     <el-form-item label="${operation}">
         <el-button size="small" type="danger" @click="deleteDevice">${delete}</el-button>
     </el-form-item>

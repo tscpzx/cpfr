@@ -12,7 +12,7 @@
         <span>{{group.create_time|formatDate}}</span>
     </el-form-item>
     <el-form-item label="${operation}">
-        <el-button size="small" type="success" @click="updateGroupInfo">${cancel_lang}</el-button>
+        <el-button size="small" type="success" @click="updateGroupInfo">${save}</el-button>
         <el-button size="small" type="danger" @click="deleteGroup">${delete}</el-button>
     </el-form-item>
 </el-form>

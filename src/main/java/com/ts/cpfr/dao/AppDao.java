@@ -23,5 +23,7 @@ public interface AppDao {
 
     List<ParamData> selectPersonListWithBlob(ParamData pd);
 
-    ParamData selectNow();
+    String selectNow();
+
+    boolean updateGrantPassNumber(ParamData pd);
 }
