@@ -32,8 +32,8 @@
                         <el-option
                                 v-for="item in options"
                                 :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
+                                :label="item.group_id"
+                                :value="item.group_name">
                         </el-option>
                     </el-select>
                     <el-input style="width: 200px;margin-left: 30px" v-model="form.keyword" size="small"
@@ -128,25 +128,16 @@
         }
     });
 
-    <%--function ajaxGroupList() {--%>
-    <%--ajaxGet({--%>
-    <%--url: "${pageContext.request.contextPath}/group/list",--%>
-    <%--data: {},--%>
-    <%--success: function (result) {--%>
-    <%--l(result.data.list);--%>
-    <%--var arr = result.data.list;--%>
-    <%--for (var i = 0; i < arr.length; i++) {--%>
-    <%--var value = arr[i].group_name;--%>
-    <%--vm.options[i] = {--%>
-    <%--label:  value ,--%>
-    <%--value:  value--%>
-    <%--};--%>
-    <%--}--%>
-    <%--l(vm.options);--%>
+    function ajaxGroupList() {
+        ajaxGet({
+            url: "${pageContext.request.contextPath}/group/list",
+            data: {},
+            success: function (result) {
+                l(result.data.list);
+                this.options = result.data.list;
+            }
+        });
+    }
 
-    <%--}--%>
-    <%--});--%>
-    <%--}--%>
-
-    // ajaxGroupList();
+    ajaxGroupList();
 </script>
