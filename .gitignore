@@ -8,6 +8,7 @@
 out
 gen
 target
+classes
 /.settings/
 /.classpath
 /.project
