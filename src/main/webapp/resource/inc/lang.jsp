@@ -126,8 +126,9 @@
 <spring:message code="device_cannot_empty" var="device_cannot_empty"/>
 <spring:message code="clear_record" var="clear_record"/>
 <spring:message code="sure_clear_records" var="sure_clear_records"/>
-<spring:message code="attend_management" var="attend_management"/>
-<spring:message code="attend_details" var="attend_details"/>
-<spring:message code="attend_report" var="attend_report"/>
-<spring:message code="attend_setting" var="attend_setting"/>
+<spring:message code="attendance_management" var="attendance_management"/>
+<spring:message code="attendance_details" var="attendance_details"/>
+<spring:message code="attendance_report" var="attendance_report"/>
+<spring:message code="attendance_setting" var="attendance_setting"/>
 <spring:message code="patch_upload" var="patch_upload"/>
+<spring:message code="person_downl_num" var="person_downl_num"/>
