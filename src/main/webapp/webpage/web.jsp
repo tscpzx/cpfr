@@ -108,17 +108,17 @@
                         <span slot="title">${record_management}</span>
                     </el-menu-item>
 
-                    <el-submenu index="attendance">
+                    <el-submenu index="attend">
                         <template slot="title">
                             <i class="el-icon-printer"></i>
-                            <span>${attendance_management}</span>
+                            <span>${attend_management}</span>
                         </template>
                         <el-menu-item-group>
-                            <el-menu-item index="attendance/attendance_detail" @click="onClick($event)">${attendance_details}
+                            <el-menu-item index="attend/attend_detail" @click="onClick($event)">${attend_details}
                             </el-menu-item>
-                            <el-menu-item index="attendance/attendance_setting" @click="onClick($event)">${attendance_setting}
+                            <el-menu-item index="attend/attend_setting" @click="onClick($event)">${attend_setting}
                             </el-menu-item>
-                            <el-menu-item index="attendance/attendance_report" @click="onClick($event)">${attendance_report}
+                            <el-menu-item index="attend/attend_report" @click="onClick($event)">${attend_report}
                             </el-menu-item>
                             <%--<el-menu-item index="1-2">批量上传</el-menu-item>--%>
                         </el-menu-item-group>

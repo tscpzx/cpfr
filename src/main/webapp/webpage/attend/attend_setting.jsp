@@ -2,7 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@include file="/resource/inc/lang.jsp" %>
 <style type="text/css">
-    .attendance_box {
+    .attend_box {
         padding: 20px;
         text-align: center;
     }
@@ -14,11 +14,11 @@
 </style>
 
 
-<div class="attendance_box">
-    <div id="attendance_setting">
+<div class="attend_box">
+    <div id="attend_setting">
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 15px;">
-            <el-breadcrumb-item>${attendance_management}</el-breadcrumb-item>
-            <el-breadcrumb-item>${attendance_setting}</el-breadcrumb-item>
+            <el-breadcrumb-item>${attend_management}</el-breadcrumb-item>
+            <el-breadcrumb-item>${attend_setting}</el-breadcrumb-item>
         </el-breadcrumb>
         <el-form ref="form" :model="form" label-width="120px">
             <el-col :span="12">
@@ -97,7 +97,7 @@
             </el-col>
             <el-col :span="24">
                 <el-form-item label="选择设备：">
-                    <el-button icon="el-icon-plus" circle size="medium">
+                    <el-button icon="el-icon-plus" circle size="medium"/>
                 </el-form-item>
             </el-col>
             <el-col :span="24">
@@ -113,7 +113,7 @@
 
 <script type="text/javascript">
     var vm = new Vue({
-        el: "#attendance_setting",
+        el: "#attend_setting",
         data: {
             form: {},
             checked1: false,

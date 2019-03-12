@@ -2,18 +2,18 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@include file="/resource/inc/lang.jsp" %>
 <style type="text/css">
-    .attendance_box {
+    .attend_box {
         padding: 20px;
     }
 
 </style>
 
 
-<div class="attendance_box">
-    <div id="attendance_detail">
+<div class="attend_box">
+    <div id="attend_detail">
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 15px;">
-            <el-breadcrumb-item>${attendance_management}</el-breadcrumb-item>
-            <el-breadcrumb-item>${attendance_details}</el-breadcrumb-item>
+            <el-breadcrumb-item>${attend_management}</el-breadcrumb-item>
+            <el-breadcrumb-item>${attend_details}</el-breadcrumb-item>
         </el-breadcrumb>
         <template>
             <el-form ref="form" :model="form">
@@ -28,17 +28,17 @@
                                     style="margin-left: 20px" size="small"></el-date-picker>
                 </el-form-item>
                 <el-form-item>
-                    <el-select id="select" v-model="form.value" clearable placeholder="请选择部门" size="small">
+                    <el-select v-model="form.value" clearable placeholder="请选择部门" size="small">
                         <el-option
                                 v-for="item in options"
                                 :key="item.value"
-                                :label="item.group_id"
-                                :value="item.group_name">
+                                :label="item.label"
+                                :value="item.value">
                         </el-option>
                     </el-select>
                     <el-input style="width: 200px;margin-left: 30px" v-model="form.keyword" size="small"
-                              placeholder="请输入工号/姓名" @keyup.enter.native="selectAttendance"></el-input>
-                    <el-button type="primary" size="small" @click="selectAttendance">${search}
+                              placeholder="请输入工号/姓名" @keyup.enter.native="selectattend"></el-input>
+                    <el-button type="primary" size="small" @click="selectattend">${search}
                     </el-button>
                     <el-button type="success" size="small" @click="exportLists" style="float: right">导出
                     </el-button>
@@ -86,7 +86,7 @@
 
 <script type="text/javascript">
     var vm = new Vue({
-        el: "#attendance_detail",
+        el: "#attend_detail",
         data: function () {
             return {
                 form: {
@@ -95,19 +95,20 @@
                     value: '',
                     keyword: ''
                 },
-                options: [],
                 tableData: [],
                 currentPage: 1,
                 pageSizes: [5, 10, 20],
                 pageSize: 5,
                 total: '',
-                multipleSelection: []
+                multipleSelection: [],
+                departList: [],
+                options: []
             }
         },
 
 
         methods: {
-            selectAttendance() {
+            selectattend() {
 
             }
             ,
@@ -124,20 +125,28 @@
             ,
             exportLists() {
 
-            }
+            },
+
         }
     });
 
-    function ajaxGroupList() {
-        ajaxGet({
+    ajaxDepartLists();
+    function ajaxDepartLists() {
+        ajaxPost({
             url: "${pageContext.request.contextPath}/group/list",
             data: {},
+            async: false,
             success: function (result) {
-                l(result.data.list);
-                this.options = result.data.list;
+                var list = [];
+                for (var i = 0; i < result.data.list.length; i++) {
+                    list[i] = {
+                        label: result.data.list[i].group_name,
+                        value: result.data.list[i].group_name
+                    }
+                }
+                vm.options = list;
             }
         });
     }
 
-    ajaxGroupList();
 </script>
