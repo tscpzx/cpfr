@@ -131,3 +131,4 @@
 <spring:message code="attendance_report" var="attendance_report"/>
 <spring:message code="attendance_setting" var="attendance_setting"/>
 <spring:message code="patch_upload" var="patch_upload"/>
+<spring:message code="person_downl_num" var="person_downl_num"/>
