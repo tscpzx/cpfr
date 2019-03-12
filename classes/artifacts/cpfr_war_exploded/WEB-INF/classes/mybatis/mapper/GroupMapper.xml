@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ts.cpfr.dao.GroupDao">
+	<select id="selectGroupList" parameterType="pd" resultType="pd">
+		select group_id,group_name,super_id,type,create_time,lmt from tbl_#{wid}_group
+		<where>
+			<if test="keyword!=null and keyword!=''">
+				and POSITION(#{keyword} IN group_name)
+			</if>
+		</where>
+	</select>
+
+	<select id="selectGroup" parameterType="pd" resultType="pd">
+		select group_id,group_name,super_id,type,create_time,lmt from tbl_#{wid}_group where group_id=#{group_id}
+	</select>
+
+	<insert id="insertGroup" parameterType="pd">
+		INSERT INTO tbl_#{wid}_group(group_name,super_id,type,create_time) values(#{group_name},0,1,now())
+	</insert>
+
+	<update id="updateGroupInfo" parameterType="pd">
+		update tbl_#{wid}_group set group_name=#{group_name} where group_id=#{group_id}
+	</update>
+
+	<update id="deleteGroup" parameterType="pd">
+		DELETE FROM tbl_#{wid}_group WHERE group_id=#{group_id};
+		update tbl_#{wid}_device set group_id=0 where group_id=#{group_id};
+		update tbl_#{wid}_person set group_id=0 where group_id=#{group_id};
+	</update>
+
+	<select id="selectGroupByGroupName" parameterType="pd" resultType="pd">
+		select group_id,group_name,super_id,type,create_time,lmt from tbl_#{wid}_group where group_name=#{group_name}
+	</select>
+</mapper>

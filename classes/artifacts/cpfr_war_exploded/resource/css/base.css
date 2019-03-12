@@ -1,0 +1,49 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+.container {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+}
+
+a:hover, a:visited, a:active, a:focus, a:-webkit-any-link {
+    text-decoration: none;
+}
+
+.icon {
+    display: block;
+    float: left;
+    margin: 0 5px;
+    font-size: 17px;
+    line-height: 20px;
+    font-family: FontAwesome;
+    font-weight: 300;
+    text-shadow: none;
+}
+
+.image {
+    width: 148px;
+    height: 148px;
+}
+
+.image_tbl {
+    width: 90px;
+    height: 90px;
+}
+
+.circle {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: #4cae4c;
+    margin-right: 5px;
+}
