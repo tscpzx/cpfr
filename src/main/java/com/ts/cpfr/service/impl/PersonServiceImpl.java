@@ -1,11 +1,15 @@
 package com.ts.cpfr.service.impl;
 
+import com.arcsoft.face.FaceEngine;
+import com.arcsoft.face.FaceInfo;
+import com.arcsoft.face.enums.ImageFormat;
 import com.github.pagehelper.PageHelper;
 import com.ts.cpfr.dao.DeviceDao;
 import com.ts.cpfr.dao.GroupDao;
 import com.ts.cpfr.dao.PersonDao;
 import com.ts.cpfr.ehcache.WebMemory;
 import com.ts.cpfr.service.PersonService;
+import com.ts.cpfr.utils.ArcFace;
 import com.ts.cpfr.utils.CommUtil;
 import com.ts.cpfr.utils.HandleEnum;
 import com.ts.cpfr.utils.PageData;
@@ -30,10 +34,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Blob;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
@@ -62,7 +66,8 @@ public class PersonServiceImpl implements PersonService {
         int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
         int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
 
-        if (pageSize != 0) PageHelper.startPage(pageNum, pageSize);
+        if (pageSize != 0)
+            PageHelper.startPage(pageNum, pageSize);
         List<ParamData> personList = mPersonDao.selectPersonList(pd);
         return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(personList));
     }
@@ -72,33 +77,55 @@ public class PersonServiceImpl implements PersonService {
         int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
         int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
 
-        if (pageSize != 0) PageHelper.startPage(pageNum, pageSize);
+        if (pageSize != 0)
+            PageHelper.startPage(pageNum, pageSize);
         List<ParamData> personList = mPersonDao.selectPersonListWithBlob(pd);
         return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(personList));
     }
 
     @Override
-    public ResultData<ParamData> addPerson(CommonsMultipartFile file, HttpServletRequest request) {
-        if (file.getSize() / 1024 > 65) return new ResultData<>(HandleEnum.FAIL, "上传失败，图片过大!");
+    public ResultData<ParamData> addPerson(CommonsMultipartFile file, ParamData pd) {
+        if (file.getSize() / 1024 > 65)
+            return new ResultData<>(HandleEnum.FAIL, "上传失败，图片过大!");
         if (!file.getContentType().contains("image"))
             return new ResultData<>(HandleEnum.FAIL, "文件类型有误!");
-        ParamData pd = new ParamData();
-        pd.put("person_name", request.getParameter("person_name"));
-        pd.put("emp_number", request.getParameter("emp_number"));
+
+        int num = faceEngine(file.getBytes());
+        if (num <= 0)
+            return new ResultData<>(HandleEnum.FAIL, "未识别到人脸");
+        else if (num > 1)
+            return new ResultData<>(HandleEnum.FAIL, "识别到多张人脸");
+
         pd.put("blob_image", file.getBytes());
-        pd.put("wid", memory.getCache(CommUtil.getTokenFromRequest(request)).getWid());
-        if (mPersonDao.insertPerson(pd)) return new ResultData<>(HandleEnum.SUCCESS);
+        if (mPersonDao.insertPerson(pd))
+            return new ResultData<>(HandleEnum.SUCCESS);
         return new ResultData<>(HandleEnum.FAIL);
     }
 
+    private int faceEngine(byte[] bytes) {
+        ArcFace.ImageInfo imageInfo = ArcFace.getArcFace().getRGBData(bytes);
+        FaceEngine faceEngine = ArcFace.getFaceEngine();
+
+        //人脸检测
+        List<FaceInfo> faceInfoList = new ArrayList<>();
+        faceEngine.detectFaces(imageInfo.getRgbData(), imageInfo.getWidth(), imageInfo.getHeight(), ImageFormat.CP_PAF_BGR24, faceInfoList);
+        return faceInfoList.size();
+    }
+
     @Override
-    public ResultData<ParamData> updatePerson(CommonsMultipartFile file, HttpServletRequest request) throws IOException {
-        ParamData pd = new ParamData();
-        pd.put("person_id", request.getParameter("person_id"));
-        pd.put("person_name", request.getParameter("person_name"));
-        pd.put("emp_number", request.getParameter("emp_number"));
+    public ResultData<ParamData> updatePerson(CommonsMultipartFile file, ParamData pd) throws IOException {
+        if (file.getSize() / 1024 > 65)
+            return new ResultData<>(HandleEnum.FAIL, "上传失败，图片过大!");
+        if (!file.getContentType().contains("image"))
+            return new ResultData<>(HandleEnum.FAIL, "文件类型有误!");
+
+        int num = faceEngine(file.getBytes());
+        if (num <= 0)
+            return new ResultData<>(HandleEnum.FAIL, "未识别到人脸");
+        else if (num > 1)
+            return new ResultData<>(HandleEnum.FAIL, "识别到多张人脸");
+
         pd.put("blob_image", file.getBytes());
-        pd.put("wid", memory.getCache(CommUtil.getTokenFromRequest(request)).getWid());
         if (mPersonDao.updatePersonInfo(pd)) {
             List<String> deviceSnLists = mDeviceDao.selectDeviceSnByPersonId(pd);
             TextMessage message = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1003_PERSON_UPDATE, null);
@@ -106,7 +133,8 @@ public class PersonServiceImpl implements PersonService {
                 mSocketMessageHandle.sendMessageToDevice(deviceSn, message);
             }
             return new ResultData<>(HandleEnum.SUCCESS);
-        } else return new ResultData<>(HandleEnum.FAIL);
+        } else
+            return new ResultData<>(HandleEnum.FAIL);
     }
 
     @Override
@@ -118,7 +146,8 @@ public class PersonServiceImpl implements PersonService {
                 mSocketMessageHandle.sendMessageToDevice(deviceSn, message);
             }
             return new ResultData<>(HandleEnum.SUCCESS);
-        } else return new ResultData<>(HandleEnum.FAIL);
+        } else
+            return new ResultData<>(HandleEnum.FAIL);
     }
 
     @Override
@@ -130,7 +159,8 @@ public class PersonServiceImpl implements PersonService {
                 mSocketMessageHandle.sendMessageToDevice(deviceSn, message);
             }
             return new ResultData<>(HandleEnum.SUCCESS);
-        } else return new ResultData<>(HandleEnum.FAIL);
+        } else
+            return new ResultData<>(HandleEnum.FAIL);
     }
 
     @Override
@@ -173,7 +203,8 @@ public class PersonServiceImpl implements PersonService {
                 return true;
             }
         } finally {
-            if (fos != null) fos.close();
+            if (fos != null)
+                fos.close();
         }
         return false;
     }
@@ -200,8 +231,10 @@ public class PersonServiceImpl implements PersonService {
             }
 
         } finally {
-            if (bis != null) bis.close();
-            if (fos != null) fos.close();
+            if (bis != null)
+                bis.close();
+            if (fos != null)
+                fos.close();
         }
     }
 
@@ -245,31 +278,33 @@ public class PersonServiceImpl implements PersonService {
         int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
         int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
 
-        if (pageSize != 0) PageHelper.startPage(pageNum, pageSize);
+        if (pageSize != 0)
+            PageHelper.startPage(pageNum, pageSize);
         List<ParamData> deviceList = mDeviceDao.selectAccessDeviceListByPersonId(pd);
         return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(deviceList));
     }
 
     @Override
     public ResultData<ParamData> batchUpload(CommonsMultipartFile[] files, ParamData pd) {
-        for(int i=0;i<files.length;i++){
+        for (int i = 0; i < files.length; i++) {
             try {
                 CommonsMultipartFile file = files[i];
-                if ((file.getSize() / 1024) > 65) continue;
+                if ((file.getSize() / 1024) > 65)
+                    continue;
 
                 String fileName = file.getOriginalFilename();
                 String[] split = fileName.split("\\.")[0].split("-");
-                String groupName="";
+                String groupName = "";
                 String personName = "";
-                if(split.length<=1){
-                    personName=split[0];
-                }else if(split.length==2){
-                     groupName=split[0];
-                     personName=split[1];
+                if (split.length <= 1) {
+                    personName = split[0];
+                } else if (split.length == 2) {
+                    groupName = split[0];
+                    personName = split[1];
                 }
 
                 ParamData data = new ParamData();
-                data.put("person_name",personName);
+                data.put("person_name", personName);
                 data.put("blob_image", file.getBytes());
                 data.put("wid", pd.get("wid"));
                 mPersonDao.insertPerson(data);

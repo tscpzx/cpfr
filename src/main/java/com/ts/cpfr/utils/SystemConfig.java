@@ -23,6 +23,10 @@ public class SystemConfig {
     public static String UPLOAD_IMAGE_DIR;
     public static String UPLOAD_RECORD_IMAGE_DIR;
 
+    //虹软授权ID
+    public static final String ARCSOFT_APPID = "Co4RfcU3B6v2s9MvHWYtzJv2JAqmJwWgc9j1pGmNEgeu";
+    public static final String ARCSOFT_SDKKEY = "7ijdL3ip6mS5bqx49jHZwz6CwK3osoznwCa6YPrkH5Dx";
+
     static {
         if (DEBUG) {
             UPLOAD_IMAGE_DIR = "D:/cpfr_upload/image/";

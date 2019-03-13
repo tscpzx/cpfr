@@ -9,7 +9,6 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -23,9 +22,9 @@ public interface PersonService {
 
     ResultData<PageData<ParamData>> getPersonBase64List(ParamData pd);
 
-    ResultData<ParamData> addPerson(CommonsMultipartFile file, HttpServletRequest request);
+    ResultData<ParamData> addPerson(CommonsMultipartFile file, ParamData pd);
 
-    ResultData<ParamData> updatePerson(CommonsMultipartFile file, HttpServletRequest request) throws IOException;
+    ResultData<ParamData> updatePerson(CommonsMultipartFile file, ParamData pd) throws IOException;
 
     ResultData<ParamData> updatePerson(ParamData pd) throws IOException;
 

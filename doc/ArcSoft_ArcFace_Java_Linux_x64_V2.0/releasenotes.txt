@@ -1,0 +1,45 @@
+////////////////////////////////////////////////////////////////////////////////
+//                   ArcSoft FaceEngine SDK 		                      //        
+////////////////////////////////////////// /////////////////////////////////////
+
+Introduction:
+ArcSoft FaceEngine SDK provides the universal interfaces to detect the face information of face, like face detection, age estimation, gender estimation,face angle detection,face recognition.
+
+Publish date:
+2018-12-14
+
+Expire date:
+2020-03-06
+
+Version:
+2.0.0.0
+
+Supported platform:
+LINUX64
+
+Compile Options:
+default
+
+Dependency:
+None
+
+Known issues:
+None.
+
+File List:
+|---doc
+|   |---ARCSOFT_ARC_FACE_JAVA_DEVELOPER'S_GUIDE.pdf
+|   |---apidocs
+|---libs
+|   |--LINUX64
+|   |   |---libarcsoft_face.so                 Library
+|   |   |---libarcsoft_face_engine.so          Library
+|   |   |---libarcsoft_face_engine_jni.so      Library
+|   |--arcsoft-sdk-face-2.0.0.0.jar
+|---samplecode
+|   |---FaceEngineTest.java
+|---releasenotes.txt
+
+
+Change Logs:
+Initial Version

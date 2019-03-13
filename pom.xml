@@ -236,6 +236,13 @@
 			<artifactId>jackson-annotations</artifactId>
 			<version>2.9.7</version>
 		</dependency>
+
+		<!-- 虹软人脸识别 -->
+		<dependency>
+			<groupId>com.arcsoft.face</groupId>
+			<artifactId>arcface</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
