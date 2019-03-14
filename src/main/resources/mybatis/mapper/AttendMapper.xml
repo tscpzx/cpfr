@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ts.cpfr.dao.AttendDao">
+    <insert id="insertRule" parameterType="pd">
+        INSERT INTO tbl_#{wid}_attend_rule(am_punch_in_time,am_punch_in_start,am_punch_in_end,pm_punch_out_time,pm_punch_out_start,pm_punch_out_end,
+                                           work_day,status,create_time)
+        values(#{am_punch_in_time},#{am_punch_in_start},#{am_punch_in_end},#{pm_punch_out_time},#{pm_punch_out_start},#{pm_punch_out_end},#{work_day},1,now())
+    </insert>
+</mapper>

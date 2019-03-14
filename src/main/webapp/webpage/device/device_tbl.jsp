@@ -39,8 +39,12 @@
                 </el-table-column>
                 <el-table-column prop="online" label="${online}" min-width="10%">
                     <template slot-scope="scope">
-                        <span v-if="scope.row.online===1">${online}</span>
-                        <span v-if="scope.row.online===0">${offline}</span>
+                        <el-tag
+                                v-if="scope.row.online===1" :type="'success'"
+                                disable-transitions>${online}</el-tag>
+                        <el-tag
+                                v-if="scope.row.online===0" :type="'info'"
+                                disable-transitions>${offline}</el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column label="${registration_time}" min-width="20%">

@@ -74,4 +74,10 @@
 	<select id="selectPersonListNoIn" parameterType="pd" resultType="pd">
 		SELECT p.* FROM tbl_#{wid}_grant g RIGHT JOIN tbl_#{wid}_person p ON g.person_id=p.person_id AND g.device_id=(SELECT device_id FROM tbl_#{wid}_device WHERE device_sn=#{device_sn}) AND p.status &lt;&gt; 3 WHERE p.person_id NOT IN(#{person_ids})
 	</select>
+
+	<select id="selectPersonByGroup" parameterType="pd" resultType="pd">
+		SELECT DISTINCT p.person_id,p.person_name FROM tbl_#{wid}_person p RIGHT JOIN tbl_#{wid}_grant g ON p.person_id = g.person_id WHERE p.status &lt;&gt; 3
+		AND p.group_id=#{group_id}
+	</select>
+
 </mapper>

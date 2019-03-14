@@ -15,6 +15,8 @@ public interface PersonDao {
 
     List<ParamData> selectPersonList(ParamData pd);
 
+    List<ParamData> selectPersonByGroup(ParamData pd);
+
     boolean insertPerson(ParamData pd);
 
     boolean updatePersonListGroupID(ParamData pd);

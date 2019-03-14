@@ -9,6 +9,7 @@ import com.ts.cpfr.utils.PageData;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -169,4 +170,15 @@ public class PersonController extends WebBaseController {
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
         }
     }
+
+   @ResponseBody
+    @RequestMapping("/listByGroup")
+    public ResultData<ParamData> listByGroup(HttpServletRequest request){
+       try {
+           return mPersonService.getListByGroup(paramDataInit());
+       } catch (Exception e) {
+           e.printStackTrace();
+           return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+       }
+   }
 }

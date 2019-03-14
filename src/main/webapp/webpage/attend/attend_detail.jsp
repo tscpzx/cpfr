@@ -127,10 +127,12 @@
 
             },
 
+
         }
     });
 
     ajaxDepartLists();
+
     function ajaxDepartLists() {
         ajaxPost({
             url: "${pageContext.request.contextPath}/group/list",
