@@ -117,15 +117,6 @@
                     callback(new Error("需要4个字符以上，并且只能是数字或者字母组成"));
                 } else callback()
             };
-            var dropdownTitle = '中文';
-            switch ('${pageContext.response.locale}') {
-                case 'zh_CN':
-                    dropdownTitle = '中文';
-                    break;
-                case 'en_US':
-                    dropdownTitle = 'English';
-                    break;
-            }
 
             return {
                 loginModel: {
@@ -142,7 +133,7 @@
                         {validator: checkInput, trigger: 'blur'}
                     ]
                 },
-                dropdownTitle: dropdownTitle
+                dropdownTitle: '<spring:message code="switch_language"/>'
             }
         },
         methods: {
@@ -170,7 +161,11 @@
             success: function (data) {
                 layTip(data.message);
                 if (0 === data.code) {
-                    window.location.href = "${pageContext.request.contextPath}/web?lang=" + '${pageContext.response.locale}';
+                    var locale = '${pageContext.response.locale}';
+                    if (locale === 'en_US' && '<spring:message code="language.en"/>' !== 'English')
+                        locale = 'zh_CN';
+
+                    window.location.href = "${pageContext.request.contextPath}/web?lang=" + locale;
                 }
             }
         });
