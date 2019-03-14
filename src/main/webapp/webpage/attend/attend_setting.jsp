@@ -201,7 +201,7 @@
 
     function openDialogPeople() {
         ajaxGet({
-            url: "${pageContext.request.contextPath}/person/listByGroup",
+            url: "${pageContext.request.contextPath}/person/list_by_group",
             data: {},
             success: function (result) {
                 for (var i = 0; i < result.data.list.length; i++) {

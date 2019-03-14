@@ -32,4 +32,7 @@
 	<select id="selectGroupByGroupName" parameterType="pd" resultType="pd">
 		select group_id,group_name,super_id,type,create_time,lmt from tbl_#{wid}_group where group_name=#{group_name}
 	</select>
+	<select id="selectGroupInPeople"  parameterType="pd" resultType="pd">
+		SELECT DISTINCT  g.group_id,g.group_name FROM tbl_#{wid}_group g RIGHT JOIN tbl_#{wid}_person p ON p.group_id = g.group_id WHERE p.status &lt;&gt; 3
+	</select>
 </mapper>

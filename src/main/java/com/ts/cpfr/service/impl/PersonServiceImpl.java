@@ -331,20 +331,25 @@ public class PersonServiceImpl implements PersonService {
         List<ParamData> groupList = mGroupDao.selectGroupList(pd);
         ParamData other = new ParamData();
         other.put("group_id", 0);
-        other.put("group_name", "其他");
+        other.put("group_name", "未分组");
         groupList.add(other);
-        List<ParamData> data = new ArrayList<>();
-        for (int i = 0; i < groupList.size(); i++) {
-            groupList.get(i).put("wid", pd.get("wid"));
-            ParamData group = new ParamData();
-            group.put("group_id", groupList.get(i).get("group_id"));
-            group.put("group_name", groupList.get(i).get("group_name"));
-            group.put("person_list", mPersonDao.selectPersonByGroup(groupList.get(i)));
-            data.add(group);
+        if (groupList != null) {
+            List<ParamData> data = new ArrayList<>();
+            for (int i = 0; i < groupList.size(); i++) {
+                groupList.get(i).put("wid", pd.get("wid"));
+                ParamData group = new ParamData();
+                group.put("group_id", groupList.get(i).get("group_id"));
+                group.put("group_name", groupList.get(i).get("group_name"));
+                group.put("person_list", mPersonDao.selectPersonByGroup(groupList.get(i)));
+                data.add(group);
+            }
+            ParamData result = new ParamData();
+            result.put("list", data);
+            return new ResultData<>(HandleEnum.SUCCESS, result);
+        } else {
+            return new ResultData<>(HandleEnum.FAIL, "暂无分组");
         }
-        ParamData result = new ParamData();
-        result.put("list", data);
-        return new ResultData<>(HandleEnum.SUCCESS, result);
+
     }
 
 

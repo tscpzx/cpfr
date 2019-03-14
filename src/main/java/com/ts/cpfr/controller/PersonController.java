@@ -172,7 +172,7 @@ public class PersonController extends WebBaseController {
     }
 
    @ResponseBody
-    @RequestMapping("/listByGroup")
+    @RequestMapping("/list_by_group")
     public ResultData<ParamData> listByGroup(HttpServletRequest request){
        try {
            return mPersonService.getListByGroup(paramDataInit());
