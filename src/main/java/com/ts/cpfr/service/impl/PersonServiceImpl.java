@@ -328,12 +328,12 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public ResultData<ParamData> getListByGroup(ParamData pd) {
-        List<ParamData> groupList = mGroupDao.selectGroupList(pd);
+        List<ParamData> groupList = mGroupDao.selectGroupInPeople(pd);
         ParamData other = new ParamData();
         other.put("group_id", 0);
         other.put("group_name", "未分组");
         groupList.add(other);
-        if (groupList != null) {
+        if (groupList.size()!=0) {
             List<ParamData> data = new ArrayList<>();
             for (int i = 0; i < groupList.size(); i++) {
                 groupList.get(i).put("wid", pd.get("wid"));

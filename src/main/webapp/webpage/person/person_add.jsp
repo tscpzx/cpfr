@@ -16,6 +16,7 @@
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 15px;">
             <el-breadcrumb-item>${people_management}</el-breadcrumb-item>
             <el-breadcrumb-item>${people_list}</el-breadcrumb-item>
+            <el-breadcrumb-item>${add_people}</el-breadcrumb-item>
         </el-breadcrumb>
 
         <el-form label-width="120px" :model="model" :rules="rules" ref="uploadForm">

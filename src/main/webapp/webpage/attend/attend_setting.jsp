@@ -18,8 +18,12 @@
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 15px;">
             <el-breadcrumb-item>${attend_management}</el-breadcrumb-item>
             <el-breadcrumb-item>${attend_setting}</el-breadcrumb-item>
+            <el-breadcrumb-item>新建规则</el-breadcrumb-item>
         </el-breadcrumb>
         <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="120px">
+                <el-form-item label="考勤名称:" prop="name">
+                    <el-input v-model="ruleForm.name" size="medium" style="width: 220px"></el-input>
+                </el-form-item>
             <el-col :span="12">
                 <el-form-item label="上班时间:" prop="am_punch_in_time">
                     <el-time-picker placeholder="选择时间" v-model="ruleForm.am_punch_in_time" size="medium"
@@ -115,6 +119,7 @@
         el: "#attend_setting",
         data: {
             ruleForm: {
+                name: '',
                 am_punch_in_time: '',
                 am_punch_range: '',
                 pm_punch_out_time: '',
@@ -126,6 +131,7 @@
             checked: false,
             disabledEdit: false,
             rules: {
+                name: [{required: true, message: '请输入考勤名称', trigger: 'blur'}],
                 am_punch_in_time: [
                     {required: true, message: '请选择上班时间', trigger: 'change'}
                 ],
@@ -143,6 +149,7 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         var data = {
+                            name: vm.ruleForm.name,
                             am_punch_in_time: vm.ruleForm.am_punch_in_time,
                             am_punch_in_start: vm.ruleForm.am_punch_range[0],
                             am_punch_in_end: vm.ruleForm.am_punch_range[1],
