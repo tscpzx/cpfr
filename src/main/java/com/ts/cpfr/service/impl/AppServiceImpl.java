@@ -25,7 +25,6 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -156,8 +155,10 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public ResultData<String> getCurrentDate() {
-        return new ResultData<>(HandleEnum.SUCCESS, mAppDao.selectNow());
+    public ResultData<ParamData> getCurrentDate() {
+        ParamData pd = new ParamData();
+        pd.put("current_date", mAppDao.selectNow());
+        return new ResultData<>(HandleEnum.SUCCESS, pd);
     }
 
     @Override
@@ -235,7 +236,6 @@ public class AppServiceImpl implements AppService {
     @Override
     public ResultData<List<ParamData>> comparePersonDownlNum(ParamData pd) {
         String personIds = pd.getString("person_ids");
-        List<ParamData> list = new ArrayList<>();
         String[] personIdArr = personIds.split(",");
         pd.put("person_downl_num", personIdArr.length);
         mDeviceDao.updateDevicePersonDownlNum(pd);
