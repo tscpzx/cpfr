@@ -26,8 +26,8 @@
                 <el-row>
                     <div style="float: right">
                         <el-input style="width: 200px;" v-model="keyword" size="small" placeholder="${search_content}" @keyup.enter.native="searchGroupList"></el-input>
-                        <el-button type="primary" size="small" @click="searchGroupList">${search}
-                        </el-button>
+                        <el-button type="primary" icon="el-icon-search" size="small" @click="searchGroupList"></el-button>
+
                     </div>
                 </el-row>
             </el-form-item>

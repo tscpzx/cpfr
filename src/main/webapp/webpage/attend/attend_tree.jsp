@@ -2,52 +2,90 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@include file="/resource/inc/lang.jsp" %>
 <style type="text/css">
-    .el-tree-node__content {
-        height: 36px;
-    }
-
-    .custom-tree-node {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        font-size: 14px;
-    }
-
-    .el-tree {
-        background: #EBEFF2;
-    }
-
-    .tree-header-item {
+    .tree-item {
         height: 36px;
         line-height: 36px;
         padding-left: 6px;
         cursor: pointer;
     }
 
-    .tree-header-item:hover {
+    .tree-item:hover {
         background-color: #F5F7FA;
     }
 
-    .tree-header-item i, .tree-header-item span {
+    .tree-item i, .tree-item span {
         color: #606266;
         font-size: 14px;
+        margin-left: 18px;
+    }
+
+    .el-tree-node__content {
+        height: 36px;
+    }
+
+    .el-tree {
+        background: #EBEFF2;
     }
 </style>
 <div id="attend">
-    <div class="tree-header-item" v-on:click="addSetting()">
-        <i class="el-icon-circle-plus-outline"></i>
-        <span>新建规则</span>
+    <div class="tree-item" v-on:click="addSetting()">
+        <span>设置规则</span>
     </div>
+    <el-tree
+            :data="items"
+            highlight-current="true"
+            :props="defaultProps"
+            @node-click="onNodeClick"
+            @node-expand="onHandleExpand"
+            node-key="attend_id"
+            :default-expanded-keys="[-1]"
+            ref="tree"></el-tree>
 </div>
 <script type="text/javascript">
-    var vmPersonTree = new Vue({
-
-        el: "#person",
-        data: {},
+    ajaxAttendList();
+    var attend_tree = new Vue({
+        el: "#attend",
+        data: {
+            items: [{
+                attend_id: -1,
+                attend_name: '规则列表',
+                children: []
+            }],
+            defaultProps: {
+                children: 'children',
+                label: 'attend_name'
+            },
+            length: ''
+        },
         methods: {
-            addPerson() {
-                $("#person_content").load("attend/attend_setting");
+            addSetting() {
+                $("#attend_content").load("attend/attend_setting");
+            },
+            ruleList() {
+                $("#attend_content").load("attend/attend_list");
+            },
+            onNodeClick(data) {
+                if (data.attend_id !== -1) {
+                    $("#attend_content").load("${pageContext.request.contextPath}/attend/rule_detail?attend_id=" + data.attend_id);
+                }
+            },
+            onHandleExpand(data, node, tree) {
+                if (data.person_id === -1) {
+                    $("#person_content").load("attend/attend_setting");
+                }
             }
         }
     });
+
+
+    function ajaxAttendList() {
+        ajaxGet({
+            url: "${pageContext.request.contextPath}/attend/rule_list",
+            data: {},
+            success: function (result) {
+                attend_tree.items[0].children = result.data.list;
+                attend_tree.length = result.data.total;
+            }
+        });
+    }
 </script>

@@ -29,8 +29,8 @@
                     <div style="float: right">
                         <el-input style="width: 200px;" v-model="keyword" size="small"
                                   placeholder="${search_content}" @keyup.enter.native="selectRecord"></el-input>
-                        <el-button type="primary" size="small" @click="selectRecord">${search}
-                        </el-button>
+                        <el-button type="primary" icon="el-icon-search" size="small" @click="selectRecord"></el-button>
+
                     </div>
                 </el-row>
             </el-form-item>

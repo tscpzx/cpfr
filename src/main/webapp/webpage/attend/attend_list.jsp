@@ -1,61 +1,51 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@include file="/resource/inc/lang.jsp" %>
 <style type="text/css">
-    .person_tbl_box {
+    .attend_rule_box {
         padding: 20px;
         text-align: center;
     }
 
-    .person_tbl_box .el-table {
+    .attend_rule_box.el-table {
         margin: 0 auto;
     }
 
     .el-form-item {
         text-align: left;
     }
+    .el-button{
+        color: #000;
+    }
 </style>
-<div class="person_tbl_box">
-    <div id="person_tbl">
+<div class="attend_rule_box">
+    <div id="attend_rule">
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 15px;">
-            <el-breadcrumb-item>${people_management}</el-breadcrumb-item>
-            <el-breadcrumb-item>${people_list}</el-breadcrumb-item>
+            <el-breadcrumb-item>${attend_management}</el-breadcrumb-item>
+            <el-breadcrumb-item>${attend_setting}</el-breadcrumb-item>
+            <el-breadcrumb-item>规则列表</el-breadcrumb-item>
         </el-breadcrumb>
-
-        <el-form onsubmit="return false;">
-            <el-form-item>
-                <el-row>
-                    <div style="float: right">
-                        <el-input style="width: 200px;" v-model="keyword" size="small" placeholder="${search_content}"
-                                  @keyup.enter.native="selectPerson"></el-input>
-                        <el-button type="primary" icon="el-icon-search" size="small" @click="selectPerson"></el-button>
-                    </div>
-                </el-row>
-            </el-form-item>
-        </el-form>
 
         <template>
             <el-table :data="tableData" style="width: 100%" stripe>
-                <el-table-column prop="person_id" label="${people_id_lang}">
+                <el-table-column prop="attend_id" label="考勤规则ID">
                 </el-table-column>
-                <el-table-column prop="person_name" label="${name}">
+                <el-table-column prop="am_punch_in_time" label="上班时间">
                 </el-table-column>
-                <el-table-column prop="emp_number" label="${job_number}">
+                <el-table-column prop="pm_punch_out_time" label="下班时间">
                 </el-table-column>
-                <el-table-column label="${the_bottom_picture_lang}">
+                <el-table-column  prop="work_day" label="工作日">
+                </el-table-column>
+                <el-table-column label="${operation}">
                     <template slot-scope="scope">
-                        <img class="image_tbl" v-bind:src="'data:image/jpeg;base64,'+scope.row.base_image">
-                        <%--<img class="image_tbl" v-bind:src="'${pageContext.request.contextPath}/person/image?image_path='+scope.row.image_path">--%>
-                    </template>
-                </el-table-column>
-                <el-table-column label="${registration_time}">
-                    <template slot-scope="scope">
-                        <i class="el-icon-time"></i>
-                        <span style="margin-left: 10px">{{ scope.row.add_time}}</span>
+                        <el-button  @click="deleteRule(scope.row)" type="text" style="color:#409EFF"><i class="el-icon-edit"></i></el-button>
+                        <el-button  @click="deleteRule(scope.row)" type="text" style="color:#F56C6C"><i class="el-icon-delete"></i></el-button>
+
+
                     </template>
                 </el-table-column>
             </el-table>
         </template>
+
         <template>
             <div class="block">
                 <el-pagination ref="pagination"
@@ -76,41 +66,36 @@
 
 <script type="text/javascript">
     var vm = new Vue({
-        el: "#person_tbl",
+        el: "#attend_rule",
         data: {
             tableData: [],
             searching: true,
             currentPage: 1,
             pageSizes: [5, 10, 20],
-            pageSize: 5,
+            pageSize: 10,
             total: '',
-            keyword: ''
         },
         methods: {
             handleChange(val) {
-                ajaxPersonPage({
+                ajaxRuleListPage({
                     pageNum: this.currentPage,
                     pageSize: this.pageSize
                 });
             },
-            selectPerson() {
-                ajaxPersonPage({
-                    pageNum: 1,
-                    pageSize: this.pageSize,
-                    keyword: this.keyword
-                });
+            deleteRule(scope){
+
             }
         }
     });
 
-    ajaxPersonPage({
+    ajaxRuleListPage({
         pageNum: vm.currentPage,
         pageSize: vm.pageSize
     });
 
-    function ajaxPersonPage(data) {
+    function ajaxRuleListPage(data) {
         ajaxGet({
-            url: "${pageContext.request.contextPath}/person/list_base64",
+            url: "${pageContext.request.contextPath}/attend/rule_list",
             data: data,
             success: function (result) {
                 vm.total = result.data.total;

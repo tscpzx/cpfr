@@ -3,8 +3,16 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ts.cpfr.dao.AttendDao">
     <insert id="insertRule" parameterType="pd">
-        INSERT INTO tbl_#{wid}_attend_rule(am_punch_in_time,am_punch_in_start,am_punch_in_end,pm_punch_out_time,pm_punch_out_start,pm_punch_out_end,
+        INSERT INTO tbl_#{wid}_attend_rule(attend_name,am_punch_in_time,am_punch_in_start,am_punch_in_end,pm_punch_out_time,pm_punch_out_start,pm_punch_out_end,
                                            work_day,status,create_time)
-        values(#{am_punch_in_time},#{am_punch_in_start},#{am_punch_in_end},#{pm_punch_out_time},#{pm_punch_out_start},#{pm_punch_out_end},#{work_day},1,now())
+        values(#{attend_name},#{am_punch_in_time},#{am_punch_in_start},#{am_punch_in_end},#{pm_punch_out_time},#{pm_punch_out_start},#{pm_punch_out_end},#{work_day},1,now())
     </insert>
+    <select id="selectRuleList" parameterType="pd" resultType="pd">
+        select attend_id,attend_name,am_punch_in_time,am_punch_in_start, am_punch_in_end,
+               noon_punch_out_time,noon_punch_in_time,pm_punch_out_time ,pm_punch_out_start,pm_punch_out_end,work_day
+               from tbl_#{wid}_attend_rule where status=1
+    </select>
+    <select id="selectAttend" parameterType="pd" resultType="pd">
+        select * from tbl_#{wid}_attend_rule where attend_id=#{attend_id}
+    </select>
 </mapper>

@@ -18,12 +18,12 @@
         <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-bottom: 15px;">
             <el-breadcrumb-item>${attend_management}</el-breadcrumb-item>
             <el-breadcrumb-item>${attend_setting}</el-breadcrumb-item>
-            <el-breadcrumb-item>新建规则</el-breadcrumb-item>
+            <el-breadcrumb-item>设置规则</el-breadcrumb-item>
         </el-breadcrumb>
         <el-form ref="ruleForm" :model="ruleForm" :rules="rules" label-width="120px">
-                <el-form-item label="考勤名称:" prop="name">
-                    <el-input v-model="ruleForm.name" size="medium" style="width: 220px"></el-input>
-                </el-form-item>
+            <el-form-item label="考勤名称:" prop="attend_name">
+                <el-input v-model="ruleForm.attend_name" size="medium" style="width: 220px"></el-input>
+            </el-form-item>
             <el-col :span="12">
                 <el-form-item label="上班时间:" prop="am_punch_in_time">
                     <el-time-picker placeholder="选择时间" v-model="ruleForm.am_punch_in_time" size="medium"
@@ -104,8 +104,8 @@
             </el-col>
             <el-col :span="24">
                 <el-form-item>
-                    <el-button type="success" v-on:click="saveSetting('ruleForm')" size="medium">${save}</el-button>
-                    <el-button type="primary" v-on:click="resetForm('ruleForm')" size="medium">重置</el-button>
+                    <el-button type="success" v-on:click="saveSetting('ruleForm')" size="small">${save}</el-button>
+                    <el-button type="primary" v-on:click="resetForm('ruleForm')" size="small">重置</el-button>
 
                 </el-form-item>
             </el-col>
@@ -115,11 +115,11 @@
 </div>
 
 <script type="text/javascript">
-    var vm = new Vue({
+    var attend_set = new Vue({
         el: "#attend_setting",
         data: {
             ruleForm: {
-                name: '',
+                attend_name: '',
                 am_punch_in_time: '',
                 am_punch_range: '',
                 pm_punch_out_time: '',
@@ -131,7 +131,7 @@
             checked: false,
             disabledEdit: false,
             rules: {
-                name: [{required: true, message: '请输入考勤名称', trigger: 'blur'}],
+                attend_name: [{required: true, message: '请输入考勤名称', trigger: 'blur'}],
                 am_punch_in_time: [
                     {required: true, message: '请选择上班时间', trigger: 'change'}
                 ],
@@ -145,18 +145,18 @@
         },
         methods: {
             saveSetting(formName) {
-                l(vm.ruleForm.checkList);
+                l(attend_set.ruleForm.checkList);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         var data = {
-                            name: vm.ruleForm.name,
-                            am_punch_in_time: vm.ruleForm.am_punch_in_time,
-                            am_punch_in_start: vm.ruleForm.am_punch_range[0],
-                            am_punch_in_end: vm.ruleForm.am_punch_range[1],
-                            pm_punch_out_time: vm.ruleForm.pm_punch_out_time,
-                            pm_punch_out_start: vm.ruleForm.pm_punch_range[0],
-                            pm_punch_out_end: vm.ruleForm.pm_punch_range[1],
-                            work_day: vm.ruleForm.checkList.join(",")
+                            attend_name: attend_set.ruleForm.attend_name,
+                            am_punch_in_time: attend_set.ruleForm.am_punch_in_time,
+                            am_punch_in_start: attend_set.ruleForm.am_punch_range[0],
+                            am_punch_in_end: attend_set.ruleForm.am_punch_range[1],
+                            pm_punch_out_time: attend_set.ruleForm.pm_punch_out_time,
+                            pm_punch_out_start: attend_set.ruleForm.pm_punch_range[0],
+                            pm_punch_out_end: attend_set.ruleForm.pm_punch_range[1],
+                            work_day: attend_set.ruleForm.checkList.join(",")
                         };
                         ajaxAddRule(data);
                     } else {
@@ -168,10 +168,10 @@
                 this.$refs[formName].resetFields();
             },
             handleCheckedAttend(event) {
-                if (vm.checked) {
-                    vm.disabledEdit = true;
+                if (attend_set.checked) {
+                    attend_set.disabledEdit = true;
                 } else {
-                    vm.disabledEdit = false;
+                    attend_set.disabledEdit = false;
                 }
             },
 

@@ -1,5 +1,6 @@
 package com.ts.cpfr.service;
 
+import com.ts.cpfr.utils.PageData;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
 
@@ -9,4 +10,8 @@ import com.ts.cpfr.utils.ResultData;
  */
 public interface AttendService {
     ResultData<ParamData> addRule(ParamData pd);
+
+    ResultData<PageData<ParamData>> getRuleList(ParamData pd);
+
+    ParamData queryAttend(ParamData pd);
 }

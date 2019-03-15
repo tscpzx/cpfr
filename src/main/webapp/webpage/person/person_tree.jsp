@@ -57,14 +57,13 @@
         data: {
             items: [{
                 person_id: -1,
-                person_name:  '${people_list}',
+                person_name: '${people_list}',
                 children: []
             }],
             defaultProps: {
                 children: 'children',
                 label: 'person_name'
             },
-            length: ''
         },
         methods: {
             onNodeClick(data) {
@@ -77,7 +76,7 @@
                     $("#person_content").load("person/person_tbl");
                 }
             },
-            addPerson(){
+            addPerson() {
                 $("#person_content").load("person/person_add");
             }
         }
@@ -88,8 +87,8 @@
             url: "${pageContext.request.contextPath}/person/list",
             data: {},
             success: function (result) {
+                l(result.data.list);
                 vmPersonTree.items[0].children = result.data.list;
-                vmPersonTree.length = result.data.total;
             }
         });
     }
