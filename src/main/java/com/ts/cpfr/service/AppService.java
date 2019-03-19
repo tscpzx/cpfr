@@ -8,6 +8,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @Classname AppService
@@ -37,4 +38,8 @@ public interface AppService {
     ResultData<ParamData> addPersonWithGrant(ParamData pd) throws Exception;
 
     ResultData<List<ParamData>> comparePersonDownlNum(ParamData pd);
+
+    void downloadApk(HttpServletRequest request, HttpServletResponse response, String key) throws Exception;
+
+    ResultData<ParamData> getLastVersionInfo();
 }

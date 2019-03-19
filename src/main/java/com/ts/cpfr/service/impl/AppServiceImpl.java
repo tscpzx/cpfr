@@ -22,13 +22,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
 import sun.misc.BASE64Decoder;
@@ -240,6 +243,47 @@ public class AppServiceImpl implements AppService {
         pd.put("person_downl_num", personIdArr.length);
         mDeviceDao.updateDevicePersonDownlNum(pd);
         return new ResultData<>(HandleEnum.SUCCESS, mPersonDao.selectPersonListNoIn(pd));
+    }
+
+    @Override
+    public void downloadApk(HttpServletRequest request, HttpServletResponse response, String key) throws Exception {
+        BufferedInputStream bis = null;
+        BufferedOutputStream fos = null;
+        String apkPath = null;
+        try {
+
+            if ("apk.offline.version".equals(key)) {
+                apkPath = request.getServletContext().getRealPath("/WEB-INF/downl/faceoffline.apk");
+            } else {
+                apkPath = request.getServletContext().getRealPath("/WEB-INF/downl/faceonline.apk");
+            }
+            File file = new File(apkPath);
+            bis = new BufferedInputStream(new FileInputStream(file));
+            fos = new BufferedOutputStream(response.getOutputStream());
+
+            response.setContentLength(bis.available());
+
+            byte[] buffer = new byte[1024 * 10];
+            int length;
+            while ((length = bis.read(buffer)) > 0) {
+                fos.write(buffer, 0, length);
+            }
+            fos.flush();
+
+        } finally {
+            if (bis != null)
+                bis.close();
+            if (fos != null)
+                fos.close();
+        }
+    }
+
+    @Override
+    public ResultData<ParamData> getLastVersionInfo() {
+        ParamData pd = new ParamData();
+        pd.put("apk_offline_version", CommUtil.getProperties("apk.offline.version"));
+        pd.put("apk_online_version", CommUtil.getProperties("apk.online.version"));
+        return new ResultData<>(HandleEnum.SUCCESS, pd);
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {
