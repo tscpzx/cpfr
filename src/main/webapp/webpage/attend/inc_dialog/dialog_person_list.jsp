@@ -12,7 +12,7 @@
                 ref="tree"></el-tree>
         <div slot="footer" class="dialog-footer">
             <el-button @click="visible = false">${cancel_lang}</el-button>
-            <el-button type="primary" @click="">${determine}</el-button>
+            <el-button type="primary" @click="choosePerson">${determine}</el-button>
         </div>
     </el-dialog>
 </div>

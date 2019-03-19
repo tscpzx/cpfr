@@ -71,7 +71,7 @@
             },
             onHandleExpand(data, node, tree) {
                 if (data.person_id === -1) {
-                    $("#person_content").load("attend/attend_setting");
+                    $("#attend_content").load("attend/attend_setting");
                 }
             }
         }

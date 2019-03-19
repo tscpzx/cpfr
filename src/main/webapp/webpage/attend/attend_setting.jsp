@@ -99,14 +99,15 @@
             </el-col>
             <el-col :span="24">
                 <el-form-item label="选择成员：">
-                    <el-button icon="el-icon-plus" circle size="medium" @click="openDialogPeople"></el-button>
+                    <el-button icon="el-icon-plus" circle size="medium" @click="openDialogPeople"
+                               style="float: left"></el-button>
+                    <p id="peopleNum" style="color: #bbbbbb;margin-left: 50px"></p>
                 </el-form-item>
             </el-col>
             <el-col :span="24">
                 <el-form-item>
                     <el-button type="success" v-on:click="saveSetting('ruleForm')" size="small">${save}</el-button>
                     <el-button type="primary" v-on:click="resetForm('ruleForm')" size="small">重置</el-button>
-
                 </el-form-item>
             </el-col>
         </el-form>
@@ -130,6 +131,7 @@
             },
             checked: false,
             disabledEdit: false,
+            person_ids: '',
             rules: {
                 attend_name: [{required: true, message: '请输入考勤名称', trigger: 'blur'}],
                 am_punch_in_time: [
@@ -156,7 +158,7 @@
                             pm_punch_out_time: attend_set.ruleForm.pm_punch_out_time,
                             pm_punch_out_start: attend_set.ruleForm.pm_punch_range[0],
                             pm_punch_out_end: attend_set.ruleForm.pm_punch_range[1],
-                            work_day: attend_set.ruleForm.checkList.join(",")
+                            work_day: attend_set.ruleForm.checkList.join(","),
                         };
                         ajaxAddRule(data);
                     } else {
@@ -186,7 +188,8 @@
             success: function (result) {
                 layTip(result.message);
                 if (0 === result.code) {
-                    $("#content-container").load("attend/attend_setting");
+                    $("#content-container").load("attend/attend");
+
                 }
             }
         });
@@ -203,7 +206,20 @@
             },
             visible: false
         },
-        methods: {}
+        methods: {
+            choosePerson() {
+                var list;
+                list = this.$refs.tree.getCheckedKeys().concat(this.$refs.tree.getHalfCheckedKeys());
+                for (var i = 0; i < list.length; i++) {
+                    if (list[i] === -1) {
+                        list.splice(i, 1);
+                    }
+                }
+                $("#peopleNum").html("已选人数:" + list.length);
+                vmDialogPersonList.visible = false;
+                attend_set.person_ids = list;
+            }
+        }
     });
 
     function openDialogPeople() {
@@ -213,6 +229,7 @@
             success: function (result) {
                 for (var i = 0; i < result.data.list.length; i++) {
                     vmDialogPersonList.items[i] = {
+                        person_id: -1,
                         person_name: result.data.list[i].group_name,
                         children: result.data.list[i].person_list
                     }

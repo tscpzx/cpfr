@@ -69,7 +69,7 @@
                             end-placeholder="结束时间"
                             placeholder="选择时间范围"
                             size="medium"
-                            value-format="HH:m" format="HH:m" :disabled="disabledEdit">
+                            value-format="HH:mm" format="HH:mm" :disabled="disabledEdit">
                     </el-time-picker>
                 </el-form-item>
             </el-col>
@@ -106,14 +106,16 @@
 
 <script type="text/javascript">
     var data = $.parseJSON('${data}');
-    l(data);
-    l("时间：" + new Date(data.am_punch_in_time));
     var vm_rule = new Vue({
         el: '#rule_detail',
         data: {
             ruleForm: {
                 attend_name: data.attend_name,
-                work_day: data.work_day.split(",")
+                am_punch_in_time: data.am_punch_in_time,
+                work_day: data.work_day.split(","),
+                am_punch_range: [data.am_punch_in_start, data.am_punch_in_end],
+                pm_punch_out_time: data.pm_punch_out_time,
+                pm_punch_range: [data.pm_punch_out_start, data.pm_punch_out_end]
             },
             checked: false,
             disabledEdit: true,
@@ -131,11 +133,23 @@
                 vm_rule.saveShow = true;
                 vm_rule.updateShow = false;
             },
-            saveRule(scope) {
+            saveRule(form) {
                 vm_rule.disabledEdit = true;
                 vm_rule.cancelShow = false;
                 vm_rule.updateShow = true;
                 vm_rule.saveShow = false;
+                var data = {
+                    attend_name: vm_rule.ruleForm.attend_name,
+                    am_punch_in_time: vm_rule.ruleForm.am_punch_in_time,
+                    am_punch_in_start: vm_rule.ruleForm.am_punch_range[0],
+                    am_punch_in_end: vm_rule.ruleForm.am_punch_range[1],
+                    pm_punch_out_time: vm_rule.ruleForm.pm_punch_out_time,
+                    pm_punch_out_start: vm_rule.ruleForm.pm_punch_range[0],
+                    pm_punch_out_end: vm_rule.ruleForm.pm_punch_range[1],
+                    work_day: vm_rule.ruleForm.checkList.join(","),
+                };
+                ajaxUpdateRule(data);
+
             },
             cancel() {
                 vm_rule.disabledEdit = true;
@@ -145,5 +159,18 @@
             }
         }
     });
+
+    function ajaxUpdateRule(data) {
+        ajaxPost({
+            url: "${pageContext.request.contextPath}/attend/update",
+            data: data,
+            success: function (result) {
+                layTip(result.message);
+                if (0 === result.code) {
+                    $("#attend_content").load("attend/attend_rule_detail");
+                }
+            }
+        });
+    }
 
 </script>
