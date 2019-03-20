@@ -90,12 +90,6 @@ public class PersonServiceImpl implements PersonService {
         if (!file.getContentType().contains("image"))
             return new ResultData<>(HandleEnum.FAIL, "文件类型有误!");
 
-//        int num = faceEngine(file.getBytes());
-//        if (num <= 0)
-//            return new ResultData<>(HandleEnum.FAIL, "未识别到人脸");
-//        else if (num > 1)
-//            return new ResultData<>(HandleEnum.FAIL, "识别到多张人脸");
-
         pd.put("blob_image", file.getBytes());
         if (mPersonDao.insertPerson(pd))
             return new ResultData<>(HandleEnum.SUCCESS);

@@ -59,7 +59,10 @@ public class PersonController extends WebBaseController {
     @RequestMapping("/add")
     public ResultData<ParamData> add(@RequestParam("file") CommonsMultipartFile file, HttpServletRequest request) {
         try {
-            return mPersonService.addPerson(file, paramDataInit());
+            ParamData pd = paramDataInit();
+            pd.put("person_name",request.getParameter("person_name"));
+            pd.put("emp_number",request.getParameter("emp_number"));
+            return mPersonService.addPerson(file, pd);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
@@ -87,7 +90,10 @@ public class PersonController extends WebBaseController {
     @RequestMapping("/update_img_info")
     public ResultData<ParamData> updatePersonInfoWithFile(@RequestParam("file") CommonsMultipartFile file, HttpServletRequest request) {
         try {
-            return mPersonService.updatePerson(file, paramDataInit());
+            ParamData pd = paramDataInit();
+            pd.put("person_name",request.getParameter("person_name"));
+            pd.put("emp_number",request.getParameter("emp_number"));
+            return mPersonService.updatePerson(file, pd);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
