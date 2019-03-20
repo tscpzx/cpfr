@@ -89,7 +89,7 @@ public class DeviceServiceImpl implements DeviceService {
                 appMemory.putCache(device);
 
                 //通知设备激活成功
-                ParamData data = new ParamData();
+                ParamData data = mDeviceDao.selectDeviceGrantKey(pd);
                 data.put(CommConst.ACCESS_APP_TOKEN, appMemory.getToken(device_sn));
                 TextMessage message = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1001_DEVICE_ACTIVATE, data);
                 mSocketMessageHandle.sendMessageToDevice(device_sn, message);
@@ -114,9 +114,10 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public void updateDeviceOnline(ParamData pd) {
         mDeviceDao.updateInActDeviceOnline(pd);
-        if (STATUS_1_DEVICE_ACTIVATED == mDeviceDao.selectDeviceStatusByDeviceSn(pd)) {
-            int wid = mDeviceDao.selectWidByDeviceSn(pd);
-            pd.put("wid", wid);
+        int deviceStatus = mDeviceDao.selectDeviceStatusByDeviceSn(pd);
+        pd.put("device_status", deviceStatus);
+        if (STATUS_1_DEVICE_ACTIVATED == deviceStatus) {
+            pd.put("wid", mDeviceDao.selectWidByDeviceSn(pd));
             mDeviceDao.updateDeviceOnline(pd);
         }
     }
@@ -156,13 +157,8 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public int getWidByDeviceSn(ParamData pd) {
-        return mDeviceDao.selectWidByDeviceSn(pd);
-    }
-
-    @Override
-    public int getDeviceActStatusByDeviceSn(ParamData pd) {
-        return mDeviceDao.selectDeviceStatusByDeviceSn(pd);
+    public ParamData queryDeviceGrantKey(ParamData pd) {
+        return mDeviceDao.selectDeviceGrantKey(pd);
     }
 
 }
