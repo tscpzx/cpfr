@@ -3,11 +3,18 @@ package com.ts.cpfr.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.ts.cpfr.dao.AttendDao;
 import com.ts.cpfr.service.AttendService;
-import com.ts.cpfr.utils.*;
+import com.ts.cpfr.utils.CommUtil;
+import com.ts.cpfr.utils.HandleEnum;
+import com.ts.cpfr.utils.PageData;
+import com.ts.cpfr.utils.ParamData;
+import com.ts.cpfr.utils.ResultData;
+
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.List;
+
+import javax.annotation.Resource;
+import javax.transaction.Transactional;
 
 /**
  * @Date 2019/3/14
@@ -18,6 +25,8 @@ public class AttendServiceImpl implements AttendService {
 
     @Resource
     private AttendDao mAttendDao;
+
+    @Transactional
     @Override
     public ResultData<ParamData> addRule(ParamData pd) {
         if (mAttendDao.insertRule(pd)) return new ResultData<>(HandleEnum.SUCCESS);

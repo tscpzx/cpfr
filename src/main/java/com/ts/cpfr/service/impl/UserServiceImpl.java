@@ -29,7 +29,6 @@ import javax.transaction.Transactional;
  * @Created by cjw
  */
 @Service
-@Transactional
 public class UserServiceImpl implements UserService {
     @Resource
     private UserDao mUserDao;
@@ -38,6 +37,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private WebMemory memory;
 
+    @Transactional
     @Override
     public ResultData<ParamData> login(ParamData pd, HttpServletRequest request, HttpServletResponse response) {
         LoginUser user = mUserDao.selectUserByName(pd);
@@ -69,6 +69,7 @@ public class UserServiceImpl implements UserService {
         } else return new ResultData<>(HandleEnum.ADMIN_NOT_EXIST_103);
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> register(ParamData pd) {
         LoginUser user = mUserDao.selectUserByName(pd);
@@ -98,6 +99,7 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> changePassword(ParamData pd) {
         pd.put("name", memory.getCache(pd.getString(CommConst.ACCESS_CPFR_TOKEN)).getName());

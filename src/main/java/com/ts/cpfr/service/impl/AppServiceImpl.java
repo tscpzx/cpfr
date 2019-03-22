@@ -43,7 +43,6 @@ import sun.misc.BASE64Decoder;
  * @Created by cjw
  */
 @Service
-@Transactional
 public class AppServiceImpl implements AppService {
     @Resource
     private AppDao mAppDao;
@@ -60,6 +59,7 @@ public class AppServiceImpl implements AppService {
     @Autowired
     private SocketMessageHandle mSocketMessageHandle;
 
+    @Transactional
     @Override
     public ResultData<ParamData> register(ParamData pd) {
         String deviceSn = pd.getString(CommConst.DEVICE_SN);
@@ -93,6 +93,7 @@ public class AppServiceImpl implements AppService {
         return new ResultData<>(HandleEnum.SUCCESS, list);
     }
 
+    @Transactional
     @Override
     @Deprecated
     public ResultData<ParamData> addRecord(CommonsMultipartFile file, HttpServletRequest request) {
@@ -112,6 +113,7 @@ public class AppServiceImpl implements AppService {
         return new ResultData<>(HandleEnum.FAIL);
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> addRecord(ParamData pd) throws Exception {
         String base64Image = pd.getString("file");
@@ -129,6 +131,7 @@ public class AppServiceImpl implements AppService {
         return new ResultData<>(HandleEnum.FAIL);
     }
 
+    @Transactional
     @Override
     @Deprecated
     public boolean uploadRecordImage(CommonsMultipartFile file, ParamData pd) throws Exception {
@@ -164,6 +167,7 @@ public class AppServiceImpl implements AppService {
         return new ResultData<>(HandleEnum.SUCCESS, pd);
     }
 
+    @Transactional
     @Override
     @Deprecated
     public ResultData<ParamData> addPersonWithGrant(CommonsMultipartFile file, HttpServletRequest request) throws Exception {
@@ -202,6 +206,7 @@ public class AppServiceImpl implements AppService {
         return new ResultData<>(HandleEnum.FAIL);
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> addPersonWithGrant(ParamData pd) throws Exception {
         String base64Image = pd.getString("file");
@@ -236,6 +241,7 @@ public class AppServiceImpl implements AppService {
         return new ResultData<>(HandleEnum.FAIL);
     }
 
+    @Transactional
     @Override
     public ResultData<List<ParamData>> comparePersonDownlNum(ParamData pd) {
         String personIds = pd.getString("person_ids");

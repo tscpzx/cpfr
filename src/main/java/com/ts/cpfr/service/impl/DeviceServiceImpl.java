@@ -33,7 +33,6 @@ import javax.transaction.Transactional;
  * @Created by cjw
  */
 @Service
-@Transactional
 public class DeviceServiceImpl implements DeviceService {
 
     private static final int STATUS_1_DEVICE_ONLINE = 1;
@@ -72,6 +71,7 @@ public class DeviceServiceImpl implements DeviceService {
         return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(inActDeviceList));
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> activateDevice(ParamData pd) throws Exception {
         LoginUser user = memory.getCache(pd.getString(CommConst.ACCESS_CPFR_TOKEN));
@@ -133,6 +133,7 @@ public class DeviceServiceImpl implements DeviceService {
         return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(personList));
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> changeDeviceInfo(ParamData pd) throws Exception {
         if (mDeviceDao.updateDeviceInfo(pd)) {
@@ -143,6 +144,7 @@ public class DeviceServiceImpl implements DeviceService {
             return new ResultData<>(HandleEnum.FAIL);
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> deleteDevice(ParamData pd) throws Exception {
         String deviceSn = mDeviceDao.selectDeviceSnByDeviceID(pd);
