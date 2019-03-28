@@ -27,6 +27,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -83,6 +84,9 @@ public class AppServiceImpl implements AppService {
 
     @Override
     public ResultData<List<ParamData>> getPersonBase64List(ParamData pd) {
+        System.out.println("===================================");
+        System.out.println(new Date().toString());
+        System.out.println("客户端 "+pd.getString(CommConst.DEVICE_SN)+"开始下载人员");
         List<ParamData> list = mAppDao.selectPersonListWithBlob(pd);
         return new ResultData<>(HandleEnum.SUCCESS, list);
     }
