@@ -4,14 +4,17 @@ import org.apache.commons.lang.StringUtils;
 import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Random;
 import java.util.UUID;
 
@@ -330,5 +333,20 @@ public class CommUtil {
         }
 
         return token;
+    }
+
+    /**
+     * 获取配置文件的值
+     * @param key
+     * @return
+     */
+    public static String getProperties(String key){
+        try {
+            Properties properties = PropertiesLoaderUtils.loadAllProperties("config/conf.properties");
+            return properties.getProperty(key);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 }

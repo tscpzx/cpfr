@@ -29,7 +29,5 @@ public interface DeviceService {
 
     ResultData<ParamData> deleteDevice(ParamData pd) throws Exception;
 
-    int getWidByDeviceSn(ParamData pd);
-
-    int getDeviceActStatusByDeviceSn(ParamData pd);
+    ParamData queryDeviceGrantKey(ParamData pd);
 }

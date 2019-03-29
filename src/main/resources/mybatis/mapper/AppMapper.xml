@@ -11,7 +11,7 @@
 	</select>
 
 	<select id="selectDevice" parameterType="pd" resultType="pd">
-		select d.device_id,d.device_name,d.device_sn,d.mac_grant_key,d.lmt,c.success_msg,c.fail_msg
+		select d.device_id,d.device_name,d.device_sn,d.lmt,c.success_msg,c.fail_msg,c.arcface_appid,c.arcface_sdkkey,c.arcface_activekey,c.baidu_tts_appid,c.baidu_tts_appkey,c.baidu_tts_secretkey
 		from tbl_#{wid}_device d left join tbl_#{wid}_device_config c on d.device_id=c.device_id where d.device_sn=#{device_sn} and d.lmt>#{lmt}
 	</select>
 
@@ -19,8 +19,12 @@
 		SELECT a.person_id,a.person_name,a.emp_number,i.blob_image base_image,a.status,a.lmt FROM (SELECT p.person_id,p.person_name,p.emp_number,p.image_id,p.status,p.lmt FROM tbl_#{wid}_person p RIGHT JOIN (SELECT person_id FROM tbl_#{wid}_grant WHERE device_id=(SELECT device_id FROM tbl_#{wid}_device WHERE device_sn=#{device_sn}) and status &lt;&gt; 3 ) g ON p.person_id=g.person_id WHERE p.lmt>#{lmt}) a LEFT JOIN tbl_#{wid}_image i ON a.image_id=i.image_id
 	</select>
 
+	<!--<select id="selectPersonListWithBlob" parameterType="pd" resultType="pd">
+		SELECT a.person_id,a.person_name,a.emp_number,i.blob_image base_image,a.person_status,a.person_lmt,a.grant_id,a.pass_number,a.grant_status,a.pass_start_time,a.pass_end_time,a.grant_lmt FROM (SELECT p.person_id,p.person_name,p.emp_number,p.image_id,p.status person_status,p.lmt person_lmt,g.grant_id,g.pass_number,g.status grant_status,g.pass_start_time,g.pass_end_time,g.lmt grant_lmt FROM tbl_#{wid}_person p RIGHT JOIN (SELECT * FROM tbl_#{wid}_grant WHERE device_id=(SELECT device_id FROM tbl_#{wid}_device WHERE device_sn=#{device_sn}) and status &lt;&gt; 3 ) g ON p.person_id=g.person_id WHERE g.lmt>#{lmt}) a LEFT JOIN tbl_#{wid}_image i ON a.image_id=i.image_id
+	</select>-->
+
 	<select id="selectGrantList" parameterType="pd" resultType="pd">
-		SELECT person_id,pass_number,status,pass_start_time,pass_end_time,lmt FROM tbl_#{wid}_grant WHERE device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn}) and lmt>#{lmt}
+		SELECT grant_id,person_id,pass_number,status,pass_start_time,pass_end_time,lmt FROM tbl_#{wid}_grant WHERE device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn}) and lmt>#{lmt}
 	</select>
 
 	<insert id="insertRecord" parameterType="pd">

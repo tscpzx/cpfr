@@ -29,7 +29,6 @@ import javax.transaction.Transactional;
  * @Created by cjw
  */
 @Service
-@Transactional
 public class GroupServiceImpl implements GroupService {
     @Resource
     private GroupDao mGroupDao;
@@ -62,12 +61,14 @@ public class GroupServiceImpl implements GroupService {
         return data;
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> addGroup(ParamData pd) {
         if (mGroupDao.insertGroup(pd)) return new ResultData<>(HandleEnum.SUCCESS);
         else return new ResultData<>(HandleEnum.FAIL);
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> addGroupPerson(ParamData pd) {
         String person_ids = pd.getString("person_ids");
@@ -89,6 +90,7 @@ public class GroupServiceImpl implements GroupService {
         else return new ResultData<>(HandleEnum.FAIL);
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> addGroupDevice(ParamData pd) {
         String device_ids = pd.getString("device_ids");
@@ -110,24 +112,28 @@ public class GroupServiceImpl implements GroupService {
         else return new ResultData<>(HandleEnum.FAIL);
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> updateGroupInfo(ParamData pd) {
         if (mGroupDao.updateGroupInfo(pd)) return new ResultData<>(HandleEnum.SUCCESS);
         return new ResultData<>(HandleEnum.FAIL);
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> deleteGroup(ParamData pd) {
         if (mGroupDao.deleteGroup(pd)) return new ResultData<>(HandleEnum.SUCCESS);
         return new ResultData<>(HandleEnum.FAIL);
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> deleteGroupPerson(ParamData pd) {
         if (mPersonDao.deletePersonGroupID(pd)) return new ResultData<>(HandleEnum.SUCCESS);
         return new ResultData<>(HandleEnum.FAIL);
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> deleteGroupDevice(ParamData pd) {
         if (mDeviceDao.deleteDeviceGroupID(pd)) return new ResultData<>(HandleEnum.SUCCESS);

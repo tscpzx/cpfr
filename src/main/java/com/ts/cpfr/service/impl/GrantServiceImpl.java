@@ -28,7 +28,6 @@ import javax.transaction.Transactional;
  * @Created by cjw
  */
 @Service
-@Transactional
 public class GrantServiceImpl implements GrantService {
 
     @Resource
@@ -40,6 +39,7 @@ public class GrantServiceImpl implements GrantService {
     @Autowired
     private SocketMessageHandle mSocketMessageHandle;
 
+    @Transactional
     @Override
     public ResultData<ParamData> addGrant(ParamData pd) throws Exception {
         String person_ids = pd.getString("person_ids");
@@ -82,6 +82,7 @@ public class GrantServiceImpl implements GrantService {
         return new ResultData<>(HandleEnum.FAIL);
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> banGrant(ParamData pd) throws Exception {
         String person_ids = pd.getString("person_ids");

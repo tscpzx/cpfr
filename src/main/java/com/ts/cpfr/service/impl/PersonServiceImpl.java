@@ -48,7 +48,6 @@ import javax.transaction.Transactional;
  * @Created by cjw
  */
 @Service
-@Transactional
 public class PersonServiceImpl implements PersonService {
     @Resource
     private DeviceDao mDeviceDao;
@@ -83,18 +82,13 @@ public class PersonServiceImpl implements PersonService {
         return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(personList));
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> addPerson(CommonsMultipartFile file, ParamData pd) {
         if (file.getSize() / 1024 > 65)
             return new ResultData<>(HandleEnum.FAIL, "上传失败，图片过大!");
         if (!file.getContentType().contains("image"))
             return new ResultData<>(HandleEnum.FAIL, "文件类型有误!");
-
-//        int num = faceEngine(file.getBytes());
-//        if (num <= 0)
-//            return new ResultData<>(HandleEnum.FAIL, "未识别到人脸");
-//        else if (num > 1)
-//            return new ResultData<>(HandleEnum.FAIL, "识别到多张人脸");
 
         pd.put("blob_image", file.getBytes());
         if (mPersonDao.insertPerson(pd))
@@ -112,6 +106,7 @@ public class PersonServiceImpl implements PersonService {
         return faceInfoList.size();
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> updatePerson(CommonsMultipartFile file, ParamData pd) throws IOException {
         if (file.getSize() / 1024 > 65)
@@ -137,6 +132,7 @@ public class PersonServiceImpl implements PersonService {
             return new ResultData<>(HandleEnum.FAIL);
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> updatePerson(ParamData pd) throws IOException {
         if (mPersonDao.updatePersonInfo(pd)) {
@@ -150,6 +146,7 @@ public class PersonServiceImpl implements PersonService {
             return new ResultData<>(HandleEnum.FAIL);
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> deletePerson(ParamData pd) throws IOException {
         if (mPersonDao.deletePerson(pd)) {
@@ -182,6 +179,7 @@ public class PersonServiceImpl implements PersonService {
         return bytes;
     }
 
+    @Transactional
     @Override
     public boolean uploadImageFile(CommonsMultipartFile file, ParamData pd) throws Exception {
         BufferedOutputStream fos = null;
@@ -284,6 +282,7 @@ public class PersonServiceImpl implements PersonService {
         return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(deviceList));
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> batchUpload(CommonsMultipartFile[] files, ParamData pd) {
         for (int i = 0; i < files.length; i++) {

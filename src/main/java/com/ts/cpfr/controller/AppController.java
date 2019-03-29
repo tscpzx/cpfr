@@ -122,4 +122,39 @@ public class AppController extends AppBaseController {
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
         }
     }
+
+    @ResponseBody
+    @RequestMapping("/last_version_info")
+    public ResultData<ParamData> lastVersionInfo(HttpServletRequest request) {
+        try {
+            return mAppService.getLastVersionInfo();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("/downl_offline_apk")
+    public ResultData<ParamData> downlOfflineApk(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            mAppService.downloadApk(request, response, "apk.offline.version");
+            return new ResultData<>(HandleEnum.SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("/downl_online_apk")
+    public ResultData<ParamData> downlOnlineApk(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            mAppService.downloadApk(request, response, "apk.online.version");
+            return new ResultData<>(HandleEnum.SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
 }

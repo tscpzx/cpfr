@@ -27,7 +27,6 @@ import javax.transaction.Transactional;
  * @Created by cjw
  */
 @Service
-@Transactional
 public class RecordServiceImpl implements RecordService {
     @Resource
     RecordDao mRecordDao;
@@ -44,6 +43,7 @@ public class RecordServiceImpl implements RecordService {
         return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(recordList));
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> deleteRecord(ParamData pd) {
         if (mRecordDao.deleteRecord(pd)) {
@@ -51,6 +51,7 @@ public class RecordServiceImpl implements RecordService {
         } else return new ResultData<>(HandleEnum.FAIL);
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> deleteRecordLists(ParamData pd) {
         String record_ids = pd.getString("record_ids");
@@ -73,6 +74,7 @@ public class RecordServiceImpl implements RecordService {
 
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> clearRecord(ParamData pd) {
         if (mRecordDao.deleteRecodeAll(pd)) return new ResultData<>(HandleEnum.SUCCESS,"删除成功");

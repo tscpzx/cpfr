@@ -76,12 +76,12 @@ public class SocketMessageHandle implements WebSocketHandler {
             //更新设备在线状态
             mDeviceService.updateDeviceOnline(pd);
             //已激活
-            if (STATUS_1_DEVICE_ACTIVATED == mDeviceService.getDeviceActStatusByDeviceSn(pd)) {
+            if (STATUS_1_DEVICE_ACTIVATED == (int) pd.get("device_status")) {
                 //保存缓存
-                AppDevice device = new AppDevice(deviceSn, mDeviceService.getWidByDeviceSn(pd));
+                AppDevice device = new AppDevice(deviceSn, (int) pd.get("wid"));
                 mAppMemory.putCache(device);
                 //返回token给app端
-                ParamData data = new ParamData();
+                ParamData data = mDeviceService.queryDeviceGrantKey(pd);
                 data.put(CommConst.ACCESS_APP_TOKEN, device.getToken());
                 sendMessageToDevice(deviceSn, obtainMessage(SocketEnum.CODE_1006_ACCESS_APP_TOKEN, data));
             } else {

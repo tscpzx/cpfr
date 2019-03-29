@@ -1,3 +1,4 @@
+<%@ page import="com.ts.cpfr.utils.CommUtil" %>
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@include file="/resource/inc/lang.jsp" %>
@@ -26,23 +27,23 @@
             <el-form-item label="${devise_serial_number}">
                 <span>${data.device_sn}</span>
             </el-form-item>
-            <el-form-item label="ARCFACE_APP_ID" prop="arcface_app_id">
-                <el-input id="input_grant_key" value="${data.mac_grant_key}" type="text" autocomplete="off" size="small"></el-input>
+            <el-form-item label="ARCFACE_APPID" prop="arcface_appid">
+                <el-input v-model="model.arcface_appid" type="text" autocomplete="off" size="small"></el-input>
             </el-form-item>
-            <el-form-item label="ARCFACE_SDK_KEY">
-                <el-input value="" type="text" autocomplete="off" size="small"></el-input>
+            <el-form-item label="ARCFACE_SDKKEY" prop="arcface_sdkkey">
+                <el-input v-model="model.arcface_sdkkey" type="text" autocomplete="off" size="small"></el-input>
             </el-form-item>
             <el-form-item label="ARCFACE_ACTIVEKEY">
-                <el-input value="" type="text" autocomplete="off" size="small"></el-input>
+                <el-input v-model="model.arcface_activekey" type="text" autocomplete="off" size="small"></el-input>
             </el-form-item>
             <el-form-item label="BAIDU_TTS_APPID">
-                <el-input value="" type="text" autocomplete="off" size="small"></el-input>
+                <el-input v-model="model.baidu_tts_appid" type="text" autocomplete="off" size="small"></el-input>
             </el-form-item>
             <el-form-item label="BAIDU_TTS_APPKEY">
-                <el-input value="" type="text" autocomplete="off" size="small"></el-input>
+                <el-input v-model="model.baidu_tts_appkey" type="text" autocomplete="off" size="small"></el-input>
             </el-form-item>
             <el-form-item label="BAIDU_TTS_SECRETKEY">
-                <el-input value="" type="text" autocomplete="off" size="small"></el-input>
+                <el-input v-model="model.baidu_tts_secretkey" type="text" autocomplete="off" size="small"></el-input>
             </el-form-item>
             <el-form-item label="${registration_time}">
                 <span>${data.register_time}</span>
@@ -69,16 +70,19 @@
         el: "#device_detail",
         data: {
             model: {
-                arcface_app_id: '',
-                arcface_sdk_key: '',
+                arcface_appid: '<%=CommUtil.getProperties("arcsoft.app.id")%>',
+                arcface_sdkkey: '<%=CommUtil.getProperties("arcsoft.sdk.key")%>',
                 arcface_activekey: '',
                 baidu_tts_appid: '',
                 baidu_tts_appkey: '',
                 baidu_tts_secretkey: ''
             },
             rule: {
-                arcface_app_id: [
-                    {required: true, message: '请填入授权码', trigger: 'change'}
+                arcface_appid: [
+                    {required: true, message: '请填入授权码', trigger: 'blur'}
+                ],
+                arcface_sdkkey: [
+                    {required: true, message: '请填入授权码', trigger: 'blur'}
                 ]
             }
         },
@@ -86,16 +90,16 @@
             onClick() {
                 this.$refs.form.validate((valid) => {
                     if (!valid) return;
-                    var mac_grant_key = $('#input_grant_key').val().trim();
-                    if (!mac_grant_key) {
-                        layTip("${device_cannot_empty}");
-                        return;
-                    }
                     ajaxPost({
                         url: "${pageContext.request.contextPath}/device/activate",
                         data: {
                             device_sn: '${data.device_sn}',
-                            mac_grant_key: mac_grant_key
+                            arcface_appid: this.model.arcface_appid,
+                            arcface_sdkkey: this.model.arcface_sdkkey,
+                            arcface_activekey: this.model.arcface_activekey,
+                            baidu_tts_appid: this.model.baidu_tts_appid,
+                            baidu_tts_appkey: this.model.baidu_tts_appkey,
+                            baidu_tts_secretkey: this.model.baidu_tts_secretkey
                         },
                         success: function (result) {
                             layAlert1(result.message);

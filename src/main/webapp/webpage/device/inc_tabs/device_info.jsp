@@ -8,7 +8,7 @@
         <span v-if="device.online===0">${offline}</span>
     </el-form-item>
     <el-form-item label="${author_code}">
-        <span>{{device.mac_grant_key}}</span>
+        <span>{{device.arcface_appid}}</span>
     </el-form-item>
     <el-form-item label="${registration_time}">
         <span>{{device.register_time|formatDate}}</span>

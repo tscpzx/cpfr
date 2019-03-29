@@ -33,7 +33,6 @@ import javax.transaction.Transactional;
  * @Created by cjw
  */
 @Service
-@Transactional
 public class DeviceServiceImpl implements DeviceService {
 
     private static final int STATUS_1_DEVICE_ONLINE = 1;
@@ -72,6 +71,7 @@ public class DeviceServiceImpl implements DeviceService {
         return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(inActDeviceList));
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> activateDevice(ParamData pd) throws Exception {
         LoginUser user = memory.getCache(pd.getString(CommConst.ACCESS_CPFR_TOKEN));
@@ -89,7 +89,7 @@ public class DeviceServiceImpl implements DeviceService {
                 appMemory.putCache(device);
 
                 //通知设备激活成功
-                ParamData data = new ParamData();
+                ParamData data = mDeviceDao.selectDeviceGrantKey(pd);
                 data.put(CommConst.ACCESS_APP_TOKEN, appMemory.getToken(device_sn));
                 TextMessage message = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1001_DEVICE_ACTIVATE, data);
                 mSocketMessageHandle.sendMessageToDevice(device_sn, message);
@@ -114,9 +114,10 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public void updateDeviceOnline(ParamData pd) {
         mDeviceDao.updateInActDeviceOnline(pd);
-        if (STATUS_1_DEVICE_ACTIVATED == mDeviceDao.selectDeviceStatusByDeviceSn(pd)) {
-            int wid = mDeviceDao.selectWidByDeviceSn(pd);
-            pd.put("wid", wid);
+        int deviceStatus = mDeviceDao.selectDeviceStatusByDeviceSn(pd);
+        pd.put("device_status", deviceStatus);
+        if (STATUS_1_DEVICE_ACTIVATED == deviceStatus) {
+            pd.put("wid", mDeviceDao.selectWidByDeviceSn(pd));
             mDeviceDao.updateDeviceOnline(pd);
         }
     }
@@ -132,6 +133,7 @@ public class DeviceServiceImpl implements DeviceService {
         return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(personList));
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> changeDeviceInfo(ParamData pd) throws Exception {
         if (mDeviceDao.updateDeviceInfo(pd)) {
@@ -142,6 +144,7 @@ public class DeviceServiceImpl implements DeviceService {
             return new ResultData<>(HandleEnum.FAIL);
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> deleteDevice(ParamData pd) throws Exception {
         String deviceSn = mDeviceDao.selectDeviceSnByDeviceID(pd);
@@ -156,13 +159,8 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public int getWidByDeviceSn(ParamData pd) {
-        return mDeviceDao.selectWidByDeviceSn(pd);
-    }
-
-    @Override
-    public int getDeviceActStatusByDeviceSn(ParamData pd) {
-        return mDeviceDao.selectDeviceStatusByDeviceSn(pd);
+    public ParamData queryDeviceGrantKey(ParamData pd) {
+        return mDeviceDao.selectDeviceGrantKey(pd);
     }
 
 }
