@@ -29,6 +29,7 @@
 <spring:message code="id_card" var="id_card"/>
 <spring:message code="job_number" var="job_number"/>
 <spring:message code="face_and_card" var="face_and_card"/>
+<spring:message code="recognition_time" var="recognition_time"/>
 <spring:message code="face_and_num" var="face_and_num"/>
 <spring:message code="please_put_the_avatar_in_the_box" var="avatar_box_lang"/>
 <spring:message code="device_name" var="device_name"/>
