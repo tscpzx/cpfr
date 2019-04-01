@@ -86,7 +86,7 @@ public class AppServiceImpl implements AppService {
     public ResultData<List<ParamData>> getPersonBase64List(ParamData pd) {
         System.out.println("===================================");
         System.out.println(new Date().toString());
-        System.out.println("客户端 "+pd.getString(CommConst.DEVICE_SN)+"开始下载人员");
+        System.out.println("客户端 " + pd.getString(CommConst.DEVICE_SN) + "开始下载人员");
         List<ParamData> list = mAppDao.selectPersonListWithBlob(pd);
         return new ResultData<>(HandleEnum.SUCCESS, list);
     }
@@ -294,6 +294,27 @@ public class AppServiceImpl implements AppService {
         pd.put("apk_offline_version", CommUtil.getProperties("apk.offline.version"));
         pd.put("apk_online_version", CommUtil.getProperties("apk.online.version"));
         return new ResultData<>(HandleEnum.SUCCESS, pd);
+    }
+
+    @Override
+    public void downloadImage(ParamData pd, HttpServletResponse response) throws Exception {
+        BufferedOutputStream bos = null;
+        try {
+            ParamData paramData = mPersonDao.selectImage(pd);
+            byte[] byteImage = (byte[]) paramData.get("blob_image");
+
+            bos = new BufferedOutputStream(response.getOutputStream());
+            bos.write(byteImage);
+            bos.flush();
+        } finally {
+            if (bos != null)
+                bos.close();
+        }
+    }
+
+    @Override
+    public ResultData<List<ParamData>> getPersonList(ParamData pd) {
+        return new ResultData<>(HandleEnum.SUCCESS, mAppDao.selectPersonList(pd));
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {

@@ -157,4 +157,27 @@ public class AppController extends AppBaseController {
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
         }
     }
+
+    @ResponseBody
+    @RequestMapping("/person_list2")
+    public ResultData<List<ParamData>> personList2(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            return mAppService.getPersonList(paramDataInit());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("/downl_image")
+    public ResultData<ParamData> downlImage(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            mAppService.downloadImage(paramDataInit(), response);
+            return new ResultData<>(HandleEnum.SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
 }
