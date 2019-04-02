@@ -55,7 +55,7 @@
                         <span v-if="scope.row.recog_type==4">${face_and_num}</span>
                     </template>
                 </el-table-column>
-                <el-table-column label="${registration_time}">
+                <el-table-column label="${recognition_time}">
                     <template slot-scope="scope">
                         <i class="el-icon-time"></i>
                         <span style="margin-left: 10px">{{ scope.row.record_time|formatDate }}</span>
