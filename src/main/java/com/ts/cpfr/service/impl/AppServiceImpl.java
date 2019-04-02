@@ -252,7 +252,7 @@ public class AppServiceImpl implements AppService {
         String[] personIdArr = personIds.split(",");
         pd.put("person_downl_num", personIdArr.length);
         mDeviceDao.updateDevicePersonDownlNum(pd);
-        return new ResultData<>(HandleEnum.SUCCESS, mPersonDao.selectPersonListNoIn(pd));
+        return new ResultData<>(HandleEnum.SUCCESS, mAppDao.selectPersonListNoIn(pd));
     }
 
     @Override

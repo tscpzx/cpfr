@@ -28,4 +28,6 @@ public interface AppDao {
     boolean updateGrantPassNumber(ParamData pd);
 
     List<ParamData> selectPersonList(ParamData pd);
+
+    List<ParamData> selectPersonListNoIn(ParamData pd);
 }
