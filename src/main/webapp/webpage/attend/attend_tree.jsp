@@ -16,7 +16,6 @@
     .tree-item i, .tree-item span {
         color: #606266;
         font-size: 14px;
-        margin-left: 18px;
     }
 
     .el-tree-node__content {
@@ -29,6 +28,7 @@
 </style>
 <div id="attend">
     <div class="tree-item" v-on:click="addSetting()">
+        <i class="el-icon-circle-plus-outline"></i>
         <span>设置规则</span>
     </div>
     <el-tree
