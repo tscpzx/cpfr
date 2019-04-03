@@ -127,7 +127,7 @@ public class SocketMessageHandle implements WebSocketHandler {
      */
     @Override
     public void handleTransportError(WebSocketSession webSocketSession, Throwable throwable) {
-        //        throwable.printStackTrace();
+        throwable.printStackTrace();
         if (webSocketSession.isOpen()) {
             //关闭session
             try {
