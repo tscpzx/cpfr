@@ -181,10 +181,10 @@
                 return item.device_name.indexOf(query) > -1;
             },
             handleChange1(val) {
-                ajaxPersonList(this.currentPage1, this.pageSize1);
+                ajaxPersonListPage(this.currentPage1, this.pageSize1);
             },
             handleChange2(val) {
-                ajaxDeviceList(this.currentPage2, this.pageSize2);
+                ajaxDeviceListPage(this.currentPage2, this.pageSize2);
             },
             onChangeRadio(index) {
                 var $input = $('.input_pass_number');
@@ -252,6 +252,8 @@
                     success: function (result) {
                         arrayRemoveObj(vmGroupDetail.tableData1, person);
                         vmGroupDetail.total1--;
+
+                        ajaxPersonList2();//更新
                     }
                 })
             },
@@ -265,6 +267,8 @@
                     success: function (result) {
                         arrayRemoveObj(vmGroupDetail.tableData2, device);
                         vmGroupDetail.total2--;
+
+                        ajaxDeviceList2();//更新
                     }
                 })
             },
@@ -297,9 +301,9 @@
         })
     }
 
-    ajaxPersonList(vmGroupDetail.currentPage1, vmGroupDetail.pageSize1);
+    ajaxPersonListPage(vmGroupDetail.currentPage1, vmGroupDetail.pageSize1);
 
-    function ajaxPersonList(pageNum, pageSize) {
+    function ajaxPersonListPage(pageNum, pageSize) {
         ajaxGet({
             url: "${pageContext.request.contextPath}/person/list_base64",
             data: {
@@ -314,9 +318,9 @@
         });
     }
 
-    ajaxDeviceList(vmGroupDetail.currentPage2, vmGroupDetail.pageSize2);
+    ajaxDeviceListPage(vmGroupDetail.currentPage2, vmGroupDetail.pageSize2);
 
-    function ajaxDeviceList(pageNum, pageSize) {
+    function ajaxDeviceListPage(pageNum, pageSize) {
         ajaxGet({
             url: "${pageContext.request.contextPath}/device/list",
             data: {
@@ -357,7 +361,9 @@
                     success: function (result) {
                         layTip(result.message);
                         vmDialogPersonList.visible = false;
-                        ajaxPersonList(vmGroupDetail.currentPage1, vmGroupDetail.pageSize1);
+                        ajaxPersonListPage(vmGroupDetail.currentPage1, vmGroupDetail.pageSize1);
+
+                        ajaxPersonList2();//更新
                     }
                 });
             }
@@ -390,7 +396,9 @@
                     success: function (result) {
                         layTip(result.message);
                         vmDialogDeviceList.visible = false;
-                        ajaxDeviceList(vmGroupDetail.currentPage2, vmGroupDetail.pageSize2);
+                        ajaxDeviceListPage(vmGroupDetail.currentPage2, vmGroupDetail.pageSize2);
+
+                        ajaxDeviceList2();
                     }
                 });
             }
@@ -415,6 +423,32 @@
             success: function (result) {
                 vmDialogDeviceList.items[0].children = result.data.list;
                 vmDialogDeviceList.visible = true;
+            }
+        });
+    }
+
+    function ajaxPersonList2() {
+        ajaxGet({
+            url: "${pageContext.request.contextPath}/person/list",
+            data: {
+                group_id: data.group.group_id
+            },
+            success: function (result) {
+                vmGroupDetail.person_list = result.data.list;
+            }
+        });
+    }
+    function ajaxDeviceList2() {
+        ajaxGet({
+            url: "${pageContext.request.contextPath}/device/list",
+            data: {
+                group_id: data.group.group_id
+            },
+            success: function (result) {
+                vmGroupDetail.device_list = result.data.list;
+                for (var i = 0; i <   vmGroupDetail.device_list.length; i++) {
+                    vmGroupDetail.value2[i] =   vmGroupDetail.device_list[i].device_id;
+                }
             }
         });
     }
