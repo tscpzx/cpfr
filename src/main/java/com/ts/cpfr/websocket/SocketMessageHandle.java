@@ -212,10 +212,7 @@ public class SocketMessageHandle implements WebSocketHandler {
     public TextMessage obtainMessage(SocketEnum socketEnum, ParamData data) {
         Map<String, Object> jsonMap = new HashMap<>();
         jsonMap.put(CommConst.CODE, socketEnum.getCode());
-        if (data == null)
-            jsonMap.put(CommConst.DATA, "");
-        else
-            jsonMap.put(CommConst.DATA, data);
+        jsonMap.put(CommConst.DATA, data);
         jsonMap.put(CommConst.MESSAGE, socketEnum.getMessage());
         return new TextMessage(JSONObject.toJSONString(jsonMap));
     }
