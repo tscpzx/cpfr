@@ -131,7 +131,7 @@
                 </el-menu>
             </el-aside>
 
-            <el-main id="content-container" class="scrollbar">
+            <el-main id="content-container" class="scrollbar" style="overflow:scroll;">
 
             </el-main>
         </el-container>

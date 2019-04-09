@@ -3,7 +3,7 @@
 <style type="text/css">
     #attend_tree {
         width: 250px;
-        height: 100%;
+        height: 95%;
         background: #EBEFF2;
         overflow-y: auto;
         float: left;
@@ -11,7 +11,7 @@
     #attend_content{
         float: left;
         width: calc(100% - 250px);
-        height: 100%;
+        height: 95%;
         overflow: auto;
     }
 </style>
