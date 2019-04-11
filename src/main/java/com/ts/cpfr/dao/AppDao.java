@@ -30,4 +30,6 @@ public interface AppDao {
     List<ParamData> selectPersonList(ParamData pd);
 
     List<ParamData> selectPersonListNoIn(ParamData pd);
+
+    ParamData selectPerson(ParamData pd);
 }

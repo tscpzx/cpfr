@@ -46,4 +46,8 @@
 	<select id="selectPersonListNoIn" parameterType="pd" resultType="pd">
 		SELECT p.* FROM tbl_#{wid}_grant g RIGHT JOIN tbl_#{wid}_person p ON g.person_id=p.person_id WHERE g.device_id=(SELECT device_id FROM tbl_#{wid}_device WHERE device_sn=#{device_sn}) AND p.status &lt;&gt; 3 AND p.person_id NOT IN(${person_ids})
 	</select>
+
+	<select id="selectPerson" parameterType="pd" resultType="pd">
+		SELECT p.person_id,p.person_name,p.emp_number,p.add_time,p.status,p.image_id,p.lmt from tbl_#{wid}_person p where p.person_id=#{person_id} and p.status &lt;&gt; 3
+	</select>
 </mapper>

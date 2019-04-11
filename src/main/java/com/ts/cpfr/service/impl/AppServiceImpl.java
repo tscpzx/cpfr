@@ -242,7 +242,7 @@ public class AppServiceImpl implements AppService {
             if (a && b) {
                 mSocketMessageHandle.sendMessageToDevice(pd.getString(CommConst.DEVICE_SN), mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1004_GRANT_UPDATE, null));
 
-                ParamData person = mPersonDao.selectPerson(pd);
+                ParamData person = mAppDao.selectPerson(pd);
                 return new ResultData<>(HandleEnum.SUCCESS, person);
             }
         }
