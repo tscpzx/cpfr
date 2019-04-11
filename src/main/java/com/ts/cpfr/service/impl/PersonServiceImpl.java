@@ -7,7 +7,7 @@ import com.github.pagehelper.PageHelper;
 import com.ts.cpfr.dao.DeviceDao;
 import com.ts.cpfr.dao.GroupDao;
 import com.ts.cpfr.dao.PersonDao;
-import com.ts.cpfr.ehcache.WebMemory;
+import com.ts.cpfr.dao.TableDao;
 import com.ts.cpfr.service.PersonService;
 import com.ts.cpfr.utils.ArcFace;
 import com.ts.cpfr.utils.CommUtil;
@@ -55,8 +55,8 @@ public class PersonServiceImpl implements PersonService {
     private PersonDao mPersonDao;
     @Resource
     private GroupDao mGroupDao;
-    @Autowired
-    private WebMemory memory;
+    @Resource
+    private TableDao mTableDao;
     @Autowired
     private SocketMessageHandle mSocketMessageHandle;
 
@@ -307,6 +307,7 @@ public class PersonServiceImpl implements PersonService {
                 data.put("blob_image", file.getBytes());
                 data.put("wid", pd.get("wid"));
                 mPersonDao.insertPerson(data);
+                data.put("person_id",mTableDao.selectLastInsertID());
 
                 data.put("group_name", groupName);
                 if (!StringUtils.isEmpty(groupName)) {

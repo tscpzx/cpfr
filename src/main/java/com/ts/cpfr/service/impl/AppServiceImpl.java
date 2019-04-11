@@ -5,6 +5,7 @@ import com.ts.cpfr.dao.DeviceDao;
 import com.ts.cpfr.dao.GrantDao;
 import com.ts.cpfr.dao.GroupDao;
 import com.ts.cpfr.dao.PersonDao;
+import com.ts.cpfr.dao.TableDao;
 import com.ts.cpfr.ehcache.AppMemory;
 import com.ts.cpfr.entity.AppDevice;
 import com.ts.cpfr.service.AppService;
@@ -55,6 +56,8 @@ public class AppServiceImpl implements AppService {
     private GrantDao mGrantDao;
     @Resource
     private GroupDao mGroupDao;
+    @Resource
+    private TableDao mTableDao;
     @Autowired
     private AppMemory memory;
     @Autowired
@@ -223,6 +226,7 @@ public class AppServiceImpl implements AppService {
 
             pd.put("blob_image", blobImage);
             boolean a = mPersonDao.insertPerson(pd);
+            pd.put("person_id",mTableDao.selectLastInsertID());
             boolean b = mGrantDao.insertGrantDeviceSnPersonId(pd);
 
             String groupName = pd.getString("group_name");
