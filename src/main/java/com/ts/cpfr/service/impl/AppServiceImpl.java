@@ -1,5 +1,11 @@
 package com.ts.cpfr.service.impl;
 
+import com.ts.cpfr.dao.AppDao;
+import com.ts.cpfr.dao.DeviceDao;
+import com.ts.cpfr.dao.GrantDao;
+import com.ts.cpfr.dao.GroupDao;
+import com.ts.cpfr.dao.PersonDao;
+import com.ts.cpfr.dao.TableDao;
 import com.ts.cpfr.dao.*;
 import com.ts.cpfr.ehcache.AppMemory;
 import com.ts.cpfr.entity.AppDevice;
@@ -51,10 +57,10 @@ public class AppServiceImpl implements AppService {
     private GrantDao mGrantDao;
     @Resource
     private GroupDao mGroupDao;
+    @Resource
+    private TableDao mTableDao;
     @Autowired
     private AppMemory memory;
-    @Autowired
-    private TableDao mTableDao;
     @Autowired
     private SocketMessageHandle mSocketMessageHandle;
 
@@ -223,6 +229,7 @@ public class AppServiceImpl implements AppService {
 
             pd.put("blob_image", blobImage);
             boolean a = mPersonDao.insertPerson(pd);
+            pd.put("person_id",mTableDao.selectLastInsertID());
             boolean b = mGrantDao.insertGrantDeviceSnPersonId(pd);
 
             String groupName = pd.getString("group_name");
@@ -238,7 +245,7 @@ public class AppServiceImpl implements AppService {
             if (a && b) {
                 mSocketMessageHandle.sendMessageToDevice(pd.getString(CommConst.DEVICE_SN), mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1004_GRANT_UPDATE, null));
 
-                ParamData person = mPersonDao.selectPerson(pd);
+                ParamData person = mAppDao.selectPerson(pd);
                 return new ResultData<>(HandleEnum.SUCCESS, person);
             }
         }
