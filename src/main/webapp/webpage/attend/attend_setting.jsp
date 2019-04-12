@@ -131,7 +131,7 @@
             },
             checked: false,
             disabledEdit: false,
-            person_ids: '',
+            person_ids:'',
             rules: {
                 attend_name: [{required: true, message: '请输入考勤名称', trigger: 'blur'}],
                 am_punch_in_time: [
@@ -147,7 +147,6 @@
         },
         methods: {
             saveSetting(formName) {
-                l(attend_set.ruleForm.checkList);
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         var data = {
@@ -159,6 +158,7 @@
                             pm_punch_out_start: attend_set.ruleForm.pm_punch_range[0],
                             pm_punch_out_end: attend_set.ruleForm.pm_punch_range[1],
                             work_day: attend_set.ruleForm.checkList.join(","),
+                            person_ids: attend_set.person_ids,
                         };
                         ajaxAddRule(data);
                     } else {
@@ -217,7 +217,7 @@
                 }
                 $("#peopleNum").html("已选人数:" + list.length);
                 vmDialogPersonList.visible = false;
-                attend_set.person_ids = list;
+                attend_set.person_ids = list.toString();
             }
         }
     });

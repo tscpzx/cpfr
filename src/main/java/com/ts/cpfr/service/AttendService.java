@@ -14,4 +14,5 @@ public interface AttendService {
     ResultData<PageData<ParamData>> getRuleList(ParamData pd);
 
     ParamData queryAttend(ParamData pd);
+    ResultData<ParamData> deleteRule(ParamData pd);
 }

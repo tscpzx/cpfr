@@ -34,4 +34,6 @@ public interface PersonDao {
     boolean deletePerson(ParamData pd);
 
     boolean deletePersonGroupID(ParamData pd);
+
+    boolean updatePersonAttendId(ParamData pd);
 }

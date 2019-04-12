@@ -337,10 +337,11 @@ public class CommUtil {
 
     /**
      * 获取配置文件的值
+     *
      * @param key
      * @return
      */
-    public static String getProperties(String key){
+    public static String getProperties(String key) {
         try {
             Properties properties = PropertiesLoaderUtils.loadAllProperties("config/conf.properties");
             return properties.getProperty(key);
@@ -348,5 +349,40 @@ public class CommUtil {
             e.printStackTrace();
             return "";
         }
+    }
+
+    public static String getCronExpression(String str, String day) {
+        String[] result = day.split(",");
+        String time = "";
+        for (int i = 0; i < result.length; i++) {
+            switch (result[i]) {
+                case "1":
+                    result[i] = "MON";
+                    break;
+                case "2":
+                    result[i] = "TUE";
+                    break;
+                case "3":
+                    result[i] = "WED";
+                    break;
+                case "4":
+                    result[i] = "THU";
+                    break;
+                case "5":
+                    result[i] = "FRI";
+                    break;
+                case "6":
+                    result[i] = "SAT";
+                    break;
+                case "7":
+                    result[i] = "SUN";
+                    break;
+            }
+            time += i == 0 ? result[i] : "," + result[i];
+
+        }
+
+        int index = str.indexOf(":");
+        return "0 " + str.substring(index + 1, str.length()) + " " + str.substring(0, index) + " ? * " + time;
     }
 }

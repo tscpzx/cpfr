@@ -15,4 +15,8 @@ public interface AttendDao {
 
     ParamData selectAttend(ParamData pd);
 
+    boolean deleteRule(ParamData pd);
+
+
+
 }

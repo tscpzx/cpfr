@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ts.cpfr.dao.QuartzJobDao">
+    <insert id="insertJob" parameterType="pd">
+        INSERT INTO tbl_#{wid}_attend_job(job_name,class_name,cron_expression,status,create_time)
+        values(#{job_name},#{class_name},#{cron_expression},0,now())
+    </insert>
+
+    <update id="updateJobStatus" parameterType="pd">
+        UPDATE tbl_#{wid}_attend_job SET status = 1  WHERE job_id=#{job_id}
+    </update>
+    <select id="selectJob" parameterType="pd" resultType="com.ts.cpfr.entity.QuartzJobModel">
+        select * from tbl_#{wid}_attend_job where job_id=#{job_id};
+    </select>
+    <delete id="deleteJob" parameterType="pd">
+        delete from tbl_#{wid}_attend_job where job_id=#{job_id};
+    </delete>
+</mapper>

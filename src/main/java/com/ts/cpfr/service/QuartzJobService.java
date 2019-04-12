@@ -1,6 +1,8 @@
 package com.ts.cpfr.service;
 
 import com.ts.cpfr.entity.QuartzJobModel;
+import com.ts.cpfr.utils.ParamData;
+import com.ts.cpfr.utils.ResultData;
 
 import java.util.List;
 
@@ -12,4 +14,8 @@ import java.util.List;
  */
 public interface QuartzJobService {
     List<QuartzJobModel> getAll();
+
+    ResultData<ParamData> runJob(ParamData pd);
+
+
 }

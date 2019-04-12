@@ -37,6 +37,13 @@
 		</foreach>
 	</update>
 
+	<update id="updatePersonAttendId" parameterType="pd">
+		UPDATE tbl_#{wid}_person SET attend_id = #{attend_id}  WHERE
+		<foreach collection="list" item="data" separator=" or ">
+			person_id=#{data.person_id}
+		</foreach>
+	</update>
+
 	<select id="selectImage" parameterType="pd" resultType="pd">
 		SELECT blob_image FROM tbl_#{wid}_image WHERE image_id=#{image_id}
 	</select>
@@ -73,7 +80,7 @@
 
 	<select id="selectPersonByGroup" parameterType="pd" resultType="pd">
 		SELECT DISTINCT p.person_id,p.person_name FROM tbl_#{wid}_person p RIGHT JOIN tbl_#{wid}_grant g ON p.person_id = g.person_id WHERE p.status &lt;&gt; 3
-		AND p.group_id=#{group_id}
+		AND p.group_id=#{group_id} and p.attend_id = 0
 	</select>
 
 </mapper>

@@ -17,6 +17,6 @@ public class QuartzJobExample extends MethodInvokingJobDetailFactoryBean.Statefu
 
     @Override
     protected void executeInternal(JobExecutionContext cts) throws JobExecutionException {
-        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + "★★★★★★★★★★★11111");
+        System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) + "★★★★★★★★★★★12121212");
     }
 }

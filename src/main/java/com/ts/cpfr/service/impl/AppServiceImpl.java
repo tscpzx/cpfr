@@ -1,11 +1,6 @@
 package com.ts.cpfr.service.impl;
 
-import com.ts.cpfr.dao.AppDao;
-import com.ts.cpfr.dao.DeviceDao;
-import com.ts.cpfr.dao.GrantDao;
-import com.ts.cpfr.dao.GroupDao;
-import com.ts.cpfr.dao.PersonDao;
-import com.ts.cpfr.dao.TableDao;
+import com.ts.cpfr.dao.*;
 import com.ts.cpfr.ehcache.AppMemory;
 import com.ts.cpfr.entity.AppDevice;
 import com.ts.cpfr.service.AppService;
@@ -56,10 +51,10 @@ public class AppServiceImpl implements AppService {
     private GrantDao mGrantDao;
     @Resource
     private GroupDao mGroupDao;
-    @Resource
-    private TableDao mTableDao;
     @Autowired
     private AppMemory memory;
+    @Autowired
+    private TableDao mTableDao;
     @Autowired
     private SocketMessageHandle mSocketMessageHandle;
 
@@ -115,8 +110,10 @@ public class AppServiceImpl implements AppService {
         pd.put("recog_type", request.getParameter("recog_type"));
         pd.put("record_image", file.getBytes());
         pd.put("wid", cache.getWid());
-        if (mAppDao.insertRecord(pd))
+        if (mAppDao.insertRecord(pd)) {
             return new ResultData<>(HandleEnum.SUCCESS);
+        }
+
         return new ResultData<>(HandleEnum.FAIL);
     }
 
@@ -130,9 +127,9 @@ public class AppServiceImpl implements AppService {
         if (blobImage != null) {
             if (blobImage.length / 1024 > 65)
                 return new ResultData<>(HandleEnum.FAIL, "上传失败，图片过大!");
-
             pd.put("record_image", blobImage);
             if (mAppDao.insertRecord(pd) && mAppDao.updateGrantPassNumber(pd))
+
                 return new ResultData<>(HandleEnum.SUCCESS);
         }
         return new ResultData<>(HandleEnum.FAIL);
@@ -226,7 +223,6 @@ public class AppServiceImpl implements AppService {
 
             pd.put("blob_image", blobImage);
             boolean a = mPersonDao.insertPerson(pd);
-            pd.put("person_id",mTableDao.selectLastInsertID());
             boolean b = mGrantDao.insertGrantDeviceSnPersonId(pd);
 
             String groupName = pd.getString("group_name");
@@ -242,7 +238,7 @@ public class AppServiceImpl implements AppService {
             if (a && b) {
                 mSocketMessageHandle.sendMessageToDevice(pd.getString(CommConst.DEVICE_SN), mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1004_GRANT_UPDATE, null));
 
-                ParamData person = mAppDao.selectPerson(pd);
+                ParamData person = mPersonDao.selectPerson(pd);
                 return new ResultData<>(HandleEnum.SUCCESS, person);
             }
         }
