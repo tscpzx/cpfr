@@ -135,22 +135,10 @@ public class AppController extends AppBaseController {
     }
 
     @ResponseBody
-    @RequestMapping("/downl_offline_apk")
-    public ResultData<ParamData> downlOfflineApk(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            mAppService.downloadApk(request, response, "apk.offline.version");
-            return new ResultData<>(HandleEnum.SUCCESS);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping("/downl_online_apk")
+    @RequestMapping("/downl_apk")
     public ResultData<ParamData> downlOnlineApk(HttpServletRequest request, HttpServletResponse response) {
         try {
-            mAppService.downloadApk(request, response, "apk.online.version");
+            mAppService.downloadApk(paramDataInit(), request, response);
             return new ResultData<>(HandleEnum.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();

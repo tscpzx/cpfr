@@ -39,7 +39,7 @@ public interface AppService {
 
     ResultData<List<ParamData>> comparePersonDownlNum(ParamData pd);
 
-    void downloadApk(HttpServletRequest request, HttpServletResponse response, String key) throws Exception;
+    void downloadApk(ParamData pd,HttpServletRequest request, HttpServletResponse response) throws Exception;
 
     ResultData<ParamData> getLastVersionInfo();
 

@@ -6,7 +6,6 @@ import com.ts.cpfr.dao.GrantDao;
 import com.ts.cpfr.dao.GroupDao;
 import com.ts.cpfr.dao.PersonDao;
 import com.ts.cpfr.dao.TableDao;
-import com.ts.cpfr.dao.*;
 import com.ts.cpfr.ehcache.AppMemory;
 import com.ts.cpfr.entity.AppDevice;
 import com.ts.cpfr.service.AppService;
@@ -263,15 +262,15 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public void downloadApk(HttpServletRequest request, HttpServletResponse response, String key) throws Exception {
+    public void downloadApk(ParamData pd,HttpServletRequest request, HttpServletResponse response) throws Exception {
         BufferedInputStream bis = null;
         BufferedOutputStream fos = null;
-        String apkPath = null;
+        String apkPath = "";
         try {
-
-            if ("apk.offline.version".equals(key)) {
+            String applicationId = pd.getString("application_id");
+            if ("com.face.offlinev".equals(applicationId)) {
                 apkPath = request.getServletContext().getRealPath("/WEB-INF/downl/faceoffline.apk");
-            } else {
+            } else if("com.face.onlinev".equals(applicationId)) {
                 apkPath = request.getServletContext().getRealPath("/WEB-INF/downl/faceonline.apk");
             }
             File file = new File(apkPath);
