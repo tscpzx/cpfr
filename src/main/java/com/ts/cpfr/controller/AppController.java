@@ -127,7 +127,7 @@ public class AppController extends AppBaseController {
     @RequestMapping("/last_version_info")
     public ResultData<ParamData> lastVersionInfo(HttpServletRequest request) {
         try {
-            return mAppService.getLastVersionInfo();
+            return mAppService.getLastVersionInfo(paramDataInit());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());

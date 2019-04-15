@@ -41,7 +41,7 @@ public interface AppService {
 
     void downloadApk(ParamData pd,HttpServletRequest request, HttpServletResponse response) throws Exception;
 
-    ResultData<ParamData> getLastVersionInfo();
+    ResultData<ParamData> getLastVersionInfo(ParamData pd);
 
     void downloadImage(ParamData pd, HttpServletResponse response) throws Exception;
 

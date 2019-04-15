@@ -228,7 +228,7 @@ public class AppServiceImpl implements AppService {
 
             pd.put("blob_image", blobImage);
             boolean a = mPersonDao.insertPerson(pd);
-            pd.put("person_id",mTableDao.selectLastInsertID());
+            pd.put("person_id", mTableDao.selectLastInsertID());
             boolean b = mGrantDao.insertGrantDeviceSnPersonId(pd);
 
             String groupName = pd.getString("group_name");
@@ -262,7 +262,7 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public void downloadApk(ParamData pd,HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void downloadApk(ParamData pd, HttpServletRequest request, HttpServletResponse response) throws Exception {
         BufferedInputStream bis = null;
         BufferedOutputStream fos = null;
         String apkPath = "";
@@ -270,7 +270,7 @@ public class AppServiceImpl implements AppService {
             String applicationId = pd.getString("application_id");
             if ("com.face.offlinev".equals(applicationId)) {
                 apkPath = request.getServletContext().getRealPath("/WEB-INF/downl/faceoffline.apk");
-            } else if("com.face.onlinev".equals(applicationId)) {
+            } else if ("com.face.onlinev".equals(applicationId)) {
                 apkPath = request.getServletContext().getRealPath("/WEB-INF/downl/faceonline.apk");
             }
             File file = new File(apkPath);
@@ -295,10 +295,9 @@ public class AppServiceImpl implements AppService {
     }
 
     @Override
-    public ResultData<ParamData> getLastVersionInfo() {
-        ParamData pd = new ParamData();
-        pd.put("apk_offline_version", CommUtil.getProperties("apk.offline.version"));
-        pd.put("apk_online_version", CommUtil.getProperties("apk.online.version"));
+    public ResultData<ParamData> getLastVersionInfo(ParamData pd) {
+        pd.put("version", CommUtil.getProperties(pd.getString("application_id")));
+        pd.put("description", "暂无");
         return new ResultData<>(HandleEnum.SUCCESS, pd);
     }
 
