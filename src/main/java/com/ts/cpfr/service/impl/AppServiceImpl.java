@@ -268,11 +268,7 @@ public class AppServiceImpl implements AppService {
         String apkPath = "";
         try {
             String applicationId = pd.getString("application_id");
-            if ("com.face.offlinev".equals(applicationId)) {
-                apkPath = request.getServletContext().getRealPath("/WEB-INF/downl/faceoffline.apk");
-            } else if ("com.face.onlinev".equals(applicationId)) {
-                apkPath = request.getServletContext().getRealPath("/WEB-INF/downl/faceonline.apk");
-            }
+            apkPath = request.getServletContext().getRealPath("/WEB-INF/downl/" + applicationId + ".apk");
             File file = new File(apkPath);
             bis = new BufferedInputStream(new FileInputStream(file));
             fos = new BufferedOutputStream(response.getOutputStream());
