@@ -81,9 +81,10 @@ public class SocketMessageHandle implements WebSocketHandler {
                 AppDevice device = new AppDevice(deviceSn, (int) pd.get("wid"));
                 mAppMemory.putCache(device);
                 //返回token给app端
-                ParamData data = mDeviceService.queryDeviceGrantKey(pd);
+                ParamData data = new ParamData();
                 data.put(CommConst.ACCESS_APP_TOKEN, device.getToken());
                 sendMessageToDevice(deviceSn, obtainMessage(SocketEnum.CODE_1006_ACCESS_APP_TOKEN, data));
+                sendMessageToDevice(deviceSn, obtainMessage(SocketEnum.CODE_1002_DEVICE_UPDATE, null));
             } else {
                 sendMessageToDevice(deviceSn, obtainMessage(SocketEnum.CODE_1007_DEVICE_INACT, null));
             }
