@@ -92,7 +92,6 @@ public class DeviceServiceImpl implements DeviceService {
                 ParamData data = new ParamData();
                 data.put(CommConst.ACCESS_APP_TOKEN, appMemory.getToken(device_sn));
                 mSocketMessageHandle.sendMessageToDevice(device_sn, mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1001_DEVICE_ACTIVATE, data));
-                mSocketMessageHandle.sendMessageToDevice(device_sn, mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1002_DEVICE_UPDATE, null));
                 return new ResultData<>(HandleEnum.SUCCESS);
             }
             return new ResultData<>(HandleEnum.FAIL);
