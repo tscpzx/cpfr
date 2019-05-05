@@ -4,6 +4,7 @@ import com.ts.cpfr.entity.QuartzJobModel;
 import com.ts.cpfr.service.QuartzJobService;
 
 import org.quartz.CronTrigger;
+import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -12,6 +13,7 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Quartz调度管理器
@@ -81,6 +83,33 @@ public class QuartzJobManager {
         try {
             Scheduler scheduler = schedulerFactoryBean.getScheduler();
             JobDetail jobDetail = new JobDetail(job.getJobName(), DEFAULT_JOB_GROUP_NAME, Class.forName(job.getClassName()));// 任务名，任务组，任务执行类
+            // 触发器
+            CronTrigger trigger = new CronTrigger(job.getJobName(), DEFAULT_TRIGGER_GROUP_NAME);// 触发器名,触发器组
+            trigger.setCronExpression(job.getCronExpression());// 触发器时间设定
+            scheduler.scheduleJob(jobDetail, trigger);
+            // 启动
+            if (!scheduler.isStarted()) {
+                scheduler.start();
+            }
+            System.out.println("注册定时任务：" + job.getJobName());
+        } catch (Exception e) {
+            System.out.println("注册定时任务失败：" + job.getJobName() + e.getMessage());
+        }
+    }
+
+    /**
+     * 添加一个新的定时任务
+     *
+     * @param job QuartzJobModel
+     * @Title: addJob
+     * @Description: 添加一个新的定时任务
+     */
+    public void addJob(QuartzJobModel job, Map map) {
+        try {
+            Scheduler scheduler = schedulerFactoryBean.getScheduler();
+            JobDetail jobDetail = new JobDetail(job.getJobName(), DEFAULT_JOB_GROUP_NAME, Class.forName(job.getClassName()));// 任务名，任务组，任务执行类
+            if (map != null)
+                jobDetail.setJobDataMap(new JobDataMap(map));
             // 触发器
             CronTrigger trigger = new CronTrigger(job.getJobName(), DEFAULT_TRIGGER_GROUP_NAME);// 触发器名,触发器组
             trigger.setCronExpression(job.getCronExpression());// 触发器时间设定
