@@ -1,5 +1,6 @@
 package com.ts.cpfr.service.impl;
 
+import com.ts.cpfr.dao.PersonDao;
 import com.ts.cpfr.dao.QuartzJobDao;
 import com.ts.cpfr.entity.QuartzJobModel;
 import com.ts.cpfr.quartz.QuartzJobManager;
@@ -12,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Classname QuartzJobServiceImpl
@@ -24,6 +27,8 @@ import java.util.List;
 public class QuartzJobServiceImpl implements QuartzJobService {
     @Resource
     private QuartzJobDao mQuartzJobDao;
+    @Resource
+    private PersonDao mPersonDao;
     @Autowired
     QuartzJobManager mQuartzJobManager;
 
@@ -37,7 +42,17 @@ public class QuartzJobServiceImpl implements QuartzJobService {
     public ResultData<ParamData> runJob(ParamData pd) {
         if (mQuartzJobDao.updateJobStatus(pd)) {
             QuartzJobModel quartzJobModel = mQuartzJobDao.selectJob(pd);
-            mQuartzJobManager.addJob(quartzJobModel);
+            //sql
+            List<ParamData> peopleList = mPersonDao.selectByAttendId(pd);
+            String personIds = "";
+            for (ParamData id : peopleList) {
+                String personId = id.get("person_id").toString();
+                personIds += personId + (",");
+            }
+            Map<String, String> map = new HashMap<>();
+            map.put("wid", pd.get("wid").toString());
+            map.put("ids", personIds);
+            mQuartzJobManager.addJob(quartzJobModel, map);
             return new ResultData<>(HandleEnum.SUCCESS, "成功生效");
         } else
             return new ResultData<>(HandleEnum.FAIL);

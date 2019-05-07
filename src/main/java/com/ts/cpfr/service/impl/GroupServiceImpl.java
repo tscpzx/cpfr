@@ -29,7 +29,7 @@ import javax.transaction.Transactional;
  * @Created by cjw
  */
 @Service
-public class GroupServiceImpl implements GroupService {
+public class   GroupServiceImpl implements GroupService {
     @Resource
     private GroupDao mGroupDao;
     @Resource

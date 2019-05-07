@@ -32,4 +32,5 @@ public interface AppDao {
     List<ParamData> selectPersonListNoIn(ParamData pd);
 
     ParamData selectPerson(ParamData pd);
+    boolean updatePunch(ParamData pd);
 }

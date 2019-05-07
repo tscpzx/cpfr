@@ -29,7 +29,8 @@ public class SystemStartupListener implements ApplicationListener<ContextRefresh
         if (2 == runTime) {
             System.out.println("系统启动了");
 
-           QuartzJobModel job = new QuartzJobModel();
+//           QuartzJobModel job = new QuartzJobModel();
+
 //            job.setClassName("com.ts.cpfr.quartz.QuartzJobExample");
 //            job.setJobName("test");
 //            job.setCronExpression("0/1 * * * * ?");

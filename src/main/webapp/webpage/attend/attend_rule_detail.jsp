@@ -214,6 +214,7 @@
                         },
                         success: function (result) {
                             layTip(result.message);
+                            $("#attend_content").load("${pageContext.request.contextPath}/attend/rule_detail?attend_id=" + data.attend_id);
                         }
                     });
                 });

@@ -16,4 +16,5 @@ public interface QuartzJobDao {
     boolean updateJobStatus(ParamData pd);
     QuartzJobModel selectJob(ParamData pd);
     boolean deleteJob(ParamData pd);
+    boolean insertPunch(ParamData pd);
 }

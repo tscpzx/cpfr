@@ -16,4 +16,9 @@
     <delete id="deleteJob" parameterType="pd">
         delete from tbl_#{wid}_attend_job where job_id=#{job_id};
     </delete>
+    <insert id="insertPunch" parameterType="pd">
+      insert  into  tbl_#{wid}_attend_punch(person_id) values
+        <foreach collection="list" item="data" separator=",">
+            (#{data.person_id})
+        </foreach>   </insert>
 </mapper>

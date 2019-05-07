@@ -50,4 +50,8 @@
 	<select id="selectPerson" parameterType="pd" resultType="pd">
 		SELECT p.person_id,p.person_name,p.emp_number,p.add_time,p.status,p.image_id,p.lmt from tbl_#{wid}_person p where p.person_id=#{person_id} and p.status &lt;&gt; 3
 	</select>
+    <update id="updatePunch" parameterType="pd">
+		UPDATE tbl_#{wid}_attend_punch SET pm_punch_out_time=#{record_time} WHERE  person_id =#{person_id} AND  am_punch_in_time IS NOT NULL and DATEDIFF(lmt,NOW())=0;
+		UPDATE tbl_#{wid}_attend_punch SET am_punch_in_time=#{record_time} WHERE  person_id =#{person_id} AND  am_punch_in_time is NULL and DATEDIFF(lmt,NOW())=0;
+    </update>
 </mapper>

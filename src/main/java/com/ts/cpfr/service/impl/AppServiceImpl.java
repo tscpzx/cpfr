@@ -133,9 +133,9 @@ public class AppServiceImpl implements AppService {
             if (blobImage.length / 1024 > 65)
                 return new ResultData<>(HandleEnum.FAIL, "上传失败，图片过大!");
             pd.put("record_image", blobImage);
-            if (mAppDao.insertRecord(pd) && mAppDao.updateGrantPassNumber(pd))
-
+            if (mAppDao.insertRecord(pd) && mAppDao.updatePunch(pd))
                 return new ResultData<>(HandleEnum.SUCCESS);
+
         }
         return new ResultData<>(HandleEnum.FAIL);
     }

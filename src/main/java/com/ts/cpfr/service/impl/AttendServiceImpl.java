@@ -103,6 +103,7 @@ public class AttendServiceImpl implements AttendService {
             QuartzJobModel quartzJobModel = mQuartzJobDao.selectJob(pd);
             mQuartzJobManager.removeJob(quartzJobModel);
             mQuartzJobDao.deleteJob(pd);
+            mPersonDao.deletePersonAttendId(pd);
             return new ResultData<>(HandleEnum.SUCCESS);
         } else
             return new ResultData<>(HandleEnum.FAIL);

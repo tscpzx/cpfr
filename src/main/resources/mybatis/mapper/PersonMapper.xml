@@ -82,5 +82,10 @@
 		SELECT DISTINCT p.person_id,p.person_name FROM tbl_#{wid}_person p RIGHT JOIN tbl_#{wid}_grant g ON p.person_id = g.person_id WHERE p.status &lt;&gt; 3
 		AND p.group_id=#{group_id} and p.attend_id = 0
 	</select>
-
+ <select id="selectByAttendId" parameterType="pd" resultType="pd">
+     SELECT p.person_id  FROM tbl_#{wid}_person p RIGHT JOIN tbl_#{wid}_attend_rule r ON p.attend_id=r.attend_id RIGHT JOIN tbl_#{wid}_attend_job j ON r.job_id = j.job_id where j.job_id=#{job_id};
+ </select>
+	<update id="deletePersonAttendId" parameterType="pd">
+		update  tbl_#{wid}_person set attend_id=0 where attend_id=#{attend_id}
+	</update>
 </mapper>
