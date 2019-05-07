@@ -5,17 +5,18 @@ import com.ts.cpfr.dao.QuartzJobDao;
 import com.ts.cpfr.entity.QuartzJobModel;
 import com.ts.cpfr.quartz.QuartzJobManager;
 import com.ts.cpfr.service.QuartzJobService;
-
 import com.ts.cpfr.utils.HandleEnum;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.Resource;
 
 /**
  * @Classname QuartzJobServiceImpl
@@ -43,7 +44,7 @@ public class QuartzJobServiceImpl implements QuartzJobService {
         if (mQuartzJobDao.updateJobStatus(pd)) {
             QuartzJobModel quartzJobModel = mQuartzJobDao.selectJob(pd);
             //sql
-            List<ParamData> peopleList = mPersonDao.selectByAttendId(pd);
+            List<ParamData> peopleList = mPersonDao.selectPersonIdByAttenId(pd);
             String personIds = "";
             for (ParamData id : peopleList) {
                 String personId = id.get("person_id").toString();

@@ -3,8 +3,6 @@ package com.ts.cpfr.dao;
 import com.ts.cpfr.entity.QuartzJobModel;
 import com.ts.cpfr.utils.ParamData;
 
-import java.util.List;
-
 /**
  * @Classname QuartzJobDao
  * @Description
@@ -13,8 +11,12 @@ import java.util.List;
  */
 public interface QuartzJobDao {
     boolean insertJob(ParamData pd);
+
     boolean updateJobStatus(ParamData pd);
+
     QuartzJobModel selectJob(ParamData pd);
+
     boolean deleteJob(ParamData pd);
+
     boolean insertPunch(ParamData pd);
 }

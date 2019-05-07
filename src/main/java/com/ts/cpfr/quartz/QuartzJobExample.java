@@ -2,16 +2,16 @@ package com.ts.cpfr.quartz;
 
 import com.ts.cpfr.dao.QuartzJobDao;
 import com.ts.cpfr.utils.ParamData;
+
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean;
 
-import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+import javax.annotation.Resource;
 
 /**
  * quartz示例定时器类
