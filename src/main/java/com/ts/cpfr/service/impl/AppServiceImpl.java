@@ -268,7 +268,7 @@ public class AppServiceImpl implements AppService {
         String apkPath = "";
         try {
             String applicationId = pd.getString("application_id");
-            apkPath = request.getServletContext().getRealPath("/WEB-INF/downl/" + applicationId + ".apk");
+            apkPath = request.getServletContext().getRealPath(SystemConfig.DOWNLOAD_APK_PATH + applicationId + ".apk");
             File file = new File(apkPath);
             bis = new BufferedInputStream(new FileInputStream(file));
             fos = new BufferedOutputStream(response.getOutputStream());

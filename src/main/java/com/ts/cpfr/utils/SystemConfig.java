@@ -22,6 +22,7 @@ public class SystemConfig {
     //上传文件的地址
     public static String UPLOAD_IMAGE_DIR;
     public static String UPLOAD_RECORD_IMAGE_DIR;
+    public static String DOWNLOAD_APK_PATH = "/home/webapps/dl/";
 
     //虹软授权ID
     public static final String ARCSOFT_APPID = "Co4RfcU3B6v2s9MvHWYtzJv2JAqmJwWgc9j1pGmNEgeu";
