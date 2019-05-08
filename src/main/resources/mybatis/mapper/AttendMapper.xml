@@ -28,8 +28,8 @@
         r.device_id=d.device_id where
             DATE_FORMAT(r.record_time,'%Y-%m-%d')&lt;#{date_end} AND
             DATE_FORMAT(r.record_time,'%Y-%m-%d')&gt;#{date_start} AND
-            (DATE_FORMAT(r.record_time,'%H:%i')&lt;#{am_time_end} AND DATE_FORMAT(r.record_time,'%H:%i')&gt;#{am_time_start}) OR
-            (DATE_FORMAT(r.record_time,'%H:%i')&lt;#{pm_time_end} AND DATE_FORMAT(r.record_time,'%H:%i')&gt;#{pm_time_start})
+            ((DATE_FORMAT(r.record_time,'%H:%i')&lt;#{am_time_end} AND DATE_FORMAT(r.record_time,'%H:%i')&gt;#{am_time_start}) OR
+            (DATE_FORMAT(r.record_time,'%H:%i')&lt;#{pm_time_end} AND DATE_FORMAT(r.record_time,'%H:%i')&gt;#{pm_time_start}) )
             <if test="keyword!=null and keyword!=''">
                 and POSITION(#{keyword} IN p.person_name) OR POSITION(#{keyword} IN d.device_name)
             </if>
