@@ -1,14 +1,12 @@
 package com.ts.cpfr.service.impl;
 
 import com.github.pagehelper.PageHelper;
-import com.sun.tools.javac.util.Log;
 import com.ts.cpfr.dao.AttendDao;
 import com.ts.cpfr.dao.PersonDao;
 import com.ts.cpfr.dao.QuartzJobDao;
 import com.ts.cpfr.dao.TableDao;
 import com.ts.cpfr.entity.QuartzJobModel;
 import com.ts.cpfr.quartz.QuartzJobExample;
-import com.ts.cpfr.quartz.QuartzJobExample2;
 import com.ts.cpfr.quartz.QuartzJobManager;
 import com.ts.cpfr.service.AttendService;
 import com.ts.cpfr.utils.CommUtil;
@@ -20,11 +18,7 @@ import com.ts.cpfr.utils.ResultData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -109,5 +103,14 @@ public class AttendServiceImpl implements AttendService {
             return new ResultData<>(HandleEnum.FAIL);
     }
 
+    @Override
+    public ResultData<PageData<ParamData>> getAttendList(ParamData pd) {
+        int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
+        int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
+
+        if (pageSize != 0) PageHelper.startPage(pageNum, pageSize);
+        List<ParamData> attendList = mAttendDao.selectAttendList(pd);
+        return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(attendList));
+    }
 
 }

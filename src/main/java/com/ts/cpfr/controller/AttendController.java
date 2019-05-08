@@ -1,7 +1,6 @@
 package com.ts.cpfr.controller;
 
 import com.ts.cpfr.controller.base.WebBaseController;
-import com.ts.cpfr.entity.QuartzJobModel;
 import com.ts.cpfr.service.AttendService;
 import com.ts.cpfr.service.QuartzJobService;
 import com.ts.cpfr.utils.CommConst;
@@ -13,7 +12,6 @@ import com.ts.cpfr.utils.ResultData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -81,6 +79,17 @@ public class AttendController extends WebBaseController {
     public ResultData<ParamData> deleteRule(HttpServletRequest request) {
         try {
             return mAttendService.deleteRule(paramDataInit());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("/attend_list")
+    public ResultData<PageData<ParamData>> attendList(HttpServletRequest request) {
+        try {
+            return mAttendService.getAttendList(paramDataInit());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());

@@ -33,6 +33,7 @@
             </el-radio-group>
 
             <el-date-picker
+                    unlink-panels
                     class="date_picker_pass_number"
                     style="display: none;"
                     v-model="dateValue"
