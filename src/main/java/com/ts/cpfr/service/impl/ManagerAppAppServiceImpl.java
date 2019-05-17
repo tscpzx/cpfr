@@ -1,10 +1,10 @@
 package com.ts.cpfr.service.impl;
 
-import com.ts.cpfr.dao.app.ConfigAppDao;
+import com.ts.cpfr.dao.app.ManagerAppDao;
 import com.ts.cpfr.dao.DeviceDao;
 import com.ts.cpfr.dao.PersonDao;
 import com.ts.cpfr.dao.TableDao;
-import com.ts.cpfr.service.ConfigAppService;
+import com.ts.cpfr.service.ManagerAppService;
 import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.HandleEnum;
 import com.ts.cpfr.utils.ParamData;
@@ -32,14 +32,14 @@ import sun.misc.BASE64Decoder;
  * @Created by cjw
  */
 @Service
-public class ConfigAppAppServiceImpl implements ConfigAppService {
+public class ManagerAppAppServiceImpl implements ManagerAppService {
 
     @Resource
     private PersonDao mPersonDao;
     @Resource
     private TableDao mTableDao;
     @Resource
-    private ConfigAppDao mConfigAppDao;
+    private ManagerAppDao mManagerAppDao;
     @Resource
     private DeviceDao mDeviceDao;
     @Autowired
@@ -71,7 +71,7 @@ public class ConfigAppAppServiceImpl implements ConfigAppService {
                     list.add(paramData);
                 }
                 pd.put("list", list);
-                boolean b = mConfigAppDao.insertGrantDeviceIdsPersonId(pd);
+                boolean b = mManagerAppDao.insertGrantDeviceIdsPersonId(pd);
 
                 if (b) {
                     List<ParamData> deviceSnList = mDeviceDao.selectDeviceSnList(pd);

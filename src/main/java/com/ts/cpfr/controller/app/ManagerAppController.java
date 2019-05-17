@@ -1,7 +1,7 @@
 package com.ts.cpfr.controller.app;
 
 import com.ts.cpfr.controller.base.WebBaseController;
-import com.ts.cpfr.service.ConfigAppService;
+import com.ts.cpfr.service.ManagerAppService;
 import com.ts.cpfr.utils.HandleEnum;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
@@ -20,17 +20,17 @@ import javax.servlet.http.HttpServletRequest;
  * @Created by cjw
  */
 @Controller
-@RequestMapping("/config")
-public class ConfigAppController extends WebBaseController {
+@RequestMapping("/manager")
+public class ManagerAppController extends WebBaseController {
 
     @Autowired
-    ConfigAppService mConfigAppService;
+    ManagerAppService mManagerAppService;
 
     @ResponseBody
     @RequestMapping("/add_person")
     public ResultData<ParamData> addPerson(HttpServletRequest request) {
         try {
-            return mConfigAppService.addPersonWithGrant(paramDataInit());
+            return mManagerAppService.addPersonWithGrant(paramDataInit());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());

@@ -4,11 +4,11 @@ import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
 
 /**
- * @Classname ConfigAppService
+ * @Classname ManagerAppService
  * @Description
  * @Date 2019/5/16 16:09
  * @Created by cjw
  */
-public interface ConfigAppService {
+public interface ManagerAppService {
     ResultData<ParamData> addPersonWithGrant(ParamData pd) throws Exception;
 }
