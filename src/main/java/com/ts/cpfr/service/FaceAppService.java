@@ -11,12 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @Classname AppService
+ * @Classname FaceAppService
  * @Description
  * @Date 2018/11/22 15:24
  * @Created by cjw
  */
-public interface AppService {
+public interface FaceAppService {
     ResultData<ParamData> register(ParamData paramDataInit);
 
     ResultData<ParamData> getDeviceInfo(ParamData pd);

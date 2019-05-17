@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ts.cpfr.dao.AppDao">
+<mapper namespace="com.ts.cpfr.dao.app.FaceAppDao">
 	<insert id="insertInActDevice" parameterType="pd">
 		insert into tbl_inact_device(device_sn,status,online,register_time) values(#{device_sn},0,0,now())
 	</insert>

@@ -1,16 +1,16 @@
-package com.ts.cpfr.dao;
+package com.ts.cpfr.dao.app;
 
 import com.ts.cpfr.utils.ParamData;
 
 import java.util.List;
 
 /**
- * @Classname AppDao
+ * @Classname FaceAppDao
  * @Description
  * @Date 2018/11/22 15:32
  * @Created by cjw
  */
-public interface AppDao {
+public interface FaceAppDao {
     boolean insertInActDevice(ParamData pd);
 
     ParamData selectDevice(ParamData pd);

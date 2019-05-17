@@ -1,6 +1,6 @@
 package com.ts.cpfr.service.impl;
 
-import com.ts.cpfr.dao.AppDao;
+import com.ts.cpfr.dao.app.FaceAppDao;
 import com.ts.cpfr.dao.DeviceDao;
 import com.ts.cpfr.dao.GrantDao;
 import com.ts.cpfr.dao.GroupDao;
@@ -8,7 +8,7 @@ import com.ts.cpfr.dao.PersonDao;
 import com.ts.cpfr.dao.TableDao;
 import com.ts.cpfr.ehcache.AppMemory;
 import com.ts.cpfr.entity.AppDevice;
-import com.ts.cpfr.service.AppService;
+import com.ts.cpfr.service.FaceAppService;
 import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.CommUtil;
 import com.ts.cpfr.utils.HandleEnum;
@@ -45,9 +45,9 @@ import sun.misc.BASE64Decoder;
  * @Created by cjw
  */
 @Service
-public class AppServiceImpl implements AppService {
+public class FaceFaceAppServiceImpl implements FaceAppService {
     @Resource
-    private AppDao mAppDao;
+    private FaceAppDao mFaceAppDao;
     @Resource
     private DeviceDao mDeviceDao;
     @Resource
@@ -71,7 +71,7 @@ public class AppServiceImpl implements AppService {
             return new ResultData<>(HandleEnum.FAIL, "设备序列号不能为空");
         ParamData paramData = mDeviceDao.selectInActDevice(pd);
         if (paramData == null) {
-            if (mAppDao.insertInActDevice(pd)) {
+            if (mFaceAppDao.insertInActDevice(pd)) {
                 return new ResultData<>(HandleEnum.SUCCESS, "已注册新设备");
             }
         } else
@@ -81,7 +81,7 @@ public class AppServiceImpl implements AppService {
 
     @Override
     public ResultData<ParamData> getDeviceInfo(ParamData pd) {
-        ParamData paramData = mAppDao.selectDevice(pd);
+        ParamData paramData = mFaceAppDao.selectDevice(pd);
         return new ResultData<>(HandleEnum.SUCCESS, paramData);
     }
 
@@ -90,13 +90,13 @@ public class AppServiceImpl implements AppService {
         System.out.println("===================================");
         System.out.println(new Date().toString());
         System.out.println("客户端 " + pd.getString(CommConst.DEVICE_SN) + "开始下载人员");
-        List<ParamData> list = mAppDao.selectPersonListWithBlob(pd);
+        List<ParamData> list = mFaceAppDao.selectPersonListWithBlob(pd);
         return new ResultData<>(HandleEnum.SUCCESS, list);
     }
 
     @Override
     public ResultData<List<ParamData>> getGrantList(ParamData pd) {
-        List<ParamData> list = mAppDao.selectGrantList(pd);
+        List<ParamData> list = mFaceAppDao.selectGrantList(pd);
         return new ResultData<>(HandleEnum.SUCCESS, list);
     }
 
@@ -115,7 +115,7 @@ public class AppServiceImpl implements AppService {
         pd.put("recog_type", request.getParameter("recog_type"));
         pd.put("record_image", file.getBytes());
         pd.put("wid", cache.getWid());
-        if (mAppDao.insertRecord(pd)) {
+        if (mFaceAppDao.insertRecord(pd)) {
             return new ResultData<>(HandleEnum.SUCCESS);
         }
 
@@ -133,7 +133,7 @@ public class AppServiceImpl implements AppService {
             if (blobImage.length / 1024 > 65)
                 return new ResultData<>(HandleEnum.FAIL, "上传失败，图片过大!");
             pd.put("record_image", blobImage);
-            if (mAppDao.insertRecord(pd) && mAppDao.updateGrantPassNumber(pd))
+            if (mFaceAppDao.insertRecord(pd) && mFaceAppDao.updateGrantPassNumber(pd))
                 return new ResultData<>(HandleEnum.SUCCESS);
 
         }
@@ -172,7 +172,7 @@ public class AppServiceImpl implements AppService {
     @Override
     public ResultData<ParamData> getCurrentDate() {
         ParamData pd = new ParamData();
-        pd.put("current_date", mAppDao.selectNow());
+        pd.put("current_date", mFaceAppDao.selectNow());
         return new ResultData<>(HandleEnum.SUCCESS, pd);
     }
 
@@ -244,7 +244,7 @@ public class AppServiceImpl implements AppService {
             if (a && b) {
                 mSocketMessageHandle.sendMessageToDevice(pd.getString(CommConst.DEVICE_SN), mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1004_GRANT_UPDATE, null));
 
-                ParamData person = mAppDao.selectPerson(pd);
+                ParamData person = mFaceAppDao.selectPerson(pd);
                 return new ResultData<>(HandleEnum.SUCCESS, person);
             }
         }
@@ -258,7 +258,7 @@ public class AppServiceImpl implements AppService {
         String[] personIdArr = personIds.split(",");
         pd.put("person_downl_num", personIdArr.length);
         mDeviceDao.updateDevicePersonDownlNum(pd);
-        return new ResultData<>(HandleEnum.SUCCESS, mAppDao.selectPersonListNoIn(pd));
+        return new ResultData<>(HandleEnum.SUCCESS, mFaceAppDao.selectPersonListNoIn(pd));
     }
 
     @Override
@@ -315,7 +315,7 @@ public class AppServiceImpl implements AppService {
 
     @Override
     public ResultData<List<ParamData>> getPersonList(ParamData pd) {
-        return new ResultData<>(HandleEnum.SUCCESS, mAppDao.selectPersonList(pd));
+        return new ResultData<>(HandleEnum.SUCCESS, mFaceAppDao.selectPersonList(pd));
     }
 
     private String getTokenFromRequest(HttpServletRequest request) {

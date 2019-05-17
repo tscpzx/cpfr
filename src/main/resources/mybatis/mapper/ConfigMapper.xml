@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ts.cpfr.dao.app.FaceAppDao">
+	<insert id="insertGrantDeviceIdsPersonId" parameterType="pd">
+		INSERT INTO tbl_#{wid}_grant(device_id,person_id) VALUES
+		<foreach collection="list" item="data" separator=" , ">
+			(#{data.device_id},#{person_id})
+		</foreach>;
+	</insert>
+
+</mapper>

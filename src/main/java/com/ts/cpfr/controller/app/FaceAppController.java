@@ -1,7 +1,7 @@
-package com.ts.cpfr.controller;
+package com.ts.cpfr.controller.app;
 
 import com.ts.cpfr.controller.base.AppBaseController;
-import com.ts.cpfr.service.AppService;
+import com.ts.cpfr.service.FaceAppService;
 import com.ts.cpfr.utils.HandleEnum;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
@@ -25,15 +25,15 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 @RequestMapping("/app")
 @SuppressWarnings({"rawtypes", "unchecked"})
-public class AppController extends AppBaseController {
+public class FaceAppController extends AppBaseController {
     @Autowired
-    AppService mAppService;
+    FaceAppService mFaceAppService;
 
     @ResponseBody
     @RequestMapping("/device_register")
     public ResultData<ParamData> deviceRegister(HttpServletRequest request, HttpServletResponse response) {
         try {
-            return mAppService.register(paramDataInit());
+            return mFaceAppService.register(paramDataInit());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
@@ -44,7 +44,7 @@ public class AppController extends AppBaseController {
     @RequestMapping("/device_info")
     public ResultData<ParamData> deviceInfo(HttpServletRequest request, HttpServletResponse response) {
         try {
-            return mAppService.getDeviceInfo(paramDataInit());
+            return mFaceAppService.getDeviceInfo(paramDataInit());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
@@ -55,7 +55,7 @@ public class AppController extends AppBaseController {
     @RequestMapping("/person_list")
     public ResultData<List<ParamData>> personList(HttpServletRequest request, HttpServletResponse response) {
         try {
-            return mAppService.getPersonBase64List(paramDataInit());
+            return mFaceAppService.getPersonBase64List(paramDataInit());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
@@ -66,7 +66,7 @@ public class AppController extends AppBaseController {
     @RequestMapping("/grant_list")
     public ResultData<List<ParamData>> grantList(HttpServletRequest request, HttpServletResponse response) {
         try {
-            return mAppService.getGrantList(paramDataInit());
+            return mFaceAppService.getGrantList(paramDataInit());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
@@ -77,7 +77,7 @@ public class AppController extends AppBaseController {
     @RequestMapping("/upload_record")
     public ResultData<ParamData> uploadRecord(HttpServletRequest request) {
         try {
-            return mAppService.addRecord(paramDataInit());
+            return mFaceAppService.addRecord(paramDataInit());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
@@ -88,7 +88,7 @@ public class AppController extends AppBaseController {
     @RequestMapping("/current_date")
     public ResultData<ParamData> currentDate(HttpServletRequest request) {
         try {
-            return mAppService.getCurrentDate();
+            return mFaceAppService.getCurrentDate();
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
@@ -105,7 +105,7 @@ public class AppController extends AppBaseController {
     @RequestMapping("/add_person")
     public ResultData<ParamData> addPerson(HttpServletRequest request) {
         try {
-            return mAppService.addPersonWithGrant(paramDataInit());
+            return mFaceAppService.addPersonWithGrant(paramDataInit());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
@@ -116,7 +116,7 @@ public class AppController extends AppBaseController {
     @RequestMapping("/compare_downl_num")
     public ResultData<List<ParamData>> compareDownlNum(HttpServletRequest request) {
         try {
-            return mAppService.comparePersonDownlNum(paramDataInit());
+            return mFaceAppService.comparePersonDownlNum(paramDataInit());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
@@ -127,7 +127,7 @@ public class AppController extends AppBaseController {
     @RequestMapping("/last_version_info")
     public ResultData<ParamData> lastVersionInfo(HttpServletRequest request) {
         try {
-            return mAppService.getLastVersionInfo(paramDataInit());
+            return mFaceAppService.getLastVersionInfo(paramDataInit());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
@@ -138,7 +138,7 @@ public class AppController extends AppBaseController {
     @RequestMapping("/downl_apk")
     public ResultData<ParamData> downlOnlineApk(HttpServletRequest request, HttpServletResponse response) {
         try {
-            mAppService.downloadApk(paramDataInit(), request, response);
+            mFaceAppService.downloadApk(paramDataInit(), request, response);
             return new ResultData<>(HandleEnum.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
@@ -150,7 +150,7 @@ public class AppController extends AppBaseController {
     @RequestMapping("/person_list2")
     public ResultData<List<ParamData>> personList2(HttpServletRequest request, HttpServletResponse response) {
         try {
-            return mAppService.getPersonList(paramDataInit());
+            return mFaceAppService.getPersonList(paramDataInit());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
@@ -161,7 +161,7 @@ public class AppController extends AppBaseController {
     @RequestMapping("/downl_image")
     public ResultData<ParamData> downlImage(HttpServletRequest request, HttpServletResponse response) {
         try {
-            mAppService.downloadImage(paramDataInit(), response);
+            mFaceAppService.downloadImage(paramDataInit(), response);
             return new ResultData<>(HandleEnum.SUCCESS);
         } catch (Exception e) {
             e.printStackTrace();
