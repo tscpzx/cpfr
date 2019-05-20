@@ -318,6 +318,13 @@ public class FaceFaceAppServiceImpl implements FaceAppService {
         return new ResultData<>(HandleEnum.SUCCESS, mFaceAppDao.selectPersonList(pd));
     }
 
+    @Override
+    public ResultData<ParamData> uploadDeviceInfo(ParamData pd) {
+        if (mFaceAppDao.updateDeviceConfig(pd))
+            return new ResultData<>(HandleEnum.SUCCESS);
+        return new ResultData<>(HandleEnum.FAIL);
+    }
+
     private String getTokenFromRequest(HttpServletRequest request) {
         String token = request.getHeader(CommConst.ACCESS_APP_TOKEN);
         if (StringUtils.isEmpty(token)) {

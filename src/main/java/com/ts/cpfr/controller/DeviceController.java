@@ -120,4 +120,15 @@ public class DeviceController extends WebBaseController {
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
         }
     }
+
+    @ResponseBody
+    @RequestMapping("/check_update")
+    public ResultData<ParamData> checkUpdate(HttpServletRequest request) {
+        try {
+            return mDeviceService.checkAppVersionUpdate(paramDataInit());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
 }

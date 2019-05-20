@@ -30,4 +30,6 @@ public interface DeviceService {
     ResultData<ParamData> deleteDevice(ParamData pd) throws Exception;
 
     ParamData queryDeviceGrantKey(ParamData pd);
+
+    ResultData<ParamData> checkAppVersionUpdate(ParamData pd) throws Exception;
 }

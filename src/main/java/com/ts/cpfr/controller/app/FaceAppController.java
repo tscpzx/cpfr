@@ -168,4 +168,16 @@ public class FaceAppController extends AppBaseController {
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
         }
     }
+
+    @ResponseBody
+    @RequestMapping("/upload_device_info")
+    public ResultData<ParamData> uploadDeviceInfo(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            mFaceAppService.uploadDeviceInfo(paramDataInit());
+            return new ResultData<>(HandleEnum.SUCCESS);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
 }

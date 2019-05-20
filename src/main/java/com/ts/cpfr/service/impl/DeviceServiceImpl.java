@@ -162,4 +162,17 @@ public class DeviceServiceImpl implements DeviceService {
         return mDeviceDao.selectDeviceGrantKey(pd);
     }
 
+    @Override
+    public ResultData<ParamData> checkAppVersionUpdate(ParamData pd) throws Exception {
+        ParamData device = mDeviceDao.selectDevice(pd);
+        int appOldVersion = (int) device.get("app_version");
+        int appNewVersion = Integer.parseInt(CommUtil.getProperties(device.getString("application_id")));
+        if (appNewVersion > appOldVersion) {
+            TextMessage message = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1008_NEW_APP_VERSION, null);
+            mSocketMessageHandle.sendMessageToDevice(device.getString("device_sn"), message);
+            return new ResultData<>(HandleEnum.NEW_APP_VERSION_105);
+        }
+        return new ResultData<>(HandleEnum.SUCCESS, "当前已是最新系统");
+    }
+
 }

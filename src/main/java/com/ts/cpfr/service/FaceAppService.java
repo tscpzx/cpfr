@@ -46,4 +46,6 @@ public interface FaceAppService {
     void downloadImage(ParamData pd, HttpServletResponse response) throws Exception;
 
     ResultData<List<ParamData>> getPersonList(ParamData pd);
+
+    ResultData<ParamData> uploadDeviceInfo(ParamData pd);
 }
