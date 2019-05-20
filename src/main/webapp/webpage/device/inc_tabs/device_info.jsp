@@ -20,10 +20,14 @@
         <span>{{device.last_online_time|formatDate}}</span>
     </el-form-item>
     <el-form-item label="${last_offline}">
-        <span>{{device.last_offine_time|formatDate}}</span>
+        <span>{{device.last_offline_time|formatDate}}</span>
     </el-form-item>
     <el-form-item label="${person_downl_num}">
         <span>{{device.person_downl_num}}</span>
+    </el-form-item>
+    <el-form-item label="当前app版本">
+        <span>123123{{device.app_type}}{{device.app_version}}</span>
+        <el-button size="small" type="success" @click="deleteDevice">更新</el-button>
     </el-form-item>
     <el-form-item label="${operation}">
         <el-button size="small" type="danger" @click="deleteDevice">${delete}</el-button>
