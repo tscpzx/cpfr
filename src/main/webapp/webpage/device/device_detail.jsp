@@ -207,6 +207,20 @@
                     device_sn: device.device_sn,
                     keyword: this.keyword
                 });
+            },
+            checkUpdate() {
+                ajaxPost({
+                    url: "${pageContext.request.contextPath}/device/check_update",
+                    data: {
+                        device_sn: device.device_sn,
+                    },
+                    success: function (result) {
+                        if (result.code === 105) {
+                            elmAlert1(result.message)
+                        } else
+                            elmAlert1("未发现新版本")
+                    }
+                })
             }
         },
         filters: {

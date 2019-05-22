@@ -34,4 +34,6 @@ public interface FaceAppDao {
     ParamData selectPerson(ParamData pd);
 
     boolean updatePunch(ParamData pd);
+
+    boolean updateDeviceConfig(ParamData pd);
 }

@@ -9,6 +9,7 @@ public enum HandleEnum {
     SESSION_ERROR_102(102,"session失效或者未登录"),
     ADMIN_NOT_EXIST_103(103,"没有该管理员用户"),
     PASSWORD_ERROR_104(104,"密码错误"),
+    NEW_APP_VERSION_105(105,"发现新版本APP"),
     ;
 
     private int code;

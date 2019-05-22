@@ -16,6 +16,7 @@ public enum SocketEnum {
     CODE_1005_DEVICE_DELETE(1005,"设备删除"),
     CODE_1006_ACCESS_APP_TOKEN(1006,"连接成功"),
     CODE_1007_DEVICE_INACT(1007,"未激活"),
+    CODE_1008_NEW_APP_VERSION(1008,"新的app版本"),
     ;
 
     private int code;
