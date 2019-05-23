@@ -26,7 +26,7 @@
         <span>{{device.person_downl_num}}</span>
     </el-form-item>
     <el-form-item label="当前app版本">
-        <span>{{device.application_id}}{{device.app_version}}</span>
+        <span>{{device.app_version}}</span>
         <el-button size="small" type="success" @click="checkUpdate">更新</el-button>
     </el-form-item>
     <el-form-item label="${operation}">
