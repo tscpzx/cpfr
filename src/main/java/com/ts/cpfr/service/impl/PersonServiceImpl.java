@@ -354,6 +354,7 @@ public class PersonServiceImpl implements PersonService {
 
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> addGrantDevice(ParamData pd) {
         String device_ids = pd.getString("device_ids");

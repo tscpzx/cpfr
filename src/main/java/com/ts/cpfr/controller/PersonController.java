@@ -93,6 +93,7 @@ public class PersonController extends WebBaseController {
             ParamData pd = paramDataInit();
             pd.put("person_name",request.getParameter("person_name"));
             pd.put("emp_number",request.getParameter("emp_number"));
+            pd.put("person_id",request.getParameter("person_id"));
             return mPersonService.updatePerson(file, pd);
         } catch (Exception e) {
             e.printStackTrace();

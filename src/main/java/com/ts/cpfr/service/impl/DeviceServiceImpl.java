@@ -187,6 +187,7 @@ public class DeviceServiceImpl implements DeviceService {
         return new ResultData<>(HandleEnum.SUCCESS, "当前已是最新系统");
     }
 
+    @Transactional
     @Override
     public ResultData<ParamData> addGrantPerson(ParamData pd) {
         String person_ids = pd.getString("person_ids");
