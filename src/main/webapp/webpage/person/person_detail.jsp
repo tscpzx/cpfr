@@ -55,6 +55,7 @@
         <%@ include file="../device/inc_dialog/dialog_change_grant.jsp" %>
     </div>
 </div>
+<%@include file="inc_dialog/dialog_device_list.jsp" %>
 
 <script type="text/javascript">
     var data = '${data}';
@@ -418,6 +419,54 @@
                     }
                 }
 
+            }
+        });
+    }
+
+    var vmDialogDeviceList = new Vue({
+        el: "#dialog_device_list",
+        data: {
+            items: [{
+                device_id: -1,
+                device_name: '${device_list}',
+                children: []
+            }],
+            defaultProps: {
+                children: 'children',
+                label: 'device_name'
+            },
+            visible: false
+        },
+        methods: {
+            onClickAddGrantDevice() {
+                var device_ids = this.$refs.tree.getCheckedKeys().join(",");
+                ajaxPost({
+                    url: "${pageContext.request.contextPath}/person/add_grant_device",
+                    data: {
+                        device_ids: device_ids,
+                        person_id: data.person_id
+                    },
+                    success: function (result) {
+                        layTip(result.message);
+                        vmDialogDeviceList.visible = false;
+                        ajaxAccessDeviceList({
+                            pageNum: vue.currentPage,
+                            pageSize: vue.pageSize,
+                            person_id: data.person_id
+                        });
+                    }
+                });
+            }
+        }
+    });
+
+    function openDialogDevice() {
+        ajaxGet({
+            url: "${pageContext.request.contextPath}/device/list",
+            data: {},
+            success: function (result) {
+                vmDialogDeviceList.items[0].children = result.data.list;
+                vmDialogDeviceList.visible = true;
             }
         });
     }

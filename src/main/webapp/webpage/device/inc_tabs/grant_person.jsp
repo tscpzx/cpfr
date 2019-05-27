@@ -2,6 +2,7 @@
 <el-form>
     <el-form-item>
         <el-row>
+            <el-button type="primary" icon="el-icon-plus" @click="openDialogPerson" size="small">${add}</el-button>
             <div style="float: right">
                 <el-input style="width: 200px;" size="small" v-model="keyword"
                           placeholder="${search_content}"></el-input>

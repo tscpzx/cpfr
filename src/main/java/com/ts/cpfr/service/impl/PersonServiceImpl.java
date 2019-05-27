@@ -151,9 +151,11 @@ public class PersonServiceImpl implements PersonService {
     public ResultData<ParamData> deletePerson(ParamData pd) throws IOException {
         if (mPersonDao.deletePerson(pd)) {
             List<String> deviceSnLists = mDeviceDao.selectDeviceSnByPersonId(pd);
-            TextMessage message = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1003_PERSON_UPDATE, null);
+            TextMessage personMessage = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1003_PERSON_UPDATE, null);
+            TextMessage grantMessage = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1004_GRANT_UPDATE, null);
             for (String deviceSn : deviceSnLists) {
-                mSocketMessageHandle.sendMessageToDevice(deviceSn, message);
+                mSocketMessageHandle.sendMessageToDevice(deviceSn, personMessage);
+                mSocketMessageHandle.sendMessageToDevice(deviceSn, grantMessage);
             }
             return new ResultData<>(HandleEnum.SUCCESS);
         } else
@@ -352,5 +354,22 @@ public class PersonServiceImpl implements PersonService {
 
     }
 
+    @Override
+    public ResultData<ParamData> addGrantDevice(ParamData pd) {
+        String device_ids = pd.getString("device_ids");
 
+        List<ParamData> list = new ArrayList<>();
+        String[] deviceIdArr = device_ids.split(",");
+        for (String deviceId : deviceIdArr) {
+            ParamData paramData = new ParamData();
+            int device_id = Integer.parseInt(deviceId);
+            paramData.put("device_id", device_id);
+            list.add(paramData);
+        }
+        pd.put("list", list);
+        if (mPersonDao.insertPersonGrantDevice(pd)) {
+            return new ResultData<>(HandleEnum.SUCCESS);
+        } else
+            return new ResultData<>(HandleEnum.FAIL);
+    }
 }

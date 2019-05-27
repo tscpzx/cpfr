@@ -48,4 +48,6 @@ public interface DeviceDao {
     boolean updateDevicePersonDownlNum(ParamData pd);
 
     ParamData selectDeviceGrantKey(ParamData pd);
+
+    boolean insertDeviceGrantPerson(ParamData pd);
 }

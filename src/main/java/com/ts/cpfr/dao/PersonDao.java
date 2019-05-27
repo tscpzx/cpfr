@@ -40,4 +40,6 @@ public interface PersonDao {
     List<ParamData> selectPersonIdByAttenId(ParamData pd);
 
     boolean deletePersonAttendId(ParamData pd);
+
+    boolean insertPersonGrantDevice(ParamData pd);
 }

@@ -131,4 +131,15 @@ public class DeviceController extends WebBaseController {
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
         }
     }
+
+    @ResponseBody
+    @RequestMapping("/add_grant_person")
+    public ResultData<ParamData> addGrantPerson(HttpServletRequest request) {
+        try {
+            return mDeviceService.addGrantPerson(paramDataInit());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
 }

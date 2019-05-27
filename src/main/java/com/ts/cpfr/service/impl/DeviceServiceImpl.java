@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -184,6 +185,25 @@ public class DeviceServiceImpl implements DeviceService {
         }
 
         return new ResultData<>(HandleEnum.SUCCESS, "当前已是最新系统");
+    }
+
+    @Override
+    public ResultData<ParamData> addGrantPerson(ParamData pd) {
+        String person_ids = pd.getString("person_ids");
+
+        List<ParamData> list = new ArrayList<>();
+        String[] personIdArr = person_ids.split(",");
+        for (String personId : personIdArr) {
+            ParamData paramData = new ParamData();
+            int person_id = Integer.parseInt(personId);
+            paramData.put("person_id", person_id);
+            list.add(paramData);
+        }
+        pd.put("list", list);
+        if (mDeviceDao.insertDeviceGrantPerson(pd)) {
+            return new ResultData<>(HandleEnum.SUCCESS);
+        } else
+            return new ResultData<>(HandleEnum.FAIL);
     }
 
 }

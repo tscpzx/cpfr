@@ -41,6 +41,7 @@
         <%@include file="inc_dialog/dialog_change_grant.jsp" %>
     </div>
 </div>
+<%@include file="inc_dialog/dialog_person_list.jsp" %>
 
 <script type="text/javascript">
     var device = $.parseJSON('${data}');
@@ -221,7 +222,17 @@
                             elmAlert1("未发现新版本")
                     }
                 })
+            },openDialogPerson() {
+                ajaxGet({
+                    url: "${pageContext.request.contextPath}/person/list",
+                    data: {},
+                    success: function (result) {
+                        vmDialogPersonList.items[0].children = result.data.list;
+                        vmDialogPersonList.visible = true;
+                    }
+                });
             }
+
         },
         filters: {
             formatDate: function (time) {
@@ -310,4 +321,42 @@
             }
         })
     }
+
+    var vmDialogPersonList = new Vue({
+        el: "#dialog_person_list",
+        data: {
+            items: [{
+                person_id: -1,
+                person_name: '${people_list}',
+                children: []
+            }],
+            defaultProps: {
+                children: 'children',
+                label: 'person_name'
+            },
+            visible: false
+        },
+        methods: {
+            onClickAddGrantPerson(){
+                var person_ids = this.$refs.tree.getCheckedKeys().join(",");
+                ajaxPost({
+                    url: "${pageContext.request.contextPath}/device/add_grant_person",
+                    data: {
+                        person_ids: person_ids,
+                        device_id: device.device_id
+                    },
+                    success: function (result) {
+                        layTip(result.message);
+                        vmDialogPersonList.visible = false;
+                        ajaxGrantPersonList({
+                            pageNum: vm.currentPage1,
+                            pageSize: vm.pageSize1,
+                            device_sn: device.device_sn
+                        });
+                    }
+                });
+            }
+        }
+    });
+
 </script>

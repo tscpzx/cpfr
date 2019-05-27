@@ -4,7 +4,7 @@
 <el-form>
     <el-form-item>
         <el-row>
-            <%--     <el-button type="primary" icon="el-icon-plus" size="small">添加</el-button>--%>
+            <el-button type="primary" icon="el-icon-plus" @click="openDialogDevice" size="small">${add}</el-button>
             <div style="float: right">
                 <el-input style="width: 200px;" size="small" placeholder="${search_content}"
                           v-model="keyword"></el-input>
@@ -16,7 +16,7 @@
 
 <template>
     <el-table :data="tableData" style="width: 100%" stripe>
-        <el-table-column prop="grant_id" label="权限ID" v-if="show" >
+        <el-table-column prop="grant_id" label="权限ID" v-if="show">
         </el-table-column>
         <el-table-column prop="device_id" label="${device_id}" min-width="15%">
         </el-table-column>
