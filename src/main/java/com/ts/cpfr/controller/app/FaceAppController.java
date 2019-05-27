@@ -173,8 +173,18 @@ public class FaceAppController extends AppBaseController {
     @RequestMapping("/upload_device_info")
     public ResultData<ParamData> uploadDeviceInfo(HttpServletRequest request, HttpServletResponse response) {
         try {
-            mFaceAppService.uploadDeviceInfo(paramDataInit());
-            return new ResultData<>(HandleEnum.SUCCESS);
+            return mFaceAppService.uploadDeviceInfo(paramDataInit());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("/upload_sync_status")
+    public ResultData<ParamData> uploadSyncStatus(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            return mFaceAppService.uploadSyncStatus(paramDataInit());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());

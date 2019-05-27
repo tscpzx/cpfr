@@ -36,4 +36,6 @@ public interface FaceAppDao {
     boolean updatePunch(ParamData pd);
 
     boolean updateDeviceConfig(ParamData pd);
+
+    boolean updateGrantSyncStatus(ParamData pd);
 }

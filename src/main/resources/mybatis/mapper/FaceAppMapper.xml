@@ -55,4 +55,8 @@
 		UPDATE tbl_#{wid}_attend_punch SET pm_punch_out_time=#{record_time} WHERE  person_id =#{person_id} AND  am_punch_in_time IS NOT NULL and DATEDIFF(lmt,NOW())=0;
 		UPDATE tbl_#{wid}_attend_punch SET am_punch_in_time=#{record_time} WHERE  person_id =#{person_id} AND  am_punch_in_time is NULL and DATEDIFF(lmt,NOW())=0;
     </update>
+
+	<update id="updateGrantSyncStatus" parameterType="pd">
+		update bl_#{wid}_grant set sync_status=#{sync_status} where device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn}) and person_id=#{person_id}
+	</update>
 </mapper>

@@ -13,19 +13,26 @@
 </el-form>
 <template>
     <el-table :data="tableData1" style="width: 100%" stripe>
-        <el-table-column prop="grant_id" label="${author_id}" min-width="15%">
+        <el-table-column prop="grant_id" label="${author_id}" min-width="5%">
         </el-table-column>
         <el-table-column prop="person_name" label="${name}" min-width="10%">
         </el-table-column>
-        <el-table-column prop="emp_number" label="${job_number}" min-width="15%" >
+        <el-table-column prop="emp_number" label="${job_number}" min-width="10%" >
         </el-table-column>
-        <el-table-column prop="pass_number" label="${pass_time}" min-width="25%">
+        <el-table-column prop="sync_status" label="同步状态" min-width="10%" >
+            <template slot-scope="scope">
+                <span v-if="scope.row.sync_status===0">未同步</span>
+                <span v-if="scope.row.sync_status===1">同步成功</span>
+                <span v-if="scope.row.sync_status===2">同步失败</span>
+            </template>
+        </el-table-column>
+        <el-table-column prop="pass_number" label="${pass_time}" min-width="15%">
             <template slot-scope="scope">
                 <span v-if="scope.row.pass_number===9999999999">${unlimited_number_time}</span>
                 <span v-else>{{scope.row.pass_number}}</span>
             </template>
         </el-table-column>
-        <el-table-column prop="pass_start_time" label="${passage_period}" min-width="15%">
+        <el-table-column prop="pass_start_time" label="${passage_period}" min-width="25%">
             <template slot-scope="scope">
                 <span v-if="scope.row.pass_start_time==='2286-11-21 01:46:39'||scope.row.pass_end_time==='2286-11-21 01:46:39'">${infinite_time}</span>
                 <span v-if="scope.row.pass_start_time!=='2286-11-21 01:46:39'">{{scope.row.pass_start_time}} ${to_lang} {{scope.row.pass_end_time}}</span>

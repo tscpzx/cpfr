@@ -108,7 +108,9 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ParamData queryDevice(ParamData pd) {
-        return mDeviceDao.selectDevice(pd);
+        ParamData data = mDeviceDao.selectDevice(pd);
+        data.putAll(mDeviceDao.selectSyncDownlStatus(pd));
+        return data;
     }
 
     @Override

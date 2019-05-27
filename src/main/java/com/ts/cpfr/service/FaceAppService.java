@@ -48,4 +48,6 @@ public interface FaceAppService {
     ResultData<List<ParamData>> getPersonList(ParamData pd);
 
     ResultData<ParamData> uploadDeviceInfo(ParamData pd);
+
+    ResultData<ParamData> uploadSyncStatus(ParamData pd);
 }

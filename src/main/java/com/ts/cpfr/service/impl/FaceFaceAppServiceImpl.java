@@ -325,6 +325,13 @@ public class FaceFaceAppServiceImpl implements FaceAppService {
         return new ResultData<>(HandleEnum.FAIL);
     }
 
+    @Override
+    public ResultData<ParamData> uploadSyncStatus(ParamData pd) {
+        if (mFaceAppDao.updateGrantSyncStatus(pd))
+            return new ResultData<>(HandleEnum.SUCCESS);
+        return new ResultData<>(HandleEnum.FAIL);
+    }
+
     private String getTokenFromRequest(HttpServletRequest request) {
         String token = request.getHeader(CommConst.ACCESS_APP_TOKEN);
         if (StringUtils.isEmpty(token)) {
