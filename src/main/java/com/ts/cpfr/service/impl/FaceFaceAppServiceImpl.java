@@ -273,6 +273,10 @@ public class FaceFaceAppServiceImpl implements FaceAppService {
 
                     System.out.println("bis.available()"+bis.available());
                     response.setContentLength(bis.available());
+                    //1.设置文件ContentType类型，这样设置，会自动判断下载文件类型
+                    response.setContentType("multipart/form-data");
+                    //2.设置文件头：最后一个参数是设置下载文件名
+                    response.setHeader("Content-Disposition", "attachment;fileName="+file.getName());
 
                     byte[] buffer = new byte[1024 * 10];
                     int length;
@@ -297,15 +301,18 @@ public class FaceFaceAppServiceImpl implements FaceAppService {
     public ResultData<ParamData> getLastVersionInfo(ParamData pd) {
         File dir = new File(SystemConfig.DOWNLOAD_APK_PATH);
         File[] files = dir.listFiles();//绝对路径
+        ParamData data = new ParamData();
+        data.put("verson", "-1");
         for (File file : files) {
             String fileName = file.getName();
             if (fileName.contains(pd.getString("application_id"))) {
                 String version = fileName.split("_")[1].split("\\.")[0];
-                pd.put("verson", version);
+                data.put("verson", version);
             }
         }
-        pd.put("description", "暂无");
-        return new ResultData<>(HandleEnum.SUCCESS, pd);
+
+        data.put("description", "暂无");
+        return new ResultData<>(HandleEnum.SUCCESS, data);
     }
 
     @Override
