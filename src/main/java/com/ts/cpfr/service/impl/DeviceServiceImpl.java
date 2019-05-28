@@ -15,13 +15,14 @@ import com.ts.cpfr.utils.PageData;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
 import com.ts.cpfr.utils.SocketEnum;
+import com.ts.cpfr.utils.SystemConfig;
 import com.ts.cpfr.websocket.SocketMessageHandle;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 
-import java.util.ArrayList;
+import java.io.File;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -168,45 +169,36 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public ResultData<ParamData> checkAppVersionUpdate(ParamData pd) throws Exception {
         ParamData device = mDeviceDao.selectDevice(pd);
-        String appVersion =  device.getString("app_version");
-        String[] versions = appVersion.split(",");
-        boolean hasNewVersion=false;
-        for(String s:versions){
-            int index = s.lastIndexOf(".");
-            String applicationId = s.substring(0, index);
-            int versionCode = Integer.parseInt(s.substring(index+1, s.length()));
-            int appNewVersion = Integer.parseInt(CommUtil.getProperties(applicationId));
-            if (appNewVersion > versionCode) {
-                hasNewVersion=true;
+        String appVersionStr = device.getString("app_version");
+        String[] appVersions = appVersionStr.split(",");
+
+        File dir = new File(SystemConfig.DOWNLOAD_APK_PATH);
+        File[] files = dir.listFiles();//绝对路径
+
+        boolean hasNewVersion = false;
+        for (String appVersion : appVersions) {
+            String[] split = appVersion.split("_");
+            String applicationId = split[0];
+
+            for (File file : files) {
+                if (file.getName().contains(applicationId)) {
+                    int versionCode = Integer.parseInt(split[1]);
+                    String appNewVersionStr = file.getName().split("_")[1].split(".")[0];
+                    int appNewVersion = Integer.parseInt(appNewVersionStr);
+                    if (appNewVersion > versionCode) {
+                        hasNewVersion = true;
+                    }
+                }
             }
+
         }
-        if(hasNewVersion){
+        if (hasNewVersion) {
             TextMessage message = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1008_NEW_APP_VERSION, null);
             mSocketMessageHandle.sendMessageToDevice(device.getString("device_sn"), message);
             return new ResultData<>(HandleEnum.NEW_APP_VERSION_105);
         }
 
         return new ResultData<>(HandleEnum.SUCCESS, "当前已是最新系统");
-    }
-
-    @Transactional
-    @Override
-    public ResultData<ParamData> addGrantPerson(ParamData pd) {
-        String person_ids = pd.getString("person_ids");
-
-        List<ParamData> list = new ArrayList<>();
-        String[] personIdArr = person_ids.split(",");
-        for (String personId : personIdArr) {
-            ParamData paramData = new ParamData();
-            int person_id = Integer.parseInt(personId);
-            paramData.put("person_id", person_id);
-            list.add(paramData);
-        }
-        pd.put("list", list);
-        if (mDeviceDao.insertDeviceGrantPerson(pd)) {
-            return new ResultData<>(HandleEnum.SUCCESS);
-        } else
-            return new ResultData<>(HandleEnum.FAIL);
     }
 
 }

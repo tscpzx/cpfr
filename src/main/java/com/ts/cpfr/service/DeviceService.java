@@ -32,6 +32,4 @@ public interface DeviceService {
     ParamData queryDeviceGrantKey(ParamData pd);
 
     ResultData<ParamData> checkAppVersionUpdate(ParamData pd) throws Exception;
-
-    ResultData<ParamData> addGrantPerson(ParamData pd);
 }

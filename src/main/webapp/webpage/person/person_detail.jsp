@@ -440,11 +440,17 @@
         methods: {
             onClickAddGrantDevice() {
                 var device_ids = this.$refs.tree.getCheckedKeys().join(",");
+                var pass_number = 9999999999;
+                var pass_start_time = stampToDate(9999999999);
+                var pass_end_time = stampToDate(9999999999);
                 ajaxPost({
-                    url: "${pageContext.request.contextPath}/person/add_grant_device",
+                    url: "${pageContext.request.contextPath}/grant/add",
                     data: {
                         device_ids: device_ids,
-                        person_id: data.person_id
+                        person_ids: data.person_id,
+                        pass_number: pass_number,
+                        pass_start_time: pass_start_time,
+                        pass_end_time: pass_end_time
                     },
                     success: function (result) {
                         layTip(result.message);

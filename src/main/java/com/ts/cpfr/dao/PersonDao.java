@@ -41,5 +41,4 @@ public interface PersonDao {
 
     boolean deletePersonAttendId(ParamData pd);
 
-    boolean insertPersonGrantDevice(ParamData pd);
 }

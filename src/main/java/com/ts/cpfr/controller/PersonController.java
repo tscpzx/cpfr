@@ -187,15 +187,4 @@ public class PersonController extends WebBaseController {
            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
        }
    }
-
-    @ResponseBody
-    @RequestMapping("/add_grant_device")
-    public ResultData<ParamData> addGrantDevice(HttpServletRequest request){
-        try {
-            return mPersonService.addGrantDevice(paramDataInit());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
-        }
-    }
 }

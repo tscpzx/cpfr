@@ -266,6 +266,8 @@ public class FaceFaceAppServiceImpl implements FaceAppService {
             String applicationId = pd.getString("application_id");
             File dir = new File(SystemConfig.DOWNLOAD_APK_PATH);
             File[] files = dir.listFiles();//绝对路径
+            System.out.println("files -"+(files==null));
+            System.out.println("files length-"+files.length);
             for (File file : files) {
                 if (file.getName().contains(applicationId)) {
                     bis = new BufferedInputStream(new FileInputStream(file));
@@ -295,8 +297,12 @@ public class FaceFaceAppServiceImpl implements FaceAppService {
     public ResultData<ParamData> getLastVersionInfo(ParamData pd) {
         File dir = new File(SystemConfig.DOWNLOAD_APK_PATH);
         File[] files = dir.listFiles();//绝对路径
+        System.out.println("files -"+(files==null));
+        System.out.println("files length-"+files.length);
         for (File file : files) {
             String fileName = file.getName();
+            System.out.println("fileName-"+fileName);
+            System.out.println("fileName-"+file.getAbsolutePath());
             if (fileName.contains(pd.getString("application_id"))) {
                 String version = fileName.split("_")[1].split(".")[0];
                 pd.put("verson", version);

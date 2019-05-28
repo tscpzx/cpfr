@@ -118,20 +118,6 @@
 		update tbl_#{wid}_device_config set app_version=#{app_version} where device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn})
 	</update>
 
-	<insert id="insertDeviceGrantPerson" parameterType="pd">
-		INSERT INTO tbl_#{wid}_grant
-		(device_id,person_id,status) VALUES
-		<foreach collection="list" item="data" separator=",">
-			(
-			#{device_id},
-			#{data.person_id},
-			1
-			)
-		</foreach>
-		ON DUPLICATE KEY UPDATE
-		status=2,lmt=now();
-	</insert>
-
 	<select id="selectSyncDownlStatus" parameterType="pd" resultType="pd">
 		SELECT COUNT(CASE  WHEN sync_status=0 THEN 0 END) without_sync,
 		       COUNT(CASE  WHEN sync_status=1 THEN 1 END) sync_success,

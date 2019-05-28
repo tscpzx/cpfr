@@ -91,17 +91,4 @@
 		update  tbl_#{wid}_person set attend_id=0 where attend_id=#{attend_id}
 	</update>
 
-	<insert id="insertPersonGrantDevice" parameterType="pd">
-		INSERT INTO tbl_#{wid}_grant
-		(device_id,person_id,status) VALUES
-		<foreach collection="list" item="data" separator=",">
-			(
-			#{data.device_id},
-			#{person_id},
-			1
-			)
-		</foreach>
-		ON DUPLICATE KEY UPDATE
-		status=2,lmt=now();
-	</insert>
 </mapper>

@@ -222,7 +222,7 @@
                             elmAlert1("未发现新版本")
                     }
                 })
-            },openDialogPerson() {
+            }, openDialogPerson() {
                 ajaxGet({
                     url: "${pageContext.request.contextPath}/person/list",
                     data: {},
@@ -337,13 +337,19 @@
             visible: false
         },
         methods: {
-            onClickAddGrantPerson(){
+            onClickAddGrantPerson() {
                 var person_ids = this.$refs.tree.getCheckedKeys().join(",");
+                var pass_number = 9999999999;
+                var pass_start_time = stampToDate(9999999999);
+                var pass_end_time = stampToDate(9999999999);
                 ajaxPost({
-                    url: "${pageContext.request.contextPath}/device/add_grant_person",
+                    url: "${pageContext.request.contextPath}/grant/add",
                     data: {
                         person_ids: person_ids,
-                        device_id: device.device_id
+                        device_ids: device.device_id,
+                        pass_number: pass_number,
+                        pass_start_time: pass_start_time,
+                        pass_end_time: pass_end_time
                     },
                     success: function (result) {
                         layTip(result.message);

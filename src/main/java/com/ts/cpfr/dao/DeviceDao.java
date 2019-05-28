@@ -47,7 +47,5 @@ public interface DeviceDao {
 
     ParamData selectDeviceGrantKey(ParamData pd);
 
-    boolean insertDeviceGrantPerson(ParamData pd);
-
     ParamData selectSyncDownlStatus(ParamData pd);
 }

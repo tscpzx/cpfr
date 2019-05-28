@@ -136,7 +136,7 @@ public class FaceAppController extends AppBaseController {
 
     @ResponseBody
     @RequestMapping("/downl_apk")
-    public ResultData<ParamData> downlOnlineApk(HttpServletRequest request, HttpServletResponse response) {
+    public ResultData<ParamData> downloadApk(HttpServletRequest request, HttpServletResponse response) {
         try {
             mFaceAppService.downloadApk(paramDataInit(), request, response);
             return new ResultData<>(HandleEnum.SUCCESS);
@@ -159,7 +159,7 @@ public class FaceAppController extends AppBaseController {
 
     @ResponseBody
     @RequestMapping("/downl_image")
-    public ResultData<ParamData> downlImage(HttpServletRequest request, HttpServletResponse response) {
+    public ResultData<ParamData> downloadImage(HttpServletRequest request, HttpServletResponse response) {
         try {
             mFaceAppService.downloadImage(paramDataInit(), response);
             return new ResultData<>(HandleEnum.SUCCESS);

@@ -353,24 +353,4 @@ public class PersonServiceImpl implements PersonService {
         }
 
     }
-
-    @Transactional
-    @Override
-    public ResultData<ParamData> addGrantDevice(ParamData pd) {
-        String device_ids = pd.getString("device_ids");
-
-        List<ParamData> list = new ArrayList<>();
-        String[] deviceIdArr = device_ids.split(",");
-        for (String deviceId : deviceIdArr) {
-            ParamData paramData = new ParamData();
-            int device_id = Integer.parseInt(deviceId);
-            paramData.put("device_id", device_id);
-            list.add(paramData);
-        }
-        pd.put("list", list);
-        if (mPersonDao.insertPersonGrantDevice(pd)) {
-            return new ResultData<>(HandleEnum.SUCCESS);
-        } else
-            return new ResultData<>(HandleEnum.FAIL);
-    }
 }

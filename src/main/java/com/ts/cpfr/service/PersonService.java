@@ -50,5 +50,4 @@ public interface PersonService {
 
     ResultData<ParamData>  getListByGroup(ParamData pd);
 
-    ResultData<ParamData> addGrantDevice(ParamData pd);
 }
