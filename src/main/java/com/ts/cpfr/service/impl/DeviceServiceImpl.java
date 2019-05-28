@@ -183,7 +183,7 @@ public class DeviceServiceImpl implements DeviceService {
             for (File file : files) {
                 if (file.getName().contains(applicationId)) {
                     int versionCode = Integer.parseInt(split[1]);
-                    String appNewVersionStr = file.getName().split("_")[1].split(".")[0];
+                    String appNewVersionStr = file.getName().split("_")[1].split("\\.")[0];
                     int appNewVersion = Integer.parseInt(appNewVersionStr);
                     if (appNewVersion > versionCode) {
                         hasNewVersion = true;

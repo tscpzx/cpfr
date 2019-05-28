@@ -266,19 +266,19 @@ public class FaceFaceAppServiceImpl implements FaceAppService {
             String applicationId = pd.getString("application_id");
             File dir = new File(SystemConfig.DOWNLOAD_APK_PATH);
             File[] files = dir.listFiles();//绝对路径
-            System.out.println("files -"+(files==null));
-            System.out.println("files length-"+files.length);
             for (File file : files) {
                 if (file.getName().contains(applicationId)) {
                     bis = new BufferedInputStream(new FileInputStream(file));
                     fos = new BufferedOutputStream(response.getOutputStream());
 
+                    System.out.println("bis.available()"+bis.available());
                     response.setContentLength(bis.available());
 
                     byte[] buffer = new byte[1024 * 10];
                     int length;
                     while ((length = bis.read(buffer)) > 0) {
                         fos.write(buffer, 0, length);
+                        System.out.println("write"+length);
                     }
                     fos.flush();
                 }
@@ -297,14 +297,10 @@ public class FaceFaceAppServiceImpl implements FaceAppService {
     public ResultData<ParamData> getLastVersionInfo(ParamData pd) {
         File dir = new File(SystemConfig.DOWNLOAD_APK_PATH);
         File[] files = dir.listFiles();//绝对路径
-        System.out.println("files -"+(files==null));
-        System.out.println("files length-"+files.length);
         for (File file : files) {
             String fileName = file.getName();
-            System.out.println("fileName-"+fileName);
-            System.out.println("fileName-"+file.getAbsolutePath());
             if (fileName.contains(pd.getString("application_id"))) {
-                String version = fileName.split("_")[1].split(".")[0];
+                String version = fileName.split("_")[1].split("\\.")[0];
                 pd.put("verson", version);
             }
         }
