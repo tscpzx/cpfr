@@ -36,15 +36,17 @@
         }
 
 
-        .scrollbar::-webkit-scrollbar {/*滚动条整体样式*/
-            width: 15px;     /*高宽分别对应横竖滚动条的尺寸*/
+        .scrollbar::-webkit-scrollbar { /*滚动条整体样式*/
+            width: 15px; /*高宽分别对应横竖滚动条的尺寸*/
             height: 1px;
         }
-        .scrollbar::-webkit-scrollbar-thumb {/*滚动条里面小方块*/
+
+        .scrollbar::-webkit-scrollbar-thumb { /*滚动条里面小方块*/
             border-radius: 15px;
             background: #CCCCCC;
         }
-        .scrollbar::-webkit-scrollbar-track {/*滚动条里面轨道*/
+
+        .scrollbar::-webkit-scrollbar-track { /*滚动条里面轨道*/
             border-radius: 15px;
             background: #E1E1E1;
         }
@@ -67,7 +69,7 @@
                 </el-col>
                 <el-col :span="2">
                     <div style="float: right">
-                        <a href="#">${sessionScope.user.name},${hello}</a></div>
+                        <a href="#">${sessionScope.user.name} , ${hello}</a></div>
                 </el-col>
                 <el-col :span="3">
                     <div style="float: right" v-on:click="visible=true;"><a href="#">${change_password}</a>
@@ -183,7 +185,7 @@
         },
         methods: {
             onClick(event) {
-                $("#content-container").load("${pageContext.request.contextPath}/page/"+$(event)[0].index);
+                $("#content-container").load("${pageContext.request.contextPath}/page/" + $(event)[0].index);
             },
             ajaxLogout() {
                 ajaxPost({
