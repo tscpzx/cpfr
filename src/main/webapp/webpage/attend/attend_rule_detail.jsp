@@ -167,7 +167,7 @@
                             for (var index in rule) {
                                 if (data.attend_id === rule[index].attend_id) {
                                     rule.splice(index, 1);
-                                    $("#attend_content").load("attend/attend_setting");
+                                    $("#attend_content").load("${pageContext.request.contextPath}/page/attend/attend_setting");
                                 }
                             }
                         }
@@ -239,7 +239,7 @@
             success: function (result) {
                 layTip(result.message);
                 if (0 === result.code) {
-                    $("#attend_content").load("attend/attend_rule_detail");
+                    $("#attend_content").load("${pageContext.request.contextPath}/page/attend/attend_rule_detail");
                 }
             }
         });

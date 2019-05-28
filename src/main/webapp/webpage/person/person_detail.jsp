@@ -117,7 +117,7 @@
                             for (var index in personList) {
                                 if (data.person_id === personList[index].person_id) {
                                     personList.splice(index, 1);
-                                    $("#person_content").load("person/person_tbl");
+                                    $("#person_content").load("${pageContext.request.contextPath}/page/person/person_tbl");
                                 }
                             }
                         }

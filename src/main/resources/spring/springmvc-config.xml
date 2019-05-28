@@ -50,6 +50,7 @@
 			<mvc:exclude-mapping path="/user/login"/>
 			<mvc:exclude-mapping path="/user/nologin"/>
 			<mvc:exclude-mapping path="/user/register"/>
+			<mvc:exclude-mapping path="/page/**"/>
 			<mvc:exclude-mapping path="/app/**"/>
 			<mvc:exclude-mapping path="/ws"/>
 			<bean class="com.ts.cpfr.spring.WebInterceptor"/>

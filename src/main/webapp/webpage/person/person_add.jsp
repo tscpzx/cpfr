@@ -141,8 +141,8 @@
                     success: function (result) {
                         layTip(result.message);
                         if (0 === result.code) {
-                            $("#person_tree").load("person/person_tree");
-                            $("#person_content").load("person/person_add");
+                            $("#person_tree").load("${pageContext.request.contextPath}/page/person/person_tree");
+                            $("#person_content").load("${pageContext.request.contextPath}/page/person/person_add");
                         }
                     },
                     error: function (error) {

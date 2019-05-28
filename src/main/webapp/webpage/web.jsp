@@ -183,7 +183,7 @@
         },
         methods: {
             onClick(event) {
-                $("#content-container").load($(event)[0].index);
+                $("#content-container").load("${pageContext.request.contextPath}/page/"+$(event)[0].index);
             },
             ajaxLogout() {
                 ajaxPost({
@@ -214,7 +214,7 @@
             }
         }
     });
-    $("#content-container").load("device/device");
+    $("#content-container").load("${pageContext.request.contextPath}/page/device/device");
 </script>
 </body>
 </html>

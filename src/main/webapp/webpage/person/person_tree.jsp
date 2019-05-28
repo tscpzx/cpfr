@@ -73,11 +73,11 @@
             },
             onHandleExpand(data, node, tree) {
                 if (data.person_id === -1) {
-                    $("#person_content").load("person/person_tbl");
+                    $("#person_content").load("${pageContext.request.contextPath}/page/person/person_tbl");
                 }
             },
             addPerson() {
-                $("#person_content").load("person/person_add");
+                $("#person_content").load("${pageContext.request.contextPath}/page/person/person_add");
             }
         }
     });

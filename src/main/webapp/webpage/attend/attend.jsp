@@ -19,6 +19,6 @@
 <div id="attend_content" class="scrollbar"></div>
 
 <script type="text/javascript">
-    $("#attend_tree").load("attend/attend_tree");
-    $("#attend_content").load("attend/attend_setting");
+    $("#attend_tree").load("${pageContext.request.contextPath}/page/attend/attend_tree");
+    $("#attend_content").load("${pageContext.request.contextPath}/page/attend/attend_setting");
 </script>

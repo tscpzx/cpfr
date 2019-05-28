@@ -57,6 +57,6 @@
 <div id="person_content" class="scrollbar"></div>
 
 <script type="text/javascript">
-    $("#person_tree").load("person/person_tree");
-    $("#person_content").load("person/person_tbl");
+    $("#person_tree").load("${pageContext.request.contextPath}/page/person/person_tree");
+    $("#person_content").load("${pageContext.request.contextPath}/page/person/person_tbl");
 </script>

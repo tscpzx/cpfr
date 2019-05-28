@@ -72,7 +72,7 @@
             },
             onHandleExpand(data, node, tree) {
                 if (data.group_id === -1) {
-                    $("#group_content").load("group/group_tbl");
+                    $("#group_content").load("${pageContext.request.contextPath}/page/group/group_tbl");
                 }
             },
             addGroup() {
@@ -107,7 +107,7 @@
                 group_name: groupName
             },
             success: function (result) {
-                $("#content-container").load("group/group");
+                $("#content-container").load("${pageContext.request.contextPath}/page/group/group");
             }
         });
     }

@@ -69,9 +69,9 @@
             },
             onHandleExpand(data, node, tree) {
                 if (data.id === -2) {
-                    $("#device_content").load("device/device_tbl");
+                    $("#device_content").load("${pageContext.request.contextPath}/page/device/device_tbl");
                 } else if (data.id === -1) {
-                    $("#device_content").load("device/device_inact_tbl");
+                    $("#device_content").load("${pageContext.request.contextPath}/page/device/device_inact_tbl");
                 }
             }
         }

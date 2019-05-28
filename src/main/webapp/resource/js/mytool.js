@@ -9,13 +9,13 @@ function layTip(msg) {
 
 //icon 0 警告 1 打钩 2 打叉 3 问号 4 锁头
 function layAlert1(msg) {
-    if(msg==="操作成功")
-    return top.layer.msg(msg, {
-         icon: 1
-        , shade: 0.01
-        , time: 3000
-    });
-    else  return top.layer.msg(msg, {
+    if (msg === "操作成功")
+        return top.layer.msg(msg, {
+            icon: 1
+            , shade: 0.01
+            , time: 3000
+        });
+    else return top.layer.msg(msg, {
         icon: 0
         , shade: 0.01
         , time: 3000
@@ -72,10 +72,11 @@ function elmMessage1(msg) {
     new Vue().$message.error(msg);
 }
 
-function elmDialog(msg,fun) {
+function elmDialog(msg, fun) {
     return new Vue().$confirm(msg, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
+        showClose: false,
         type: 'warning'
     }).then(fun).catch(() => {
     });
@@ -125,12 +126,10 @@ function ajaxGet(jsonObj) {
     ajax("GET", jsonObj);
 }
 
-var elm;
 
 function checkSession(data) {
     if (102 === data.code) {
-        if (elm) return false;
-        elm = elmDialog(data.message + ',是否重新登录?',function () {
+        elmDialog(data.message + ',是否重新登录?', function () {
             top.window.location.href = "/cpfr/";
         });
 
@@ -169,25 +168,18 @@ $.arrayIntersect = function (a, b) {
     );
 };
 
-function arrayRemoveObj(_arr,_obj) {
+function arrayRemoveObj(_arr, _obj) {
     var length = _arr.length;
-    for(var i = 0; i < length; i++)
-    {
-        if(_arr[i] === _obj)
-        {
-            if(i === 0)
-            {
+    for (var i = 0; i < length; i++) {
+        if (_arr[i] === _obj) {
+            if (i === 0) {
                 _arr.shift(); //删除并返回数组的第一个元素
                 return;
-            }
-            else if(i === length-1)
-            {
+            } else if (i === length - 1) {
                 _arr.pop();  //删除并返回数组的最后一个元素
                 return;
-            }
-            else
-            {
-                _arr.splice(i,1); //删除下标为i的元素
+            } else {
+                _arr.splice(i, 1); //删除下标为i的元素
                 return;
             }
         }

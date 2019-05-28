@@ -59,10 +59,10 @@
         },
         methods: {
             addSetting() {
-                $("#attend_content").load("attend/attend_setting");
+                $("#attend_content").load("${pageContext.request.contextPath}/page/attend/attend_setting");
             },
             ruleList() {
-                $("#attend_content").load("attend/attend_list");
+                $("#attend_content").load("${pageContext.request.contextPath}/page/attend/attend_list");
             },
             onNodeClick(data) {
                 if (data.attend_id !== -1) {
@@ -71,7 +71,7 @@
             },
             onHandleExpand(data, node, tree) {
                 if (data.person_id === -1) {
-                    $("#attend_content").load("attend/attend_setting");
+                    $("#attend_content").load("${pageContext.request.contextPath}/page/attend/attend_setting");
                 }
             }
         }

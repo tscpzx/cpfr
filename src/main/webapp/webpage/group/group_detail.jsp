@@ -235,7 +235,7 @@
                             for (var index in groupList) {
                                 if (data.group.group_id === groupList[index].group_id) {
                                     groupList.splice(index, 1);
-                                    $("#group_content").load("group/group_tbl");
+                                    $("#group_content").load("${pageContext.request.contextPath}/page/group/group_tbl");
                                 }
                             }
                         }

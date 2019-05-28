@@ -188,7 +188,7 @@
             success: function (result) {
                 layTip(result.message);
                 if (0 === result.code) {
-                    $("#content-container").load("attend/attend");
+                    $("#content-container").load("${pageContext.request.contextPath}/page/attend/attend");
 
                 }
             }

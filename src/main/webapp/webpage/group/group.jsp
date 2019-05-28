@@ -19,6 +19,6 @@
 <div id="group_content" class="scrollbar"></div>
 
 <script type="text/javascript">
-    $("#group_tree").load("group/group_tree");
-    $("#group_content").load("group/group_tbl");
+    $("#group_tree").load("${pageContext.request.contextPath}/page/group/group_tree");
+    $("#group_content").load("${pageContext.request.contextPath}/page/group/group_tbl");
 </script>

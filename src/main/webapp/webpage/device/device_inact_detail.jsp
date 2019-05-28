@@ -104,7 +104,7 @@
                         success: function (result) {
                             layAlert1(result.message);
                             if (0 === result.code) {
-                                $("#device_tree").load("device/device_tree");
+                                $("#device_tree").load("${pageContext.request.contextPath}/page/device/device_tree");
                                 $("#device_content").load("${pageContext.request.contextPath}/device/inact_detail?device_sn=" + '${data.device_sn}');
                             }
                         }

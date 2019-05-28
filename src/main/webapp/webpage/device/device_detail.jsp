@@ -316,8 +316,8 @@
             data: data,
             success: function (result) {
                 layTip(result.message);
-                $("#device_tree").load("device/device_tree");
-                $("#device_content").load("device/device_tbl");
+                $("#device_tree").load("${pageContext.request.contextPath}/page/device/device_tree");
+                $("#device_content").load("${pageContext.request.contextPath}/page/device/device_tbl");
             }
         })
     }
