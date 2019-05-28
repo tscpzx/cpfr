@@ -1,11 +1,11 @@
 package com.ts.cpfr.service.impl;
 
-import com.ts.cpfr.dao.app.FaceAppDao;
 import com.ts.cpfr.dao.DeviceDao;
 import com.ts.cpfr.dao.GrantDao;
 import com.ts.cpfr.dao.GroupDao;
 import com.ts.cpfr.dao.PersonDao;
 import com.ts.cpfr.dao.TableDao;
+import com.ts.cpfr.dao.app.FaceAppDao;
 import com.ts.cpfr.ehcache.AppMemory;
 import com.ts.cpfr.entity.AppDevice;
 import com.ts.cpfr.service.FaceAppService;
@@ -262,22 +262,26 @@ public class FaceFaceAppServiceImpl implements FaceAppService {
     public void downloadApk(ParamData pd, HttpServletRequest request, HttpServletResponse response) throws Exception {
         BufferedInputStream bis = null;
         BufferedOutputStream fos = null;
-        String apkPath = "";
         try {
             String applicationId = pd.getString("application_id");
-            apkPath = request.getServletContext().getRealPath(SystemConfig.DOWNLOAD_APK_PATH + applicationId + ".apk");
-            File file = new File(apkPath);
-            bis = new BufferedInputStream(new FileInputStream(file));
-            fos = new BufferedOutputStream(response.getOutputStream());
+            File dir = new File(SystemConfig.DOWNLOAD_APK_PATH);
+            File[] files = dir.listFiles();//绝对路径
+            for (File file : files) {
+                if (file.getName().contains(applicationId)) {
+                    bis = new BufferedInputStream(new FileInputStream(file));
+                    fos = new BufferedOutputStream(response.getOutputStream());
 
-            response.setContentLength(bis.available());
+                    response.setContentLength(bis.available());
 
-            byte[] buffer = new byte[1024 * 10];
-            int length;
-            while ((length = bis.read(buffer)) > 0) {
-                fos.write(buffer, 0, length);
+                    byte[] buffer = new byte[1024 * 10];
+                    int length;
+                    while ((length = bis.read(buffer)) > 0) {
+                        fos.write(buffer, 0, length);
+                    }
+                    fos.flush();
+                }
             }
-            fos.flush();
+
 
         } finally {
             if (bis != null)
@@ -289,7 +293,15 @@ public class FaceFaceAppServiceImpl implements FaceAppService {
 
     @Override
     public ResultData<ParamData> getLastVersionInfo(ParamData pd) {
-        pd.put("version", CommUtil.getProperties(pd.getString("application_id")));
+        File dir = new File(SystemConfig.DOWNLOAD_APK_PATH);
+        File[] files = dir.listFiles();//绝对路径
+        for (File file : files) {
+            String fileName = file.getName();
+            if (fileName.contains(pd.getString("application_id"))) {
+                String version = fileName.split("_")[1].split(".")[0];
+                pd.put("verson", version);
+            }
+        }
         pd.put("description", "暂无");
         return new ResultData<>(HandleEnum.SUCCESS, pd);
     }
