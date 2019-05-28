@@ -253,11 +253,8 @@ public class FaceFaceAppServiceImpl implements FaceAppService {
 
     @Transactional
     @Override
-    public ResultData<List<ParamData>> comparePersonDownlNum(ParamData pd) {
-        String personIds = pd.getString("person_ids");
-        String[] personIdArr = personIds.split(",");
-        pd.put("person_downl_num", personIdArr.length);
-        mDeviceDao.updateDevicePersonDownlNum(pd);
+    public ResultData<List<ParamData>> syncPerson(ParamData pd) {
+        mFaceAppDao.updateGrantSyncStatus(pd);
         return new ResultData<>(HandleEnum.SUCCESS, mFaceAppDao.selectPersonListNoIn(pd));
     }
 
@@ -321,13 +318,6 @@ public class FaceFaceAppServiceImpl implements FaceAppService {
     @Override
     public ResultData<ParamData> uploadDeviceInfo(ParamData pd) {
         if (mFaceAppDao.updateDeviceConfig(pd))
-            return new ResultData<>(HandleEnum.SUCCESS);
-        return new ResultData<>(HandleEnum.FAIL);
-    }
-
-    @Override
-    public ResultData<ParamData> uploadSyncStatus(ParamData pd) {
-        if (mFaceAppDao.updateGrantSyncStatus(pd))
             return new ResultData<>(HandleEnum.SUCCESS);
         return new ResultData<>(HandleEnum.FAIL);
     }

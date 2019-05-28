@@ -17,7 +17,6 @@
 			                             `activate_time` datetime NOT NULL COMMENT '激活时间',
 			                             `register_time` datetime NOT NULL COMMENT '注册时间',
 			                             `online` tinyint(4) NOT NULL DEFAULT '0' COMMENT '设备是否在线 0:不在线 1:在线',
-			                             `person_downl_num` int(8) NOT NULL DEFAULT '0' COMMENT '客户端下载人数',
 			                             `lmt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
 			                             PRIMARY KEY (`device_id`),
 			                             UNIQUE KEY `device_sn` (`device_sn`),

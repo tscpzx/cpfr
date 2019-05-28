@@ -45,8 +45,6 @@ public interface DeviceDao {
 
     int selectDeviceStatusByDeviceSn(ParamData pd);
 
-    boolean updateDevicePersonDownlNum(ParamData pd);
-
     ParamData selectDeviceGrantKey(ParamData pd);
 
     boolean insertDeviceGrantPerson(ParamData pd);

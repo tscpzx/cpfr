@@ -37,7 +37,7 @@ public interface FaceAppService {
 
     ResultData<ParamData> addPersonWithGrant(ParamData pd) throws Exception;
 
-    ResultData<List<ParamData>> comparePersonDownlNum(ParamData pd);
+    ResultData<List<ParamData>> syncPerson(ParamData pd);
 
     void downloadApk(ParamData pd,HttpServletRequest request, HttpServletResponse response) throws Exception;
 
@@ -48,6 +48,4 @@ public interface FaceAppService {
     ResultData<List<ParamData>> getPersonList(ParamData pd);
 
     ResultData<ParamData> uploadDeviceInfo(ParamData pd);
-
-    ResultData<ParamData> uploadSyncStatus(ParamData pd);
 }

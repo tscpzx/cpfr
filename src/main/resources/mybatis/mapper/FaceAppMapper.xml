@@ -44,7 +44,7 @@
 	</update>
 
 	<select id="selectPersonListNoIn" parameterType="pd" resultType="pd">
-		SELECT p.* FROM tbl_#{wid}_grant g RIGHT JOIN tbl_#{wid}_person p ON g.person_id=p.person_id WHERE g.device_id=(SELECT device_id FROM tbl_#{wid}_device WHERE device_sn=#{device_sn}) AND p.status &lt;&gt; 3 AND p.person_id NOT IN(${person_ids})
+		SELECT p.* FROM tbl_#{wid}_grant g RIGHT JOIN tbl_#{wid}_person p ON g.person_id=p.person_id WHERE g.device_id=(SELECT device_id FROM tbl_#{wid}_device WHERE device_sn=#{device_sn}) AND p.status &lt;&gt; 3 AND p.person_id NOT IN(${person_ids_success})
 	</select>
 
 	<select id="selectPerson" parameterType="pd" resultType="pd">
@@ -57,6 +57,7 @@
     </update>
 
 	<update id="updateGrantSyncStatus" parameterType="pd">
-		update bl_#{wid}_grant set sync_status=#{sync_status} where device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn}) and person_id=#{person_id}
+		update tbl_#{wid}_grant set sync_status=1 where device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn}) and person_id in (#{person_ids_success});
+		update tbl_#{wid}_grant set sync_status=2 where device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn}) and person_id in (#{person_ids_fail});
 	</update>
 </mapper>

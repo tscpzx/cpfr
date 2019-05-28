@@ -132,5 +132,4 @@
 <spring:message code="attend_report" var="attend_report"/>
 <spring:message code="attend_setting" var="attend_setting"/>
 <spring:message code="patch_upload" var="patch_upload"/>
-<spring:message code="person_downl_num" var="person_downl_num"/>
 <spring:message code="switch_language" var="switch_language"/>

@@ -113,10 +113,10 @@ public class FaceAppController extends AppBaseController {
     }
 
     @ResponseBody
-    @RequestMapping("/compare_downl_num")
-    public ResultData<List<ParamData>> compareDownlNum(HttpServletRequest request) {
+    @RequestMapping("/sync_person")
+    public ResultData<List<ParamData>> syncPerson(HttpServletRequest request) {
         try {
-            return mFaceAppService.comparePersonDownlNum(paramDataInit());
+            return mFaceAppService.syncPerson(paramDataInit());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
@@ -174,17 +174,6 @@ public class FaceAppController extends AppBaseController {
     public ResultData<ParamData> uploadDeviceInfo(HttpServletRequest request, HttpServletResponse response) {
         try {
             return mFaceAppService.uploadDeviceInfo(paramDataInit());
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
-        }
-    }
-
-    @ResponseBody
-    @RequestMapping("/upload_sync_status")
-    public ResultData<ParamData> uploadSyncStatus(HttpServletRequest request, HttpServletResponse response) {
-        try {
-            return mFaceAppService.uploadSyncStatus(paramDataInit());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());

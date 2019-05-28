@@ -22,9 +22,6 @@
     <el-form-item label="${last_offline}">
         <span>{{device.last_offline_time|formatDate}}</span>
     </el-form-item>
-    <el-form-item label="${person_downl_num}">
-        <span>{{device.person_downl_num}}</span>
-    </el-form-item>
     <el-form-item label="同步成功">
         <span>{{device.sync_success}}</span>
     </el-form-item>
