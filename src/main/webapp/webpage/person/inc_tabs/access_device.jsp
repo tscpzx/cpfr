@@ -16,13 +16,20 @@
 
 <template>
     <el-table :data="tableData" style="width: 100%" stripe>
-        <el-table-column prop="grant_id" label="权限ID" v-if="show">
+        <el-table-column prop="grant_id" label="权限ID" v-if="show" min-width="10%">
         </el-table-column>
-        <el-table-column prop="device_id" label="${device_id}" min-width="15%">
+        <el-table-column prop="device_id" label="${device_id}" min-width="10%">
         </el-table-column>
         <el-table-column prop="device_name" label="${device_name}" min-width="15%">
         </el-table-column>
-        <el-table-column prop="pass_number" label="${pass_time}" min-width="20%">
+        <el-table-column prop="sync_status" label="同步状态" min-width="10%" >
+            <template slot-scope="scope">
+                <span v-if="scope.row.sync_status===0">未同步</span>
+                <span v-if="scope.row.sync_status===1">同步成功</span>
+                <span v-if="scope.row.sync_status===2">同步失败</span>
+            </template>
+        </el-table-column>
+        <el-table-column prop="pass_number" label="${pass_time}" min-width="15%">
             <template slot-scope="scope">
                 <span v-if="scope.row.pass_number===9999999999">${unlimited_number_time}</span>
                 <span v-else>{{scope.row.pass_number}}</span>

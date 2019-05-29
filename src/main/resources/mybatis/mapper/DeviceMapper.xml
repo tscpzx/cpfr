@@ -74,7 +74,7 @@
 	</update>
 
 	<select id="selectAccessDeviceListByPersonId" parameterType="pd" resultType="pd">
-		SELECT g.grant_id,d.device_id,d.device_name,g.pass_number,g.pass_start_time,g.pass_end_time FROM tbl_#{wid}_device d right JOIN (SELECT grant_id,device_id,pass_number,pass_start_time,pass_end_time FROM tbl_#{wid}_grant WHERE person_id = #{person_id} and status &lt;&gt; 3 )g ON g.device_id=d.device_id
+		SELECT g.grant_id,d.device_id,d.device_name,g.pass_number,g.pass_start_time,g.pass_end_time,g.sync_status FROM tbl_#{wid}_device d right JOIN (SELECT grant_id,device_id,pass_number,pass_start_time,pass_end_time,sync_status FROM tbl_#{wid}_grant WHERE person_id = #{person_id} and status &lt;&gt; 3 )g ON g.device_id=d.device_id
 		<where>
 			<if test="keyword!=null and keyword!=''">
 				and POSITION(#{keyword} IN d.device_name)
