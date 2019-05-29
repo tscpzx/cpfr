@@ -101,6 +101,10 @@
                             <el-menu-item index="person/person_batch_upload" @click="onClick($event)">${patch_upload}</el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
+                    <el-menu-item index="grant/grant" @click="onClick($event)">
+                        <i class="el-icon-printer"></i>
+                        <span slot="title">权限管理</span>
+                    </el-menu-item>
                     <el-menu-item index="group/group" @click="onClick($event)">
                         <i class="el-icon-menu"></i>
                         <span slot="title">${group_management}</span>
@@ -112,17 +116,16 @@
 
                     <el-submenu index="attend">
                         <template slot="title">
-                            <i class="el-icon-printer"></i>
+                            <i class="el-icon-bell"></i>
                             <span>${attend_management}</span>
                         </template>
                         <el-menu-item-group>
                             <el-menu-item index="attend/attend_detail" @click="onClick($event)">${attend_details}
                             </el-menu-item>
-                            <el-menu-item index="attend/attend" @click="onClick($event)">${attend_setting}
+                         <%--   <el-menu-item index="attend/attend" @click="onClick($event)">${attend_setting}
                             </el-menu-item>
                             <el-menu-item index="attend/attend_report" @click="onClick($event)">${attend_report}
-                            </el-menu-item>
-                            <%--<el-menu-item index="1-2">批量上传</el-menu-item>--%>
+                            </el-menu-item>--%>
                         </el-menu-item-group>
                     </el-submenu>
 

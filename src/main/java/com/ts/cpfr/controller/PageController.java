@@ -35,7 +35,7 @@ public class PageController extends WebBaseController {
         return new ModelAndView(request.getServletPath());
     }
 
-    @RequestMapping(value = {"/page/device/*", "/page/person/*", "/page/group/*", "/page/record/*","/page/attend/*"})
+    @RequestMapping(value = {"/page/device/*", "/page/person/*", "/page/grant/*", "/page/group/*", "/page/record/*","/page/attend/*"})
     public ModelAndView page2(HttpServletRequest request, HttpServletResponse response) {
         String[] pages = request.getServletPath().split("page");
         return new ModelAndView(pages[1]);

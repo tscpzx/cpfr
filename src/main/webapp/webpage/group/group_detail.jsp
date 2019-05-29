@@ -30,7 +30,7 @@
     }
 
     .el-date-editor--datetimerange.el-input__inner {
-        width: 350px;
+        width: 450px;
     }
     .el-transfer-panel .el-transfer-panel__header .el-checkbox .el-checkbox__label {
         font-size: 14px;

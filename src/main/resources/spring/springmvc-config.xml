@@ -37,13 +37,14 @@
 
 	<!-- 对静态资源文件的访问  restful-->
 	<mvc:resources mapping="/resource/**" location="/resource/"/>
-	<!--<mvc:resources mapping="/upload/**" location="/upload/"/>-->
+	<mvc:resources mapping="/html/**" location="/html/"/>
 
 	<!-- 访问拦截  -->
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**"/>
 			<mvc:exclude-mapping path="/resource/**"/>
+			<mvc:exclude-mapping path="/html/**"/>
 			<mvc:exclude-mapping path="/login"/>
 			<mvc:exclude-mapping path="/web"/>
 			<mvc:exclude-mapping path="/register"/>
