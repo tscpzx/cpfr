@@ -271,7 +271,6 @@ public class FaceFaceAppServiceImpl implements FaceAppService {
                     bis = new BufferedInputStream(new FileInputStream(file));
                     fos = new BufferedOutputStream(response.getOutputStream());
 
-                    System.out.println("bis.available()"+bis.available());
                     response.setContentLength(bis.available());
                     //1.设置文件ContentType类型，这样设置，会自动判断下载文件类型
                     response.setContentType("multipart/form-data");
@@ -282,7 +281,6 @@ public class FaceFaceAppServiceImpl implements FaceAppService {
                     int length;
                     while ((length = bis.read(buffer)) > 0) {
                         fos.write(buffer, 0, length);
-                        System.out.println("write"+length);
                     }
                     fos.flush();
                 }
