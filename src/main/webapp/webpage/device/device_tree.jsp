@@ -85,11 +85,12 @@
         data: {},
         success: function (result) {
             for (var i = 0; i < result.data.list.length; i++) {
-                vmDeviceTree.items[1].children[i] = {
-                    device_id: -1,
+                var item = {
+                    device_id:-3,
                     device_name: result.data.list[i].group_name,
                     children: result.data.list[i].device_list
                 }
+                vmDeviceTree.items[1].children.push(item);
             }
         }
     });
