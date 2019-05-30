@@ -122,10 +122,10 @@
                         <el-menu-item-group>
                             <el-menu-item index="attend/attend_detail" @click="onClick($event)">${attend_details}
                             </el-menu-item>
-                         <%--   <el-menu-item index="attend/attend" @click="onClick($event)">${attend_setting}
+                            <el-menu-item index="attend/attend" @click="onClick($event)">${attend_setting}
                             </el-menu-item>
                             <el-menu-item index="attend/attend_report" @click="onClick($event)">${attend_report}
-                            </el-menu-item>--%>
+                            </el-menu-item>
                         </el-menu-item-group>
                     </el-submenu>
 
