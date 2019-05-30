@@ -224,10 +224,17 @@
                 })
             }, openDialogPerson() {
                 ajaxGet({
-                    url: "${pageContext.request.contextPath}/person/list",
+                    url: "${pageContext.request.contextPath}/person/list_by_group",
                     data: {},
                     success: function (result) {
-                        vmDialogPersonList.items[0].children = result.data.list;
+                        for (var i = 0; i < result.data.list.length; i++) {
+                            vmDialogPersonList.items[i] = {
+                                person_id: -1,
+                                person_name: result.data.list[i].group_name,
+                                children: result.data.list[i].person_list
+                            }
+                        }
+
                         vmDialogPersonList.visible = true;
                     }
                 });
@@ -338,7 +345,15 @@
         },
         methods: {
             onClickAddGrantPerson() {
-                var person_ids = this.$refs.tree.getCheckedKeys().join(",");
+                var person_ids = this.$refs.tree.getCheckedKeys();
+                for (var i = 0; i < person_ids.length; i++) {
+                    if (person_ids[i] === -1) {
+                        person_ids.splice(i, 1);
+                        i--;
+                    }
+                }
+                person_ids = person_ids.toString();
+
                 var pass_number = 9999999999;
                 var pass_start_time = stampToDate(9999999999);
                 var pass_end_time = stampToDate(9999999999);

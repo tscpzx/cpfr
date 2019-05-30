@@ -123,4 +123,8 @@
 		       COUNT(CASE  WHEN sync_status=1 THEN 1 END) sync_success,
 		       COUNT(CASE  WHEN sync_status=2 THEN 2 END) sync_fail FROM tbl_#{wid}_grant WHERE device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn})
 	</select>
+
+	<select id="selectDeviceListByGroupID" parameterType="pd" resultType="pd">
+		SELECT DISTINCT d.device_id,d.device_name,d.device_sn FROM tbl_#{wid}_device d RIGHT JOIN tbl_#{wid}_grant g ON d.device_id = g.device_id WHERE d.group_id=#{group_id}
+	</select>
 </mapper>

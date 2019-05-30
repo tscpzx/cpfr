@@ -9,7 +9,6 @@
                 :props="defaultProps"
                 node-key="person_id"
                 show-checkbox
-                :default-expanded-keys="[-1]"
                 ref="tree"></el-tree>
         <div slot="footer" class="dialog-footer">
             <el-button @click="visible = false">${cancel_lang}</el-button>

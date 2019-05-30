@@ -48,4 +48,6 @@ public interface DeviceDao {
     ParamData selectDeviceGrantKey(ParamData pd);
 
     ParamData selectSyncDownlStatus(ParamData pd);
+
+    List<ParamData> selectDeviceListByGroupID(ParamData ParamData);
 }

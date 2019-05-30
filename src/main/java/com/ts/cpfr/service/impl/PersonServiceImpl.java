@@ -330,7 +330,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public ResultData<ParamData> getListByGroup(ParamData pd) {
-        List<ParamData> groupList = mGroupDao.selectGroupInPeople(pd);
+        List<ParamData> groupList = mGroupDao.selectGroupList(pd);
         ParamData other = new ParamData();
         other.put("group_id", 0);
         other.put("group_name", "未分组");
@@ -342,7 +342,7 @@ public class PersonServiceImpl implements PersonService {
                 ParamData group = new ParamData();
                 group.put("group_id", groupList.get(i).get("group_id"));
                 group.put("group_name", groupList.get(i).get("group_name"));
-                group.put("person_list", mPersonDao.selectPersonByGroup(groupList.get(i)));
+                group.put("person_list", mPersonDao.selectPersonListByGroupID(groupList.get(i)));
                 data.add(group);
             }
             ParamData result = new ParamData();

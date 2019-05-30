@@ -2,6 +2,7 @@ package com.ts.cpfr.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.ts.cpfr.dao.DeviceDao;
+import com.ts.cpfr.dao.GroupDao;
 import com.ts.cpfr.dao.PersonDao;
 import com.ts.cpfr.ehcache.AppMemory;
 import com.ts.cpfr.ehcache.WebMemory;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -44,6 +46,8 @@ public class DeviceServiceImpl implements DeviceService {
     private DeviceDao mDeviceDao;
     @Resource
     private PersonDao mPersonDao;
+    @Resource
+    private GroupDao mGroupDao;
     @Autowired
     private WebMemory memory;
     @Autowired
@@ -199,6 +203,32 @@ public class DeviceServiceImpl implements DeviceService {
         }
 
         return new ResultData<>(HandleEnum.SUCCESS, "当前已是最新系统");
+    }
+
+    @Override
+    public ResultData<ParamData> getListByGroup(ParamData pd) {
+        List<ParamData> groupList = mGroupDao.selectGroupList(pd);
+        ParamData other = new ParamData();
+        other.put("group_id", 0);
+        other.put("group_name", "未分组");
+        groupList.add(other);
+        if (groupList.size()!=0) {
+            List<ParamData> data = new ArrayList<>();
+            for (int i = 0; i < groupList.size(); i++) {
+                groupList.get(i).put("wid", pd.get("wid"));
+                ParamData group = new ParamData();
+                group.put("group_id", groupList.get(i).get("group_id"));
+                group.put("group_name", groupList.get(i).get("group_name"));
+                group.put("device_list", mDeviceDao.selectDeviceListByGroupID(groupList.get(i)));
+                data.add(group);
+            }
+            ParamData result = new ParamData();
+            result.put("list", data);
+            return new ResultData<>(HandleEnum.SUCCESS, result);
+        } else {
+            return new ResultData<>(HandleEnum.FAIL, "暂无分组");
+        }
+
     }
 
 }

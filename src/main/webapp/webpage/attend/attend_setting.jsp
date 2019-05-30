@@ -213,6 +213,7 @@
                 for (var i = 0; i < list.length; i++) {
                     if (list[i] === -1) {
                         list.splice(i, 1);
+                        i--;
                     }
                 }
                 $("#peopleNum").html("已选人数:" + list.length);

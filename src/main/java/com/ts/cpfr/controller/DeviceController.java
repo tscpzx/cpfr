@@ -131,4 +131,15 @@ public class DeviceController extends WebBaseController {
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
         }
     }
+
+    @ResponseBody
+    @RequestMapping("/list_by_group")
+    public ResultData<ParamData> listByGroup(HttpServletRequest request){
+        try {
+            return mDeviceService.getListByGroup(paramDataInit());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
 }

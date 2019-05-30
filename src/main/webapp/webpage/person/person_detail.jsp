@@ -439,7 +439,15 @@
         },
         methods: {
             onClickAddGrantDevice() {
-                var device_ids = this.$refs.tree.getCheckedKeys().join(",");
+                var device_ids = this.$refs.tree.getCheckedKeys();
+                for (var i = 0; i < device_ids.length; i++) {
+                    if (device_ids[i] === -1) {
+                        device_ids.splice(i, 1);
+                        i--;
+                    }
+                }
+                device_ids = device_ids.toString();
+
                 var pass_number = 9999999999;
                 var pass_start_time = stampToDate(9999999999);
                 var pass_end_time = stampToDate(9999999999);
@@ -468,10 +476,16 @@
 
     function openDialogDevice() {
         ajaxGet({
-            url: "${pageContext.request.contextPath}/device/list",
+            url: "${pageContext.request.contextPath}/device/list_by_group",
             data: {},
             success: function (result) {
-                vmDialogDeviceList.items[0].children = result.data.list;
+                for (var i = 0; i < result.data.list.length; i++) {
+                    vmDialogDeviceList.items[i] = {
+                        device_id: -1,
+                        device_name: result.data.list[i].group_name,
+                        children: result.data.list[i].device_list
+                    }
+                }
                 vmDialogDeviceList.visible = true;
             }
         });

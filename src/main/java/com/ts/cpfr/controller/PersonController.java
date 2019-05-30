@@ -60,8 +60,8 @@ public class PersonController extends WebBaseController {
     public ResultData<ParamData> add(@RequestParam("file") CommonsMultipartFile file, HttpServletRequest request) {
         try {
             ParamData pd = paramDataInit();
-            pd.put("person_name",request.getParameter("person_name"));
-            pd.put("emp_number",request.getParameter("emp_number"));
+            pd.put("person_name", request.getParameter("person_name"));
+            pd.put("emp_number", request.getParameter("emp_number"));
             return mPersonService.addPerson(file, pd);
         } catch (Exception e) {
             e.printStackTrace();
@@ -91,9 +91,9 @@ public class PersonController extends WebBaseController {
     public ResultData<ParamData> updatePersonInfoWithFile(@RequestParam("file") CommonsMultipartFile file, HttpServletRequest request) {
         try {
             ParamData pd = paramDataInit();
-            pd.put("person_name",request.getParameter("person_name"));
-            pd.put("emp_number",request.getParameter("emp_number"));
-            pd.put("person_id",request.getParameter("person_id"));
+            pd.put("person_name", request.getParameter("person_name"));
+            pd.put("emp_number", request.getParameter("emp_number"));
+            pd.put("person_id", request.getParameter("person_id"));
             return mPersonService.updatePerson(file, pd);
         } catch (Exception e) {
             e.printStackTrace();
@@ -177,14 +177,14 @@ public class PersonController extends WebBaseController {
         }
     }
 
-   @ResponseBody
+    @ResponseBody
     @RequestMapping("/list_by_group")
-    public ResultData<ParamData> listByGroup(HttpServletRequest request){
-       try {
-           return mPersonService.getListByGroup(paramDataInit());
-       } catch (Exception e) {
-           e.printStackTrace();
-           return new ResultData<>(HandleEnum.FAIL, e.getMessage());
-       }
-   }
+    public ResultData<ParamData> listByGroup(HttpServletRequest request) {
+        try {
+            return mPersonService.getListByGroup(paramDataInit());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
 }
