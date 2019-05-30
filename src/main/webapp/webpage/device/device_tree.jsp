@@ -24,7 +24,7 @@
              :props="defaultProps"
              @node-click="onNodeClick"
              @node-expand="onHandleExpand"
-             node-key="id"
+             node-key="device_id"
              :default-expanded-keys="[-2]"
              ref="tree">
       <span class="custom-tree-node" slot-scope="{ node, data }">
@@ -35,31 +35,26 @@
 </div>
 
 <script type="text/javascript">
-    ajaxInActDeviceList();
-    ajaxAllDeviceList();
-
     var vmDeviceTree = new Vue({
         el: "#device",
         data: {
             items: [{
-                id: -1,
+                device_id: -1,
                 device_name: '${device_not_activated}',
                 children: []
             }, {
-                id: -2,
+                device_id: -2,
                 device_name: '${activated_device}',
                 children: []
             }],
             defaultProps: {
                 children: 'children',
                 label: 'device_name'
-            },
-            device_length: '',
-            inact_device_length: ''
+            }
         },
         methods: {
             onNodeClick(data) {
-                if (data.id !== -1 && data.id !== -2) {
+                if (data.device_id > 0) {
                     if (data.status === 0) {
                         $("#device_content").load("${pageContext.request.contextPath}/device/inact_detail?device_sn=" + data.device_name);
                     } else {
@@ -68,34 +63,34 @@
                 }
             },
             onHandleExpand(data, node, tree) {
-                if (data.id === -2) {
+                if (data.device_id === -2) {
                     $("#device_content").load("${pageContext.request.contextPath}/page/device/device_tbl");
-                } else if (data.id === -1) {
+                } else if (data.device_id === -1) {
                     $("#device_content").load("${pageContext.request.contextPath}/page/device/device_inact_tbl");
                 }
             }
         }
     });
 
-    function ajaxInActDeviceList() {
-        ajaxGet({
-            url: "${pageContext.request.contextPath}/device/inact_list",
-            data: {},
-            success: function (result) {
-                vmDeviceTree.items[0].children = result.data.list;
-                vmDeviceTree.inact_device_length = result.data.list.length;
-            }
-        });
-    }
+    ajaxGet({
+        url: "${pageContext.request.contextPath}/device/inact_list",
+        data: {},
+        success: function (result) {
+            vmDeviceTree.items[0].children = result.data.list;
+        }
+    });
 
-    function ajaxAllDeviceList() {
-        ajaxGet({
-            url: "${pageContext.request.contextPath}/device/list",
-            data: {},
-            success: function (result) {
-                vmDeviceTree.items[1].children = result.data.list;
-                vmDeviceTree.device_length = result.data.list.length;
+    ajaxGet({
+        url: "${pageContext.request.contextPath}/device/list_by_group",
+        data: {},
+        success: function (result) {
+            for (var i = 0; i < result.data.list.length; i++) {
+                vmDeviceTree.items[1].children[i] = {
+                    device_id: -1,
+                    device_name: result.data.list[i].group_name,
+                    children: result.data.list[i].device_list
+                }
             }
-        });
-    }
+        }
+    });
 </script>

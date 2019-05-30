@@ -30,7 +30,7 @@
 
         <template>
             <el-table :data="tableData" style="width: 100%" stripe>
-                <el-table-column prop="id" label="ID">
+                <el-table-column prop="device_id" label="ID">
                 </el-table-column>
                 <el-table-column prop="device_name" label="${devise_serial_number}">
                 </el-table-column>
