@@ -60,11 +60,11 @@
 		<if test="list != null and list.size() >0">
 			UPDATE tbl_#{wid}_grant
 			SET sync_status = CASE person_id
-			<foreach collection="list" item="data" open=" " separator=" " close=" ">
+			<foreach collection="list" item="data">
 				WHEN #{data.person_id} THEN #{data.sync_status}
 			</foreach>
 			END
-			WHERE person_id IN (#{person_ids}) and device_id=(SELECT device_id FROM tbl_#{wid}_device WHERE device_sn=#{device_sn})
+			WHERE person_id IN (${person_ids}) and device_id=(SELECT device_id FROM tbl_#{wid}_device WHERE device_sn=#{device_sn})
 		</if>
 	</update>
 
