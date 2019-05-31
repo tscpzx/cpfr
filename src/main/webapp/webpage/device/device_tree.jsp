@@ -81,17 +81,10 @@
     });
 
     ajaxGet({
-        url: "${pageContext.request.contextPath}/device/list_by_group",
+        url: "${pageContext.request.contextPath}/device/list",
         data: {},
         success: function (result) {
-            for (var i = 0; i < result.data.list.length; i++) {
-                var item = {
-                    device_id:-3,
-                    device_name: result.data.list[i].group_name,
-                    children: result.data.list[i].device_list
-                }
-                vmDeviceTree.items[1].children.push(item);
-            }
+            vmDeviceTree.items[1].children = result.data.list;
         }
     });
 </script>

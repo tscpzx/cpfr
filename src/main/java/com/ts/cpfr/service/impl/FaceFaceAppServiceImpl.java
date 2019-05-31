@@ -315,8 +315,7 @@ public class FaceFaceAppServiceImpl implements FaceAppService {
 
     @Override
     public ResultData<ParamData> getLastVersionInfo(ParamData pd) {
-//        File dir = new File(SystemConfig.DOWNLOAD_APK_PATH);
-        File dir = new File("F:\\WeChat Files\\WeChat Files\\qq771613512\\FileStorage\\File\\2019-05");
+        File dir = new File(SystemConfig.DOWNLOAD_APK_PATH);
         File[] files = dir.listFiles();//绝对路径
         ParamData data = new ParamData();
         data.put("version", "-1");

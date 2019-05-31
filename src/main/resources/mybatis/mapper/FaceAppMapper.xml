@@ -67,4 +67,8 @@
 			WHERE person_id IN (#{person_ids}) and device_id=(SELECT device_id FROM tbl_#{wid}_device WHERE device_sn=#{device_sn})
 		</if>
 	</update>
+
+	<update id="updateDeviceConfig" parameterType="pd">
+		update tbl_#{wid}_device_config set app_version=#{app_version} where device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn})
+	</update>
 </mapper>

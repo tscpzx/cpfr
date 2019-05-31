@@ -114,14 +114,10 @@
 		select arcface_appid,arcface_sdkkey,arcface_activekey,baidu_tts_appid,baidu_tts_appkey,baidu_tts_secretkey from tbl_#{wid}_device_config where device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn})
 	</select>
 
-	<update id="updateDeviceConfig" parameterType="pd">
-		update tbl_#{wid}_device_config set app_version=#{app_version} where device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn})
-	</update>
-
 	<select id="selectSyncDownlStatus" parameterType="pd" resultType="pd">
 		SELECT COUNT(CASE  WHEN sync_status=0 THEN 0 END) without_sync,
 		       COUNT(CASE  WHEN sync_status=1 THEN 1 END) sync_success,
-		       COUNT(CASE  WHEN sync_status=2 THEN 2 END) sync_fail FROM tbl_#{wid}_grant WHERE device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn})
+		       COUNT(CASE  WHEN sync_status in (2,3,4,5) THEN 2 END) sync_fail FROM tbl_#{wid}_grant WHERE device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn}) and status &lt;&gt; 3
 	</select>
 
 	<select id="selectDeviceListByGroupID" parameterType="pd" resultType="pd">
