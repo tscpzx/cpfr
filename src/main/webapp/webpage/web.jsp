@@ -109,7 +109,7 @@
                         <i class="el-icon-menu"></i>
                         <span slot="title">${group_management}</span>
                     </el-menu-item>
-                    <el-menu-item index="record/record_tbl" @click="onClick($event)">
+                    <el-menu-item index="record/record" @click="onClick($event)">
                         <i class="el-icon-document"></i>
                         <span slot="title">${record_management}</span>
                     </el-menu-item>

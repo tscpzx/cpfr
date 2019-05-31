@@ -94,6 +94,11 @@
 
 
 <script type="text/javascript">
+    var vDevice_id = null;
+    if ("undefined" !=${model.device_id}) {
+        vDevice_id =
+        ${model.device_id}
+    }
     var vm = new Vue({
         el: "#record_tbl",
         data: {
@@ -143,7 +148,7 @@
                                 layAlert1(result.message);
                                 ajaxRecordList({
                                     pageNum: vm.currentPage,
-                                    pageSize: vm.pageSize
+                                    pageSize: vm.pageSize,
                                 });
                             }
                         });
@@ -158,7 +163,7 @@
                             layAlert1(result.message);
                             ajaxRecordList({
                                 pageNum: vm.currentPage,
-                                pageSize: vm.pageSize
+                                pageSize: vm.pageSize,
                             });
                         }
                     });
@@ -193,7 +198,8 @@
 
     ajaxRecordList({
         pageNum: vm.currentPage,
-        pageSize: vm.pageSize
+        pageSize: vm.pageSize,
+        device_id: vDevice_id
     });
 
     function ajaxRecordList(data) {

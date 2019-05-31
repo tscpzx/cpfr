@@ -38,6 +38,6 @@ public class PageController extends WebBaseController {
     @RequestMapping(value = {"/page/device/*", "/page/person/*", "/page/grant/*", "/page/group/*", "/page/record/*","/page/attend/*"})
     public ModelAndView page2(HttpServletRequest request, HttpServletResponse response) {
         String[] pages = request.getServletPath().split("page");
-        return new ModelAndView(pages[1]);
+        return new ModelAndView(pages[1],"model",paramDataInit());
     }
 }
