@@ -80,7 +80,7 @@ public class RecordController extends WebBaseController {
      */
     @ResponseBody
     @RequestMapping("/clear")
-    public ResultData<ParamData> clear() {
+    public ResultData<ParamData> clear(HttpServletRequest request) {
         try {
             return mRecordService.clearRecord(paramDataInit());
         } catch (Exception e) {

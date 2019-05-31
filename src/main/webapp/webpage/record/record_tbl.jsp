@@ -159,6 +159,9 @@
                 elmDialog("${sure_clear_records}", function () {
                     ajaxGet({
                         url: "${pageContext.request.contextPath}/record/clear",
+                        data:{
+                            device_id: vDevice_id
+                        },
                         success: function (result) {
                             layAlert1(result.message);
                             ajaxRecordList({

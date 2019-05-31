@@ -30,5 +30,9 @@
 
     <delete id="deleteRecodeAll" parameterType="pd">
         delete from tbl_#{wid}_record
+        <where>
+         <if test="device_id!=null and device_id!=''">
+        and device_id=#{device_id}
+    </if></where>
     </delete>
 </mapper>
