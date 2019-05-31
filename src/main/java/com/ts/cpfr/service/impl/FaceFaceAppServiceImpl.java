@@ -28,6 +28,7 @@ import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -254,8 +255,25 @@ public class FaceFaceAppServiceImpl implements FaceAppService {
     @Transactional
     @Override
     public ResultData<List<ParamData>> syncPerson(ParamData pd) {
-        mFaceAppDao.updateGrantSyncStatus(pd);
-        return new ResultData<>(HandleEnum.SUCCESS, mFaceAppDao.selectPersonListNoIn(pd));
+        String personIdsStr = pd.getString("person_ids");
+        String[] idStatusArr = personIdsStr.split(",");
+        ArrayList<ParamData> list = new ArrayList<>();
+        String[] personIds = new String[idStatusArr.length];
+        for (int i = 0; i < idStatusArr.length; i++) {
+            String[] idAndStatus = idStatusArr[i].split("/");
+            if (idAndStatus.length > 1) {
+                ParamData data = new ParamData();
+                data.put("person_id", idAndStatus[0]);
+                data.put("sync_status", idAndStatus[1]);
+                list.add(data);
+                personIds[i] = idAndStatus[0];
+            }
+        }
+        pd.put("person_ids", StringUtils.join(personIds, ","));
+        pd.put("list", list);
+        if (list.size() > 0)
+            mFaceAppDao.updateGrantSyncStatus(pd);
+        return new ResultData<>(HandleEnum.SUCCESS, mFaceAppDao.selectPersonListNoSync(pd));
     }
 
     @Override
@@ -275,7 +293,7 @@ public class FaceFaceAppServiceImpl implements FaceAppService {
                     //1.设置文件ContentType类型，这样设置，会自动判断下载文件类型
                     response.setContentType("multipart/form-data");
                     //2.设置文件头：最后一个参数是设置下载文件名
-                    response.setHeader("Content-Disposition", "attachment;fileName="+file.getName());
+                    response.setHeader("Content-Disposition", "attachment;fileName=" + file.getName());
 
                     byte[] buffer = new byte[1024 * 10];
                     int length;
@@ -300,12 +318,12 @@ public class FaceFaceAppServiceImpl implements FaceAppService {
         File dir = new File(SystemConfig.DOWNLOAD_APK_PATH);
         File[] files = dir.listFiles();//绝对路径
         ParamData data = new ParamData();
-        data.put("verson", "-1");
+        data.put("version", "-1");
         for (File file : files) {
             String fileName = file.getName();
             if (fileName.contains(pd.getString("application_id"))) {
                 String version = fileName.split("_")[1].split("\\.")[0];
-                data.put("verson", version);
+                data.put("version", version);
             }
         }
 

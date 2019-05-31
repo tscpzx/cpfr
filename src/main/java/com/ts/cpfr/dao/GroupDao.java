@@ -12,6 +12,7 @@ import java.util.List;
  */
 public interface GroupDao {
     List<ParamData> selectGroupList(ParamData pd);
+
     List<ParamData> selectGroupInPeople(ParamData pd);
 
     ParamData selectGroup(ParamData pd);
@@ -23,4 +24,6 @@ public interface GroupDao {
     boolean deleteGroup(ParamData pd);
 
     ParamData selectGroupByGroupName(ParamData pd);
+
+    boolean insertGroupDevice(ParamData pd);
 }

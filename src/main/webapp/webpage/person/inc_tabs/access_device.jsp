@@ -22,11 +22,14 @@
         </el-table-column>
         <el-table-column prop="device_name" label="${device_name}" min-width="15%">
         </el-table-column>
-        <el-table-column prop="sync_status" label="同步状态" min-width="10%" >
+        <el-table-column prop="sync_status" label="同步状态" min-width="15%" >
             <template slot-scope="scope">
                 <span v-if="scope.row.sync_status===0">未同步</span>
                 <span v-if="scope.row.sync_status===1">同步成功</span>
-                <span v-if="scope.row.sync_status===2">同步失败</span>
+                <span v-if="scope.row.sync_status===2">下载失败</span>
+                <span v-if="scope.row.sync_status===3">图片失败</span>
+                <span v-if="scope.row.sync_status===4">特征值失败</span>
+                <span v-if="scope.row.sync_status===5">其他失败</span>
             </template>
         </el-table-column>
         <el-table-column prop="pass_number" label="${pass_time}" min-width="15%">

@@ -29,7 +29,7 @@ public interface FaceAppDao {
 
     List<ParamData> selectPersonList(ParamData pd);
 
-    List<ParamData> selectPersonListNoIn(ParamData pd);
+    List<ParamData> selectPersonListNoSync(ParamData pd);
 
     ParamData selectPerson(ParamData pd);
 

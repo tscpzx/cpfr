@@ -43,8 +43,8 @@
 		update tbl_#{wid}_grant set pass_number=#{pass_number} where device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn}) and person_id=#{person_id}
 	</update>
 
-	<select id="selectPersonListNoIn" parameterType="pd" resultType="pd">
-		SELECT p.* FROM tbl_#{wid}_grant g RIGHT JOIN tbl_#{wid}_person p ON g.person_id=p.person_id WHERE g.device_id=(SELECT device_id FROM tbl_#{wid}_device WHERE device_sn=#{device_sn}) AND p.status &lt;&gt; 3 AND p.person_id NOT IN(${person_ids_success})
+	<select id="selectPersonListNoSync" parameterType="pd" resultType="pd">
+		SELECT p.* FROM tbl_#{wid}_grant g RIGHT JOIN tbl_#{wid}_person p ON g.person_id=p.person_id WHERE g.device_id=(SELECT device_id FROM tbl_#{wid}_device WHERE device_sn=#{device_sn}) AND p.status &lt;&gt; 3 AND g.sync_status=0
 	</select>
 
 	<select id="selectPerson" parameterType="pd" resultType="pd">
@@ -57,7 +57,18 @@
     </update>
 
 	<update id="updateGrantSyncStatus" parameterType="pd">
-		update tbl_#{wid}_grant set sync_status=1 where device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn}) and person_id in (#{person_ids_success});
-		update tbl_#{wid}_grant set sync_status=2 where device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn}) and person_id in (#{person_ids_fail});
+		<if test="list != null and list.size() >0">
+			UPDATE tbl_#{wid}_grant
+			SET sync_status = CASE person_id
+			<foreach collection="list" item="data">
+				WHEN #{data.person_id} THEN #{data.sync_status}
+			</foreach>
+			END
+			WHERE person_id IN (${person_ids}) and device_id=(SELECT device_id FROM tbl_#{wid}_device WHERE device_sn=#{device_sn})
+		</if>
+	</update>
+
+	<update id="updateDeviceConfig" parameterType="pd">
+		update tbl_#{wid}_device_config set app_version=#{app_version} where device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn})
 	</update>
 </mapper>
