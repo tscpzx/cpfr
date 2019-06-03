@@ -178,10 +178,21 @@ public class PersonController extends WebBaseController {
     }
 
     @ResponseBody
-    @RequestMapping("/list_by_group")
-    public ResultData<ParamData> listByGroup(HttpServletRequest request) {
+    @RequestMapping("/group_person_list")
+    public ResultData<ParamData> groupPersonList(HttpServletRequest request) {
         try {
-            return mPersonService.getListByGroup(paramDataInit());
+            return mPersonService.getGroupPersonList(paramDataInit());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("/list_by_group")
+    public ResultData<PageData<ParamData>> listByGroup(HttpServletRequest request) {
+        try {
+            return mPersonService.getPersonListByGroup(paramDataInit());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());

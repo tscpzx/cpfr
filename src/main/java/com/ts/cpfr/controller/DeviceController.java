@@ -133,10 +133,21 @@ public class DeviceController extends WebBaseController {
     }
 
     @ResponseBody
-    @RequestMapping("/list_by_group")
-    public ResultData<ParamData> listByGroup(HttpServletRequest request){
+    @RequestMapping("/group_device_list")
+    public ResultData<ParamData> groupDeviceList(HttpServletRequest request){
         try {
-            return mDeviceService.getListByGroup(paramDataInit());
+            return mDeviceService.getGroupDeviceList(paramDataInit());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("/list_by_group")
+    public ResultData<PageData<ParamData>> listByGroup(HttpServletRequest request) {
+        try {
+            return mDeviceService.getDeviceListByGroup(paramDataInit());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());

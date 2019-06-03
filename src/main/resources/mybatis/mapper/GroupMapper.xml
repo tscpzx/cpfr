@@ -25,8 +25,8 @@
 
 	<update id="deleteGroup" parameterType="pd">
 		DELETE FROM tbl_#{wid}_group WHERE group_id=#{group_id};
-		update tbl_#{wid}_device set group_id=0 where group_id=#{group_id};
-		update tbl_#{wid}_person set group_id=0 where group_id=#{group_id};
+		delete from tbl_#{wid}_group_device where group_id=#{group_id};
+		delete from tbl_#{wid}_group_person where group_id=#{group_id};
 	</update>
 
 	<select id="selectGroupByGroupName" parameterType="pd" resultType="pd">
@@ -34,13 +34,30 @@
 	</select>
 
 	<select id="selectGroupInPeople"  parameterType="pd" resultType="pd">
-		SELECT DISTINCT  g.group_id,g.group_name FROM tbl_#{wid}_group g left JOIN tbl_#{wid}_person p ON p.group_id = g.group_id WHERE p.status &lt;&gt; 3
+		SELECT g.group_id,g.group_name FROM tbl_#{wid}_group g right JOIN tbl_#{wid}_group_person p ON p.group_id = g.group_id
 	</select>
 
 	<insert id="insertGroupDevice" parameterType="pd">
 		insert tbl_#{wid}_group_device (group_id,device_id,add_time) values
-		<foreach collection="list" item="data" separator=" , ">
+		<foreach collection="list" item="data" separator=",">
 			(#{group_id},#{data.device_id},now())
 		</foreach>
+		ON DUPLICATE KEY UPDATE lmt=now();
 	</insert>
+
+	<insert id="insertGroupPerson" parameterType="pd">
+		insert tbl_#{wid}_group_person (group_id,person_id,add_time) values
+		<foreach collection="list" item="data" separator=",">
+			(#{group_id},#{data.person_id},now())
+		</foreach>
+		ON DUPLICATE KEY UPDATE lmt=now();
+	</insert>
+
+	<delete id="deleteGroupDevice" parameterType="pd">
+		delete from tbl_#{wid}_group_device where group_id=#{group_id} and device_id=#{device_id}
+	</delete>
+
+	<delete id="deleteGroupPerson" parameterType="pd">
+		delete from tbl_#{wid}_group_person where group_id=#{group_id} and person_id=#{person_id}
+	</delete>
 </mapper>

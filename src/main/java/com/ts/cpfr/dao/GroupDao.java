@@ -26,4 +26,10 @@ public interface GroupDao {
     ParamData selectGroupByGroupName(ParamData pd);
 
     boolean insertGroupDevice(ParamData pd);
+
+    boolean insertGroupPerson(ParamData pd);
+
+    boolean deleteGroupDevice(ParamData pd);
+
+    boolean deleteGroupPerson(ParamData pd);
 }

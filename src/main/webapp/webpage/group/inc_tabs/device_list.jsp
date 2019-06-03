@@ -20,6 +20,12 @@
                 <span v-if="scope.row.online===0">${offline}</span>
             </template>
         </el-table-column>
+        <el-table-column label="进组时间">
+            <template slot-scope="scope">
+                <i class="el-icon-time"></i>
+                <span style="margin-left: 10px">{{ scope.row.add_group_time}}</span>
+            </template>
+        </el-table-column>
         <el-table-column label="${operation}">
             <template slot-scope="scope">
                 <el-button size="small" type="danger" @click="deleteGroupDevice(scope.row)">${remove_lang}</el-button>

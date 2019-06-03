@@ -8,34 +8,20 @@
 
 	<select id="selectPersonList" parameterType="pd" resultType="pd">
 		select person_id,person_name,emp_number,add_time,image_id from tbl_#{wid}_person where status &lt;&gt; 3
-		<if test="group_id!=null and group_id!=''">
-			and group_id=#{group_id}
-		</if>
 	</select>
 
 	<select id="selectPersonListWithBlob" parameterType="pd" resultType="pd">
 		select p.person_id,p.person_name,p.emp_number,p.add_time,i.blob_image base_image from tbl_#{wid}_person p left join tbl_#{wid}_image i on p.image_id=i.image_id
 		where p.status &lt;&gt; 3
-		<if test="group_id!=null and group_id!=''">
-			and p.group_id=#{group_id}
-		</if>
         <if test="keyword!=null and keyword!=''">
             and POSITION(#{keyword} IN p.person_name) OR POSITION(#{keyword} IN p.emp_number)
         </if>
-
 	</select>
 
 	<insert id="insertPerson" parameterType="pd" useGeneratedKeys="true" keyProperty="person_id" >
 		insert into tbl_#{wid}_image (blob_image) values (#{blob_image});
 		INSERT INTO tbl_#{wid}_person(person_name,emp_number,status,add_time,image_id) VALUES(#{person_name},#{emp_number},1,now(),(select LAST_INSERT_ID()));
 	</insert>
-
-	<update id="updatePersonListGroupID" parameterType="pd">
-		UPDATE tbl_#{wid}_person SET group_id = #{group_id}  WHERE
-		<foreach collection="list" item="data" separator=" or ">
-			person_id=#{data.person_id}
-		</foreach>
-	</update>
 
 	<update id="updatePersonAttendId" parameterType="pd">
 		UPDATE tbl_#{wid}_person SET attend_id = #{attend_id}  WHERE
@@ -49,14 +35,11 @@
 	</select>
 
 	<select id="selectGrantPersonListByDeviceSn" parameterType="pd" resultType="pd">
-		SELECT p.person_id,p.person_name,p.emp_number,p.status,p.lmt,g.grant_id,g.pass_number,g.pass_start_time,g.pass_end_time,g.sync_status FROM tbl_#{wid}_person p RIGHT JOIN (SELECT grant_id,person_id,pass_number,pass_start_time,pass_end_time,sync_status FROM tbl_#{wid}_grant WHERE device_id = (SELECT device_id FROM tbl_#{wid}_device  WHERE device_sn = #{device_sn}) and status &lt;&gt; 3 ) g ON p.person_id=g.person_id
-		<where>
-			<if test="keyword!=null and keyword!=''">
+		SELECT p.person_id,p.person_name,p.emp_number,p.status,p.lmt,g.grant_id,g.pass_number,g.pass_start_time,g.pass_end_time,g.sync_status FROM tbl_#{wid}_person p RIGHT JOIN (SELECT grant_id,person_id,pass_number,pass_start_time,pass_end_time,sync_status FROM tbl_#{wid}_grant WHERE device_id = (SELECT device_id FROM tbl_#{wid}_device  WHERE device_sn = #{device_sn}) ) g ON p.person_id=g.person_id where p.status &lt;&gt; 3
+		<if test="keyword!=null and keyword!=''">
 				and POSITION(#{keyword} IN p.person_name) OR POSITION(#{keyword} IN p.emp_number)
-			</if>
-		</where>
+		</if>
 	</select>
-
 
 	<update id="updatePersonInfo" parameterType="pd">
 		UPDATE tbl_#{wid}_person SET person_name = #{person_name},emp_number = #{emp_number},status = 2 where person_id=#{person_id};
@@ -67,28 +50,27 @@
 
 	<update id="deletePerson" parameterType="pd">
 		update tbl_#{wid}_person set status=3 where person_id = #{person_id};
-		update tbl_#{wid}_grant set status=3  WHERE person_id=#{person_id};
-	</update>
 
-	<update id="deletePersonGroupID" parameterType="pd">
-		update tbl_#{wid}_person set group_id=0 where person_id = #{person_id};
-	</update>
+		delete from tbl_#{wid}_image where image_id=(select image_id from tbl_#{wid}_person where person_id = #{person_id);
 
-	<update id="updatePersonGroupID" parameterType="pd">
-		UPDATE tbl_#{wid}_person SET group_id = #{group_id} WHERE person_id=#{person_id}
+		update tbl_#{wid}_grant set status=3  WHERE person_id = #{person_id};
+
+		delete from tbl_#{wid}_group_person where person_id=#{person_id};
 	</update>
 
 	<select id="selectPersonListByGroupID" parameterType="pd" resultType="pd">
-		SELECT DISTINCT p.person_id,p.person_name FROM tbl_#{wid}_person p RIGHT JOIN tbl_#{wid}_grant g ON p.person_id = g.person_id WHERE p.status &lt;&gt; 3
-		AND p.group_id=#{group_id}
+		SELECT p.person_id,p.person_name,p.emp_number,p.add_time,p.image_id,g.add_time add_group_time FROM tbl_#{wid}_person p RIGHT JOIN tbl_#{wid}_group_person g ON p.person_id = g.person_id WHERE p.status &lt;&gt; 3 AND g.group_id=#{group_id}
 	</select>
 
-	<select id="selectPersonIdByAttenId" parameterType="pd" resultType="pd">
-     SELECT p.person_id  FROM tbl_#{wid}_person p RIGHT JOIN tbl_#{wid}_attend_rule r ON p.attend_id=r.attend_id RIGHT JOIN tbl_#{wid}_attend_job j ON r.job_id = 	j.job_id where j.job_id=#{job_id};
+	<select id="selectPersonIdByAttendId" parameterType="pd" resultType="pd">
+     	SELECT p.person_id  FROM tbl_#{wid}_person p RIGHT JOIN tbl_#{wid}_attend_rule r ON p.attend_id=r.attend_id RIGHT JOIN tbl_#{wid}_attend_job j ON r.job_id = 	j.job_id where j.job_id=#{job_id};
  	</select>
 
 	<update id="deletePersonAttendId" parameterType="pd">
 		update  tbl_#{wid}_person set attend_id=0 where attend_id=#{attend_id}
 	</update>
 
+	<select id="selectPersonListNoGroup" parameterType="pd" resultType="pd">
+		SELECT p.person_id,p.person_name,p.emp_number,p.add_time,p.image_id FROM tbl_#{wid}_person p LEFT JOIN tbl_#{wid}_group_person g ON p.person_id=g.person_id WHERE g.person_id IS NULL;
+	</select>
 </mapper>

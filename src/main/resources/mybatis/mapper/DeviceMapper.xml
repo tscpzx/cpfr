@@ -10,9 +10,6 @@
 	<select id="selectDeviceList" parameterType="pd" resultType="pd">
 		select device_id,device_name,device_sn,online,status,register_time,activate_time,last_online_time,last_offline_time from tbl_#{wid}_device
 		<where>
-			<if test="group_id!=null and group_id!=''">
-				and group_id=#{group_id}
-			</if>
 			<if test="keyword!=null and keyword!=''">
 				and POSITION(#{keyword} IN device_name) OR POSITION(#{keyword} IN device_sn)
 			</if>
@@ -53,13 +50,6 @@
 		INSERT INTO tbl_#{wid}_device_config (device_id,arcface_appid,arcface_sdkkey,arcface_activekey,baidu_tts_appid,baidu_tts_appkey,baidu_tts_secretkey) values ((select device_id from tbl_#{wid}_device where device_sn=#{device_sn}),#{arcface_appid},#{arcface_sdkkey},#{arcface_activekey},#{baidu_tts_appid},#{baidu_tts_appkey},#{baidu_tts_secretkey});
 	</insert>
 
-	<update id="updateDeviceGroupID" parameterType="pd">
-		UPDATE tbl_#{wid}_device SET group_id = #{group_id} WHERE
-		<foreach collection="list" item="data" separator=" or ">
-			device_id=#{data.device_id}
-		</foreach>
-	</update>
-
 	<select id="selectDeviceSnList" parameterType="pd" resultType="pd">
 		select device_sn from tbl_#{wid}_device where
 		<foreach collection="list" item="data" separator=" or ">
@@ -87,7 +77,9 @@
 
 		DELETE d,c FROM tbl_#{wid}_device d LEFT JOIN tbl_#{wid}_device_config c ON d.device_id=c.device_id WHERE d.device_id=#{device_id};
 
-		DELETE g FROM tbl_#{wid}_grant g WHERE g.device_id=#{device_id};
+		update tbl_#{wid}_grant set status=3  WHERE device_id = #{device_id};
+
+		delete from tbl_#{wid}_group_device where device_id=#{device_id};
 	</delete>
 
 	<select id="selectDeviceSnByDeviceID" parameterType="pd" resultType="string">
@@ -97,10 +89,6 @@
 	<select id="selectDeviceSnByPersonId" parameterType="pd" resultType="string">
 		SELECT d.device_sn FROM tbl_#{wid}_grant g RIGHT JOIN(SELECT device_sn,device_id FROM tbl_#{wid}_device)d  ON d.device_id = g.device_id WHERE g.person_id = #{person_id} ;
 	</select>
-
-	<update id="deleteDeviceGroupID" parameterType="pd">
-		update tbl_#{wid}_device set group_id=0 where device_id = #{device_id};
-	</update>
 
 	<select id="selectWidByDeviceSn" parameterType="pd" resultType="int">
 		SELECT wid FROM tbl_user  WHERE admin_id = (SELECT admin_id FROM tbl_inact_device  WHERE device_sn=#{device_sn})
@@ -121,6 +109,10 @@
 	</select>
 
 	<select id="selectDeviceListByGroupID" parameterType="pd" resultType="pd">
-		SELECT DISTINCT d.device_id,d.device_name,d.device_sn FROM tbl_#{wid}_device d RIGHT JOIN tbl_#{wid}_grant g ON d.device_id = g.device_id WHERE d.group_id=#{group_id}
+		SELECT DISTINCT d.device_id,d.device_name,d.device_sn,d.online,d.status,d.register_time,d.activate_time,g.add_time add_group_time FROM tbl_#{wid}_device d RIGHT JOIN tbl_#{wid}_group_device g ON d.device_id = g.device_id WHERE g.group_id=#{group_id}
+	</select>
+
+	<select id="selectDeviceListNoGroup" parameterType="pd" resultType="pd">
+		SELECT d.device_id,d.device_name,d.device_sn,d.online,d.register_time,d.activate_time FROM tbl_#{wid}_device d LEFT JOIN tbl_#{wid}_group_device g ON d.device_id=g.device_id WHERE g.device_id IS NULL;
 	</select>
 </mapper>

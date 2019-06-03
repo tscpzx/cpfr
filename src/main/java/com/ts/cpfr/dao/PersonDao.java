@@ -15,13 +15,7 @@ public interface PersonDao {
 
     List<ParamData> selectPersonList(ParamData pd);
 
-    List<ParamData> selectPersonListByGroupID(ParamData pd);
-
     boolean insertPerson(ParamData pd);
-
-    boolean updatePersonListGroupID(ParamData pd);
-
-    boolean updatePersonGroupID(ParamData pd);
 
     ParamData selectImage(ParamData pd);
 
@@ -33,11 +27,13 @@ public interface PersonDao {
 
     boolean deletePerson(ParamData pd);
 
-    boolean deletePersonGroupID(ParamData pd);
+    List<ParamData> selectPersonListByGroupID(ParamData pd);
+
+    List<ParamData> selectPersonListNoGroup(ParamData pd);
 
     boolean updatePersonAttendId(ParamData pd);
 
-    List<ParamData> selectPersonIdByAttenId(ParamData pd);
+    List<ParamData> selectPersonIdByAttendId(ParamData pd);
 
     boolean deletePersonAttendId(ParamData pd);
 

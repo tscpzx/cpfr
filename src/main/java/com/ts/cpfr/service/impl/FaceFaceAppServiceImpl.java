@@ -203,7 +203,7 @@ public class FaceFaceAppServiceImpl implements FaceAppService {
             ParamData group = mGroupDao.selectGroupByGroupName(pd);
             if (group != null) {
                 pd.put("group_id", group.get("group_id") + "");
-                mPersonDao.updatePersonGroupID(pd);
+                mGroupDao.insertGroupPerson(pd);
             }
         }
 
@@ -238,7 +238,7 @@ public class FaceFaceAppServiceImpl implements FaceAppService {
                 ParamData group = mGroupDao.selectGroupByGroupName(pd);
                 if (group != null) {
                     pd.put("group_id", group.get("group_id") + "");
-                    mPersonDao.updatePersonGroupID(pd);
+                    mGroupDao.insertGroupPerson(pd);
                 }
             }
 

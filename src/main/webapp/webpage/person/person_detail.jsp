@@ -476,7 +476,7 @@
 
     function openDialogDevice() {
         ajaxGet({
-            url: "${pageContext.request.contextPath}/device/list_by_group",
+            url: "${pageContext.request.contextPath}/device/group_device_list",
             data: {},
             success: function (result) {
                 for (var i = 0; i < result.data.list.length; i++) {

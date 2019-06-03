@@ -206,12 +206,8 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public ResultData<ParamData> getListByGroup(ParamData pd) {
+    public ResultData<ParamData> getGroupDeviceList(ParamData pd) {
         List<ParamData> groupList = mGroupDao.selectGroupList(pd);
-        ParamData other = new ParamData();
-        other.put("group_id", 0);
-        other.put("group_name", "未分组");
-        groupList.add(other);
         if (groupList.size()!=0) {
             List<ParamData> data = new ArrayList<>();
             for (int i = 0; i < groupList.size(); i++) {
@@ -222,6 +218,12 @@ public class DeviceServiceImpl implements DeviceService {
                 group.put("device_list", mDeviceDao.selectDeviceListByGroupID(groupList.get(i)));
                 data.add(group);
             }
+            ParamData other = new ParamData();
+            other.put("group_id", 0);
+            other.put("group_name", "未分组");
+            other.put("device_list", mDeviceDao.selectDeviceListNoGroup(pd));
+            data.add(other);
+
             ParamData result = new ParamData();
             result.put("list", data);
             return new ResultData<>(HandleEnum.SUCCESS, result);
@@ -229,6 +231,17 @@ public class DeviceServiceImpl implements DeviceService {
             return new ResultData<>(HandleEnum.FAIL, "暂无分组");
         }
 
+    }
+
+    @Override
+    public ResultData<PageData<ParamData>> getDeviceListByGroup(ParamData pd) {
+        int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
+        int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
+
+        if (pageSize != 0)
+            PageHelper.startPage(pageNum, pageSize);
+        List<ParamData> deviceList = mDeviceDao.selectDeviceListByGroupID(pd);
+        return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(deviceList));
     }
 
 }

@@ -25,8 +25,6 @@ public interface DeviceDao {
 
     boolean insertDevice(ParamData pd);
 
-    boolean updateDeviceGroupID(ParamData pd);
-
     List<ParamData> selectDeviceSnList(ParamData pd);
 
     boolean updateDeviceInfo(ParamData pd);
@@ -39,8 +37,6 @@ public interface DeviceDao {
 
     List<String> selectDeviceSnByPersonId(ParamData pd);
 
-    boolean deleteDeviceGroupID(ParamData pd);
-
     int selectWidByDeviceSn(ParamData pd);
 
     int selectDeviceStatusByDeviceSn(ParamData pd);
@@ -50,4 +46,6 @@ public interface DeviceDao {
     ParamData selectSyncDownlStatus(ParamData pd);
 
     List<ParamData> selectDeviceListByGroupID(ParamData ParamData);
+
+    List<ParamData> selectDeviceListNoGroup(ParamData ParamData);
 }

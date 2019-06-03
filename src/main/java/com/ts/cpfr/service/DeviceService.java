@@ -33,5 +33,7 @@ public interface DeviceService {
 
     ResultData<ParamData> checkAppVersionUpdate(ParamData pd) throws Exception;
 
-    ResultData<ParamData> getListByGroup(ParamData pd);
+    ResultData<ParamData> getGroupDeviceList(ParamData pd);
+
+    ResultData<PageData<ParamData>> getDeviceListByGroup(ParamData pd);
 }

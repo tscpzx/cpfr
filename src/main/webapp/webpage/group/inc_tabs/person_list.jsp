@@ -15,9 +15,10 @@
         </el-table-column>
         <el-table-column prop="emp_number" label="${job_number}">
         </el-table-column>
-        <el-table-column label="${the_bottom_picture}">
+        <el-table-column label="进组时间">
             <template slot-scope="scope">
-                <img class="image_tbl" v-bind:src="'data:image/jpeg;base64,'+scope.row.base_image">
+                <i class="el-icon-time"></i>
+                <span style="margin-left: 10px">{{ scope.row.add_group_time}}</span>
             </template>
         </el-table-column>
         <el-table-column label="${operation}">

@@ -114,11 +114,11 @@ public class PersonServiceImpl implements PersonService {
         if (!file.getContentType().contains("image"))
             return new ResultData<>(HandleEnum.FAIL, "文件类型有误!");
 
-//        int num = faceEngine(file.getBytes());
-//        if (num <= 0)
-//            return new ResultData<>(HandleEnum.FAIL, "未识别到人脸");
-//        else if (num > 1)
-//            return new ResultData<>(HandleEnum.FAIL, "识别到多张人脸");
+        //        int num = faceEngine(file.getBytes());
+        //        if (num <= 0)
+        //            return new ResultData<>(HandleEnum.FAIL, "未识别到人脸");
+        //        else if (num > 1)
+        //            return new ResultData<>(HandleEnum.FAIL, "识别到多张人脸");
 
         pd.put("blob_image", file.getBytes());
         if (mPersonDao.updatePersonInfo(pd)) {
@@ -309,14 +309,14 @@ public class PersonServiceImpl implements PersonService {
                 data.put("blob_image", file.getBytes());
                 data.put("wid", pd.get("wid"));
                 mPersonDao.insertPerson(data);
-                data.put("person_id",mTableDao.selectLastInsertID());
+                data.put("person_id", mTableDao.selectLastInsertID());
 
                 data.put("group_name", groupName);
                 if (!StringUtils.isEmpty(groupName)) {
                     ParamData group = mGroupDao.selectGroupByGroupName(data);
                     if (group != null) {
                         data.put("group_id", group.get("group_id") + "");
-                        mPersonDao.updatePersonGroupID(data);
+                        mGroupDao.insertGroupPerson(data);
                     }
                 }
 
@@ -329,13 +329,9 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public ResultData<ParamData> getListByGroup(ParamData pd) {
+    public ResultData<ParamData> getGroupPersonList(ParamData pd) {
         List<ParamData> groupList = mGroupDao.selectGroupList(pd);
-        ParamData other = new ParamData();
-        other.put("group_id", 0);
-        other.put("group_name", "未分组");
-        groupList.add(other);
-        if (groupList.size()!=0) {
+        if (groupList.size() != 0) {
             List<ParamData> data = new ArrayList<>();
             for (int i = 0; i < groupList.size(); i++) {
                 groupList.get(i).put("wid", pd.get("wid"));
@@ -345,6 +341,12 @@ public class PersonServiceImpl implements PersonService {
                 group.put("person_list", mPersonDao.selectPersonListByGroupID(groupList.get(i)));
                 data.add(group);
             }
+            ParamData other = new ParamData();
+            other.put("group_id", 0);
+            other.put("group_name", "未分组");
+            other.put("person_list", mPersonDao.selectPersonListNoGroup(pd));
+            data.add(other);
+
             ParamData result = new ParamData();
             result.put("list", data);
             return new ResultData<>(HandleEnum.SUCCESS, result);
@@ -352,5 +354,16 @@ public class PersonServiceImpl implements PersonService {
             return new ResultData<>(HandleEnum.FAIL, "暂无分组");
         }
 
+    }
+
+    @Override
+    public ResultData<PageData<ParamData>> getPersonListByGroup(ParamData pd) {
+        int pageNum = CommUtil.paramConvert(pd.getString("pageNum"), 0);//当前页
+        int pageSize = CommUtil.paramConvert(pd.getString("pageSize"), 0);//每一页10条数据
+
+        if (pageSize != 0)
+            PageHelper.startPage(pageNum, pageSize);
+        List<ParamData> personList = mPersonDao.selectPersonListByGroupID(pd);
+        return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(personList));
     }
 }

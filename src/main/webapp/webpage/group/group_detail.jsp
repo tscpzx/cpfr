@@ -305,7 +305,7 @@
 
     function ajaxPersonListPage(pageNum, pageSize) {
         ajaxGet({
-            url: "${pageContext.request.contextPath}/person/list_base64",
+            url: "${pageContext.request.contextPath}/person/list_by_group",
             data: {
                 pageNum: pageNum,
                 pageSize: pageSize,
@@ -322,7 +322,7 @@
 
     function ajaxDeviceListPage(pageNum, pageSize) {
         ajaxGet({
-            url: "${pageContext.request.contextPath}/device/list",
+            url: "${pageContext.request.contextPath}/device/list_by_group",
             data: {
                 pageNum: pageNum,
                 pageSize: pageSize,
@@ -429,7 +429,7 @@
 
     function ajaxPersonList2() {
         ajaxGet({
-            url: "${pageContext.request.contextPath}/person/list",
+            url: "${pageContext.request.contextPath}/person/list_by_group",
             data: {
                 group_id: data.group.group_id
             },
@@ -440,7 +440,7 @@
     }
     function ajaxDeviceList2() {
         ajaxGet({
-            url: "${pageContext.request.contextPath}/device/list",
+            url: "${pageContext.request.contextPath}/device/list_by_group",
             data: {
                 group_id: data.group.group_id
             },

@@ -44,7 +44,7 @@ public class QuartzJobServiceImpl implements QuartzJobService {
         if (mQuartzJobDao.updateJobStatus(pd)) {
             QuartzJobModel quartzJobModel = mQuartzJobDao.selectJob(pd);
             //sql
-            List<ParamData> peopleList = mPersonDao.selectPersonIdByAttenId(pd);
+            List<ParamData> peopleList = mPersonDao.selectPersonIdByAttendId(pd);
             String personIds = "";
             for (ParamData id : peopleList) {
                 String personId = id.get("person_id").toString();

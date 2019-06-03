@@ -48,6 +48,7 @@ public interface PersonService {
 
     ResultData<ParamData> batchUpload(CommonsMultipartFile[] files, ParamData pd);
 
-    ResultData<ParamData>  getListByGroup(ParamData pd);
+    ResultData<ParamData> getGroupPersonList(ParamData pd);
 
+    ResultData<PageData<ParamData>> getPersonListByGroup(ParamData pd);
 }

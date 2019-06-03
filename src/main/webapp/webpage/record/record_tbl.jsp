@@ -95,9 +95,8 @@
 
 <script type="text/javascript">
     var vDevice_id = null;
-    if ("undefined" !=${model.device_id}) {
-        vDevice_id =
-        ${model.device_id}
+    if ("undefined" !==${model.device_id}) {
+        vDevice_id =${model.device_id}
     }
     var vm = new Vue({
         el: "#record_tbl",
@@ -115,14 +114,16 @@
             handleChange(val) {
                 ajaxRecordList({
                     pageNum: this.currentPage,
-                    pageSize: this.pageSize
+                    pageSize: this.pageSize,
+                    device_id: vDevice_id
                 });
             },
             selectRecord() {
                 ajaxRecordList({
                     pageNum: 1,
                     pageSize: this.pageSize,
-                    keyword: this.keyword
+                    keyword: this.keyword,
+                    device_id: vDevice_id
                 });
             },
             handleSelectionChange(val) {
@@ -149,6 +150,7 @@
                                 ajaxRecordList({
                                     pageNum: vm.currentPage,
                                     pageSize: vm.pageSize,
+                                    device_id: vDevice_id
                                 });
                             }
                         });
@@ -167,6 +169,7 @@
                             ajaxRecordList({
                                 pageNum: vm.currentPage,
                                 pageSize: vm.pageSize,
+                                device_id: vDevice_id
                             });
                         }
                     });

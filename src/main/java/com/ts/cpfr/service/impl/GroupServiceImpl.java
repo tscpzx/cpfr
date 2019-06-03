@@ -6,7 +6,6 @@ import com.ts.cpfr.dao.GroupDao;
 import com.ts.cpfr.dao.PersonDao;
 import com.ts.cpfr.ehcache.WebMemory;
 import com.ts.cpfr.service.GroupService;
-import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.CommUtil;
 import com.ts.cpfr.utils.HandleEnum;
 import com.ts.cpfr.utils.PageData;
@@ -52,8 +51,8 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public ParamData queryGroup(ParamData pd) {
         ParamData group = mGroupDao.selectGroup(pd);
-        List<ParamData> personList = mPersonDao.selectPersonList(pd);
-        List<ParamData> deviceList = mDeviceDao.selectDeviceList(pd);
+        List<ParamData> personList = mPersonDao.selectPersonListByGroupID(pd);
+        List<ParamData> deviceList = mDeviceDao.selectDeviceListByGroupID(pd);
         ParamData data = new ParamData();
         data.put("group", group);
         data.put("person_list", personList);
@@ -81,12 +80,9 @@ public class GroupServiceImpl implements GroupService {
             paramData.put("person_id", person_id);
             list.add(paramData);
         }
+        pd.put("list", list);
 
-        ParamData paramData = new ParamData();
-        paramData.put("wid", memory.getCache(pd.getString(CommConst.ACCESS_CPFR_TOKEN)).getWid());
-        paramData.put("group_id", pd.getString("group_id"));
-        paramData.put("list", list);
-        if (mPersonDao.updatePersonListGroupID(paramData)) return new ResultData<>(HandleEnum.SUCCESS);
+        if (mGroupDao.insertGroupPerson(pd)) return new ResultData<>(HandleEnum.SUCCESS);
         else return new ResultData<>(HandleEnum.FAIL);
     }
 
@@ -103,14 +99,9 @@ public class GroupServiceImpl implements GroupService {
             paramData.put("device_id", device_id);
             list.add(paramData);
         }
+        pd.put("list", list);
 
-        ParamData paramData = new ParamData();
-        paramData.put("wid", memory.getCache(pd.getString(CommConst.ACCESS_CPFR_TOKEN)).getWid());
-        paramData.put("group_id", pd.getString("group_id"));
-        paramData.put("list", list);
-
-        mGroupDao.insertGroupDevice(pd);// TODO: 2019/5/31
-        if (mDeviceDao.updateDeviceGroupID(paramData)) return new ResultData<>(HandleEnum.SUCCESS);
+        if (mGroupDao.insertGroupDevice(pd)) return new ResultData<>(HandleEnum.SUCCESS);
         else return new ResultData<>(HandleEnum.FAIL);
     }
 
@@ -131,14 +122,14 @@ public class GroupServiceImpl implements GroupService {
     @Transactional
     @Override
     public ResultData<ParamData> deleteGroupPerson(ParamData pd) {
-        if (mPersonDao.deletePersonGroupID(pd)) return new ResultData<>(HandleEnum.SUCCESS);
+        if (mGroupDao.deleteGroupPerson(pd)) return new ResultData<>(HandleEnum.SUCCESS);
         return new ResultData<>(HandleEnum.FAIL);
     }
 
     @Transactional
     @Override
     public ResultData<ParamData> deleteGroupDevice(ParamData pd) {
-        if (mDeviceDao.deleteDeviceGroupID(pd)) return new ResultData<>(HandleEnum.SUCCESS);
+        if (mGroupDao.deleteGroupDevice(pd)) return new ResultData<>(HandleEnum.SUCCESS);
         return new ResultData<>(HandleEnum.FAIL);
     }
 }
