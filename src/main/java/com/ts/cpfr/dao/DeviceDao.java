@@ -48,4 +48,6 @@ public interface DeviceDao {
     List<ParamData> selectDeviceListByGroupID(ParamData ParamData);
 
     List<ParamData> selectDeviceListNoGroup(ParamData ParamData);
+
+    void updateAllDeviceOffline(ParamData data);
 }

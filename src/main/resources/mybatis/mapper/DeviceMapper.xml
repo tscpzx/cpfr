@@ -115,4 +115,11 @@
 	<select id="selectDeviceListNoGroup" parameterType="pd" resultType="pd">
 		SELECT d.device_id,d.device_name,d.device_sn,d.online,d.register_time,d.activate_time FROM tbl_#{wid}_device d LEFT JOIN tbl_#{wid}_group_device g ON d.device_id=g.device_id WHERE g.device_id IS NULL;
 	</select>
+
+	<update id="updateAllDeviceOffline" parameterType="pd">
+		update tbl_inact_device set online=0 where online=1;
+		<foreach collection="list" item="data" separator=" ">
+			update tbl_#{data.wid}_device set online=0 where online=1;
+		</foreach>
+	</update>
 </mapper>

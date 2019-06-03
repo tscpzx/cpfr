@@ -33,4 +33,8 @@
         set password=#{new_password}
         where admin_id = #{admin_id}
     </update>
+
+    <select id="selectWidList" resultType="pd">
+        select wid from tbl_user;
+    </select>
 </mapper>

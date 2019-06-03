@@ -28,10 +28,6 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
-    <listener>
-        <listener-class>com.ts.cpfr.quartz.ApplicationListener</listener-class>
-    </listener>
-
     <!--2. springmvc前端控制器 -->
     <servlet>
         <servlet-name>SpringMVC</servlet-name>

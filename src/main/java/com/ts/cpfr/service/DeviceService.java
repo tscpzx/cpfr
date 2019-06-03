@@ -36,4 +36,6 @@ public interface DeviceService {
     ResultData<ParamData> getGroupDeviceList(ParamData pd);
 
     ResultData<PageData<ParamData>> getDeviceListByGroup(ParamData pd);
+
+    void updateAllDeviceOffline();
 }

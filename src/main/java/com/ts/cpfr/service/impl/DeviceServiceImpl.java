@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.ts.cpfr.dao.DeviceDao;
 import com.ts.cpfr.dao.GroupDao;
 import com.ts.cpfr.dao.PersonDao;
+import com.ts.cpfr.dao.UserDao;
 import com.ts.cpfr.ehcache.AppMemory;
 import com.ts.cpfr.ehcache.WebMemory;
 import com.ts.cpfr.entity.AppDevice;
@@ -48,6 +49,8 @@ public class DeviceServiceImpl implements DeviceService {
     private PersonDao mPersonDao;
     @Resource
     private GroupDao mGroupDao;
+    @Resource
+    private UserDao mUserDao;
     @Autowired
     private WebMemory memory;
     @Autowired
@@ -242,6 +245,14 @@ public class DeviceServiceImpl implements DeviceService {
             PageHelper.startPage(pageNum, pageSize);
         List<ParamData> deviceList = mDeviceDao.selectDeviceListByGroupID(pd);
         return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(deviceList));
+    }
+
+    @Override
+    public void updateAllDeviceOffline() {
+        List<ParamData> widList=mUserDao.selectWidList();
+        ParamData data = new ParamData();
+        data.put("list",widList);
+        mDeviceDao.updateAllDeviceOffline(data);
     }
 
 }
