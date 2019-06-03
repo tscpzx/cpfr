@@ -440,13 +440,7 @@
         methods: {
             onClickAddGrantDevice() {
                 var device_ids = this.$refs.tree.getCheckedKeys();
-                for (var i = 0; i < device_ids.length; i++) {
-                    if (device_ids[i] === -1) {
-                        device_ids.splice(i, 1);
-                        i--;
-                    }
-                }
-                device_ids = device_ids.toString();
+                device_ids = removeArrMinusOne(device_ids).toString();
 
                 var pass_number = 9999999999;
                 var pass_start_time = stampToDate(9999999999);

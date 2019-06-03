@@ -346,13 +346,7 @@
         methods: {
             onClickAddGrantPerson() {
                 var person_ids = this.$refs.tree.getCheckedKeys();
-                for (var i = 0; i < person_ids.length; i++) {
-                    if (person_ids[i] === -1) {
-                        person_ids.splice(i, 1);
-                        i--;
-                    }
-                }
-                person_ids = person_ids.toString();
+                person_ids = removeArrMinusOne(person_ids).toString();
 
                 var pass_number = 9999999999;
                 var pass_start_time = stampToDate(9999999999);

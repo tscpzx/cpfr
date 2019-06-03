@@ -195,3 +195,13 @@ function dataURLtoBlob(dataurl) {
     }
     return new Blob([u8arr], {type: mime});
 }
+
+function removeArrMinusOne(arr) {
+    for (var i = 0; i < arr.length; i++) {
+        if (arr[i] === -1) {
+            arr.splice(i, 1);
+            i--;
+        }
+    }
+    return arr;
+}

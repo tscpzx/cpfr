@@ -131,7 +131,7 @@
             },
             checked: false,
             disabledEdit: false,
-            person_ids:'',
+            person_ids: '',
             rules: {
                 attend_name: [{required: true, message: '请输入考勤名称', trigger: 'blur'}],
                 am_punch_in_time: [
@@ -208,14 +208,8 @@
         },
         methods: {
             choosePerson() {
-                var list;
-                list = this.$refs.tree.getCheckedKeys().concat(this.$refs.tree.getHalfCheckedKeys());
-                for (var i = 0; i < list.length; i++) {
-                    if (list[i] === -1) {
-                        list.splice(i, 1);
-                        i--;
-                    }
-                }
+                var list = this.$refs.tree.getCheckedKeys().concat(this.$refs.tree.getHalfCheckedKeys());
+                list = removeArrMinusOne(list);
                 $("#peopleNum").html("已选人数:" + list.length);
                 vmDialogPersonList.visible = false;
                 attend_set.person_ids = list.toString();
