@@ -98,7 +98,7 @@
             tableData1: [],
             currentPage1: 1,
             pageSizes1: [5, 10, 20],
-            pageSize1: 5,
+            pageSize1: 10,
             total1:''
             ,
             tableData2: [],
