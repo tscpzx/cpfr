@@ -210,30 +210,18 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultData<ParamData> getGroupDeviceList(ParamData pd) {
-        List<ParamData> groupList = mGroupDao.selectGroupList(pd);
-        if (groupList.size()!=0) {
-            List<ParamData> data = new ArrayList<>();
-            for (int i = 0; i < groupList.size(); i++) {
-                groupList.get(i).put("wid", pd.get("wid"));
-                ParamData group = new ParamData();
-                group.put("group_id", groupList.get(i).get("group_id"));
-                group.put("group_name", groupList.get(i).get("group_name"));
-                group.put("device_list", mDeviceDao.selectDeviceListByGroupID(groupList.get(i)));
-                data.add(group);
-            }
-            ParamData other = new ParamData();
-            other.put("group_id", 0);
-            other.put("group_name", "未分组");
-            other.put("device_list", mDeviceDao.selectDeviceListNoGroup(pd));
-            data.add(other);
+        List<ParamData> groupList = mGroupDao.selectGroupDeviceList(pd);
+        if (groupList == null)
+            groupList = new ArrayList<>();
+        ParamData other = new ParamData();
+        other.put("group_id", 0);
+        other.put("group_name", "未分组");
+        other.put("device_list", mDeviceDao.selectDeviceListNoGroup(pd));
+        groupList.add(other);
 
-            ParamData result = new ParamData();
-            result.put("list", data);
-            return new ResultData<>(HandleEnum.SUCCESS, result);
-        } else {
-            return new ResultData<>(HandleEnum.FAIL, "暂无分组");
-        }
-
+        ParamData result = new ParamData();
+        result.put("list", groupList);
+        return new ResultData<>(HandleEnum.SUCCESS, result);
     }
 
     @Override
@@ -249,9 +237,9 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public void updateAllDeviceOffline() {
-        List<ParamData> widList=mUserDao.selectWidList();
+        List<ParamData> widList = mUserDao.selectWidList();
         ParamData data = new ParamData();
-        data.put("list",widList);
+        data.put("list", widList);
         mDeviceDao.updateAllDeviceOffline(data);
     }
 

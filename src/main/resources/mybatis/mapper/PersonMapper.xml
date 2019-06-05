@@ -71,6 +71,6 @@
 	</update>
 
 	<select id="selectPersonListNoGroup" parameterType="pd" resultType="pd">
-		SELECT p.person_id,p.person_name,p.emp_number,p.add_time,p.image_id FROM tbl_#{wid}_person p LEFT JOIN tbl_#{wid}_group_person g ON p.person_id=g.person_id WHERE g.person_id IS NULL;
+		SELECT p.person_id,p.person_name,p.emp_number,p.add_time,p.image_id FROM tbl_#{wid}_person p LEFT JOIN tbl_#{wid}_group_person g ON p.person_id=g.person_id WHERE g.person_id IS NULL and p.status &lt;&gt; 3;
 	</select>
 </mapper>

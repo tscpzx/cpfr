@@ -13,9 +13,15 @@ import java.util.List;
 public interface GroupDao {
     List<ParamData> selectGroupList(ParamData pd);
 
+    List<ParamData> selectGroupPersonList(ParamData pd);//嵌套查询
+
+    List<ParamData> selectGroupDeviceList(ParamData pd);//嵌套查询
+
     List<ParamData> selectGroupInPeople(ParamData pd);
 
     ParamData selectGroup(ParamData pd);
+
+    ParamData selectGroupDevicePerson(ParamData pd);//嵌套查询
 
     boolean insertGroup(ParamData pd);
 

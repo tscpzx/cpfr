@@ -60,4 +60,38 @@
 	<delete id="deleteGroupPerson" parameterType="pd">
 		delete from tbl_#{wid}_group_person where group_id=#{group_id} and person_id=#{person_id}
 	</delete>
+
+	<!--分步查询方式-对象中嵌套集合-->
+	<resultMap id="groupDevicePerson" type="pd">
+		<result column="wid" property="wid"/>
+		<collection column="{group_id=group_id,wid=wid}" property="device_list"
+		            select="com.ts.cpfr.dao.DeviceDao.selectDeviceListByGroupID">
+		</collection>
+		<collection column="{group_id=group_id,wid=wid}" property="person_list"
+		            select="com.ts.cpfr.dao.PersonDao.selectPersonListByGroupID">
+		</collection>
+	</resultMap>
+	<select id="selectGroupDevicePerson" parameterType="pd" resultMap="groupDevicePerson">
+		select group_id,group_name,super_id,type,create_time,lmt,#{wid} wid from tbl_#{wid}_group where group_id=#{group_id}
+	</select>
+
+	<resultMap id="groupPersonList" type="pd">
+		<result column="wid" property="wid"/>
+		<collection column="{group_id=group_id,wid=wid}" property="person_list"
+		            select="com.ts.cpfr.dao.PersonDao.selectPersonListByGroupID">
+		</collection>
+	</resultMap>
+	<select id="selectGroupPersonList" parameterType="pd" resultMap="groupPersonList">
+		select group_id,group_name,#{wid} wid from tbl_#{wid}_group
+	</select>
+
+	<resultMap id="groupDeviceList" type="pd">
+		<result column="wid" property="wid"/>
+		<collection column="{group_id=group_id,wid=wid}" property="device_list"
+		            select="com.ts.cpfr.dao.DeviceDao.selectDeviceListByGroupID">
+		</collection>
+	</resultMap>
+	<select id="selectGroupDeviceList" parameterType="pd" resultMap="groupDeviceList">
+		select group_id,group_name,#{wid} wid from tbl_#{wid}_group
+	</select>
 </mapper>
