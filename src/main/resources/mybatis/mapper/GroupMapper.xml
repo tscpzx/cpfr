@@ -71,7 +71,7 @@
 		            select="com.ts.cpfr.dao.PersonDao.selectPersonListByGroupID">
 		</collection>
 	</resultMap>
-	<select id="selectGroupDevicePerson" parameterType="pd" resultMap="groupDevicePerson">
+	<select id="selectGroupDevicePersonMap" parameterType="pd" resultMap="groupDevicePerson">
 		select group_id,group_name,super_id,type,create_time,lmt,#{wid} wid from tbl_#{wid}_group where group_id=#{group_id}
 	</select>
 
@@ -81,7 +81,7 @@
 		            select="com.ts.cpfr.dao.PersonDao.selectPersonListByGroupID">
 		</collection>
 	</resultMap>
-	<select id="selectGroupPersonList" parameterType="pd" resultMap="groupPersonList">
+	<select id="selectGroupPersonListMap" parameterType="pd" resultMap="groupPersonList">
 		select group_id,group_name,#{wid} wid from tbl_#{wid}_group
 	</select>
 
@@ -91,7 +91,15 @@
 		            select="com.ts.cpfr.dao.DeviceDao.selectDeviceListByGroupID">
 		</collection>
 	</resultMap>
-	<select id="selectGroupDeviceList" parameterType="pd" resultMap="groupDeviceList">
+	<select id="selectGroupDeviceListMap" parameterType="pd" resultMap="groupDeviceList">
 		select group_id,group_name,#{wid} wid from tbl_#{wid}_group
+	</select>
+
+	<select id="selectGroupListByDeviceSn" parameterType="pd" resultType="pd">
+		SELECT g.group_id,g.group_name FROM tbl_#{wid}_group g LEFT JOIN tbl_#{wid}_group_device gd ON g.group_id=gd.group_id WHERE gd.device_id=(select device_id from tbl_#{wid}_device where device_sn=#{device_sn})
+	</select>
+
+	<select id="selectGroupListByPersonID" parameterType="pd" resultType="pd">
+		SELECT g.group_id,g.group_name FROM tbl_#{wid}_group g LEFT JOIN tbl_#{wid}_group_person gp ON g.group_id=gp.group_id WHERE gp.person_id=#{person_id}
 	</select>
 </mapper>

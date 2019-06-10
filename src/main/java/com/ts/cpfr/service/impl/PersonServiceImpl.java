@@ -164,7 +164,9 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public ParamData queryPerson(ParamData pd) {
-        return mPersonDao.selectPerson(pd);
+        ParamData data = mPersonDao.selectPerson(pd);
+        data.put("group_list",mGroupDao.selectGroupListByPersonID(pd));
+        return data;
     }
 
     public byte[] blobToByte(Blob blob) throws Exception {
@@ -330,7 +332,7 @@ public class PersonServiceImpl implements PersonService {
 
     @Override
     public ResultData<ParamData> getGroupPersonList(ParamData pd) {
-        List<ParamData> groupList = mGroupDao.selectGroupPersonList(pd);
+        List<ParamData> groupList = mGroupDao.selectGroupPersonListMap(pd);
         if (groupList == null)
             groupList = new ArrayList<>();
         ParamData other = new ParamData();

@@ -4,6 +4,14 @@
 <el-form>
     <el-form-item>
         <el-row>
+            <el-select v-model="selectGroupModel" clearable placeholder="请选择部门" size="small" @change="changeSelectGroup">
+                <el-option
+                        v-for="item in options2"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                </el-option>
+            </el-select>
             <el-button type="primary" icon="el-icon-plus" @click="openDialogDevice" size="small">${add}</el-button>
             <div style="float: right">
                 <el-input style="width: 200px;" size="small" placeholder="${search_content}"

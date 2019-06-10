@@ -118,6 +118,7 @@ public class DeviceServiceImpl implements DeviceService {
     public ParamData queryDevice(ParamData pd) {
         ParamData data = mDeviceDao.selectDevice(pd);
         data.putAll(mDeviceDao.selectSyncDownlStatus(pd));
+        data.put("group_list",mGroupDao.selectGroupListByDeviceSn(pd));
         return data;
     }
 
@@ -211,7 +212,7 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public ResultData<ParamData> getGroupDeviceList(ParamData pd) {
-        List<ParamData> groupList = mGroupDao.selectGroupDeviceList(pd);
+        List<ParamData> groupList = mGroupDao.selectGroupDeviceListMap(pd);
         if (groupList == null)
             groupList = new ArrayList<>();
         ParamData other = new ParamData();

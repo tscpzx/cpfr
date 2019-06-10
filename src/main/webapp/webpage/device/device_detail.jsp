@@ -51,7 +51,7 @@
         data: {
             device: device,
             activeName: 'first',
-            options: [{
+            options1: [{
                 value: 0,
                 label: '${human_face}'
             }, {
@@ -87,7 +87,9 @@
                 dateValue: '',
             },
             grant: '',
-            keyword: ''
+            keyword: '',
+            selectGroupModel:'',
+            options2:[]
         },
         methods: {
             handleChange1(val) {
@@ -238,6 +240,14 @@
                         vmDialogPersonList.visible = true;
                     }
                 });
+            },
+            changeSelectGroup(value){
+                ajaxGrantPersonList({
+                    pageNum: vm.currentPage1,
+                    pageSize: vm.pageSize1,
+                    device_sn: device.device_sn,
+                    group_id:value
+                });
             }
 
         },
@@ -374,4 +384,11 @@
         }
     });
 
+    /* 给选择部门的下拉框赋值 */
+    for (var i = 0; i < device.group_list.length; i++) {
+        vm.options2[i] = {
+            label: device.group_list[i].group_name,
+            value: device.group_list[i].group_id
+        }
+    }
 </script>

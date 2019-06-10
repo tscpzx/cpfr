@@ -99,7 +99,9 @@
                 cropperVisible: false,
                 file: '',
                 replace: false,
-                uploadBlob: ''
+                uploadBlob: '',
+                selectGroupModel:'',
+                options2:[]
             }
         },
 
@@ -356,6 +358,14 @@
             },
             closed() {
                 this.file = '';
+            },
+            changeSelectGroup(value){
+                ajaxAccessDeviceList({
+                    pageNum: vue.currentPage,
+                    pageSize: vue.pageSize,
+                    person_id: data.person_id,
+                    group_id:value
+                });
             }
         },
 
@@ -483,5 +493,13 @@
                 vmDialogDeviceList.visible = true;
             }
         });
+    }
+
+    /* 给选择部门的下拉框赋值 */
+    for (var i = 0; i < data.group_list.length; i++) {
+        vue.options2[i] = {
+            label: data.group_list[i].group_name,
+            value: data.group_list[i].group_id
+        }
     }
 </script>
