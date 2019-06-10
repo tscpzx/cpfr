@@ -158,6 +158,7 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public ResultData<ParamData> deleteDevice(ParamData pd) throws Exception {
         String deviceSn = mDeviceDao.selectDeviceSnByDeviceID(pd);
+        pd.put("device_sn",deviceSn);
         if (mDeviceDao.deleteDeviceByDeviceID(pd)) {
             TextMessage message = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1005_DEVICE_DELETE, null);
             mSocketMessageHandle.sendMessageToDevice(deviceSn, message);

@@ -51,7 +51,7 @@
 	<update id="deletePerson" parameterType="pd">
 		update tbl_#{wid}_person set status=3 where person_id = #{person_id};
 
-		delete from tbl_#{wid}_image where image_id=(select image_id from tbl_#{wid}_person where person_id = #{person_id);
+		delete from tbl_#{wid}_image where image_id=(select image_id from tbl_#{wid}_person where person_id = #{person_id});
 
 		update tbl_#{wid}_grant set status=3  WHERE person_id = #{person_id};
 
