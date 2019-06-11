@@ -17,7 +17,7 @@ public class MyCacheEventListener implements CacheEventListener {
     @Override
     public void notifyElementRemoved(Ehcache cache, Element element) throws CacheException {
 //        if (element.getObjectKey().equals(ThreadToken.getToken())) {
-//            LoginUser user = (LoginUser) element.getObjectValue();
+//            User user = (User) element.getObjectValue();
 //            SysLog.info(user.getName() + " removed");
 //            ThreadToken.clearToken();
 //        }
@@ -37,7 +37,7 @@ public class MyCacheEventListener implements CacheEventListener {
     @Override
     public void notifyElementExpired(Ehcache cache, Element element) {
 //        if (element.getObjectKey().equals(ThreadToken.getToken())) {
-//            LoginUser user = (LoginUser) element.getObjectValue();
+//            User user = (User) element.getObjectValue();
 //            SysLog.info(user.getName() + " expired");
 //            ThreadToken.clearToken();
 //        }

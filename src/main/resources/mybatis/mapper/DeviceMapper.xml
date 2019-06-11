@@ -43,7 +43,7 @@
 	</update>
 
 	<insert id="insertDevice" parameterType="pd">
-		UPDATE tbl_inact_device SET status=1,admin_id=#{admin_id},activate_time=now() WHERE device_sn=#{device_sn};
+		UPDATE tbl_inact_device SET status=1,user_id=#{user_id},activate_time=now() WHERE device_sn=#{device_sn};
 
 		INSERT INTO tbl_#{wid}_device (device_name,device_sn,last_online_time,register_time,activate_time,online) select device_sn,device_sn,now(),register_time,activate_time,online from tbl_inact_device where device_sn=#{device_sn};
 
@@ -78,7 +78,7 @@
 	<delete id="deleteDeviceByDeviceID" parameterType="pd">
 		DELETE d,c FROM tbl_#{wid}_device d LEFT JOIN tbl_#{wid}_device_config c ON d.device_id=c.device_id WHERE d.device_id=#{device_id};
 
-		UPDATE tbl_inact_device SET status=0,admin_id=NULL,activate_time=NULL WHERE device_sn=#{device_sn};
+		UPDATE tbl_inact_device SET status=0,user_id=NULL,activate_time=NULL WHERE device_sn=#{device_sn};
 
 		update tbl_#{wid}_grant set status=3  WHERE device_id = #{device_id};
 
@@ -94,7 +94,7 @@
 	</select>
 
 	<select id="selectWidByDeviceSn" parameterType="pd" resultType="int">
-		SELECT wid FROM tbl_user  WHERE admin_id = (SELECT admin_id FROM tbl_inact_device  WHERE device_sn=#{device_sn})
+		SELECT wid FROM tbl_user  WHERE user_id = (SELECT user_id FROM tbl_inact_device  WHERE device_sn=#{device_sn})
 	</select>
 
 	<select id="selectDeviceStatusByDeviceSn" parameterType="pd" resultType="int">

@@ -7,7 +7,7 @@
 	</insert>
 
 	<select id="selectUserWid" parameterType="pd" resultType="int">
-		select wid from tbl_user where admin_id=#{admin_id}
+		select wid from tbl_user where user_id=#{user_id}
 	</select>
 
 	<select id="selectDevice" parameterType="pd" resultType="pd">

@@ -4,7 +4,7 @@ import com.ts.cpfr.dao.TableDao;
 import com.ts.cpfr.dao.UserDao;
 import com.ts.cpfr.ehcache.TokenProcessor;
 import com.ts.cpfr.ehcache.WebMemory;
-import com.ts.cpfr.entity.LoginUser;
+import com.ts.cpfr.entity.User;
 import com.ts.cpfr.service.UserService;
 import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.HandleEnum;
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public ResultData<ParamData> login(ParamData pd, HttpServletRequest request, HttpServletResponse response) {
-        LoginUser user = mUserDao.selectUserByName(pd);
+        User user = mUserDao.selectUserByName(pd);
         if (user != null) {
             if (user.getPassword().equals(pd.getString("password"))) {
                 memory.putCache(user);
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService {
                 response.addCookie(cookie);
 
                 ParamData paramData = new ParamData();
-                paramData.put(CommConst.ADMIN_ID, user.getAdminId());
+                paramData.put(CommConst.USER_ID, user.getUserId());
                 paramData.put(CommConst.ACCESS_CPFR_TOKEN, user.getToken());
 
                 mUserDao.updateUserLoginTime(paramData);
@@ -72,9 +72,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public ResultData<ParamData> register(ParamData pd) {
-        LoginUser user = mUserDao.selectUserByName(pd);
+        User user = mUserDao.selectUserByName(pd);
         if (user == null) {
-            boolean result = mUserDao.insertAdminUser(pd);
+            boolean result = mUserDao.insertUser(pd);
             if (result) {
                 //注册成功，建立对应仓库
                 int wid = mTableDao.selectLastInsertID();
@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, ParamData pd) {
-        String seed = TokenProcessor.getInstance().generateSeed(memory.getCache(pd.getString(CommConst.ACCESS_CPFR_TOKEN)).getAdminId() + "");
+        String seed = TokenProcessor.getInstance().generateSeed(memory.getCache(pd.getString(CommConst.ACCESS_CPFR_TOKEN)).getUserId() + "");
         memory.removeCache(seed);
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
@@ -103,8 +103,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public ResultData<ParamData> changePassword(ParamData pd) {
         pd.put("name", memory.getCache(pd.getString(CommConst.ACCESS_CPFR_TOKEN)).getName());
-        pd.put("admin_id", memory.getCache(pd.getString(CommConst.ACCESS_CPFR_TOKEN)).getAdminId());
-        LoginUser user = mUserDao.selectUserByName(pd);
+        pd.put("user_id", memory.getCache(pd.getString(CommConst.ACCESS_CPFR_TOKEN)).getUserId());
+        User user = mUserDao.selectUserByName(pd);
         if (user.getPassword().equals(pd.getString("old_password"))) {
             if (mUserDao.updateUserPassword(pd)) return new ResultData<>(HandleEnum.SUCCESS);
             else return new ResultData<>(HandleEnum.FAIL);

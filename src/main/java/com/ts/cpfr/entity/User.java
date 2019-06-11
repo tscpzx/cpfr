@@ -5,19 +5,20 @@ import java.io.Serializable;
 /**
  * Created by Administrator on 2018/1/4.
  */
-public class LoginUser implements Serializable {
-    private int adminId;
+public class User implements Serializable {
+    private int userId;
     private int wid;
     private String name;
     private String password;
     private String token;
+    private boolean enable;
 
-    public int getAdminId() {
-        return adminId;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setAdminId(int adminId) {
-        this.adminId = adminId;
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public String getToken() {
@@ -48,7 +49,15 @@ public class LoginUser implements Serializable {
         return wid;
     }
 
-    public void setWId(int wid) {
+    public void setWid(int wid) {
         this.wid = wid;
+    }
+
+    public boolean isEnable() {
+        return enable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
     }
 }

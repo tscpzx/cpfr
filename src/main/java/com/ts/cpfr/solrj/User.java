@@ -14,8 +14,8 @@ import org.apache.solr.client.solrj.beans.Field;
 public class User {
 
     // solr查询若直接将数据转为对象，需要指定Field，该值需要和managed-schema配置Field的name一致
-    @Field("admin_id")
-    private String admin_id;
+    @Field("user_id")
+    private String user_id;
 
     @Field("name")
     private String name;
@@ -24,18 +24,18 @@ public class User {
         super();
     }
 
-    public User(String admin_id, String name) {
+    public User(String user_id, String name) {
         super();
-        this.admin_id = admin_id;
+        this.user_id = user_id;
         this.name = name;
     }
 
-    public String getAdminId() {
-        return admin_id;
+    public String getUserId() {
+        return user_id;
     }
 
-    public void setId(String admin_id) {
-        this.admin_id = admin_id;
+    public void setId(String user_id) {
+        this.user_id = user_id;
     }
 
     public String getName() {
@@ -48,7 +48,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [admin_id=" + admin_id + ", name=" + name + "]";
+        return "User [user_id=" + user_id + ", name=" + name + "]";
     }
 }
 

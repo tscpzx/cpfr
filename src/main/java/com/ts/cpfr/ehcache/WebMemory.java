@@ -1,6 +1,6 @@
 package com.ts.cpfr.ehcache;
 
-import com.ts.cpfr.entity.LoginUser;
+import com.ts.cpfr.entity.User;
 import com.ts.cpfr.utils.SystemConfig;
 
 import net.sf.ehcache.Cache;
@@ -38,27 +38,27 @@ public class WebMemory {
      * timeToIdleSeconds -->  当对象自从最近一次被访问后，如果处于空闲状态的时间超过了timeToIdleSeconds属性值，这个对象就会过期，
      * EHCache将把它从缓存中清空；即缓存被创建后，最后一次访问时间到缓存失效之时，两者之间的间隔，单位为秒(s)
      */
-    public void putCache(LoginUser loginUser) {
+    public void putCache(User user) {
         // 生成seed和token值
-        String seed = TokenProcessor.getInstance().generateSeed(loginUser.getAdminId() + "");
+        String seed = TokenProcessor.getInstance().generateSeed(user.getUserId() + "");
         String token = TokenProcessor.getInstance()
-          .generateToken(loginUser.getName() + loginUser.getPassword());
+          .generateToken(user.getName() + user.getPassword());
 
         // 保存token到登录用户中
-        loginUser.setToken(token);
+        user.setToken(token);
         // 清空之前的登录信息
         removeCache(seed);
         // 保存新的token和登录信息
         ehcache.put(new Element(seed, token, SystemConfig.SESSION_TIME_TO_IDLE, SystemConfig.SESSION_TIME_LIVE_MAX));
-        ehcache.put(new Element(token, loginUser, SystemConfig.SESSION_TIME_TO_IDLE, SystemConfig.SESSION_TIME_LIVE_MAX));
+        ehcache.put(new Element(token, user, SystemConfig.SESSION_TIME_TO_IDLE, SystemConfig.SESSION_TIME_LIVE_MAX));
     }
 
     /**
      * 获取当前线程中的用户信息
      */
-    public LoginUser getCache(String token) {
+    public User getCache(String token) {
         Element element = ehcache.get(token);
-        return element == null ? null : (LoginUser) element.getObjectValue();
+        return element == null ? null : (User) element.getObjectValue();
     }
 
     /**

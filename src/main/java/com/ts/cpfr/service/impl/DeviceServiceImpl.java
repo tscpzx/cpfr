@@ -8,7 +8,7 @@ import com.ts.cpfr.dao.UserDao;
 import com.ts.cpfr.ehcache.AppMemory;
 import com.ts.cpfr.ehcache.WebMemory;
 import com.ts.cpfr.entity.AppDevice;
-import com.ts.cpfr.entity.LoginUser;
+import com.ts.cpfr.entity.User;
 import com.ts.cpfr.service.DeviceService;
 import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.CommUtil;
@@ -83,11 +83,11 @@ public class DeviceServiceImpl implements DeviceService {
     @Transactional
     @Override
     public ResultData<ParamData> activateDevice(ParamData pd) throws Exception {
-        LoginUser user = memory.getCache(pd.getString(CommConst.ACCESS_CPFR_TOKEN));
+        User user = memory.getCache(pd.getString(CommConst.ACCESS_CPFR_TOKEN));
         ParamData paramData = mDeviceDao.selectInActDevice(pd);
         if (paramData == null)
             return new ResultData<>(HandleEnum.FAIL, "设备不存在");
-        pd.put("admin_id", user.getAdminId());
+        pd.put("user_id", user.getUserId());
         pd.put("wid", user.getWid());
         if (STATUS_1_DEVICE_ONLINE == (Integer) paramData.get("online")) {
             //激活成功，往对应仓库插入设备，返回

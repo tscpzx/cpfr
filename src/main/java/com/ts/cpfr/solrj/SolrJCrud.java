@@ -120,7 +120,7 @@ public class SolrJCrud {
         Map<String, Map<String, List<String>>> map = response.getHighlighting();
         for (Map.Entry<String, Map<String, List<String>>> highlighting : map.entrySet()) {
             for (User user : users) {
-                if (!highlighting.getKey().equals(user.getAdminId().toString())) {
+                if (!highlighting.getKey().equals(user.getUserId().toString())) {
                     continue;
                 }
                 user.setName(highlighting.getValue().get("name").toString());

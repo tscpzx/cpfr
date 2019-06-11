@@ -18,7 +18,7 @@ public class CommConst {
     public static final String ACCESS_APP_TOKEN = "access_app_token";
     public static final String ACCESS_CPFR_TOKEN = "access_cpfr_token";
     public static final String DEVICE_SN = "device_sn";
-    public static final String ADMIN_ID = "admin_id";
+    public static final String USER_ID = "user_id";
 
     /////websocket 状态码//////
     public static final int CODE_999 = 999;//操作失败
