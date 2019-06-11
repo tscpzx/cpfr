@@ -1,17 +1,19 @@
 package com.ts.cpfr.entity;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by Administrator on 2018/1/4.
  */
-public class User implements Serializable {
+public class UserInfo implements Serializable {
     private int userId;
     private int wid;
     private String name;
     private String password;
     private String token;
     private boolean enable;
+    private List<Role> roles;
 
     public int getUserId() {
         return userId;
@@ -59,5 +61,13 @@ public class User implements Serializable {
 
     public void setEnable(boolean enable) {
         this.enable = enable;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }

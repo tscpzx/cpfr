@@ -1,6 +1,6 @@
 package com.ts.cpfr.dao;
 
-import com.ts.cpfr.entity.User;
+import com.ts.cpfr.entity.UserInfo;
 import com.ts.cpfr.utils.ParamData;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
  * @Created by cjw
  */
 public interface UserDao {
-    User selectUserByName(ParamData pd);
+    UserInfo selectUserByName(ParamData pd);
 
     boolean insertUser(ParamData pd);
 

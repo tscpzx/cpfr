@@ -4,7 +4,7 @@ import com.ts.cpfr.dao.TableDao;
 import com.ts.cpfr.dao.UserDao;
 import com.ts.cpfr.ehcache.TokenProcessor;
 import com.ts.cpfr.ehcache.WebMemory;
-import com.ts.cpfr.entity.User;
+import com.ts.cpfr.entity.UserInfo;
 import com.ts.cpfr.service.UserService;
 import com.ts.cpfr.utils.CommConst;
 import com.ts.cpfr.utils.HandleEnum;
@@ -40,25 +40,25 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public ResultData<ParamData> login(ParamData pd, HttpServletRequest request, HttpServletResponse response) {
-        User user = mUserDao.selectUserByName(pd);
-        if (user != null) {
-            if (user.getPassword().equals(pd.getString("password"))) {
-                memory.putCache(user);
+        UserInfo userInfo = mUserDao.selectUserByName(pd);
+        if (userInfo != null) {
+            if (userInfo.getPassword().equals(pd.getString("password"))) {
+                memory.putCache(userInfo);
 
                 HttpSession session = request.getSession();
                 session.setMaxInactiveInterval(SystemConfig.SESSION_TIME_LIVE_MAX);
-                session.setAttribute("user", user);
+                session.setAttribute("user", userInfo);
 
                 //存入cookie中
-                Cookie cookie = new Cookie(CommConst.ACCESS_CPFR_TOKEN, user.getToken());
+                Cookie cookie = new Cookie(CommConst.ACCESS_CPFR_TOKEN, userInfo.getToken());
                 cookie.setMaxAge(SystemConfig.COOKIE_LIVE_TIME);
                 cookie.setPath(request.getContextPath() + "/");
                 //写回浏览器
                 response.addCookie(cookie);
 
                 ParamData paramData = new ParamData();
-                paramData.put(CommConst.USER_ID, user.getUserId());
-                paramData.put(CommConst.ACCESS_CPFR_TOKEN, user.getToken());
+                paramData.put(CommConst.USER_ID, userInfo.getUserId());
+                paramData.put(CommConst.ACCESS_CPFR_TOKEN, userInfo.getToken());
 
                 mUserDao.updateUserLoginTime(paramData);
 
@@ -72,8 +72,8 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public ResultData<ParamData> register(ParamData pd) {
-        User user = mUserDao.selectUserByName(pd);
-        if (user == null) {
+        UserInfo userInfo = mUserDao.selectUserByName(pd);
+        if (userInfo == null) {
             boolean result = mUserDao.insertUser(pd);
             if (result) {
                 //注册成功，建立对应仓库
@@ -104,8 +104,8 @@ public class UserServiceImpl implements UserService {
     public ResultData<ParamData> changePassword(ParamData pd) {
         pd.put("name", memory.getCache(pd.getString(CommConst.ACCESS_CPFR_TOKEN)).getName());
         pd.put("user_id", memory.getCache(pd.getString(CommConst.ACCESS_CPFR_TOKEN)).getUserId());
-        User user = mUserDao.selectUserByName(pd);
-        if (user.getPassword().equals(pd.getString("old_password"))) {
+        UserInfo userInfo = mUserDao.selectUserByName(pd);
+        if (userInfo.getPassword().equals(pd.getString("old_password"))) {
             if (mUserDao.updateUserPassword(pd)) return new ResultData<>(HandleEnum.SUCCESS);
             else return new ResultData<>(HandleEnum.FAIL);
         } else return new ResultData<>(HandleEnum.FAIL, "原密码输入有误");

@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ts.cpfr.dao.UserDao">
-    <select id="selectUserByName" parameterType="pd" resultType="com.ts.cpfr.entity.User">
+    <select id="selectUserByName" parameterType="pd" resultType="com.ts.cpfr.entity.UserInfo">
         select user_id,wid,name,password
         from tbl_user
         where name = #{name}
