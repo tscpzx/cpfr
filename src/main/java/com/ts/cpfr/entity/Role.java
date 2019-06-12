@@ -1,20 +1,20 @@
 package com.ts.cpfr.entity;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Role {
-    private String id;
+public class Role implements Serializable {
+    private String roleId;
     private String roleName;
     private String roleDesc;
-    private List<Permission> permissions;
-    private List<UserInfo> users;
+    private List<Permission> permissionList;
 
-    public String getId() {
-        return id;
+    public String getRoleId() {
+        return roleId;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setRoleId(String roleId) {
+        this.roleId = roleId;
     }
 
     public String getRoleName() {
@@ -33,19 +33,11 @@ public class Role {
         this.roleDesc = roleDesc;
     }
 
-    public List<Permission> getPermissions() {
-        return permissions;
+    public List<Permission> getPermissionList() {
+        return permissionList;
     }
 
-    public void setPermissions(List<Permission> permissions) {
-        this.permissions = permissions;
-    }
-
-    public List<UserInfo> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<UserInfo> users) {
-        this.users = users;
+    public void setPermissionList(List<Permission> permissionList) {
+        this.permissionList = permissionList;
     }
 }

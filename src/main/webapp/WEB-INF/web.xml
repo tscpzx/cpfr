@@ -6,7 +6,7 @@
     <!--1. 加载spring容器,Spring监听 -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath:spring/spring-context-config.xml,classpath:spring/spring-security.xml</param-value>
+        <param-value>classpath:spring/spring-config-context.xml,classpath:spring/spring-config-security.xml</param-value>
     </context-param>
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -34,7 +34,7 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>classpath:spring/springmvc-config.xml</param-value>
+            <param-value>classpath:spring/spring-config-mvc.xml</param-value>
         </init-param>
         <!-- 在tomcat启动的时候就加载这个servlet -->
         <load-on-startup>1</load-on-startup>

@@ -40,7 +40,7 @@
 	<mvc:resources mapping="/html/**" location="/html/"/>
 
 	<!-- 访问拦截  -->
-	<mvc:interceptors>
+	<!--<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**"/>
 			<mvc:exclude-mapping path="/resource/**"/>
@@ -64,24 +64,14 @@
 			<mvc:exclude-mapping path="/app/disconnect"/>
 			<bean class="com.ts.cpfr.spring.AppInterceptor"/>
 		</mvc:interceptor>
-	</mvc:interceptors>
+	</mvc:interceptors>-->
 
 	<!-- 定义json视图 -->
-	<bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
-		<property name="order" value="1"/>
-		<property name="mediaTypes">
-			<map>
-				<entry key="json" value="application/json"/>
-				<entry key="xml" value="application/xml"/>
-				<entry key="htm" value="text/html"/>
-			</map>
-		</property>
-		<property name="defaultViews">
-			<list>
-				<bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>
-			</list>
-		</property>
-		<property name="ignoreAcceptHeader" value="true"/>
+	<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
+		<property name="parameterName" value="format"/>
+		<property name="favorParameter" value="true"/>
+		<property name="defaultContentType" value="text/html"/>
+		<property name="ignoreAcceptHeader" value="false"/>
 	</bean>
 
 	<!-- 定义跳转的文件的前后缀 ，jsp视图模式配置-->

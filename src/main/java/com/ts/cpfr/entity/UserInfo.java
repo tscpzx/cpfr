@@ -13,7 +13,7 @@ public class UserInfo implements Serializable {
     private String password;
     private String token;
     private boolean enable;
-    private List<Role> roles;
+    private List<Role> roleList;
 
     public int getUserId() {
         return userId;
@@ -63,11 +63,11 @@ public class UserInfo implements Serializable {
         this.enable = enable;
     }
 
-    public List<Role> getRoles() {
-        return roles;
+    public List<Role> getRoleList() {
+        return roleList;
     }
 
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
     }
 }

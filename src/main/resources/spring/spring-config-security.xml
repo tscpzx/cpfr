@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans.xsd
+    http://www.springframework.org/schema/security
+    http://www.springframework.org/schema/security/spring-security.xsd">
+
+	<!-- 配置不拦截的资源 -->
+	<security:http pattern="/resource/**" security="none"/>
+	<security:http pattern="/login" security="none"/>
+	<security:http pattern="/register" security="none"/>
+	<security:http pattern="/web" security="none"/>
+	<security:http pattern="/page/**" security="none"/>
+	<security:http pattern="/app/**" security="none"/>
+	<security:http pattern="/ws" security="none"/>
+
+	<security:authentication-manager>
+		<security:authentication-provider user-service-ref="userService">
+			<!-- 配置加密的方式-->
+			<security:password-encoder ref="passwordEncoder"/>
+		</security:authentication-provider>
+	</security:authentication-manager>
+
+	<!--
+		配置具体的规则
+		auto-config="true"	不用自己编写登录的页面，框架提供默认登录页面
+		use-expressions="false"	是否使用SPEL表达式（没学习过）
+	-->
+	<!-- 切换成数据库中的用户名和密码 -->
+	<security:http auto-config="true" use-expressions="false">
+		<!-- 配置具体的拦截的规则 pattern="请求路径的规则" access="访问系统的人，必须有ROLE_USER的角色" -->
+		<security:intercept-url pattern="/just_to_test" access="ROLE_USER,ROLE_ADMIN"/>
+
+		<!-- 自定义登陆页面，
+		login-page 自定义登陆页面
+		login-processing-url：表示登录时提交的地址
+		authentication-failure-url 用户权限校验失败之 后才会跳转到这个页面，如果数据库中没有这个用户则不会跳转到这个页面。
+		default-target-url 登陆成功后跳转的页面。 注：登陆页面用户名固定 username，密码 password，action:login -->
+		<!-- 定义跳转的具体的页面 -->
+	<!--	<security:form-login
+		  login-page="/login"
+		  username-parameter="name"
+		  password-parameter="password"
+		  login-processing-url="/user/login"
+		  authentication-failure-handler-ref="failureHandler"
+		  authentication-success-handler-ref="successHandler"
+		/>-->
+
+		<!-- 关闭跨域请求 -->
+		<security:csrf disabled="true"/>
+		<!-- 登出，
+		invalidate-session 是否删除session logout-url：登出处理链接
+		logout-successurl：登出成功页面             注：登出操作 只需要链接到 logout即可登出当前用户 -->
+		<!--<security:logout invalidate-session="true" logout-url="/logout.do" logout-success-url="/login.jsp"/>-->
+
+	</security:http>
+
+	<!-- 配置加密类 -->
+	<bean id="passwordEncoder" class="com.ts.cpfr.spring.security.JWTPasswordEncoder"/>
+
+	<!-- 登录成功后的业务处理 -->
+	<bean id="successHandler" class="com.ts.cpfr.spring.security.LoginSuccessHandler">
+		<property name="defaultTargetUrl" value="/web"/>
+	</bean>
+	<!-- 登录失败业务处理 -->
+	<bean id="failureHandler" class="com.ts.cpfr.spring.security.LoginFailureHandler">
+		<property name="defaultFailureUrl" value="/web"/>
+	</bean>
+</beans>
+

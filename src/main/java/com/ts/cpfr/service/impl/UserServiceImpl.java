@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public ResultData<ParamData> login(ParamData pd, HttpServletRequest request, HttpServletResponse response) {
-        UserInfo userInfo = mUserDao.selectUserByName(pd);
+        UserInfo userInfo = mUserDao.selectUserMapByName(pd);
         if (userInfo != null) {
             if (userInfo.getPassword().equals(pd.getString("password"))) {
                 memory.putCache(userInfo);
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public ResultData<ParamData> register(ParamData pd) {
-        UserInfo userInfo = mUserDao.selectUserByName(pd);
+        UserInfo userInfo = mUserDao.selectUserMapByName(pd);
         if (userInfo == null) {
             boolean result = mUserDao.insertUser(pd);
             if (result) {
@@ -104,7 +104,7 @@ public class UserServiceImpl implements UserService {
     public ResultData<ParamData> changePassword(ParamData pd) {
         pd.put("name", memory.getCache(pd.getString(CommConst.ACCESS_CPFR_TOKEN)).getName());
         pd.put("user_id", memory.getCache(pd.getString(CommConst.ACCESS_CPFR_TOKEN)).getUserId());
-        UserInfo userInfo = mUserDao.selectUserByName(pd);
+        UserInfo userInfo = mUserDao.selectUserMapByName(pd);
         if (userInfo.getPassword().equals(pd.getString("old_password"))) {
             if (mUserDao.updateUserPassword(pd)) return new ResultData<>(HandleEnum.SUCCESS);
             else return new ResultData<>(HandleEnum.FAIL);

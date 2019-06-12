@@ -2,7 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ts.cpfr.dao.UserDao">
-    <select id="selectUserByName" parameterType="pd" resultType="com.ts.cpfr.entity.UserInfo">
+    <resultMap id="userMap" type="com.ts.cpfr.entity.UserInfo">
+        <result column="user_id" property="userId"/>
+        <collection column="user_id" property="roleList"
+                    select="com.ts.cpfr.dao.UserDao.selectRoleListByUserID">
+        </collection>
+    </resultMap>
+    <select id="selectUserMapByName" parameterType="pd" resultMap="userMap">
         select user_id,wid,name,password
         from tbl_user
         where name = #{name}
@@ -36,5 +42,9 @@
 
     <select id="selectWidList" resultType="pd">
         select wid from tbl_user;
+    </select>
+
+    <select id="selectRoleListByUserID" parameterType="int" resultType="com.ts.cpfr.entity.Role">
+        SELECT r.role_id,r.role_name,r.role_desc FROM tbl_role r RIGHT JOIN tbl_user_role ur ON r.role_id=ur.role_id WHERE ur.user_id=#{user_id}
     </select>
 </mapper>

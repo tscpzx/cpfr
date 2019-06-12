@@ -1,5 +1,6 @@
 package com.ts.cpfr.dao;
 
+import com.ts.cpfr.entity.Role;
 import com.ts.cpfr.entity.UserInfo;
 import com.ts.cpfr.utils.ParamData;
 
@@ -12,15 +13,17 @@ import java.util.List;
  * @Created by cjw
  */
 public interface UserDao {
-    UserInfo selectUserByName(ParamData pd);
+    UserInfo selectUserMapByName(ParamData pd);
 
     boolean insertUser(ParamData pd);
 
-    int selectWidByUserId(String userId);
+    int selectWidByUserID(String userId);
 
     void updateUserLoginTime(ParamData pd);
 
     boolean updateUserPassword(ParamData pd);
 
     List<ParamData> selectWidList();
+
+    List<Role> selectRoleListByUserID(int userId);
 }
