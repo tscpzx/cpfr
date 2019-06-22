@@ -3,19 +3,12 @@ package com.ts.cpfr.controller;
 import com.alibaba.fastjson.JSON;
 import com.ts.cpfr.controller.base.WebBaseController;
 import com.ts.cpfr.service.DeviceService;
-import com.ts.cpfr.utils.CommConst;
-import com.ts.cpfr.utils.HandleEnum;
-import com.ts.cpfr.utils.PageData;
-import com.ts.cpfr.utils.ParamData;
-import com.ts.cpfr.utils.ResultData;
-
+import com.ts.cpfr.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @Classname DeviceController
@@ -33,7 +26,7 @@ public class DeviceController extends WebBaseController {
 
     @ResponseBody
     @RequestMapping("/list")
-    public ResultData<PageData<ParamData>> list(HttpServletRequest request) {
+    public ResultData<PageData<ParamData>> list() {
         try {
             return mDeviceService.getDeviceList(paramDataInit());
         } catch (Exception e) {
@@ -44,7 +37,7 @@ public class DeviceController extends WebBaseController {
 
     @ResponseBody
     @RequestMapping("/inact_list")
-    public ResultData<PageData<ParamData>> inactList(HttpServletRequest request) {
+    public ResultData<PageData<ParamData>> inactList() {
         try {
             return mDeviceService.getInActDeviceList(paramDataInit());
         } catch (Exception e) {
@@ -55,7 +48,7 @@ public class DeviceController extends WebBaseController {
 
     @ResponseBody
     @RequestMapping("/activate")
-    public ResultData<ParamData> activate(HttpServletRequest request) {
+    public ResultData<ParamData> activate() {
         try {
             return mDeviceService.activateDevice(paramDataInit());
         } catch (Exception e) {
@@ -90,7 +83,7 @@ public class DeviceController extends WebBaseController {
 
     @ResponseBody
     @RequestMapping("/grant_person_list")
-    public ResultData<PageData<ParamData>> personList(HttpServletRequest request) {
+    public ResultData<PageData<ParamData>> personList() {
         try {
             return mDeviceService.getGrantPersonList(paramDataInit());
         } catch (Exception e) {
@@ -101,7 +94,7 @@ public class DeviceController extends WebBaseController {
 
     @ResponseBody
     @RequestMapping("/change_info")
-    public ResultData<ParamData> changeInfo(HttpServletRequest request) {
+    public ResultData<ParamData> changeInfo() {
         try {
             return mDeviceService.changeDeviceInfo(paramDataInit());
         } catch (Exception e) {
@@ -112,7 +105,7 @@ public class DeviceController extends WebBaseController {
 
     @ResponseBody
     @RequestMapping("/delete")
-    public ResultData<ParamData> delete(HttpServletRequest request) {
+    public ResultData<ParamData> delete() {
         try {
             return mDeviceService.deleteDevice(paramDataInit());
         } catch (Exception e) {
@@ -123,7 +116,7 @@ public class DeviceController extends WebBaseController {
 
     @ResponseBody
     @RequestMapping("/check_update")
-    public ResultData<ParamData> checkUpdate(HttpServletRequest request) {
+    public ResultData<ParamData> checkUpdate() {
         try {
             return mDeviceService.checkAppVersionUpdate(paramDataInit());
         } catch (Exception e) {
@@ -134,7 +127,7 @@ public class DeviceController extends WebBaseController {
 
     @ResponseBody
     @RequestMapping("/group_device_list")
-    public ResultData<ParamData> groupDeviceList(HttpServletRequest request){
+    public ResultData<ParamData> groupDeviceList(){
         try {
             return mDeviceService.getGroupDeviceList(paramDataInit());
         } catch (Exception e) {
@@ -145,7 +138,7 @@ public class DeviceController extends WebBaseController {
 
     @ResponseBody
     @RequestMapping("/list_by_group")
-    public ResultData<PageData<ParamData>> listByGroup(HttpServletRequest request) {
+    public ResultData<PageData<ParamData>> listByGroup() {
         try {
             return mDeviceService.getDeviceListByGroup(paramDataInit());
         } catch (Exception e) {
