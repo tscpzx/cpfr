@@ -3,6 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd  
 		http://www.springframework.org/schema/context  
@@ -15,6 +16,13 @@
 	<context:component-scan base-package="com.ts.cpfr.controller"/>
 	<!-- 开启多种视图支持-->
 	<!--<mvc:annotation-driven/>-->
+
+    <!--
+     支持AOP的注解支持，AOP底层使用代理技术
+     JDK动态代理，要求必须有接口
+     cglib代理，生成子类对象，proxy-target-class="true" 默认使用cglib的方式
+ -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
 
 	<mvc:annotation-driven>
 		<!-- 处理responseBody 里面日期类型,解决返回时间戳的问题 -->
@@ -40,7 +48,7 @@
 	<mvc:resources mapping="/html/**" location="/html/"/>
 
 	<!-- 访问拦截  -->
-	<!--<mvc:interceptors>
+	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/**"/>
 			<mvc:exclude-mapping path="/resource/**"/>
@@ -64,7 +72,7 @@
 			<mvc:exclude-mapping path="/app/disconnect"/>
 			<bean class="com.ts.cpfr.spring.AppInterceptor"/>
 		</mvc:interceptor>
-	</mvc:interceptors>-->
+	</mvc:interceptors>
 
 	<!-- 定义json视图 -->
 	<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">
