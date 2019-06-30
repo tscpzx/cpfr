@@ -44,9 +44,9 @@
 <%@include file="inc_dialog/dialog_person_list.jsp" %>
 
 <script type="text/javascript">
-    var device = $.parseJSON('${data}');
+    let device = $.parseJSON('${data}');
 
-    var vm = new Vue({
+    let vm = new Vue({
         el: "#device_detail",
         data: {
             device: device,
@@ -88,8 +88,8 @@
             },
             grant: '',
             keyword: '',
-            selectGroupModel:'',
-            options2:[]
+            selectGroupModel: '',
+            options2: []
         },
         methods: {
             handleChange1(val) {
@@ -241,12 +241,12 @@
                     }
                 });
             },
-            changeSelectGroup(value){
+            changeSelectGroup(value) {
                 ajaxGrantPersonList({
                     pageNum: vm.currentPage1,
                     pageSize: vm.pageSize1,
                     device_sn: device.device_sn,
-                    group_id:value
+                    group_id: value
                 });
             }
 
@@ -259,12 +259,6 @@
         }
     });
 
-    ajaxGrantPersonList({
-        pageNum: vm.currentPage1,
-        pageSize: vm.pageSize1,
-        device_sn: device.device_sn
-    });
-
     function ajaxGrantPersonList(data) {
         ajaxGet({
             url: "${pageContext.request.contextPath}/device/grant_person_list",
@@ -274,7 +268,13 @@
                 vm.tableData1 = result.data.list;
             }
         });
-    }
+    };
+
+    ajaxGrantPersonList({
+        pageNum: vm.currentPage1,
+        pageSize: vm.pageSize1,
+        device_sn: device.device_sn
+    });
 
     function ajaxChangeDeviceInfo(data) {
         ajaxGet({
@@ -283,14 +283,14 @@
             success: function (result) {
                 layAlert1(result.message);
                 var deviceList = vmDeviceTree.items[1].children;
-                for (var index in deviceList) {
-                    if (data.device_sn === deviceList[index].device_sn) {
-                        deviceList[index].device_name = data.device_name;
+                deviceList.find(device => {
+                    if (data.device_sn === device.device_sn) {
+                        device.device_name = data.device_name;
                     }
-                }
+                })
             }
         });
-    }
+    };
 
     function ajaxBanGrantPerson(scope) {
         ajaxGet({
@@ -305,7 +305,7 @@
                 vm.tableTotal--;
             }
         });
-    }
+    };
 
     function ajaxChangePersonGrant(data) {
         ajaxPost({
@@ -315,17 +315,17 @@
                 layTip(result.message);
                 vm.visible = false;
 
-                var personList = vm.tableData1;
-                for (var index in personList) {
-                    if (data.grant_id === personList[index].grant_id) {
-                        personList[index].pass_number = data.pass_number;
-                        personList[index].pass_start_time = data.pass_start_time;
-                        personList[index].pass_end_time = data.pass_end_time;
+                let personList = vm.tableData1;
+                personList.find(person => {
+                    if (data.grant_id === person.grant_id) {
+                        person.pass_number = data.pass_number;
+                        person.pass_start_time = data.pass_start_time;
+                        person.pass_end_time = data.pass_end_time;
                     }
-                }
+                });
             }
         })
-    }
+    };
 
     function ajaxDeleteDevice(data) {
         ajaxPost({
@@ -337,7 +337,7 @@
                 $("#device_content").load("${pageContext.request.contextPath}/page/device/device_tbl");
             }
         })
-    }
+    };
 
     var vmDialogPersonList = new Vue({
         el: "#dialog_person_list",
@@ -370,7 +370,7 @@
                         pass_start_time: pass_start_time,
                         pass_end_time: pass_end_time
                     },
-                    success: function (result) {
+                    success: (result) => {
                         layTip(result.message);
                         vmDialogPersonList.visible = false;
                         ajaxGrantPersonList({
