@@ -4,13 +4,14 @@
     #record_tree {
         width: 250px;
         height: 95%;
-        background: #EBEFF2;
+        background: #fff;
         overflow-y: auto;
         float: left;
+        border-right: solid 1px #e6e6e6;
     }
     #record_content{
         float: left;
-        width: calc(100% - 250px);
+        width: calc(100% - 251px);
         height: 95%;
         overflow: auto;
     }

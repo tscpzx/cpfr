@@ -14,7 +14,7 @@
     }
 
     .el-tree {
-        background: #EBEFF2;
+        background: #fff;
     }
 
     .tree-header-item {

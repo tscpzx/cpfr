@@ -23,7 +23,7 @@
     }
 
     .el-tree {
-        background: #EBEFF2;
+        background: #fff;
     }
 </style>
 <div id="attend">

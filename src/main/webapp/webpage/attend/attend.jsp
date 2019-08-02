@@ -4,7 +4,7 @@
     #attend_tree {
         width: 250px;
         height: 95%;
-        background: #EBEFF2;
+        background: #fff;
         overflow-y: auto;
         float: left;
     }

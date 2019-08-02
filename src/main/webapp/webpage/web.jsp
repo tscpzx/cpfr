@@ -12,7 +12,7 @@
         }
 
         .el-header {
-            background-color: #63BBD0;
+            background-color: #409EFF;
         }
 
         .el-col, .nav_title {
@@ -31,23 +31,27 @@
             padding: 0;
         }
 
+        .el-menu{
+            border: 0px;
+        }
+
         .el-form-item {
             margin-bottom: 18px;
         }
 
 
         .scrollbar::-webkit-scrollbar { /*滚动条整体样式*/
-            width: 15px; /*高宽分别对应横竖滚动条的尺寸*/
+            width: 12px; /*高宽分别对应横竖滚动条的尺寸*/
             height: 1px;
         }
 
         .scrollbar::-webkit-scrollbar-thumb { /*滚动条里面小方块*/
-            border-radius: 15px;
+            border-radius: 12px;
             background: #CCCCCC;
         }
 
         .scrollbar::-webkit-scrollbar-track { /*滚动条里面轨道*/
-            border-radius: 15px;
+            border-radius: 12px;
             background: #E1E1E1;
         }
     </style>
@@ -83,9 +87,9 @@
         </el-header>
 
         <el-container>
-            <el-aside width="200px" style="height: 100%;background:#545c64;">
-                <el-menu default-active="device/device" class="el-menu-vertical-demo" background-color="#545c64"
-                         text-color="#fff" active-text-color="#ffd04b">
+            <el-aside width="200px" style="height: 100%;background:#fff;border-right: solid 1px #e6e6e6;">
+                <el-menu default-active="device/device" class="el-menu-vertical-demo" background-color="#fff"
+                         text-color="#000" active-text-color="#ffd04b">
                     <el-menu-item index="device/device" @click="onClick($event)">
                         <i class="el-icon-mobile-phone"></i>
                         <span slot="title">${equ_management}</span>
