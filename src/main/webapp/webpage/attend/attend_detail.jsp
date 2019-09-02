@@ -6,6 +6,10 @@
         padding: 20px;
     }
 
+    .el-input--small .el-input__inner {
+        width: 350px;
+    }
+
 </style>
 
 <div class="attend_box">
@@ -15,20 +19,21 @@
             <el-breadcrumb-item>${attend_details}</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <el-form label-width="100px" size="small" ref="form" :model="model">
-            <el-form-item label="选择日期">
-                <el-date-picker
-                        unlink-panels
-                        class="date_picker_pass_number"
-                        v-model="model.date_range"
-                        type="daterange"
-                        range-separator="${to_lang}"
-                        value-format="yyyy-MM-dd"
-                        start-placeholder="${start_date}"
-                        end-placeholder="${end_date}">
-                </el-date-picker>
-            </el-form-item>
-            <el-col :span="12">
+        <el-col :span="8">
+            <el-form label-width="100px" size="small" ref="form" :model="model">
+                <el-form-item label="选择日期">
+                    <el-date-picker
+                            unlink-panels
+                            class="date_picker_pass_number"
+                            v-model="model.date_range"
+                            type="daterange"
+                            range-separator="${to_lang}"
+                            value-format="yyyy-MM-dd"
+                            start-placeholder="${start_date}"
+                            end-placeholder="${end_date}">
+                    </el-date-picker>
+                </el-form-item>
+
                 <el-form-item label="上班打卡范围:" prop="am_time_range">
                     <el-time-picker
                             is-range
@@ -40,8 +45,6 @@
                             value-format="HH:mm" format="HH:mm">
                     </el-time-picker>
                 </el-form-item>
-            </el-col>
-            <el-col :span="12">
                 <el-form-item label="下班打卡范围:" prop="pm_time_range">
                     <el-time-picker
                             is-range
@@ -53,47 +56,60 @@
                             value-format="HH:mm" format="HH:mm">
                     </el-time-picker>
                 </el-form-item>
-            </el-col>
 
-            <el-col :span="12">
+                <el-form-item label="请选择部门:">
+                    <el-select v-model="selectGroupModel" clearable placeholder="请选择部门" size="small">
+                        <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+
                 <el-form-item>
                     <el-button type="warning" v-on:click="queryAttend" size="small">搜索</el-button>
+                    <el-button type="success" v-on:click="" size="small">导出excel</el-button>
                 </el-form-item>
-            </el-col>
-        </el-form>
+            </el-form>
+        </el-col>
+        <el-col :span="16">
+            <template>
+                <el-table ref="multipleTable" :data="tableData" style="width: 100%">
+                    <el-table-column prop="record_id" label="ID">
+                    </el-table-column>
+                    <el-table-column prop="person_name" label="${name}">
+                    </el-table-column>
+                    <el-table-column prop="device_name" label="${device}">
+                    </el-table-column>
+                    <el-table-column prop="group_name" label="组名">
+                    </el-table-column>
+                    <el-table-column label="${recognition_time}">
+                        <template slot-scope="scope">
+                            <i class="el-icon-time"></i>
+                            <span style="margin-left: 10px">{{ scope.row.record_time|formatDate }}</span>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </template>
 
-        <template>
-            <el-table ref="multipleTable" :data="tableData" style="width: 100%">
-                <el-table-column prop="record_id" label="ID">
-                </el-table-column>
-                <el-table-column prop="person_name" label="${name}">
-                </el-table-column>
-                <el-table-column prop="device_name" label="${device}">
-                </el-table-column>
-                <el-table-column label="${recognition_time}">
-                    <template slot-scope="scope">
-                        <i class="el-icon-time"></i>
-                        <span style="margin-left: 10px">{{ scope.row.record_time|formatDate }}</span>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </template>
-
-        <template>
-            <div class="block" style="text-align: center">
-                <el-pagination ref="pagination"
-                               @size-change="handleChange"
-                               @current-change="handleChange"
-                               :current-page.sync="currentPage"
-                               :page-size.sync="pageSize"
-                               :page-sizes="pageSizes"
-                               prev-text="${previous_page_lang}"
-                               next-text="${next_page_lang}"
-                               layout="total, sizes, prev, pager, next, jumper"
-                               :total="total">
-                </el-pagination>
-            </div>
-        </template>
+            <template>
+                <div class="block" style="text-align: center">
+                    <el-pagination ref="pagination"
+                                   @size-change="handleChange"
+                                   @current-change="handleChange"
+                                   :current-page.sync="currentPage"
+                                   :page-size.sync="pageSize"
+                                   :page-sizes="pageSizes"
+                                   prev-text="${previous_page_lang}"
+                                   next-text="${next_page_lang}"
+                                   layout="total, sizes, prev, pager, next, jumper"
+                                   :total="total">
+                    </el-pagination>
+                </div>
+            </template>
+        </el-col>
     </div>
 </div>
 
@@ -110,9 +126,11 @@
                 total: '',
                 model: {
                     date_range: '',
-                    am_time_range: ['07:00','09:05'],
-                    pm_time_range: ['18:00','20:00']
-                }
+                    am_time_range: ['07:00', '09:05'],
+                    pm_time_range: ['18:00', '20:00']
+                },
+                selectGroupModel: '',
+                options: []
             }
         },
         methods: {
@@ -128,6 +146,7 @@
                         pageSize: this.pageSize,
                         date_start: model.date_range[0],
                         date_end: model.date_range[1],
+                        group_id: this.selectGroupModel,
                         am_time_start: model.am_time_range[0],
                         am_time_end: model.am_time_range[1],
                         pm_time_start: model.pm_time_range[0],
@@ -139,6 +158,22 @@
                     }
                 });
             }
+        }
+    });
+
+    ajaxPost({
+        url: "${pageContext.request.contextPath}/group/list",
+        data: {},
+        async: false,
+        success: function (result) {
+            var list = [];
+            for (var i = 0; i < result.data.list.length; i++) {
+                list[i] = {
+                    label: result.data.list[i].group_name,
+                    value: result.data.list[i].group_id
+                }
+            }
+            vm.options = list;
         }
     });
 

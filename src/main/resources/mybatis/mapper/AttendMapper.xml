@@ -23,13 +23,16 @@
     </delete>
 
     <select id="selectAttendList" parameterType="pd" resultType="pd">
-        SELECT r.record_id,p.person_name,d.device_name,r.record_time,r.recog_type FROM
+        SELECT r.record_id,p.person_name,d.device_name,r.record_time,r.recog_type,g.group_name FROM
         tbl_#{wid}_person p RIGHT JOIN tbl_#{wid}_record r ON p.person_id=r.person_id LEFT JOIN tbl_#{wid}_device d ON
-        r.device_id=d.device_id where
+        r.device_id=d.device_id left join tbl_#{wid}_group_person gp on gp.person_id=p.person_id left join tbl_#{wid}_group g on gp.group_id = g.group_id  where
             DATE_FORMAT(r.record_time,'%Y-%m-%d')&lt;#{date_end} AND
             DATE_FORMAT(r.record_time,'%Y-%m-%d')&gt;#{date_start} AND
             ((DATE_FORMAT(r.record_time,'%H:%i')&lt;#{am_time_end} AND DATE_FORMAT(r.record_time,'%H:%i')&gt;#{am_time_start}) OR
             (DATE_FORMAT(r.record_time,'%H:%i')&lt;#{pm_time_end} AND DATE_FORMAT(r.record_time,'%H:%i')&gt;#{pm_time_start}) )
+            <if test="group_id!=null and group_id!=''">
+                and gp.group_id=#{group_id}
+            </if>
             <if test="keyword!=null and keyword!=''">
                 and POSITION(#{keyword} IN p.person_name) OR POSITION(#{keyword} IN d.device_name)
             </if>
