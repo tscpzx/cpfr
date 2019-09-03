@@ -124,7 +124,6 @@ public class AttendServiceImpl implements AttendService {
         HashMap<String, String> map = new HashMap<>();
         map.put("person_name","姓名");
         map.put("device_name","设备");
-//        map.put("recog_type","识别方式");
         map.put("record_time","识别时间");
         map.put("group_name","组名");
         ExportExcelUtils.<ParamData>export("通行记录报表",attendList,map,response);

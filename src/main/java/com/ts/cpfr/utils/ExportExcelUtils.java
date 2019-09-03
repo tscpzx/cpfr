@@ -132,7 +132,7 @@ public class ExportExcelUtils {
             field.setAccessible(true);//类中的成员变量为private,在类外边使用属性值，故必须进行此操作
             value = field.get(o);//获取当前对象中当前Field的value
         } else {
-            value="";
+            value=null;
 //            throw new Exception(o.getClass().getSimpleName() + "类不存在字段名 " + fieldName);
         }
 
@@ -216,11 +216,11 @@ public class ExportExcelUtils {
         for (int index = 0; index < list.size(); index++) {
             row = sheet.createRow(index + 1);
             // 获取单个对象
-            T item = list.get(index);
+            ParamData item = (ParamData)list.get(index);
             for (int i = 0; i < enFields.length; i++) {
-                Object objValue = getFieldValueByNameSequence(enFields[i], item);
+//                Object objValue = getFieldValueByNameSequence(enFields[i], item);
+                Object objValue = item.get(enFields[i]);
                 String fieldValue = objValue == null ? "" : objValue.toString();
-
                 row.createCell(i).setCellValue(fieldValue);
             }
         }
