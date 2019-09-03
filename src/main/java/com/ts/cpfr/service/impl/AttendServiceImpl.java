@@ -18,6 +18,7 @@ import com.ts.cpfr.utils.ResultData;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -119,6 +120,7 @@ public class AttendServiceImpl implements AttendService {
     @Override
     public void export(ParamData pd, HttpServletResponse response) {
         List<ParamData> attendList = mAttendDao.selectAttendList(pd);
+        if(CollectionUtils.isEmpty(attendList))return;
         HashMap<String, String> map = new HashMap<>();
         map.put("person_name","姓名");
         map.put("device_name","设备");

@@ -19,7 +19,7 @@
             <el-breadcrumb-item>${attend_details}</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <el-col :span="8">
+        <el-col :span="10">
             <el-form label-width="100px" size="small" ref="form" :model="model">
                 <el-form-item label="选择日期">
                     <el-date-picker
@@ -74,7 +74,7 @@
                 </el-form-item>
             </el-form>
         </el-col>
-        <el-col :span="16">
+        <el-col :span="14">
             <template>
                 <el-table ref="multipleTable" :data="tableData" style="width: 100%">
                     <el-table-column prop="record_id" label="ID">
@@ -160,20 +160,15 @@
             },
             exportExcel(){
                 var model = this.$refs.form.model;
-                ajaxPost({
-                    url: "${pageContext.request.contextPath}/attend/export",
-                    data: {
-                        date_start: model.date_range[0],
-                        date_end: model.date_range[1],
-                        group_id: this.selectGroupModel,
-                        am_time_start: model.am_time_range[0],
-                        am_time_end: model.am_time_range[1],
-                        pm_time_start: model.pm_time_range[0],
-                        pm_time_end: model.pm_time_range[1]
-                    },
-                    success: function (result) {
-                    }
-                });
+                window.open("${pageContext.request.contextPath}/attend/export?"+parseParams({
+                    date_start: model.date_range[0],
+                    date_end: model.date_range[1],
+                    group_id: this.selectGroupModel,
+                    am_time_start: model.am_time_range[0],
+                    am_time_end: model.am_time_range[1],
+                    pm_time_start: model.pm_time_range[0],
+                    pm_time_end: model.pm_time_range[1]
+                }));
             }
         }
     });

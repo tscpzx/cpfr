@@ -11,10 +11,11 @@ import org.slf4j.LoggerFactory;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.servlet.http.HttpServletResponse;
@@ -48,8 +49,7 @@ public class ExportExcelUtils {
         response.reset();
         response.setContentType("application/vnd.ms-excel"); // 改成输出excel文件
         try {
-            response.setHeader("Content-disposition", "attachment; filename="
-                    +new String(excelName.getBytes("gb2312"), "ISO-8859-1")  + ".xls");
+            response.setHeader("Content-Disposition", "attachment;fileName=" + URLEncoder.encode(excelName+".xls", "UTF-8"));
         } catch (UnsupportedEncodingException e1) {
             System.out.println(e1.getMessage());
         }
