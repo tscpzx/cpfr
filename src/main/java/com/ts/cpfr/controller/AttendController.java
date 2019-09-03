@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @Date 2019/3/14
@@ -93,6 +94,15 @@ public class AttendController extends WebBaseController {
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
+    @RequestMapping("/export")
+    public void export(HttpServletRequest request, HttpServletResponse response) {
+        try {
+             mAttendService.export(paramDataInit(),response);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

@@ -10,6 +10,7 @@ import com.ts.cpfr.quartz.QuartzJobExample;
 import com.ts.cpfr.quartz.QuartzJobManager;
 import com.ts.cpfr.service.AttendService;
 import com.ts.cpfr.utils.CommUtil;
+import com.ts.cpfr.utils.ExportExcelUtils;
 import com.ts.cpfr.utils.HandleEnum;
 import com.ts.cpfr.utils.PageData;
 import com.ts.cpfr.utils.ParamData;
@@ -19,9 +20,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
 /**
@@ -111,6 +114,18 @@ public class AttendServiceImpl implements AttendService {
         if (pageSize != 0) PageHelper.startPage(pageNum, pageSize);
         List<ParamData> attendList = mAttendDao.selectAttendList(pd);
         return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(attendList));
+    }
+
+    @Override
+    public void export(ParamData pd, HttpServletResponse response) {
+        List<ParamData> attendList = mAttendDao.selectAttendList(pd);
+        HashMap<String, String> map = new HashMap<>();
+        map.put("person_name","姓名");
+        map.put("device_name","设备");
+//        map.put("recog_type","识别方式");
+        map.put("record_time","识别时间");
+        map.put("group_name","组名");
+        ExportExcelUtils.<ParamData>export("通行记录报表",attendList,map,response);
     }
 
 }

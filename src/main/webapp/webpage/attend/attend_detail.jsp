@@ -70,7 +70,7 @@
 
                 <el-form-item>
                     <el-button type="warning" v-on:click="queryAttend" size="small">搜索</el-button>
-                    <el-button type="success" v-on:click="" size="small">导出excel</el-button>
+                    <el-button type="success" v-on:click="exportExcel" size="small">导出excel</el-button>
                 </el-form-item>
             </el-form>
         </el-col>
@@ -155,6 +155,23 @@
                     success: function (result) {
                         vm.total = result.data.total;
                         vm.tableData = result.data.list;
+                    }
+                });
+            },
+            exportExcel(){
+                var model = this.$refs.form.model;
+                ajaxPost({
+                    url: "${pageContext.request.contextPath}/attend/export",
+                    data: {
+                        date_start: model.date_range[0],
+                        date_end: model.date_range[1],
+                        group_id: this.selectGroupModel,
+                        am_time_start: model.am_time_range[0],
+                        am_time_end: model.am_time_range[1],
+                        pm_time_start: model.pm_time_range[0],
+                        pm_time_end: model.pm_time_range[1]
+                    },
+                    success: function (result) {
                     }
                 });
             }
