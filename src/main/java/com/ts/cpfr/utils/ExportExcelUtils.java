@@ -2,6 +2,7 @@ package com.ts.cpfr.utils;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFFont;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -23,48 +24,70 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * 导出Excel
- * @author Guang
  *
+ * @author Guang
  */
 public class ExportExcelUtils {
 
-    private static final Logger logger =LoggerFactory.getLogger(ExportExcelUtils.class);
+    private static final Logger logger = LoggerFactory.getLogger(ExportExcelUtils.class);
 
     /**
      * 导出Excel
-     * @param excelName   要导出的excel名称
-     * @param list   要导出的数据集合
-     * @param fieldMap 中英文字段对应Map,即要导出的excel表头
+     *
+     * @param excelName 要导出的excel名称
+     * @param list      要导出的数据集合
+     * @param fieldMap  中英文字段对应Map,即要导出的excel表头
      * @param response  使用response可以导出到浏览器
      * @return
      */
-    public static <T> void export(String excelName,List<T> list,Map<String, String> fieldMap,HttpServletResponse response){
+    public static <T> void export(String excelName, List<T> list, Map<String, String> fieldMap, HttpServletResponse response) {
 
         // 设置默认文件名为当前时间：年月日时分秒
-        if (excelName==null || excelName=="") {
-            excelName = new SimpleDateFormat("yyyyMMddhhmmss").format(
-                    new Date()).toString();
+        if (excelName == null || excelName == "") {
+            excelName = new SimpleDateFormat("yyyyMMddhhmmss").format(new Date()).toString();
         }
         // 设置response头信息
         response.reset();
         response.setContentType("application/vnd.ms-excel"); // 改成输出excel文件
         try {
-            response.setHeader("Content-Disposition", "attachment;fileName=" + URLEncoder.encode(excelName+".xls", "UTF-8"));
+            response.setHeader("Content-Disposition", "attachment;fileName=" + URLEncoder.encode(excelName + ".xls", "UTF-8"));
         } catch (UnsupportedEncodingException e1) {
             System.out.println(e1.getMessage());
         }
 
         try {
             //创建一个WorkBook,对应一个Excel文件
-            HSSFWorkbook wb=new HSSFWorkbook();
+            HSSFWorkbook wb = new HSSFWorkbook();
             //在Workbook中，创建一个sheet，对应Excel中的工作薄（sheet）
-            HSSFSheet sheet=wb.createSheet(excelName);
+            HSSFSheet sheet = wb.createSheet(excelName);
             //创建单元格，并设置值表头 设置表头居中
-            HSSFCellStyle style=wb.createCellStyle();
-            //创建一个居中格式
-            style.setAlignment(HSSFCellStyle.ALIGN_CENTER);
+            HSSFCellStyle style = wb.createCellStyle();
+            //一、设置背景色:
+            //            style.setFillForegroundColor((short) 13);// 设置背景色
+            //            style.setFillPattern(HSSFCellStyle.SOLID_FOREGROUND);
+
+            //二、设置边框:
+            style.setBorderBottom(HSSFCellStyle.BORDER_THIN); //下边框
+            style.setBorderLeft(HSSFCellStyle.BORDER_THIN);//左边框
+            style.setBorderTop(HSSFCellStyle.BORDER_THIN);//上边框
+            style.setBorderRight(HSSFCellStyle.BORDER_THIN);//右边框
+
+            //三、设置居中:
+            style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 居中
+
+            //四、设置字体:
+            HSSFFont font = wb.createFont();
+            font.setFontName("微软雅黑");
+            font.setFontHeightInPoints((short) 12);//设置字体大小
+            style.setFont(font);//选择需要用到的字体格式
+            //五、设置列宽:
+            int size = fieldMap.size();
+            for (int i = 0; i < size; i++) {
+                sheet.setColumnWidth(i, 80 * 100);
+            }
+
             // 填充工作表
-            fillSheet(sheet,list,fieldMap,style);
+            fillSheet(sheet, list, fieldMap, style);
 
             //将文件输出
             OutputStream ouputStream = response.getOutputStream();
@@ -80,14 +103,12 @@ public class ExportExcelUtils {
     /**
      * 根据字段名获取字段对象
      *
-     * @param fieldName
-     *            字段名
-     * @param clazz
-     *            包含该字段的类
+     * @param fieldName 字段名
+     * @param clazz     包含该字段的类
      * @return 字段
      */
     public static Field getFieldByName(String fieldName, Class<?> clazz) {
-//        System.out.println("根据字段名获取字段对象:getFieldByName()");
+        //        System.out.println("根据字段名获取字段对象:getFieldByName()");
         // 拿到本类的所有字段
         Field[] selfFields = clazz.getDeclaredFields();
 
@@ -113,16 +134,14 @@ public class ExportExcelUtils {
     /**
      * 根据字段名获取字段值
      *
-     * @param fieldName  字段名
-     * @param o          对象
-     * @return           字段值
+     * @param fieldName 字段名
+     * @param o         对象
+     * @return 字段值
      * @throws Exception 异常
-     *          
      */
-    public static Object getFieldValueByName(String fieldName, Object o)
-            throws Exception {
+    public static Object getFieldValueByName(String fieldName, Object o) throws Exception {
 
-//        System.out.println("根据字段名获取字段值:getFieldValueByName()");
+        //        System.out.println("根据字段名获取字段值:getFieldValueByName()");
         Object value = null;
         //根据字段名得到字段对象
         Field field = getFieldByName(fieldName, o.getClass());
@@ -132,8 +151,8 @@ public class ExportExcelUtils {
             field.setAccessible(true);//类中的成员变量为private,在类外边使用属性值，故必须进行此操作
             value = field.get(o);//获取当前对象中当前Field的value
         } else {
-            value=null;
-//            throw new Exception(o.getClass().getSimpleName() + "类不存在字段名 " + fieldName);
+            value = null;
+            //            throw new Exception(o.getClass().getSimpleName() + "类不存在字段名 " + fieldName);
         }
 
         return value;
@@ -145,13 +164,11 @@ public class ExportExcelUtils {
      *
      * @param fieldNameSequence 带路径的属性名或简单属性名
      * @param o                 对象
-     * @return                  属性值
-     * @throws Exception        异常
-     *             
+     * @return 属性值
+     * @throws Exception 异常
      */
-    public static Object getFieldValueByNameSequence(String fieldNameSequence,
-            Object o) throws Exception {
-//        System.out.println("根据带路径或不带路径的属性名获取属性值,即接受简单属性名:getFieldValueByNameSequence()");
+    public static Object getFieldValueByNameSequence(String fieldNameSequence, Object o) throws Exception {
+        //        System.out.println("根据带路径或不带路径的属性名获取属性值,即接受简单属性名:getFieldValueByNameSequence()");
         Object value = null;
 
         // 将fieldNameSequence进行拆分
@@ -162,8 +179,7 @@ public class ExportExcelUtils {
             // 根据数组中第一个连接属性名获取连接属性对象，如student.department.name
             Object fieldObj = getFieldValueByName(attributes[0], o);
             //截取除第一个属性名之后的路径
-            String subFieldNameSequence = fieldNameSequence
-                    .substring(fieldNameSequence.indexOf(".") + 1);
+            String subFieldNameSequence = fieldNameSequence.substring(fieldNameSequence.indexOf(".") + 1);
             //递归得到最终的属性对象的值
             value = getFieldValueByNameSequence(subFieldNameSequence, fieldObj);
         }
@@ -174,20 +190,13 @@ public class ExportExcelUtils {
     /**
      * 向工作表中填充数据
      *
-     * @param sheet
-     *            excel的工作表名称
-     * @param list
-     *            数据源
-     * @param fieldMap
-     *            中英文字段对应关系的Map
-     * @param style
-     *            表格中的格式
-     * @throws Exception
-     *             异常
-     *            
+     * @param sheet    excel的工作表名称
+     * @param list     数据源
+     * @param fieldMap 中英文字段对应关系的Map
+     * @param style    表格中的格式
+     * @throws Exception 异常
      */
-    public static <T> void fillSheet(HSSFSheet sheet, List<T> list,
-            Map<String, String> fieldMap,HSSFCellStyle style) throws Exception {
+    public static <T> void fillSheet(HSSFSheet sheet, List<T> list, Map<String, String> fieldMap, HSSFCellStyle style) throws Exception {
         System.out.println("向工作表中填充数据:fillSheet()");
         // 定义存放英文字段名和中文字段名的数组
         String[] enFields = new String[fieldMap.size()];
@@ -202,26 +211,28 @@ public class ExportExcelUtils {
         }
 
         //在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
-        HSSFRow row=sheet.createRow((int)0);
+        HSSFRow row = sheet.createRow((int) 0);
 
         // 填充表头
         for (int i = 0; i < cnFields.length; i++) {
-            HSSFCell cell=row.createCell(i);
+            HSSFCell cell = row.createCell(i);
             cell.setCellValue(cnFields[i]);
             cell.setCellStyle(style);
-            sheet.autoSizeColumn(i);
+            //            sheet.autoSizeColumn(i);
         }
 
         // 填充内容
         for (int index = 0; index < list.size(); index++) {
             row = sheet.createRow(index + 1);
             // 获取单个对象
-            ParamData item = (ParamData)list.get(index);
+            ParamData item = (ParamData) list.get(index);
             for (int i = 0; i < enFields.length; i++) {
-//                Object objValue = getFieldValueByNameSequence(enFields[i], item);
+                //                Object objValue = getFieldValueByNameSequence(enFields[i], item);
                 Object objValue = item.get(enFields[i]);
                 String fieldValue = objValue == null ? "" : objValue.toString();
-                row.createCell(i).setCellValue(fieldValue);
+                HSSFCell rowCell = row.createCell(i);
+                rowCell.setCellValue(fieldValue);
+                rowCell.setCellStyle(style);
             }
         }
     }

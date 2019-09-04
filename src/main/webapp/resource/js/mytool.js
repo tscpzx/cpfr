@@ -92,7 +92,6 @@ function ajax(type, jsonObj) {
     var data = jsonObj.data;
     var success = function (result) {
         // console.log(JSON.stringify(result, null, 1));
-        console.log(result)
         if (checkSession(result)) {
             if (result.code !== 0) {
                 elmAlert1(result.message);
