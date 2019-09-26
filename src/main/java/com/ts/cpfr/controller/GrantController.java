@@ -9,6 +9,7 @@ import com.ts.cpfr.utils.ResultData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +21,7 @@ import javax.servlet.http.HttpServletRequest;
  * @Created by cjw
  */
 @Controller
-@RequestMapping("/grant")
+@RequestMapping(value = "/grant",method = {RequestMethod.GET,RequestMethod.POST})
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class GrantController extends WebBaseController {
 

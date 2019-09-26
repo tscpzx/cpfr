@@ -9,6 +9,7 @@ import com.ts.cpfr.utils.ResultData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
@@ -23,7 +24,7 @@ import javax.servlet.http.HttpServletResponse;
  * @Created by cjw
  */
 @Controller
-@RequestMapping("/app")
+@RequestMapping(value = "/app",method = {RequestMethod.GET,RequestMethod.POST})
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class FaceAppController extends AppBaseController {
     @Autowired
