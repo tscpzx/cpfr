@@ -15,7 +15,7 @@ import io.swagger.annotations.ApiOperation;
  * @Date 2019/9/26 14:48
  * @Created by cjw
  */
-@Api(value = "设备接口")
+@Api(value = "设备接口",tags = "设备接口")
 public interface DeviceApi {
 
     @ApiOperation("获取已激活的设备列表")
