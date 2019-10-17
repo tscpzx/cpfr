@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Blob;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -165,7 +166,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public ParamData queryPerson(ParamData pd) {
         ParamData data = mPersonDao.selectPerson(pd);
-        data.put("group_list",mGroupDao.selectGroupListByPersonID(pd));
+        data.put("group_list", mGroupDao.selectGroupListByPersonID(pd));
         return data;
     }
 
@@ -341,6 +342,22 @@ public class PersonServiceImpl implements PersonService {
         other.put("person_list", mPersonDao.selectPersonListNoGroup(pd));
         groupList.add(other);
 
+        if (!StringUtils.isEmpty(pd.getString("device_sn"))) {
+            List<ParamData> personList = mPersonDao.selectGrantPersonListByDeviceSn(pd);
+            List personIds = CommUtil.getIntListFromObjList(personList, "person_id");
+
+            if (personIds != null)
+                for (ParamData g : groupList) {
+                    List<ParamData> gPersonList = (List<ParamData>) g.get("person_list");
+                    Iterator<ParamData> it = gPersonList.iterator();
+                    while (it.hasNext()) {
+                        ParamData person = it.next();
+                        if (personIds.contains(person.get("person_id")))
+                            //                            device.put("disabled", true);//不可点击
+                            it.remove();
+                    }
+                }
+        }
         ParamData result = new ParamData();
         result.put("list", groupList);
         return new ResultData<>(HandleEnum.SUCCESS, result);
@@ -355,5 +372,24 @@ public class PersonServiceImpl implements PersonService {
             PageHelper.startPage(pageNum, pageSize);
         List<ParamData> personList = mPersonDao.selectPersonListByGroupID(pd);
         return new ResultData<>(HandleEnum.SUCCESS, new PageData<>(personList));
+    }
+
+    @Override
+    public ResultData<List<ParamData>> getListGroupUnSelected(ParamData pd) {
+        List<ParamData> personList = mPersonDao.selectPersonList(pd);
+        List<ParamData> gPersonList = mPersonDao.selectPersonListByGroupID(pd);
+
+        List personIds = CommUtil.getIntListFromObjList(gPersonList, "person_id");
+
+        if (personIds != null){
+            Iterator<ParamData> it = personList.iterator();
+            while (it.hasNext()) {
+                ParamData person = it.next();
+                if (personIds.contains(person.get("person_id")))
+                    //                            device.put("disabled", true);//不可点击
+                    it.remove();
+            }
+        }
+        return new ResultData<>(HandleEnum.SUCCESS, personList);
     }
 }

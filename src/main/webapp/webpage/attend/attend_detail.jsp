@@ -19,7 +19,7 @@
             <el-breadcrumb-item>${attend_details}</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <el-col :span="10">
+        <el-col :span="8">
             <el-form label-width="100px" size="small" ref="form" :model="model">
                 <el-form-item label="选择日期">
                     <el-date-picker
@@ -74,7 +74,7 @@
                 </el-form-item>
             </el-form>
         </el-col>
-        <el-col :span="14">
+        <el-col :span="16">
             <template>
                 <el-table ref="multipleTable" :data="tableData" style="width: 100%">
                     <el-table-column prop="record_id" label="ID">
@@ -85,7 +85,13 @@
                     </el-table-column>
                     <el-table-column prop="group_name" label="组名">
                     </el-table-column>
-                    <el-table-column label="${recognition_time}">
+                    <el-table-column label="上班打卡时间">
+                        <template slot-scope="scope">
+                            <i class="el-icon-time"></i>
+                            <span style="margin-left: 10px">{{ scope.row.record_time|formatDate }}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="下班打卡时间">
                         <template slot-scope="scope">
                             <i class="el-icon-time"></i>
                             <span style="margin-left: 10px">{{ scope.row.record_time|formatDate }}</span>

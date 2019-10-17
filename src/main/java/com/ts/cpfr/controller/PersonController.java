@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -194,6 +196,17 @@ public class PersonController extends WebBaseController {
     public ResultData<PageData<ParamData>> listByGroup(HttpServletRequest request) {
         try {
             return mPersonService.getPersonListByGroup(paramDataInit());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("/list_group_unselected")
+    public ResultData<List<ParamData>> listNoSelected() {
+        try {
+            return mPersonService.getListGroupUnSelected(paramDataInit());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());

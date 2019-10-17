@@ -51,4 +51,6 @@ public interface PersonService {
     ResultData<ParamData> getGroupPersonList(ParamData pd);
 
     ResultData<PageData<ParamData>> getPersonListByGroup(ParamData pd);
+
+    ResultData<List<ParamData>> getListGroupUnSelected(ParamData pd);
 }

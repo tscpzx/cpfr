@@ -407,10 +407,12 @@
 
     function openDialogPerson() {
         ajaxGet({
-            url: "${pageContext.request.contextPath}/person/list",
-            data: {},
+            url: "${pageContext.request.contextPath}/person/list_group_unselected",
+            data: {
+                group_id:data.group.group_id
+            },
             success: function (result) {
-                vmDialogPersonList.items[0].children = result.data.list;
+                vmDialogPersonList.items[0].children = result.data;
                 vmDialogPersonList.visible = true;
             }
         });
@@ -418,10 +420,12 @@
 
     function openDialogDevice() {
         ajaxGet({
-            url: "${pageContext.request.contextPath}/device/list",
-            data: {},
+            url: "${pageContext.request.contextPath}/device/list_group_unselected",
+            data: {
+                group_id:data.group.group_id
+            },
             success: function (result) {
-                vmDialogDeviceList.items[0].children = result.data.list;
+                vmDialogDeviceList.items[0].children = result.data;
                 vmDialogDeviceList.visible = true;
             }
         });

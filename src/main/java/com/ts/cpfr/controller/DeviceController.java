@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
+
 /**
  * @Classname DeviceController
  * @Description
@@ -148,6 +150,17 @@ public class DeviceController extends WebBaseController implements DeviceApi {
     public ResultData<PageData<ParamData>> listByGroup() {
         try {
             return mDeviceService.getDeviceListByGroup(paramDataInit());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultData<>(HandleEnum.FAIL, e.getMessage());
+        }
+    }
+
+    @ResponseBody
+    @RequestMapping("/list_group_unselected")
+    public ResultData<List<ParamData>> listNoSelected() {
+        try {
+            return mDeviceService.getListGroupUnSelected(paramDataInit());
         } catch (Exception e) {
             e.printStackTrace();
             return new ResultData<>(HandleEnum.FAIL, e.getMessage());

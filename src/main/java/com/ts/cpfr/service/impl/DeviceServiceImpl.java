@@ -20,12 +20,14 @@ import com.ts.cpfr.utils.SocketEnum;
 import com.ts.cpfr.utils.SystemConfig;
 import com.ts.cpfr.websocket.SocketMessageHandle;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -118,7 +120,7 @@ public class DeviceServiceImpl implements DeviceService {
     public ParamData queryDevice(ParamData pd) {
         ParamData data = mDeviceDao.selectDevice(pd);
         data.putAll(mDeviceDao.selectSyncDownlStatus(pd));
-        data.put("group_list",mGroupDao.selectGroupListByDeviceSn(pd));
+        data.put("group_list", mGroupDao.selectGroupListByDeviceSn(pd));
         return data;
     }
 
@@ -159,7 +161,7 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public ResultData<ParamData> deleteDevice(ParamData pd) throws Exception {
         String deviceSn = mDeviceDao.selectDeviceSnByDeviceID(pd);
-        pd.put("device_sn",deviceSn);
+        pd.put("device_sn", deviceSn);
         if (mDeviceDao.deleteDeviceByDeviceID(pd)) {
             TextMessage message = mSocketMessageHandle.obtainMessage(SocketEnum.CODE_1005_DEVICE_DELETE, null);
             mSocketMessageHandle.sendMessageToDevice(deviceSn, message);
@@ -221,6 +223,23 @@ public class DeviceServiceImpl implements DeviceService {
         other.put("device_list", mDeviceDao.selectDeviceListNoGroup(pd));
         groupList.add(other);
 
+        if (!StringUtils.isEmpty(pd.getString("person_id"))) {//删除这个人对应的设备
+            List<ParamData> deviceList = mDeviceDao.selectAccessDeviceListByPersonId(pd);
+            List deviceIds = CommUtil.getIntListFromObjList(deviceList, "device_id");
+
+            if (deviceIds != null)
+                for (ParamData g : groupList) {
+                    List<ParamData> gDeviceList = (List<ParamData>) g.get("device_list");
+                    Iterator<ParamData> it = gDeviceList.iterator();
+                    while (it.hasNext()) {
+                        ParamData device = it.next();
+                        if (deviceIds.contains(device.get("device_id")))
+                            //                            device.put("disabled", true);//不可点击
+                            it.remove();
+                    }
+                }
+        }
+
         ParamData result = new ParamData();
         result.put("list", groupList);
         return new ResultData<>(HandleEnum.SUCCESS, result);
@@ -245,4 +264,22 @@ public class DeviceServiceImpl implements DeviceService {
         mDeviceDao.updateAllDeviceOffline(data);
     }
 
+    @Override
+    public ResultData<List<ParamData>> getListGroupUnSelected(ParamData pd) {
+        List<ParamData> deviceList = mDeviceDao.selectDeviceList(pd);
+        List<ParamData> gDeviceList = mDeviceDao.selectDeviceListByGroupID(pd);
+
+        List deviceIds = CommUtil.getIntListFromObjList(gDeviceList, "device_id");
+
+        if (deviceIds != null){
+            Iterator<ParamData> it = deviceList.iterator();
+            while (it.hasNext()) {
+                ParamData device = it.next();
+                if (deviceIds.contains(device.get("device_id")))
+                    //                            device.put("disabled", true);//不可点击
+                    it.remove();
+            }
+        }
+        return new ResultData<>(HandleEnum.SUCCESS, deviceList);
+    }
 }

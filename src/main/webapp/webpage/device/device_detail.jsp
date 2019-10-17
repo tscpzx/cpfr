@@ -227,7 +227,9 @@
             }, openDialogPerson() {
                 ajaxGet({
                     url: "${pageContext.request.contextPath}/person/group_person_list",
-                    data: {},
+                    data: {
+                        device_sn:device.device_sn
+                    },
                     success: function (result) {
                         for (var i = 0; i < result.data.list.length; i++) {
                             vmDialogPersonList.items[i] = {
@@ -236,7 +238,6 @@
                                 children: result.data.list[i].person_list
                             }
                         }
-
                         vmDialogPersonList.visible = true;
                     }
                 });

@@ -481,7 +481,9 @@
     function openDialogDevice() {
         ajaxGet({
             url: "${pageContext.request.contextPath}/device/group_device_list",
-            data: {},
+            data: {
+                person_id:data.person_id
+            },
             success: function (result) {
                 for (var i = 0; i < result.data.list.length; i++) {
                     vmDialogDeviceList.items[i] = {

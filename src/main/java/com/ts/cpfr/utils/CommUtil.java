@@ -5,11 +5,13 @@ import org.dom4j.DocumentException;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
+import org.springframework.util.CollectionUtils;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -304,7 +306,8 @@ public class CommUtil {
 
     public static boolean mkdir(String filePath) {
         File file = new File(filePath);
-        if (!file.exists()) return file.mkdirs();
+        if (!file.exists())
+            return file.mkdirs();
         return true;
     }
 
@@ -384,5 +387,15 @@ public class CommUtil {
 
         int index = str.indexOf(":");
         return "0 " + str.substring(index + 1, str.length()) + " " + str.substring(0, index) + " ? * " + time;
+    }
+
+    public static List getIntListFromObjList(List<ParamData> list, String key) {
+        if (CollectionUtils.isEmpty(list))
+            return null;
+        List<Integer> intList = new ArrayList<>();
+        for (ParamData paramData : list) {
+            intList.add((int) paramData.get(key));
+        }
+        return intList;
     }
 }
