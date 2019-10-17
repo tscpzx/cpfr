@@ -44,7 +44,7 @@
 <%@include file="inc_dialog/dialog_person_list.jsp" %>
 
 <script type="text/javascript">
-    let device = $.parseJSON('${data}');
+    var device = $.parseJSON('${data}');
 
     let vm = new Vue({
         el: "#device_detail",
@@ -199,7 +199,7 @@
             dialog() {
                 elmDialog("${note_delete_device}", function () {
                     ajaxDeleteDevice({
-                        device_id: this.device.device_id
+                        device_id: device.device_id
                     })
                 });
             },
