@@ -6,10 +6,13 @@
         padding: 20px;
     }
 
-    .el-input--small .el-input__inner {
-        width: 350px;
+    .el-date-editor--daterange.el-input, .el-date-editor--daterange.el-input__inner, .el-date-editor--timerange.el-input, .el-date-editor--timerange.el-input__inner,.el-input.el-input--small.el-input--suffix {
+        width: 250px;
     }
 
+    .el-date-editor.el-input.attend_time_picker, .el-date-editor.el-input__inner.attend_time_picker{
+        width: 123px;
+    }
 </style>
 
 <div class="attend_box">
@@ -19,7 +22,7 @@
             <el-breadcrumb-item>${attend_details}</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <el-col :span="8">
+        <el-col :span="6">
             <el-form label-width="100px" size="small" ref="form" :model="model">
                 <el-form-item label="选择日期">
                     <el-date-picker
@@ -32,6 +35,23 @@
                             start-placeholder="${start_date}"
                             end-placeholder="${end_date}">
                     </el-date-picker>
+                </el-form-item>
+
+                <el-form-item label="上下班时间:">
+                    <template>
+                        <el-time-picker
+                                class="attend_time_picker"
+                                v-model="model.am_attend_time"
+                                value-format="HH:mm" format="HH:mm"
+                                placeholder="上班时间">
+                        </el-time-picker>
+                        <el-time-picker
+                                class="attend_time_picker"
+                                v-model="model.pm_attend_time"
+                                value-format="HH:mm" format="HH:mm"
+                                placeholder="下班时间">
+                        </el-time-picker>
+                    </template>
                 </el-form-item>
 
                 <el-form-item label="上班打卡范围:" prop="am_time_range">
@@ -74,28 +94,55 @@
                 </el-form-item>
             </el-form>
         </el-col>
-        <el-col :span="16">
+        <el-col :span="18">
             <template>
                 <el-table ref="multipleTable" :data="tableData" style="width: 100%">
-                    <el-table-column prop="record_id" label="ID">
+                    <el-table-column label="日期">
+                        <template slot-scope="scope">
+                            <span>{{ scope.row.record_time|formatDate }}</span>
+                        </template>
                     </el-table-column>
                     <el-table-column prop="person_name" label="${name}">
                     </el-table-column>
                     <el-table-column prop="device_name" label="${device}">
                     </el-table-column>
-                    <el-table-column prop="group_name" label="组名">
-                    </el-table-column>
                     <el-table-column label="上班打卡时间">
                         <template slot-scope="scope">
-                            <i class="el-icon-time"></i>
-                            <span style="margin-left: 10px">{{ scope.row.record_time|formatDate }}</span>
+                            <span>{{ scope.row.am_punch_time|formatDate }}</span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="上班状态">
+                        <template slot-scope="scope">
+                            <el-tag
+                                    v-if="scope.row.am_punch_status===0" :type="'info'"
+                                    disable-transitions>正常</el-tag>
+                            <el-tag
+                                    v-if="scope.row.am_punch_status===1" :type="'warning'"
+                                    disable-transitions>迟到</el-tag>
+                            <el-tag
+                                    v-if="scope.row.am_punch_status===2" :type="'warning'"
+                                    disable-transitions>早退</el-tag>
                         </template>
                     </el-table-column>
                     <el-table-column label="下班打卡时间">
                         <template slot-scope="scope">
-                            <i class="el-icon-time"></i>
-                            <span style="margin-left: 10px">{{ scope.row.record_time|formatDate }}</span>
+                            <span>{{ scope.row.pm_punch_time|formatDate }}</span>
                         </template>
+                    </el-table-column>
+                    <el-table-column label="下班状态">
+                        <template slot-scope="scope">
+                            <el-tag
+                                    v-if="scope.row.pm_punch_status===0" :type="'success'"
+                                    disable-transitions>正常</el-tag>
+                            <el-tag
+                                    v-if="scope.row.pm_punch_status===1" :type="'warning'"
+                                    disable-transitions>迟到</el-tag>
+                            <el-tag
+                                    v-if="scope.row.pm_punch_status===2" :type="'warning'"
+                                    disable-transitions>早退</el-tag>
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="group_name" label="组名">
                     </el-table-column>
                 </el-table>
             </template>
@@ -131,9 +178,11 @@
                 pageSize: 10,
                 total: '',
                 model: {
-                    date_range: '',
-                    am_time_range: ['07:00', '09:05'],
-                    pm_time_range: ['18:00', '20:00']
+                    date_range: ['2019-01-01','2019-12-31'],
+                    am_attend_time:'09:00',
+                    pm_attend_time:'18:00',
+                    am_time_range: ['00:00', '11:59'],
+                    pm_time_range: ['12:00', '23:59']
                 },
                 selectGroupModel: '',
                 options: []
@@ -152,6 +201,8 @@
                         pageSize: this.pageSize,
                         date_start: model.date_range[0],
                         date_end: model.date_range[1],
+                        am_attend_time:model.am_attend_time,
+                        pm_attend_time:model.pm_attend_time,
                         group_id: this.selectGroupModel,
                         am_time_start: model.am_time_range[0],
                         am_time_end: model.am_time_range[1],
@@ -169,6 +220,8 @@
                 window.open("${pageContext.request.contextPath}/attend/export?"+parseParams({
                     date_start: model.date_range[0],
                     date_end: model.date_range[1],
+                    am_attend_time:model.am_attend_time,
+                    pm_attend_time:model.pm_attend_time,
                     group_id: this.selectGroupModel,
                     am_time_start: model.am_time_range[0],
                     am_time_end: model.am_time_range[1],

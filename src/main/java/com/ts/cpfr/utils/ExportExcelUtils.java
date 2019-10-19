@@ -40,7 +40,7 @@ public class ExportExcelUtils {
      * @param response  使用response可以导出到浏览器
      * @return
      */
-    public static <T> void export(String excelName, List<T> list, Map<String, String> fieldMap, HttpServletResponse response) {
+    public static <T> void export(String excelName, List<T> list, Map<String, String[]> fieldMap, HttpServletResponse response) {
 
         // 设置默认文件名为当前时间：年月日时分秒
         if (excelName == null || excelName == "") {
@@ -196,18 +196,17 @@ public class ExportExcelUtils {
      * @param style    表格中的格式
      * @throws Exception 异常
      */
-    public static <T> void fillSheet(HSSFSheet sheet, List<T> list, Map<String, String> fieldMap, HSSFCellStyle style) throws Exception {
+    public static <T> void fillSheet(HSSFSheet sheet, List<T> list, Map<String, String[]> fieldMap, HSSFCellStyle style) throws Exception {
         System.out.println("向工作表中填充数据:fillSheet()");
         // 定义存放英文字段名和中文字段名的数组
         String[] enFields = new String[fieldMap.size()];
         String[] cnFields = new String[fieldMap.size()];
 
         // 填充数组
-        int count = 0;
-        for (Entry<String, String> entry : fieldMap.entrySet()) {
-            enFields[count] = entry.getKey();
-            cnFields[count] = entry.getValue();
-            count++;
+        for (Entry<String, String[]> entry : fieldMap.entrySet()) {
+            int index = Integer.parseInt(entry.getValue()[0]);
+            enFields[index] = entry.getKey();
+            cnFields[index] = entry.getValue()[1];
         }
 
         //在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short

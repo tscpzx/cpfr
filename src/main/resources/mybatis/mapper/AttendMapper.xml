@@ -23,19 +23,36 @@
     </delete>
 
     <select id="selectAttendList" parameterType="pd" resultType="pd">
-        SELECT r.record_id,p.person_name,d.device_name,r.record_time,r.recog_type,g.group_name FROM
+        SELECT p.person_name,p.person_id,d.device_name,DATE_FORMAT(r.record_time,'%Y-%m-%d') record_time,r.recog_type,g.group_name,MIN(r.record_time) am_punch_time,MAX(r.record_time) pm_punch_time,
+        /* 0 正常，1 迟到，2 早退，3 其他 */
+        CASE
+        WHEN DATE_FORMAT(MIN(r.record_time),'%H:%i')&lt;=#{am_attend_time} THEN 0
+        WHEN DATE_FORMAT(MIN(r.record_time),'%H:%i')&gt;#{am_attend_time} THEN 1
+        ELSE 3  END AS am_punch_status,
+        CASE
+        WHEN DATE_FORMAT(MAX(r.record_time),'%H:%i')&gt;=#{pm_attend_time} THEN 0
+        WHEN DATE_FORMAT(MAX(r.record_time),'%H:%i')&lt;#{pm_attend_time} THEN 2
+        ELSE 3  END AS pm_punch_status
+        FROM
         tbl_#{wid}_person p RIGHT JOIN tbl_#{wid}_record r ON p.person_id=r.person_id LEFT JOIN tbl_#{wid}_device d ON
-        r.device_id=d.device_id left join tbl_#{wid}_group_person gp on gp.person_id=p.person_id left join tbl_#{wid}_group g on gp.group_id = g.group_id  where
-            DATE_FORMAT(r.record_time,'%Y-%m-%d')&lt;#{date_end} AND
-            DATE_FORMAT(r.record_time,'%Y-%m-%d')&gt;#{date_start} AND
-            ((DATE_FORMAT(r.record_time,'%H:%i')&lt;#{am_time_end} AND DATE_FORMAT(r.record_time,'%H:%i')&gt;#{am_time_start}) OR
-            (DATE_FORMAT(r.record_time,'%H:%i')&lt;#{pm_time_end} AND DATE_FORMAT(r.record_time,'%H:%i')&gt;#{pm_time_start}) )
+        r.device_id=d.device_id LEFT JOIN tbl_#{wid}_group_person gp ON gp.person_id=p.person_id LEFT JOIN tbl_#{wid}_group g ON gp.group_id = g.group_id
+        RIGHT JOIN
+        /* 时间范围 */
+        (SELECT DISTINCT DATE_FORMAT(r.record_time,'%Y-%m-%d') record_time FROM tbl_#{wid}_record r WHERE
+        DATE_FORMAT(r.record_time,'%Y-%m-%d')&lt;=#{date_end} AND
+        DATE_FORMAT(r.record_time,'%Y-%m-%d')&gt;=#{date_start} AND
+        ((DATE_FORMAT(r.record_time,'%H:%i')&gt;=#{am_time_start} AND DATE_FORMAT(r.record_time,'%H:%i')&lt;#{am_time_end}) OR
+        (DATE_FORMAT(r.record_time,'%H:%i')&gt;=#{pm_time_start} AND DATE_FORMAT(r.record_time,'%H:%i')&lt;=#{pm_time_end}) )) d ON DATE_FORMAT(r.record_time,'%Y-%m-%d')= DATE_FORMAT(d.record_time,'%Y-%m-%d')
+
+        <where>
             <if test="group_id!=null and group_id!=''">
                 and gp.group_id=#{group_id}
             </if>
             <if test="keyword!=null and keyword!=''">
                 and POSITION(#{keyword} IN p.person_name) OR POSITION(#{keyword} IN d.device_name)
             </if>
-        order by r.record_time desc
+        </where>
+        GROUP BY p.person_name,p.person_id,d.device_name,DATE_FORMAT(r.record_time,'%Y-%m-%d'),r.recog_type,g.group_name
+        ORDER BY DATE_FORMAT(r.record_time,'%Y-%m-%d') DESC
     </select>
 </mapper>

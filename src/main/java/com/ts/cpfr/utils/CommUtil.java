@@ -393,9 +393,7 @@ public class CommUtil {
         if (CollectionUtils.isEmpty(list))
             return null;
         List<Integer> intList = new ArrayList<>();
-        for (ParamData paramData : list) {
-            intList.add((int) paramData.get(key));
-        }
+        list.forEach(p->intList.add((int) p.get(key)));
         return intList;
     }
 }
