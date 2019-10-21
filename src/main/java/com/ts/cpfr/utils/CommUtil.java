@@ -6,6 +6,8 @@ import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.util.CollectionUtils;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.io.File;
 import java.io.IOException;
@@ -395,5 +397,17 @@ public class CommUtil {
         List<Integer> intList = new ArrayList<>();
         list.forEach(p->intList.add((int) p.get(key)));
         return intList;
+    }
+
+    public static String getProjectDlPath(){
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        if(request!=null){
+            String realPath = request.getServletContext().getRealPath("/");
+            String dlPath = realPath.replace("\\","/").replace(SystemConfig.PROJECT_NAME, "/dl");
+            File dr = new File(dlPath);
+            if(!dr.exists())dr.mkdirs();
+            return dlPath;
+        }
+        return null;
     }
 }

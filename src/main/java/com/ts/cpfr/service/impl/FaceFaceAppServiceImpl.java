@@ -282,7 +282,11 @@ public class FaceFaceAppServiceImpl implements FaceAppService {
         BufferedOutputStream fos = null;
         try {
             String applicationId = pd.getString("application_id");
-            File dir = new File(SystemConfig.DOWNLOAD_APK_PATH);
+
+            String projectDlPath = CommUtil.getProjectDlPath();
+            if (StringUtils.isEmpty(projectDlPath))
+                throw new Exception("更新路径不存在");
+            File dir = new File(projectDlPath);
             File[] files = dir.listFiles();//绝对路径
             for (File file : files) {
                 if (file.getName().contains(applicationId)) {
@@ -315,8 +319,15 @@ public class FaceFaceAppServiceImpl implements FaceAppService {
 
     @Override
     public ResultData<ParamData> getLastVersionInfo(ParamData pd) {
-        File dir = new File(SystemConfig.DOWNLOAD_APK_PATH);
+        String projectDlPath = CommUtil.getProjectDlPath();
+        if(StringUtils.isEmpty(projectDlPath))
+            return new ResultData<>(HandleEnum.FAIL, "更新路径不存在");
+        File dir = new File(projectDlPath);
+
         File[] files = dir.listFiles();//绝对路径
+        if(files==null||files.length==0)
+            return new ResultData<>(HandleEnum.SUCCESS, "暂无更新");
+
         ParamData data = new ParamData();
         data.put("version", "-1");
         for (File file : files) {

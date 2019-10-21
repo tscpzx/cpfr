@@ -17,7 +17,6 @@ import com.ts.cpfr.utils.PageData;
 import com.ts.cpfr.utils.ParamData;
 import com.ts.cpfr.utils.ResultData;
 import com.ts.cpfr.utils.SocketEnum;
-import com.ts.cpfr.utils.SystemConfig;
 import com.ts.cpfr.websocket.SocketMessageHandle;
 
 import org.apache.commons.lang.StringUtils;
@@ -183,11 +182,20 @@ public class DeviceServiceImpl implements DeviceService {
     public ResultData<ParamData> checkAppVersionUpdate(ParamData pd) throws Exception {
         ParamData device = mDeviceDao.selectDevice(pd);
         String appVersionStr = device.getString("app_version");
-        String[] appVersions = appVersionStr.split(",");
+        if (StringUtils.isEmpty(appVersionStr))
+            return new ResultData<>(HandleEnum.FAIL, "未设置版本号");
 
-        File dir = new File(SystemConfig.DOWNLOAD_APK_PATH);
+        String projectDlPath = CommUtil.getProjectDlPath();
+        if(StringUtils.isEmpty(projectDlPath))
+            return new ResultData<>(HandleEnum.FAIL, "更新路径不存在");
+
+        File dir = new File(projectDlPath);
         File[] files = dir.listFiles();//绝对路径
 
+        if(files==null||files.length==0)
+            return new ResultData<>(HandleEnum.SUCCESS, "暂无更新");
+
+        String[] appVersions = appVersionStr.split(",");
         boolean hasNewVersion = false;
         for (String appVersion : appVersions) {
             String[] split = appVersion.split("_");
