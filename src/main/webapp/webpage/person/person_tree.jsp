@@ -87,7 +87,6 @@
             url: "${pageContext.request.contextPath}/person/list",
             data: {},
             success: function (result) {
-                l(result.data.list);
                 vmPersonTree.items[0].children = result.data.list;
             }
         });
