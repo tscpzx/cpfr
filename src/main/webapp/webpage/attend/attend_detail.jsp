@@ -22,7 +22,7 @@
             <el-breadcrumb-item>${attend_details}</el-breadcrumb-item>
         </el-breadcrumb>
 
-        <el-col :span="6">
+        <div style="float:left;">
             <el-form label-width="100px" size="small" ref="form" :model="model">
                 <el-form-item label="选择日期">
                     <el-date-picker
@@ -93,8 +93,8 @@
                     <el-button type="success" v-on:click="exportExcel" size="small">导出excel</el-button>
                 </el-form-item>
             </el-form>
-        </el-col>
-        <el-col :span="18">
+        </div>
+        <div  style="float:left; width:calc(100% - 380px);min-width:730px;margin-left: 20px;">
             <template>
                 <el-table ref="multipleTable" :data="tableData" style="width: 100%">
                     <el-table-column label="日期">
@@ -162,7 +162,7 @@
                     </el-pagination>
                 </div>
             </template>
-        </el-col>
+        </div>
     </div>
 </div>
 
