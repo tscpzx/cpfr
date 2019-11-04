@@ -13,13 +13,13 @@
 				#{data.device_id},
 				#{data.person_id},
 		        1,
-				#{data.pass_number,},
+				#{data.pass_number},
 				#{data.pass_start_time},
 				#{data.pass_end_time}
 			)
 		</foreach>
 		ON DUPLICATE KEY UPDATE
-		status=2,pass_number=#{data.pass_number},pass_start_time=#{data.pass_start_time},pass_end_time=#{data.pass_end_time},lmt=now();
+		status=2,pass_number=VALUES(pass_number),pass_start_time=VALUES(pass_start_time),pass_end_time=VALUES(pass_start_time),lmt=now();
 	</insert>
 
 	<update id="updateGrantBan" parameterType="pd">
