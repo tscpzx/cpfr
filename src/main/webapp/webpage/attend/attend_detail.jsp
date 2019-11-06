@@ -6,11 +6,11 @@
         padding: 20px;
     }
 
-    .el-date-editor--daterange.el-input, .el-date-editor--daterange.el-input__inner, .el-date-editor--timerange.el-input, .el-date-editor--timerange.el-input__inner,.el-input.el-input--small.el-input--suffix {
+    .el-date-editor--daterange.el-input__inner, .el-date-editor--timerange.el-input__inner, .el-input.el-input--small.el-input--suffix {
         width: 250px;
     }
 
-    .el-date-editor.el-input.attend_time_picker, .el-date-editor.el-input__inner.attend_time_picker{
+    .el-date-editor.el-input.attend_time_picker {
         width: 123px;
     }
 </style>
