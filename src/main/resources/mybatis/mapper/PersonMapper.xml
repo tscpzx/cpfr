@@ -35,7 +35,7 @@
 	</select>
 
 	<select id="selectGrantPersonListByDeviceSn" parameterType="pd" resultType="pd">
-		SELECT DISTINCT p.person_id,p.person_name,p.emp_number,p.status,p.lmt,g.grant_id,g.pass_number,g.pass_start_time,g.pass_end_time,g.sync_status FROM tbl_#{wid}_person p RIGHT JOIN (SELECT grant_id,person_id,pass_number,pass_start_time,pass_end_time,sync_status FROM tbl_#{wid}_grant WHERE device_id = (SELECT device_id FROM tbl_#{wid}_device  WHERE device_sn = #{device_sn}) ) g ON p.person_id=g.person_id left join tbl_#{wid}_group_person gp on p.person_id=gp.person_id where p.status &lt;&gt; 3
+		SELECT DISTINCT p.person_id,p.person_name,p.emp_number,p.status,p.lmt,g.grant_id,g.pass_number,g.pass_start_time,g.pass_end_time,g.sync_status FROM tbl_#{wid}_person p RIGHT JOIN (SELECT grant_id,person_id,pass_number,pass_start_time,pass_end_time,sync_status FROM tbl_#{wid}_grant WHERE device_id = (SELECT device_id FROM tbl_#{wid}_device  WHERE device_sn = #{device_sn}) and status &lt;&gt; 3 ) g ON p.person_id=g.person_id left join tbl_#{wid}_group_person gp on p.person_id=gp.person_id where p.status &lt;&gt; 3
 		<if test="keyword!=null and keyword!=''">
 				and POSITION(#{keyword} IN p.person_name) OR POSITION(#{keyword} IN p.emp_number)
 		</if>
