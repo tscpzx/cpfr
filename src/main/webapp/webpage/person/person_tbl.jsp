@@ -90,6 +90,7 @@
             handleChange(val) {
                 ajaxPersonPage({
                     pageNum: this.currentPage,
+                    keyword: this.keyword,
                     pageSize: this.pageSize
                 });
             },
@@ -105,6 +106,7 @@
 
     ajaxPersonPage({
         pageNum: vm.currentPage,
+        keyword: vm.keyword,
         pageSize: vm.pageSize
     });
 

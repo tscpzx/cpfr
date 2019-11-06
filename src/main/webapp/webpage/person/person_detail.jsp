@@ -130,6 +130,7 @@
                 ajaxAccessDeviceList({
                     pageNum: this.currentPage,
                     pageSize: this.pageSize,
+                    keyword: this.keyword,
                     person_id: data.person_id
                 });
             },
@@ -363,6 +364,7 @@
                 ajaxAccessDeviceList({
                     pageNum: vue.currentPage,
                     pageSize: vue.pageSize,
+                    keyword: vue.keyword,
                     person_id: data.person_id,
                     group_id:value
                 });
@@ -381,6 +383,7 @@
     ajaxAccessDeviceList({
         pageNum: vue.currentPage,
         pageSize: vue.pageSize,
+        keyword: vue.keyword,
         person_id: data.person_id
     });
 
@@ -470,6 +473,7 @@
                         ajaxAccessDeviceList({
                             pageNum: vue.currentPage,
                             pageSize: vue.pageSize,
+                            keyword: vue.keyword,
                             person_id: data.person_id
                         });
                     }

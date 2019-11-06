@@ -96,6 +96,7 @@
                 ajaxGrantPersonList({
                     pageNum: this.currentPage1,
                     pageSize: this.pageSize1,
+                    keyword: this.keyword,
                     device_sn: device.device_sn
                 });
             },
@@ -246,6 +247,7 @@
                 ajaxGrantPersonList({
                     pageNum: vm.currentPage1,
                     pageSize: vm.pageSize1,
+                    keyword: vm.keyword,
                     device_sn: device.device_sn,
                     group_id: value
                 });
@@ -274,6 +276,7 @@
     ajaxGrantPersonList({
         pageNum: vm.currentPage1,
         pageSize: vm.pageSize1,
+        keyword: vm.keyword,
         device_sn: device.device_sn
     });
 
@@ -376,6 +379,7 @@
                         vmDialogPersonList.visible = false;
                         ajaxGrantPersonList({
                             pageNum: vm.currentPage1,
+                            keyword: vm.keyword,
                             pageSize: vm.pageSize1,
                             device_sn: device.device_sn
                         });

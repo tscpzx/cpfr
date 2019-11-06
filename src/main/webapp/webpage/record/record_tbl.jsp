@@ -115,6 +115,7 @@
                 ajaxRecordList({
                     pageNum: this.currentPage,
                     pageSize: this.pageSize,
+                    keyword: this.keyword,
                     device_id: vDevice_id
                 });
             },
@@ -150,6 +151,7 @@
                                 ajaxRecordList({
                                     pageNum: vm.currentPage,
                                     pageSize: vm.pageSize,
+                                    keyword: vm.keyword,
                                     device_id: vDevice_id
                                 });
                             }
@@ -169,6 +171,7 @@
                             ajaxRecordList({
                                 pageNum: vm.currentPage,
                                 pageSize: vm.pageSize,
+                                keyword: vm.keyword,
                                 device_id: vDevice_id
                             });
                         }
@@ -205,6 +208,7 @@
     ajaxRecordList({
         pageNum: vm.currentPage,
         pageSize: vm.pageSize,
+        keyword: vm.keyword,
         device_id: vDevice_id
     });
 

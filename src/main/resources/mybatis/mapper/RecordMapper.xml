@@ -11,7 +11,7 @@
                 and r.device_id=#{device_id}
             </if>
             <if test="keyword!=null and keyword!=''">
-                and POSITION(#{keyword} IN p.person_name) OR POSITION(#{keyword} IN d.device_name)
+                and ( POSITION(#{keyword} IN p.person_name) OR POSITION(#{keyword} IN d.device_name) )
             </if>
         </where>
         order by r.record_time desc

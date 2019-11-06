@@ -88,6 +88,7 @@
             handleChange(val) {
                 ajaxInActDeviceList({
                     pageNum: this.currentPage,
+                    keyword: this.keyword,
                     pageSize: this.pageSize
                 });
             },
@@ -109,6 +110,7 @@
 
     ajaxInActDeviceList({
         pageNum: vm.currentPage,
+        keyword: vm.keyword,
         pageSize: vm.pageSize
     });
 
