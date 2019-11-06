@@ -89,7 +89,8 @@
             grant: '',
             keyword: '',
             selectGroupModel: '',
-            options2: []
+            options2: [],
+            group_id: ''
         },
         methods: {
             handleChange1(val) {
@@ -97,6 +98,7 @@
                     pageNum: this.currentPage1,
                     pageSize: this.pageSize1,
                     keyword: this.keyword,
+                    group_id: this.group_id,
                     device_sn: device.device_sn
                 });
             },
@@ -208,6 +210,7 @@
                 ajaxGrantPersonList({
                     pageNum: 1,
                     pageSize: this.pageSize1,
+                    group_id: this.group_id,
                     device_sn: device.device_sn,
                     keyword: this.keyword
                 });
@@ -229,7 +232,7 @@
                 ajaxGet({
                     url: "${pageContext.request.contextPath}/person/group_person_list",
                     data: {
-                        device_sn:device.device_sn
+                        device_sn: device.device_sn
                     },
                     success: function (result) {
                         for (var i = 0; i < result.data.list.length; i++) {
@@ -244,6 +247,7 @@
                 });
             },
             changeSelectGroup(value) {
+                this.group_id=value
                 ajaxGrantPersonList({
                     pageNum: vm.currentPage1,
                     pageSize: vm.pageSize1,
@@ -276,6 +280,7 @@
     ajaxGrantPersonList({
         pageNum: vm.currentPage1,
         pageSize: vm.pageSize1,
+        group_id: vm.group_id,
         keyword: vm.keyword,
         device_sn: device.device_sn
     });
@@ -380,6 +385,7 @@
                         ajaxGrantPersonList({
                             pageNum: vm.currentPage1,
                             keyword: vm.keyword,
+                            group_id: vm.group_id,
                             pageSize: vm.pageSize1,
                             device_sn: device.device_sn
                         });

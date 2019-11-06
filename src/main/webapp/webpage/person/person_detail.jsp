@@ -100,8 +100,9 @@
                 file: '',
                 replace: false,
                 uploadBlob: '',
-                selectGroupModel:'',
-                options2:[]
+                selectGroupModel: '',
+                options2: [],
+                group_id: ''
             }
         },
 
@@ -131,6 +132,7 @@
                     pageNum: this.currentPage,
                     pageSize: this.pageSize,
                     keyword: this.keyword,
+                    group_id: this.group_id,
                     person_id: data.person_id
                 });
             },
@@ -225,6 +227,7 @@
                 ajaxAccessDeviceList({
                     pageNum: 1,
                     pageSize: this.pageSize,
+                    group_id: this.group_id,
                     person_id: data.person_id,
                     keyword: this.keyword
                 });
@@ -360,13 +363,14 @@
             closed() {
                 this.file = '';
             },
-            changeSelectGroup(value){
+            changeSelectGroup(value) {
+                this.group_id = value
                 ajaxAccessDeviceList({
                     pageNum: vue.currentPage,
                     pageSize: vue.pageSize,
                     keyword: vue.keyword,
                     person_id: data.person_id,
-                    group_id:value
+                    group_id: value
                 });
             }
         },
@@ -384,6 +388,7 @@
         pageNum: vue.currentPage,
         pageSize: vue.pageSize,
         keyword: vue.keyword,
+        group_id: vue.group_id,
         person_id: data.person_id
     });
 
@@ -473,6 +478,7 @@
                         ajaxAccessDeviceList({
                             pageNum: vue.currentPage,
                             pageSize: vue.pageSize,
+                            group_id: vue.group_id,
                             keyword: vue.keyword,
                             person_id: data.person_id
                         });
@@ -486,7 +492,7 @@
         ajaxGet({
             url: "${pageContext.request.contextPath}/device/group_device_list",
             data: {
-                person_id:data.person_id
+                person_id: data.person_id
             },
             success: function (result) {
                 for (var i = 0; i < result.data.list.length; i++) {
