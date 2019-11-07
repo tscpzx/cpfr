@@ -6,7 +6,7 @@
 		SELECT LAST_INSERT_ID()
 	</select>
 	<update id="createTableWarehouse" parameterType="int">
-		CREATE TABLE `tbl_${value}_device` (
+		CREATE TABLE IF NOT EXISTS `tbl_${value}_device` (
 		  `device_id` int(8) NOT NULL AUTO_INCREMENT COMMENT '设备ID',
 		  `group_id` int(8) NOT NULL DEFAULT '0' COMMENT '组ID',
 		  `device_name` varchar(20) NOT NULL COMMENT '设备名称',
@@ -23,7 +23,7 @@
 		  FULLTEXT KEY `fulltext` (`device_sn`,`device_name`)
 		) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8;
 
-		CREATE TABLE `tbl_${value}_device_config` (
+		CREATE TABLE IF NOT EXISTS `tbl_${value}_device_config` (
 		  `device_id` int(8) NOT NULL COMMENT '设备ID',
 		  `arcface_appid` varchar(200) DEFAULT NULL COMMENT '虹软appid',
 		  `arcface_sdkkey` varchar(200) DEFAULT NULL COMMENT '虹软sdkkey',
@@ -44,7 +44,7 @@
 		  `fail_msg` varchar(100) NOT NULL DEFAULT '识别失败' COMMENT '识别失败后提示的文本信息'
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-		CREATE TABLE `tbl_${value}_grant` (
+		CREATE TABLE IF NOT EXISTS `tbl_${value}_grant` (
 		  `grant_id` int(8) NOT NULL AUTO_INCREMENT COMMENT 'ID',
 		  `device_id` int(8) NOT NULL COMMENT '设备ID',
 		  `person_id` int(8) NOT NULL COMMENT '人员ID',
@@ -58,7 +58,7 @@
 		  UNIQUE KEY `device_id,person_id` (`device_id`,`person_id`)
 		) ENGINE=InnoDB AUTO_INCREMENT=19323 DEFAULT CHARSET=utf8;
 
-		CREATE TABLE `tbl_${value}_group` (
+		CREATE TABLE IF NOT EXISTS `tbl_${value}_group` (
 		  `group_id` int(8) NOT NULL AUTO_INCREMENT COMMENT '组ID',
 		  `group_name` varchar(20) NOT NULL COMMENT '组名',
 		  `super_id` int(20) NOT NULL COMMENT '父分组ID,为0时表示第一级分组',
@@ -68,7 +68,7 @@
 		  PRIMARY KEY (`group_id`)
 		) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
-		CREATE TABLE `tbl_${value}_group_device` (
+		CREATE TABLE IF NOT EXISTS `tbl_${value}_group_device` (
 		  `group_id` int(8) NOT NULL COMMENT '组ID',
 		  `device_id` int(8) NOT NULL COMMENT '设备ID',
 		  `add_time` datetime NOT NULL COMMENT '添加时间',
@@ -76,7 +76,7 @@
 		  PRIMARY KEY (`group_id`,`device_id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-		CREATE TABLE `tbl_${value}_group_person` (
+		CREATE TABLE IF NOT EXISTS `tbl_${value}_group_person` (
 		  `group_id` int(8) NOT NULL COMMENT '组ID',
 		  `person_id` int(8) NOT NULL COMMENT '人员ID',
 		  `add_time` datetime NOT NULL COMMENT '添加时间',
@@ -84,13 +84,13 @@
 		  PRIMARY KEY (`group_id`,`person_id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-		CREATE TABLE `tbl_${value}_image` (
+		CREATE TABLE IF NOT EXISTS `tbl_${value}_image` (
 		  `image_id` int(8) NOT NULL AUTO_INCREMENT,
 		  `blob_image` blob NOT NULL COMMENT '二进制图片',
 		  KEY `id` (`image_id`)
 		) ENGINE=InnoDB AUTO_INCREMENT=1249 DEFAULT CHARSET=latin1;
 
-		CREATE TABLE `tbl_${value}_person` (
+		CREATE TABLE IF NOT EXISTS `tbl_${value}_person` (
 		  `person_id` int(8) NOT NULL AUTO_INCREMENT COMMENT '人员ID',
 		  `group_id` int(8) NOT NULL DEFAULT '0' COMMENT '组ID',
 		  `person_name` varchar(20) NOT NULL COMMENT '人名',
@@ -103,7 +103,7 @@
 		  PRIMARY KEY (`person_id`)
 		) ENGINE=InnoDB AUTO_INCREMENT=1237 DEFAULT CHARSET=utf8;
 
-		CREATE TABLE `tbl_${value}_record` (
+		CREATE TABLE IF NOT EXISTS `tbl_${value}_record` (
 		  `record_id` int(8) NOT NULL AUTO_INCREMENT COMMENT 'ID',
 		  `person_id` int(8) NOT NULL COMMENT '人员ID',
 		  `device_id` int(8) NOT NULL COMMENT '设备ID',
@@ -113,7 +113,7 @@
 		  PRIMARY KEY (`record_id`)
 		) ENGINE=InnoDB AUTO_INCREMENT=10074 DEFAULT CHARSET=latin1;
 
-		CREATE TABLE `tbl_inact_device` (
+		CREATE TABLE IF NOT EXISTS `tbl_inact_device` (
 		  `id` int(8) NOT NULL AUTO_INCREMENT COMMENT 'ID',
 		  `device_sn` varchar(50) NOT NULL COMMENT '设备sn/指纹',
 		  `status` tinyint(2) NOT NULL DEFAULT '0' COMMENT '设备状态 0未激活 1已激活',
@@ -126,27 +126,27 @@
 		  UNIQUE KEY `device_sn` (`device_sn`)
 		) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
 
-		CREATE TABLE `tbl_permission` (
+		CREATE TABLE IF NOT EXISTS `tbl_permission` (
 		  `permission_id` int(8) NOT NULL COMMENT '权限ID',
 		  `permission_name` varchar(50) NOT NULL COMMENT '权限名',
 		  `url` varchar(200) NOT NULL COMMENT '资源路径',
 		  PRIMARY KEY (`permission_id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-		CREATE TABLE `tbl_role` (
+		CREATE TABLE IF NOT EXISTS `tbl_role` (
 		  `role_id` int(8) NOT NULL AUTO_INCREMENT COMMENT '角色ID',
 		  `role_name` varchar(50) NOT NULL COMMENT '角色名',
 		  `role_desc` varchar(200) DEFAULT NULL COMMENT '角色描述',
 		  PRIMARY KEY (`role_id`)
 		) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
 
-		CREATE TABLE `tbl_role_permission` (
+		CREATE TABLE IF NOT EXISTS `tbl_role_permission` (
 		  `role_id` int(8) NOT NULL COMMENT '角色ID',
 		  `permission_id` int(8) NOT NULL COMMENT '权限ID',
 		  PRIMARY KEY (`role_id`,`permission_id`)
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-		CREATE TABLE `tbl_user` (
+		CREATE TABLE IF NOT EXISTS `tbl_user` (
 		  `user_id` int(8) NOT NULL AUTO_INCREMENT COMMENT '管理员ID',
 		  `wid` int(8) NOT NULL DEFAULT '0' COMMENT '仓库ID',
 		  `name` varchar(20) NOT NULL COMMENT '账号',
@@ -161,7 +161,7 @@
 		) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8 COMMENT='账号表';
 
 
-		CREATE TABLE `tbl_user_role` (
+		CREATE TABLE IF NOT EXISTS `tbl_user_role` (
 		  `user_id` int(8) NOT NULL COMMENT '用户ID',
 		  `role_id` int(8) NOT NULL COMMENT '角色ID',
 		  PRIMARY KEY (`user_id`,`role_id`)
