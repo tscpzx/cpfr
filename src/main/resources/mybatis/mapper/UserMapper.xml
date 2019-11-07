@@ -9,7 +9,7 @@
         </collection>
     </resultMap>
     <select id="selectUserMapByName" parameterType="pd" resultMap="userMap">
-        select user_id,wid,name,password
+        select user_id,wid,name,password,1 enabled
         from tbl_user
         where name = #{name}
     </select>
