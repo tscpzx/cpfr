@@ -154,10 +154,12 @@
 		  `permission_level` tinyint(2) NOT NULL DEFAULT '0' COMMENT '权限级别:0 超级管理员 1普通用户 2只读用户',
 		  `register_time` datetime NOT NULL COMMENT '注册时间',
 		  `last_login_time` datetime DEFAULT NULL COMMENT '最近一次登录时间',
+		  `enabled` tinyint(2) NOT NULL DEFAULT '1' COMMENT '可用状态',
 		  `lmt` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最后更新时间',
 		  PRIMARY KEY (`user_id`),
 		  UNIQUE KEY `name` (`name`)
 		) ENGINE=InnoDB AUTO_INCREMENT=36 DEFAULT CHARSET=utf8 COMMENT='账号表';
+
 
 		CREATE TABLE `tbl_user_role` (
 		  `user_id` int(8) NOT NULL COMMENT '用户ID',
