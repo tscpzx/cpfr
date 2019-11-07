@@ -46,7 +46,7 @@ import sun.misc.BASE64Decoder;
  * @Created by cjw
  */
 @Service
-public class FaceFaceAppServiceImpl implements FaceAppService {
+public class FaceAppServiceImpl implements FaceAppService {
     @Resource
     private FaceAppDao mFaceAppDao;
     @Resource
